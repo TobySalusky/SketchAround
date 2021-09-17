@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
-project(test)
+project(SeniorResearch)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -15,7 +15,7 @@ link_libraries(${OPENGL} ${GLEW_LINK} ${GLFW_LINK})
 
 # Execute compilation command
 set(SOURCE_FILES main.cpp)
-add_executable(test main.cpp
+add_executable(SeniorResearch main.cpp
         src/vendor/imgui/imgui_impl_glfw.cpp
         src/vendor/imgui/imgui_impl_opengl3.cpp
         src/vendor/imgui/imgui.cpp
@@ -26,6 +26,6 @@ add_executable(test main.cpp
         src/VBO.cpp src/VBO.h src/VAO.cpp src/VAO.h src/IBind.h)
 
 if (APPLE)
-    target_link_libraries(test "-framework OpenGL")
-    target_link_libraries(test "-framework GLUT")
+    target_link_libraries(SeniorResearch "-framework OpenGL")
+    target_link_libraries(SeniorResearch "-framework GLUT")
 endif()

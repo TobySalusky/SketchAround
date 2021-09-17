@@ -2,7 +2,7 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6"/>
 	<Project>
-		<Option title="test"/>
+		<Option title="SeniorResearch"/>
 		<Option makefile_is_custom="1"/>
 		<Option compiler="gcc"/>
 		<Option virtualFolders="CMake Files\;"/>
@@ -37,8 +37,8 @@
 					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/toby/CLionProjects/SeniorResearch/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
-			<Target title="test">
-				<Option output="/Users/toby/CLionProjects/SeniorResearch/cmake-build-debug/test" prefix_auto="0" extension_auto="0"/>
+			<Target title="SeniorResearch">
+				<Option output="/Users/toby/CLionProjects/SeniorResearch/cmake-build-debug/SeniorResearch" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="/Users/toby/CLionProjects/SeniorResearch/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
@@ -53,14 +53,14 @@
 					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/Users/toby/CLionProjects/SeniorResearch/cmake-build-debug/Makefile&quot;  VERBOSE=1 test"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/toby/CLionProjects/SeniorResearch/cmake-build-debug/Makefile&quot;  VERBOSE=1 SeniorResearch"/>
 					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/toby/CLionProjects/SeniorResearch/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
 					<Clean command="/usr/bin/make -j8 -f &quot;/Users/toby/CLionProjects/SeniorResearch/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/toby/CLionProjects/SeniorResearch/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
-			<Target title="test/fast">
-				<Option output="/Users/toby/CLionProjects/SeniorResearch/cmake-build-debug/test" prefix_auto="0" extension_auto="0"/>
+			<Target title="SeniorResearch/fast">
+				<Option output="/Users/toby/CLionProjects/SeniorResearch/cmake-build-debug/SeniorResearch" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="/Users/toby/CLionProjects/SeniorResearch/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
@@ -75,7 +75,7 @@
 					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/Users/toby/CLionProjects/SeniorResearch/cmake-build-debug/Makefile&quot;  VERBOSE=1 test/fast"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/toby/CLionProjects/SeniorResearch/cmake-build-debug/Makefile&quot;  VERBOSE=1 SeniorResearch/fast"/>
 					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/toby/CLionProjects/SeniorResearch/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
 					<Clean command="/usr/bin/make -j8 -f &quot;/Users/toby/CLionProjects/SeniorResearch/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/toby/CLionProjects/SeniorResearch/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
@@ -83,52 +83,52 @@
 			</Target>
 		</Build>
 		<Unit filename="/Users/toby/CLionProjects/SeniorResearch/main.cpp">
-			<Option target="test"/>
+			<Option target="SeniorResearch"/>
 		</Unit>
 		<Unit filename="/Users/toby/CLionProjects/SeniorResearch/src/IBind.h">
-			<Option target="test"/>
+			<Option target="SeniorResearch"/>
 		</Unit>
 		<Unit filename="/Users/toby/CLionProjects/SeniorResearch/src/VAO.cpp">
-			<Option target="test"/>
+			<Option target="SeniorResearch"/>
 		</Unit>
 		<Unit filename="/Users/toby/CLionProjects/SeniorResearch/src/VAO.h">
-			<Option target="test"/>
+			<Option target="SeniorResearch"/>
 		</Unit>
 		<Unit filename="/Users/toby/CLionProjects/SeniorResearch/src/VBO.cpp">
-			<Option target="test"/>
+			<Option target="SeniorResearch"/>
 		</Unit>
 		<Unit filename="/Users/toby/CLionProjects/SeniorResearch/src/VBO.h">
-			<Option target="test"/>
+			<Option target="SeniorResearch"/>
 		</Unit>
 		<Unit filename="/Users/toby/CLionProjects/SeniorResearch/src/vendor/imgui/imgui.cpp">
-			<Option target="test"/>
+			<Option target="SeniorResearch"/>
 		</Unit>
 		<Unit filename="/Users/toby/CLionProjects/SeniorResearch/src/vendor/imgui/imgui.h">
-			<Option target="test"/>
+			<Option target="SeniorResearch"/>
 		</Unit>
 		<Unit filename="/Users/toby/CLionProjects/SeniorResearch/src/vendor/imgui/imgui_demo.cpp">
-			<Option target="test"/>
+			<Option target="SeniorResearch"/>
 		</Unit>
 		<Unit filename="/Users/toby/CLionProjects/SeniorResearch/src/vendor/imgui/imgui_draw.cpp">
-			<Option target="test"/>
+			<Option target="SeniorResearch"/>
 		</Unit>
 		<Unit filename="/Users/toby/CLionProjects/SeniorResearch/src/vendor/imgui/imgui_impl_glfw.cpp">
-			<Option target="test"/>
+			<Option target="SeniorResearch"/>
 		</Unit>
 		<Unit filename="/Users/toby/CLionProjects/SeniorResearch/src/vendor/imgui/imgui_impl_glfw.h">
-			<Option target="test"/>
+			<Option target="SeniorResearch"/>
 		</Unit>
 		<Unit filename="/Users/toby/CLionProjects/SeniorResearch/src/vendor/imgui/imgui_impl_opengl3.cpp">
-			<Option target="test"/>
+			<Option target="SeniorResearch"/>
 		</Unit>
 		<Unit filename="/Users/toby/CLionProjects/SeniorResearch/src/vendor/imgui/imgui_impl_opengl3.h">
-			<Option target="test"/>
+			<Option target="SeniorResearch"/>
 		</Unit>
 		<Unit filename="/Users/toby/CLionProjects/SeniorResearch/src/vendor/imgui/imgui_tables.cpp">
-			<Option target="test"/>
+			<Option target="SeniorResearch"/>
 		</Unit>
 		<Unit filename="/Users/toby/CLionProjects/SeniorResearch/src/vendor/imgui/imgui_widgets.cpp">
-			<Option target="test"/>
+			<Option target="SeniorResearch"/>
 		</Unit>
 		<Unit filename="/Users/toby/CLionProjects/SeniorResearch/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>

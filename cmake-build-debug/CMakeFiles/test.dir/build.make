@@ -62,10 +62,10 @@ RM = /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/toby/CLionProjects/test
+CMAKE_SOURCE_DIR = /Users/toby/CLionProjects/SeniorResearch
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/toby/CLionProjects/test/cmake-build-debug
+CMAKE_BINARY_DIR = /Users/toby/CLionProjects/SeniorResearch/cmake-build-debug
 
 # Include any dependencies generated for this target.
 include CMakeFiles/test.dir/depend.make
@@ -78,133 +78,133 @@ include CMakeFiles/test.dir/flags.make
 
 CMakeFiles/test.dir/main.cpp.o: CMakeFiles/test.dir/flags.make
 CMakeFiles/test.dir/main.cpp.o: ../main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/toby/CLionProjects/test/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/test.dir/main.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/test.dir/main.cpp.o -c /Users/toby/CLionProjects/test/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/toby/CLionProjects/SeniorResearch/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/test.dir/main.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/test.dir/main.cpp.o -c /Users/toby/CLionProjects/SeniorResearch/main.cpp
 
 CMakeFiles/test.dir/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/test.dir/main.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/toby/CLionProjects/test/main.cpp > CMakeFiles/test.dir/main.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/toby/CLionProjects/SeniorResearch/main.cpp > CMakeFiles/test.dir/main.cpp.i
 
 CMakeFiles/test.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/test.dir/main.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/toby/CLionProjects/test/main.cpp -o CMakeFiles/test.dir/main.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/toby/CLionProjects/SeniorResearch/main.cpp -o CMakeFiles/test.dir/main.cpp.s
 
 CMakeFiles/test.dir/src/vendor/imgui/imgui_impl_glfw.cpp.o: CMakeFiles/test.dir/flags.make
 CMakeFiles/test.dir/src/vendor/imgui/imgui_impl_glfw.cpp.o: ../src/vendor/imgui/imgui_impl_glfw.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/toby/CLionProjects/test/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/test.dir/src/vendor/imgui/imgui_impl_glfw.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/test.dir/src/vendor/imgui/imgui_impl_glfw.cpp.o -c /Users/toby/CLionProjects/test/src/vendor/imgui/imgui_impl_glfw.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/toby/CLionProjects/SeniorResearch/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/test.dir/src/vendor/imgui/imgui_impl_glfw.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/test.dir/src/vendor/imgui/imgui_impl_glfw.cpp.o -c /Users/toby/CLionProjects/SeniorResearch/src/vendor/imgui/imgui_impl_glfw.cpp
 
 CMakeFiles/test.dir/src/vendor/imgui/imgui_impl_glfw.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/test.dir/src/vendor/imgui/imgui_impl_glfw.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/toby/CLionProjects/test/src/vendor/imgui/imgui_impl_glfw.cpp > CMakeFiles/test.dir/src/vendor/imgui/imgui_impl_glfw.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/toby/CLionProjects/SeniorResearch/src/vendor/imgui/imgui_impl_glfw.cpp > CMakeFiles/test.dir/src/vendor/imgui/imgui_impl_glfw.cpp.i
 
 CMakeFiles/test.dir/src/vendor/imgui/imgui_impl_glfw.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/test.dir/src/vendor/imgui/imgui_impl_glfw.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/toby/CLionProjects/test/src/vendor/imgui/imgui_impl_glfw.cpp -o CMakeFiles/test.dir/src/vendor/imgui/imgui_impl_glfw.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/toby/CLionProjects/SeniorResearch/src/vendor/imgui/imgui_impl_glfw.cpp -o CMakeFiles/test.dir/src/vendor/imgui/imgui_impl_glfw.cpp.s
 
 CMakeFiles/test.dir/src/vendor/imgui/imgui_impl_opengl3.cpp.o: CMakeFiles/test.dir/flags.make
 CMakeFiles/test.dir/src/vendor/imgui/imgui_impl_opengl3.cpp.o: ../src/vendor/imgui/imgui_impl_opengl3.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/toby/CLionProjects/test/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/test.dir/src/vendor/imgui/imgui_impl_opengl3.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/test.dir/src/vendor/imgui/imgui_impl_opengl3.cpp.o -c /Users/toby/CLionProjects/test/src/vendor/imgui/imgui_impl_opengl3.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/toby/CLionProjects/SeniorResearch/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/test.dir/src/vendor/imgui/imgui_impl_opengl3.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/test.dir/src/vendor/imgui/imgui_impl_opengl3.cpp.o -c /Users/toby/CLionProjects/SeniorResearch/src/vendor/imgui/imgui_impl_opengl3.cpp
 
 CMakeFiles/test.dir/src/vendor/imgui/imgui_impl_opengl3.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/test.dir/src/vendor/imgui/imgui_impl_opengl3.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/toby/CLionProjects/test/src/vendor/imgui/imgui_impl_opengl3.cpp > CMakeFiles/test.dir/src/vendor/imgui/imgui_impl_opengl3.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/toby/CLionProjects/SeniorResearch/src/vendor/imgui/imgui_impl_opengl3.cpp > CMakeFiles/test.dir/src/vendor/imgui/imgui_impl_opengl3.cpp.i
 
 CMakeFiles/test.dir/src/vendor/imgui/imgui_impl_opengl3.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/test.dir/src/vendor/imgui/imgui_impl_opengl3.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/toby/CLionProjects/test/src/vendor/imgui/imgui_impl_opengl3.cpp -o CMakeFiles/test.dir/src/vendor/imgui/imgui_impl_opengl3.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/toby/CLionProjects/SeniorResearch/src/vendor/imgui/imgui_impl_opengl3.cpp -o CMakeFiles/test.dir/src/vendor/imgui/imgui_impl_opengl3.cpp.s
 
 CMakeFiles/test.dir/src/vendor/imgui/imgui.cpp.o: CMakeFiles/test.dir/flags.make
 CMakeFiles/test.dir/src/vendor/imgui/imgui.cpp.o: ../src/vendor/imgui/imgui.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/toby/CLionProjects/test/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/test.dir/src/vendor/imgui/imgui.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/test.dir/src/vendor/imgui/imgui.cpp.o -c /Users/toby/CLionProjects/test/src/vendor/imgui/imgui.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/toby/CLionProjects/SeniorResearch/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/test.dir/src/vendor/imgui/imgui.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/test.dir/src/vendor/imgui/imgui.cpp.o -c /Users/toby/CLionProjects/SeniorResearch/src/vendor/imgui/imgui.cpp
 
 CMakeFiles/test.dir/src/vendor/imgui/imgui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/test.dir/src/vendor/imgui/imgui.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/toby/CLionProjects/test/src/vendor/imgui/imgui.cpp > CMakeFiles/test.dir/src/vendor/imgui/imgui.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/toby/CLionProjects/SeniorResearch/src/vendor/imgui/imgui.cpp > CMakeFiles/test.dir/src/vendor/imgui/imgui.cpp.i
 
 CMakeFiles/test.dir/src/vendor/imgui/imgui.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/test.dir/src/vendor/imgui/imgui.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/toby/CLionProjects/test/src/vendor/imgui/imgui.cpp -o CMakeFiles/test.dir/src/vendor/imgui/imgui.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/toby/CLionProjects/SeniorResearch/src/vendor/imgui/imgui.cpp -o CMakeFiles/test.dir/src/vendor/imgui/imgui.cpp.s
 
 CMakeFiles/test.dir/src/vendor/imgui/imgui_demo.cpp.o: CMakeFiles/test.dir/flags.make
 CMakeFiles/test.dir/src/vendor/imgui/imgui_demo.cpp.o: ../src/vendor/imgui/imgui_demo.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/toby/CLionProjects/test/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/test.dir/src/vendor/imgui/imgui_demo.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/test.dir/src/vendor/imgui/imgui_demo.cpp.o -c /Users/toby/CLionProjects/test/src/vendor/imgui/imgui_demo.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/toby/CLionProjects/SeniorResearch/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/test.dir/src/vendor/imgui/imgui_demo.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/test.dir/src/vendor/imgui/imgui_demo.cpp.o -c /Users/toby/CLionProjects/SeniorResearch/src/vendor/imgui/imgui_demo.cpp
 
 CMakeFiles/test.dir/src/vendor/imgui/imgui_demo.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/test.dir/src/vendor/imgui/imgui_demo.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/toby/CLionProjects/test/src/vendor/imgui/imgui_demo.cpp > CMakeFiles/test.dir/src/vendor/imgui/imgui_demo.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/toby/CLionProjects/SeniorResearch/src/vendor/imgui/imgui_demo.cpp > CMakeFiles/test.dir/src/vendor/imgui/imgui_demo.cpp.i
 
 CMakeFiles/test.dir/src/vendor/imgui/imgui_demo.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/test.dir/src/vendor/imgui/imgui_demo.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/toby/CLionProjects/test/src/vendor/imgui/imgui_demo.cpp -o CMakeFiles/test.dir/src/vendor/imgui/imgui_demo.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/toby/CLionProjects/SeniorResearch/src/vendor/imgui/imgui_demo.cpp -o CMakeFiles/test.dir/src/vendor/imgui/imgui_demo.cpp.s
 
 CMakeFiles/test.dir/src/vendor/imgui/imgui_draw.cpp.o: CMakeFiles/test.dir/flags.make
 CMakeFiles/test.dir/src/vendor/imgui/imgui_draw.cpp.o: ../src/vendor/imgui/imgui_draw.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/toby/CLionProjects/test/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/test.dir/src/vendor/imgui/imgui_draw.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/test.dir/src/vendor/imgui/imgui_draw.cpp.o -c /Users/toby/CLionProjects/test/src/vendor/imgui/imgui_draw.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/toby/CLionProjects/SeniorResearch/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/test.dir/src/vendor/imgui/imgui_draw.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/test.dir/src/vendor/imgui/imgui_draw.cpp.o -c /Users/toby/CLionProjects/SeniorResearch/src/vendor/imgui/imgui_draw.cpp
 
 CMakeFiles/test.dir/src/vendor/imgui/imgui_draw.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/test.dir/src/vendor/imgui/imgui_draw.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/toby/CLionProjects/test/src/vendor/imgui/imgui_draw.cpp > CMakeFiles/test.dir/src/vendor/imgui/imgui_draw.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/toby/CLionProjects/SeniorResearch/src/vendor/imgui/imgui_draw.cpp > CMakeFiles/test.dir/src/vendor/imgui/imgui_draw.cpp.i
 
 CMakeFiles/test.dir/src/vendor/imgui/imgui_draw.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/test.dir/src/vendor/imgui/imgui_draw.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/toby/CLionProjects/test/src/vendor/imgui/imgui_draw.cpp -o CMakeFiles/test.dir/src/vendor/imgui/imgui_draw.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/toby/CLionProjects/SeniorResearch/src/vendor/imgui/imgui_draw.cpp -o CMakeFiles/test.dir/src/vendor/imgui/imgui_draw.cpp.s
 
 CMakeFiles/test.dir/src/vendor/imgui/imgui_tables.cpp.o: CMakeFiles/test.dir/flags.make
 CMakeFiles/test.dir/src/vendor/imgui/imgui_tables.cpp.o: ../src/vendor/imgui/imgui_tables.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/toby/CLionProjects/test/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/test.dir/src/vendor/imgui/imgui_tables.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/test.dir/src/vendor/imgui/imgui_tables.cpp.o -c /Users/toby/CLionProjects/test/src/vendor/imgui/imgui_tables.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/toby/CLionProjects/SeniorResearch/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/test.dir/src/vendor/imgui/imgui_tables.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/test.dir/src/vendor/imgui/imgui_tables.cpp.o -c /Users/toby/CLionProjects/SeniorResearch/src/vendor/imgui/imgui_tables.cpp
 
 CMakeFiles/test.dir/src/vendor/imgui/imgui_tables.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/test.dir/src/vendor/imgui/imgui_tables.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/toby/CLionProjects/test/src/vendor/imgui/imgui_tables.cpp > CMakeFiles/test.dir/src/vendor/imgui/imgui_tables.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/toby/CLionProjects/SeniorResearch/src/vendor/imgui/imgui_tables.cpp > CMakeFiles/test.dir/src/vendor/imgui/imgui_tables.cpp.i
 
 CMakeFiles/test.dir/src/vendor/imgui/imgui_tables.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/test.dir/src/vendor/imgui/imgui_tables.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/toby/CLionProjects/test/src/vendor/imgui/imgui_tables.cpp -o CMakeFiles/test.dir/src/vendor/imgui/imgui_tables.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/toby/CLionProjects/SeniorResearch/src/vendor/imgui/imgui_tables.cpp -o CMakeFiles/test.dir/src/vendor/imgui/imgui_tables.cpp.s
 
 CMakeFiles/test.dir/src/vendor/imgui/imgui_widgets.cpp.o: CMakeFiles/test.dir/flags.make
 CMakeFiles/test.dir/src/vendor/imgui/imgui_widgets.cpp.o: ../src/vendor/imgui/imgui_widgets.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/toby/CLionProjects/test/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/test.dir/src/vendor/imgui/imgui_widgets.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/test.dir/src/vendor/imgui/imgui_widgets.cpp.o -c /Users/toby/CLionProjects/test/src/vendor/imgui/imgui_widgets.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/toby/CLionProjects/SeniorResearch/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/test.dir/src/vendor/imgui/imgui_widgets.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/test.dir/src/vendor/imgui/imgui_widgets.cpp.o -c /Users/toby/CLionProjects/SeniorResearch/src/vendor/imgui/imgui_widgets.cpp
 
 CMakeFiles/test.dir/src/vendor/imgui/imgui_widgets.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/test.dir/src/vendor/imgui/imgui_widgets.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/toby/CLionProjects/test/src/vendor/imgui/imgui_widgets.cpp > CMakeFiles/test.dir/src/vendor/imgui/imgui_widgets.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/toby/CLionProjects/SeniorResearch/src/vendor/imgui/imgui_widgets.cpp > CMakeFiles/test.dir/src/vendor/imgui/imgui_widgets.cpp.i
 
 CMakeFiles/test.dir/src/vendor/imgui/imgui_widgets.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/test.dir/src/vendor/imgui/imgui_widgets.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/toby/CLionProjects/test/src/vendor/imgui/imgui_widgets.cpp -o CMakeFiles/test.dir/src/vendor/imgui/imgui_widgets.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/toby/CLionProjects/SeniorResearch/src/vendor/imgui/imgui_widgets.cpp -o CMakeFiles/test.dir/src/vendor/imgui/imgui_widgets.cpp.s
 
 CMakeFiles/test.dir/src/VBO.cpp.o: CMakeFiles/test.dir/flags.make
 CMakeFiles/test.dir/src/VBO.cpp.o: ../src/VBO.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/toby/CLionProjects/test/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/test.dir/src/VBO.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/test.dir/src/VBO.cpp.o -c /Users/toby/CLionProjects/test/src/VBO.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/toby/CLionProjects/SeniorResearch/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/test.dir/src/VBO.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/test.dir/src/VBO.cpp.o -c /Users/toby/CLionProjects/SeniorResearch/src/VBO.cpp
 
 CMakeFiles/test.dir/src/VBO.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/test.dir/src/VBO.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/toby/CLionProjects/test/src/VBO.cpp > CMakeFiles/test.dir/src/VBO.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/toby/CLionProjects/SeniorResearch/src/VBO.cpp > CMakeFiles/test.dir/src/VBO.cpp.i
 
 CMakeFiles/test.dir/src/VBO.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/test.dir/src/VBO.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/toby/CLionProjects/test/src/VBO.cpp -o CMakeFiles/test.dir/src/VBO.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/toby/CLionProjects/SeniorResearch/src/VBO.cpp -o CMakeFiles/test.dir/src/VBO.cpp.s
 
 CMakeFiles/test.dir/src/VAO.cpp.o: CMakeFiles/test.dir/flags.make
 CMakeFiles/test.dir/src/VAO.cpp.o: ../src/VAO.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/toby/CLionProjects/test/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/test.dir/src/VAO.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/test.dir/src/VAO.cpp.o -c /Users/toby/CLionProjects/test/src/VAO.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/toby/CLionProjects/SeniorResearch/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/test.dir/src/VAO.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/test.dir/src/VAO.cpp.o -c /Users/toby/CLionProjects/SeniorResearch/src/VAO.cpp
 
 CMakeFiles/test.dir/src/VAO.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/test.dir/src/VAO.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/toby/CLionProjects/test/src/VAO.cpp > CMakeFiles/test.dir/src/VAO.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/toby/CLionProjects/SeniorResearch/src/VAO.cpp > CMakeFiles/test.dir/src/VAO.cpp.i
 
 CMakeFiles/test.dir/src/VAO.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/test.dir/src/VAO.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/toby/CLionProjects/test/src/VAO.cpp -o CMakeFiles/test.dir/src/VAO.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/toby/CLionProjects/SeniorResearch/src/VAO.cpp -o CMakeFiles/test.dir/src/VAO.cpp.s
 
 # Object files for target test
 test_OBJECTS = \
@@ -236,7 +236,7 @@ test: CMakeFiles/test.dir/build.make
 test: /opt/homebrew/Cellar/glew/2.2.0_1/lib/libGLEW.2.2.dylib
 test: /opt/homebrew/Cellar/glfw/3.3.4/lib/libglfw.3.dylib
 test: CMakeFiles/test.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/toby/CLionProjects/test/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Linking CXX executable test"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/toby/CLionProjects/SeniorResearch/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Linking CXX executable test"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/test.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -249,6 +249,6 @@ CMakeFiles/test.dir/clean:
 .PHONY : CMakeFiles/test.dir/clean
 
 CMakeFiles/test.dir/depend:
-	cd /Users/toby/CLionProjects/test/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/toby/CLionProjects/test /Users/toby/CLionProjects/test /Users/toby/CLionProjects/test/cmake-build-debug /Users/toby/CLionProjects/test/cmake-build-debug /Users/toby/CLionProjects/test/cmake-build-debug/CMakeFiles/test.dir/DependInfo.cmake --color=$(COLOR)
+	cd /Users/toby/CLionProjects/SeniorResearch/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/toby/CLionProjects/SeniorResearch /Users/toby/CLionProjects/SeniorResearch /Users/toby/CLionProjects/SeniorResearch/cmake-build-debug /Users/toby/CLionProjects/SeniorResearch/cmake-build-debug /Users/toby/CLionProjects/SeniorResearch/cmake-build-debug/CMakeFiles/test.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/test.dir/depend
 

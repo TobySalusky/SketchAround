@@ -4,16 +4,16 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/Users/toby/CLionProjects/test/main.cpp" "/Users/toby/CLionProjects/test/cmake-build-debug/CMakeFiles/test.dir/main.cpp.o"
-  "/Users/toby/CLionProjects/test/src/VAO.cpp" "/Users/toby/CLionProjects/test/cmake-build-debug/CMakeFiles/test.dir/src/VAO.cpp.o"
-  "/Users/toby/CLionProjects/test/src/VBO.cpp" "/Users/toby/CLionProjects/test/cmake-build-debug/CMakeFiles/test.dir/src/VBO.cpp.o"
-  "/Users/toby/CLionProjects/test/src/vendor/imgui/imgui.cpp" "/Users/toby/CLionProjects/test/cmake-build-debug/CMakeFiles/test.dir/src/vendor/imgui/imgui.cpp.o"
-  "/Users/toby/CLionProjects/test/src/vendor/imgui/imgui_demo.cpp" "/Users/toby/CLionProjects/test/cmake-build-debug/CMakeFiles/test.dir/src/vendor/imgui/imgui_demo.cpp.o"
-  "/Users/toby/CLionProjects/test/src/vendor/imgui/imgui_draw.cpp" "/Users/toby/CLionProjects/test/cmake-build-debug/CMakeFiles/test.dir/src/vendor/imgui/imgui_draw.cpp.o"
-  "/Users/toby/CLionProjects/test/src/vendor/imgui/imgui_impl_glfw.cpp" "/Users/toby/CLionProjects/test/cmake-build-debug/CMakeFiles/test.dir/src/vendor/imgui/imgui_impl_glfw.cpp.o"
-  "/Users/toby/CLionProjects/test/src/vendor/imgui/imgui_impl_opengl3.cpp" "/Users/toby/CLionProjects/test/cmake-build-debug/CMakeFiles/test.dir/src/vendor/imgui/imgui_impl_opengl3.cpp.o"
-  "/Users/toby/CLionProjects/test/src/vendor/imgui/imgui_tables.cpp" "/Users/toby/CLionProjects/test/cmake-build-debug/CMakeFiles/test.dir/src/vendor/imgui/imgui_tables.cpp.o"
-  "/Users/toby/CLionProjects/test/src/vendor/imgui/imgui_widgets.cpp" "/Users/toby/CLionProjects/test/cmake-build-debug/CMakeFiles/test.dir/src/vendor/imgui/imgui_widgets.cpp.o"
+  "/Users/toby/CLionProjects/SeniorResearch/main.cpp" "/Users/toby/CLionProjects/SeniorResearch/cmake-build-debug/CMakeFiles/test.dir/main.cpp.o"
+  "/Users/toby/CLionProjects/SeniorResearch/src/VAO.cpp" "/Users/toby/CLionProjects/SeniorResearch/cmake-build-debug/CMakeFiles/test.dir/src/VAO.cpp.o"
+  "/Users/toby/CLionProjects/SeniorResearch/src/VBO.cpp" "/Users/toby/CLionProjects/SeniorResearch/cmake-build-debug/CMakeFiles/test.dir/src/VBO.cpp.o"
+  "/Users/toby/CLionProjects/SeniorResearch/src/vendor/imgui/imgui.cpp" "/Users/toby/CLionProjects/SeniorResearch/cmake-build-debug/CMakeFiles/test.dir/src/vendor/imgui/imgui.cpp.o"
+  "/Users/toby/CLionProjects/SeniorResearch/src/vendor/imgui/imgui_demo.cpp" "/Users/toby/CLionProjects/SeniorResearch/cmake-build-debug/CMakeFiles/test.dir/src/vendor/imgui/imgui_demo.cpp.o"
+  "/Users/toby/CLionProjects/SeniorResearch/src/vendor/imgui/imgui_draw.cpp" "/Users/toby/CLionProjects/SeniorResearch/cmake-build-debug/CMakeFiles/test.dir/src/vendor/imgui/imgui_draw.cpp.o"
+  "/Users/toby/CLionProjects/SeniorResearch/src/vendor/imgui/imgui_impl_glfw.cpp" "/Users/toby/CLionProjects/SeniorResearch/cmake-build-debug/CMakeFiles/test.dir/src/vendor/imgui/imgui_impl_glfw.cpp.o"
+  "/Users/toby/CLionProjects/SeniorResearch/src/vendor/imgui/imgui_impl_opengl3.cpp" "/Users/toby/CLionProjects/SeniorResearch/cmake-build-debug/CMakeFiles/test.dir/src/vendor/imgui/imgui_impl_opengl3.cpp.o"
+  "/Users/toby/CLionProjects/SeniorResearch/src/vendor/imgui/imgui_tables.cpp" "/Users/toby/CLionProjects/SeniorResearch/cmake-build-debug/CMakeFiles/test.dir/src/vendor/imgui/imgui_tables.cpp.o"
+  "/Users/toby/CLionProjects/SeniorResearch/src/vendor/imgui/imgui_widgets.cpp" "/Users/toby/CLionProjects/SeniorResearch/cmake-build-debug/CMakeFiles/test.dir/src/vendor/imgui/imgui_widgets.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "AppleClang")
 
