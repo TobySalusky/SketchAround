@@ -3,71 +3,47 @@
 //
 #include <iostream>
 #include <glew.h>
+#include <fstream>
 
 #include "Shader.h"
 
-Shader::Shader() {
+Shader::Shader(const char* vertexShaderSource, const char* fragmentShaderSource) {
 
     // Shaders
-    const char* vertexShaderSource = R"glsl(
-#version 330 core
-layout (location = 0) in vec3 pos;
-
-out vec4 vCol;
-
-uniform mat4 model;
-uniform mat4 projection;
-
-void main()
-{
-    gl_Position = projection * model * vec4(pos, 1.0f);
-    vCol = vec4(clamp(pos, 0.0f, 1.0f), 1.0f);
-}
-)glsl";
-    const char* fragmentShaderSource = R"glsl(
-#version 330 core
-in vec4 vCol;
-out vec4 color;
-void main()
-{
-    color = vCol;
-}
-)glsl";
-
 
     // Build and compile our shader program
     // Vertex shader
-    GLuint vertexShader = glCreateShader( GL_VERTEX_SHADER );
-    glShaderSource( vertexShader, 1, &vertexShaderSource, NULL );
-    glCompileShader( vertexShader );
+    GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    glShaderSource(vertexShader, 1, &vertexShaderSource, nullptr);
+    glCompileShader(vertexShader);
 
     // Check for compile time errors
     GLint success;
     GLchar infoLog[512];
 
-    glGetShaderiv( vertexShader, GL_COMPILE_STATUS, &success );
-    if ( !success )
+    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
+    if (!success)
     {
-        glGetShaderInfoLog( vertexShader, 512, NULL, infoLog );
+        glGetShaderInfoLog(vertexShader, 512, nullptr, infoLog);
         std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
     }
 
     // Fragment shader
-    GLuint fragmentShader = glCreateShader( GL_FRAGMENT_SHADER );
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL );
+    GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(fragmentShader, 1, &fragmentShaderSource, nullptr);
     glCompileShader(fragmentShader);
 
     // Check for compile time errors
-    glGetShaderiv( fragmentShader, GL_COMPILE_STATUS, &success );
+    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
 
-    if ( !success )
+    if (!success)
     {
-        glGetShaderInfoLog( fragmentShader, 512, NULL, infoLog );
+        glGetShaderInfoLog(fragmentShader, 512, nullptr, infoLog);
         std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
     }
 
     // Link shaders
-    ID = glCreateProgram( );
+    ID = glCreateProgram();
     glAttachShader(ID, vertexShader);
     glAttachShader(ID, fragmentShader);
     glLinkProgram(ID);
@@ -77,7 +53,7 @@ void main()
 
     if (!success)
     {
-        glGetProgramInfoLog(ID, 512, NULL, infoLog);
+        glGetProgramInfoLog(ID, 512, nullptr, infoLog);
         std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
     }
 
@@ -87,10 +63,33 @@ void main()
 
 Shader::~Shader() = default;
 
-void Shader::Enable() {
+void Shader::Enable() const {
     glUseProgram(ID);
 }
 
-Uniform Shader::GenUniform(const char *identifier) {
+Uniform Shader::GenUniform(const char *identifier) const {
     return {glGetUniformLocation(ID, identifier)};
+}
+
+std::string Shader::ReadFile(const char *path) {
+    std:: string content;
+    std::ifstream fileStream(path, std::ios::in);
+
+    if (!fileStream.is_open()) {
+        printf("Failed to read %s! File doesn't exist!", path);
+    }
+
+    std::string line;
+    while (!fileStream.eof())
+    {
+        std::getline(fileStream, line);
+        content.append(line + '\n');
+    }
+    fileStream.close();
+
+    return content;
+}
+
+Shader Shader::Read(const char *vertexShaderPath, const char *fragmentShaderPath) {
+    return Shader(ReadFile(vertexShaderPath).c_str(), ReadFile(fragmentShaderPath).c_str());
 }

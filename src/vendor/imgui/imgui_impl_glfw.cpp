@@ -353,11 +353,11 @@ static void ImGui_ImplGlfw_UpdateMousePosAndButtons()
 #endif
     GLFWwindow* mouse_window = (bd->MouseWindow == bd->Window || focused) ? bd->Window : NULL;
 
-    // Set OS mouse position from Dear ImGui if requested (rarely used, only when ImGuiConfigFlags_NavEnableSetMousePos is enabled by user)
+    // Init OS mouse position from Dear ImGui if requested (rarely used, only when ImGuiConfigFlags_NavEnableSetMousePos is enabled by user)
     if (io.WantSetMousePos && focused)
         glfwSetCursorPos(bd->Window, (double)mouse_pos_prev.x, (double)mouse_pos_prev.y);
 
-    // Set Dear ImGui mouse position from OS position
+    // Init Dear ImGui mouse position from OS position
     if (mouse_window != NULL)
     {
         double mouse_x, mouse_y;

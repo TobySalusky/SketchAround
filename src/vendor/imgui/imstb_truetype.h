@@ -197,7 +197,7 @@
 //    screen where y=0, then you would set the baseline to SF*-y0.
 //
 //  Current point:
-//    Set the current point where the first character will appear. The
+//    Init the current point where the first character will appear. The
 //    first character could extend left of the current point; this is font
 //    dependent. You can either choose a current point that is the leftmost
 //    point and hope, or add some padding, or check the bounding box or

@@ -23,7 +23,7 @@ add_executable(SeniorResearch main.cpp
         src/vendor/imgui/imgui_draw.cpp
         src/vendor/imgui/imgui_tables.cpp
         src/vendor/imgui/imgui_widgets.cpp
-        src/VBO.cpp src/VBO.h src/VAO.cpp src/VAO.h src/IBind.h src/Shader.cpp src/Shader.h src/Uniform.cpp src/Uniform.h src/GLWindow.cpp src/GLWindow.h)
+        src/IBind.h src/Shader.cpp src/Shader.h src/Uniform.cpp src/Uniform.h src/GLWindow.cpp src/GLWindow.h src/Mesh.cpp src/Mesh.h)
 
 if (APPLE)
     target_link_libraries(SeniorResearch "-framework OpenGL")

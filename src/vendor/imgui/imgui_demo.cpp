@@ -406,8 +406,8 @@ void ImGui::ShowDemoWindow(bool* p_open)
         ImGui::BulletText("See comments in imgui.cpp.");
         ImGui::BulletText("See example applications in the examples/ folder.");
         ImGui::BulletText("Read the FAQ at http://www.dearimgui.org/faq/");
-        ImGui::BulletText("Set 'io.ConfigFlags |= NavEnableKeyboard' for keyboard controls.");
-        ImGui::BulletText("Set 'io.ConfigFlags |= NavEnableGamepad' for gamepad controls.");
+        ImGui::BulletText("Init 'io.ConfigFlags |= NavEnableKeyboard' for keyboard controls.");
+        ImGui::BulletText("Init 'io.ConfigFlags |= NavEnableGamepad' for gamepad controls.");
         ImGui::Separator();
 
         ImGui::Text("USER GUIDE:");
@@ -1042,7 +1042,7 @@ static void ShowDemoWindowWidgets()
                 if (ImGui::Selectable(items[n], is_selected))
                     item_current_idx = n;
 
-                // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+                // Init the initial focus when opening the combo (scrolling + keyboard navigation focus)
                 if (is_selected)
                     ImGui::SetItemDefaultFocus();
             }
@@ -1082,7 +1082,7 @@ static void ShowDemoWindowWidgets()
                 if (ImGui::Selectable(items[n], is_selected))
                     item_current_idx = n;
 
-                // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+                // Init the initial focus when opening the combo (scrolling + keyboard navigation focus)
                 if (is_selected)
                     ImGui::SetItemDefaultFocus();
             }
@@ -1099,7 +1099,7 @@ static void ShowDemoWindowWidgets()
                 if (ImGui::Selectable(items[n], is_selected))
                     item_current_idx = n;
 
-                // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+                // Init the initial focus when opening the combo (scrolling + keyboard navigation focus)
                 if (is_selected)
                     ImGui::SetItemDefaultFocus();
             }
@@ -1790,7 +1790,7 @@ static void ShowDemoWindowWidgets()
         if (display_mode == 4) flags |= ImGuiColorEditFlags_DisplayHex;
         ImGui::ColorPicker4("MyColor##4", (float*)&color, flags, ref_color ? &ref_color_v.x : NULL);
 
-        ImGui::Text("Set defaults in code:");
+        ImGui::Text("Init defaults in code:");
         ImGui::SameLine(); HelpMarker(
             "SetColorEditOptions() is designed to allow you to set boot-time default.\n"
             "We don't have Push/Pop functions because you can force options on a per-widget basis if needed,"
@@ -2117,7 +2117,7 @@ static void ShowDemoWindowWidgets()
                 // Our buttons are both drag sources and drag targets here!
                 if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
                 {
-                    // Set payload to carry the index of our item (could be anything)
+                    // Init payload to carry the index of our item (could be anything)
                     ImGui::SetDragDropPayload("DND_DEMO_CELL", &n, sizeof(int));
 
                     // Display preview (could be anything, e.g. when dragging an image we could decide to display
@@ -3264,8 +3264,8 @@ static void ShowDemoWindowPopups()
             ImGui::Text("Value = %.3f <-- (1) right-click this value", value);
             if (ImGui::BeginPopupContextItem("my popup"))
             {
-                if (ImGui::Selectable("Set to zero")) value = 0.0f;
-                if (ImGui::Selectable("Set to PI")) value = 3.1415f;
+                if (ImGui::Selectable("Init to zero")) value = 0.0f;
+                if (ImGui::Selectable("Init to PI")) value = 3.1415f;
                 ImGui::SetNextItemWidth(-FLT_MIN);
                 ImGui::DragFloat("##Value", &value, 0.1f, 0.0f, 0.0f);
                 ImGui::EndPopup();
@@ -7248,7 +7248,7 @@ static void ShowExampleAppCustomRendering(bool* p_open)
             // Here we demonstrate that this can be replaced by simple offsetting + custom drawing + PushClipRect/PopClipRect() calls.
             // To use a child window instead we could use, e.g:
             //      ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));      // Disable padding
-            //      ImGui::PushStyleColor(ImGuiCol_ChildBg, IM_COL32(50, 50, 50, 255));  // Set a background color
+            //      ImGui::PushStyleColor(ImGuiCol_ChildBg, IM_COL32(50, 50, 50, 255));  // Init a background color
             //      ImGui::BeginChild("canvas", ImVec2(0.0f, 0.0f), true, ImGuiWindowFlags_NoMove);
             //      ImGui::PopStyleColor();
             //      ImGui::PopStyleVar();
@@ -7361,10 +7361,10 @@ static void ShowExampleAppCustomRendering(bool* p_open)
 struct MyDocument
 {
     const char* Name;       // Document title
-    bool        Open;       // Set when open (we keep an array of all available documents to simplify demo code!)
+    bool        Open;       // Init when open (we keep an array of all available documents to simplify demo code!)
     bool        OpenPrev;   // Copy of Open from last update.
-    bool        Dirty;      // Set when the document has been modified
-    bool        WantClose;  // Set when the document
+    bool        Dirty;      // Init when the document has been modified
+    bool        WantClose;  // Init when the document
     ImVec4      Color;      // An arbitrary variable associated to the document
 
     MyDocument(const char* name, bool open = true, const ImVec4& color = ImVec4(1.0f, 1.0f, 1.0f, 1.0f))

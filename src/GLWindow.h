@@ -17,6 +17,9 @@ public:
     [[nodiscard]] GLint GetBufferHeight() const { return bufferHeight; }
     bool ShouldClose() { return glfwWindowShouldClose(window); }
     void SwapBuffers() { glfwSwapBuffers(window); }
+
+    void RegisterMouseMoveEvent(GLFWcursorposfun callback) { glfwSetCursorPosCallback(window, callback); }
+    void RegisterMouseButtonEvent(GLFWmousebuttonfun callback) { glfwSetMouseButtonCallback(window, callback); }
 private:
     GLFWwindow* window;
     GLint width, height;

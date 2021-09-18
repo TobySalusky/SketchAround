@@ -78,15 +78,15 @@ Index of this file:
 // Default value is ImVec2(0.0f, 0.0f).
 //   X
 //   - outer_size.x <= 0.0f  ->  Right-align from window/work-rect right-most edge. With -FLT_MIN or 0.0f will align exactly on right-most edge.
-//   - outer_size.x  > 0.0f  ->  Set Fixed width.
+//   - outer_size.x  > 0.0f  ->  Init Fixed width.
 //   Y with ScrollX/ScrollY disabled: we output table directly in current window
 //   - outer_size.y  < 0.0f  ->  Bottom-align (but will auto extend, unless _NoHostExtendY is set). Not meaningful is parent window can vertically scroll.
 //   - outer_size.y  = 0.0f  ->  No minimum height (but will auto extend, unless _NoHostExtendY is set)
-//   - outer_size.y  > 0.0f  ->  Set Minimum height (but will auto extend, unless _NoHostExtenY is set)
+//   - outer_size.y  > 0.0f  ->  Init Minimum height (but will auto extend, unless _NoHostExtenY is set)
 //   Y with ScrollX/ScrollY enabled: using a child window for scrolling
 //   - outer_size.y  < 0.0f  ->  Bottom-align. Not meaningful is parent window can vertically scroll.
 //   - outer_size.y  = 0.0f  ->  Bottom-align, consistent with BeginChild(). Not recommended unless table is last item in parent window.
-//   - outer_size.y  > 0.0f  ->  Set Exact height. Recommended when using Scrolling on any axis.
+//   - outer_size.y  > 0.0f  ->  Init Exact height. Recommended when using Scrolling on any axis.
 //-----------------------------------------------------------------------------
 // Outer size is also affected by the NoHostExtendX/NoHostExtendY flags.
 // Important to that note how the two flags have slightly different behaviors!
@@ -1129,7 +1129,7 @@ void ImGui::TableUpdateLayout(ImGuiTable* table)
 }
 
 // Process hit-testing on resizing borders. Actual size change will be applied in EndTable()
-// - Set table->HoveredColumnBorder with a short delay/timer to reduce feedback noise
+// - Init table->HoveredColumnBorder with a short delay/timer to reduce feedback noise
 // - Submit ahead of table contents and header, use ImGuiButtonFlags_AllowItemOverlap to prioritize widgets
 //   overlapping the same area.
 void ImGui::TableUpdateBorders(ImGuiTable* table)
@@ -3841,7 +3841,7 @@ void ImGui::BeginColumns(const char* str_id, int columns_count, ImGuiOldColumnFl
     columns->HostBackupParentWorkRect = window->ParentWorkRect;
     window->ParentWorkRect = window->WorkRect;
 
-    // Set state for first column
+    // Init state for first column
     // We aim so that the right-most column will have the same clipping width as other after being clipped by parent ClipRect
     const float column_padding = g.Style.ItemSpacing.x;
     const float half_clip_extend_x = ImFloor(ImMax(window->WindowPadding.x * 0.5f, window->WindowBorderSize));

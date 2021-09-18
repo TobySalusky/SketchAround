@@ -11,11 +11,14 @@ class Shader {
 public:
     unsigned int ID;
 
-    Shader();
+    Shader(const char* vertexShaderSource, const char* fragmentShaderSource);
     ~Shader();
 
-    void Enable();
-    Uniform GenUniform(const char* identifier);
+    static std::string ReadFile(const char* path);
+    static Shader Read(const char* vertexShaderPath, const char* fragmentShaderPath);
+
+    void Enable() const;
+    Uniform GenUniform(const char* identifier) const;
 };
 
 
