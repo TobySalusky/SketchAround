@@ -6,10 +6,11 @@
 
 #include <glew.h>
 #include <glfw3.h>
+#include <iostream>
 
 #include "GLWindow.h"
 
-GLWindow::GLWindow(GLint windowWidth, GLint windowHeight) {
+GLWindow::GLWindow(GLint windowWidth, GLint windowHeight) { // NOLINT(cppcoreguidelines-pro-type-member-init)
     width = windowWidth;
     height = windowHeight;
 
@@ -54,9 +55,56 @@ GLWindow::GLWindow(GLint windowWidth, GLint windowHeight) {
 
     // Define the viewport dimensions
     glViewport(0, 0, bufferWidth, bufferHeight);
+
+    CreateInput();
 }
 
 GLWindow::~GLWindow() {
     glfwDestroyWindow(window);
     glfwTerminate();
+}
+
+void GLWindow::CreateInput() {
+    input = {};
+    glfwSetWindowUserPointer(window, static_cast<void*>(this));
+    glfwSetKeyCallback(window, [](GLFWwindow* rawSelf, int key, int code, int action, int mode){
+        auto self = static_cast<GLWindow*>(glfwGetWindowUserPointer(rawSelf));
+        if (key >= 0 && key <= 1024) {
+            if (action == GLFW_PRESS)
+                self->input.SetKey(key, true);
+            else if (action == GLFW_RELEASE)
+                self->input.SetKey(key, false);
+        }
+    });
+
+    glfwSetCursorPosCallback(window, [](GLFWwindow* rawSelf, double xPos, double yPos){
+        auto self = static_cast<GLWindow*>(glfwGetWindowUserPointer(rawSelf));
+
+        self->input.lastMouseX = self->input.mouseX;
+        self->input.lastMouseY = self->input.mouseY;
+
+        self->input.mouseX = (float) xPos;
+        self->input.mouseY = (float) yPos;
+
+        self->input.mouseDiffX = self->input.mouseX - self->input.lastMouseX;
+        self->input.mouseDiffY = self->input.mouseY - self->input.lastMouseY;
+    });
+
+    glfwSetMouseButtonCallback(window, [](GLFWwindow* rawSelf, int button, int action, int mods){
+        auto self = static_cast<GLWindow*>(glfwGetWindowUserPointer(rawSelf));
+        if (button == GLFW_MOUSE_BUTTON_LEFT) {
+            if (action == GLFW_PRESS)
+                self->input.mouseDown = true;
+            else if (action == GLFW_RELEASE)
+                self->input.mouseDown = false;
+        }
+    });
+}
+
+void GLWindow::EnableCursor() {
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+}
+
+void GLWindow::DisableCursor() {
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 }

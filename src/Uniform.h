@@ -12,6 +12,9 @@ public:
     int ID;
     void SetMat4(glm::mat4 mat4) const;
     void SetFloat(float f) const;
+
+    void SetFloat3(float f1, float f2, float f3) const;
+    void SetFloat3(glm::vec3 vec) const;
 };
 
 

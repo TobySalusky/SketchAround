@@ -16,3 +16,11 @@ void Uniform::SetMat4(glm::mat4 mat4) const {
 void Uniform::SetFloat(float f) const {
     glUniform1f(ID, f);
 }
+
+void Uniform::SetFloat3(float f1, float f2, float f3) const {
+    glUniform3f(ID, f1, f2, f3);
+}
+
+void Uniform::SetFloat3(glm::vec3 vec) const {
+    glUniform3f(ID, vec.x, vec.y, vec.z);
+}

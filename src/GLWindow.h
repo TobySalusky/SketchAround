@@ -7,6 +7,7 @@
 
 #include <glew.h>
 #include <glfw3.h>
+#include "Input.h"
 
 class GLWindow {
 public:
@@ -15,15 +16,25 @@ public:
 
     [[nodiscard]] GLint GetBufferWidth() const { return bufferWidth; }
     [[nodiscard]] GLint GetBufferHeight() const { return bufferHeight; }
+    [[nodiscard]] GLFWwindow* GetWindowPtr() const { return window; }
+    [[nodiscard]] Input* GetInput() { return &input; }
+
     bool ShouldClose() { return glfwWindowShouldClose(window); }
+    void Close() { glfwSetWindowShouldClose(window, GL_TRUE); }
+
     void SwapBuffers() { glfwSwapBuffers(window); }
 
-    void RegisterMouseMoveEvent(GLFWcursorposfun callback) { glfwSetCursorPosCallback(window, callback); }
-    void RegisterMouseButtonEvent(GLFWmousebuttonfun callback) { glfwSetMouseButtonCallback(window, callback); }
+    void EnableCursor();
+    void DisableCursor();
+
 private:
     GLFWwindow* window;
     GLint width, height;
     GLint bufferWidth, bufferHeight;
+
+    Input input;
+
+    void CreateInput();
 };
 
 
