@@ -69,7 +69,8 @@ void Mesh::ClearMesh() {
     indexCount = 0;
 }
 
-void Mesh::Set(GLfloat *vertices, GLuint *indices, GLuint numOfVertices, GLuint numOfIndices) const {
+void Mesh::Set(GLfloat *vertices, GLuint *indices, GLuint numOfVertices, GLuint numOfIndices) {
+    indexCount = numOfIndices;
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices[0]) * numOfIndices, indices, usageHint);
@@ -79,4 +80,15 @@ void Mesh::Set(GLfloat *vertices, GLuint *indices, GLuint numOfVertices, GLuint 
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+}
+
+void Mesh::Set(const std::vector<glm::vec3> &vertices, const std::vector<GLuint> &indices) {
+    Set((GLfloat*) &vertices[0], (GLuint*) &indices[0], vertices.size() * 3, indices.size());
+}
+
+void Mesh::Set(const std::tuple<std::vector<glm::vec3>, std::vector<GLuint>> &tuple) {
+    std::vector<glm::vec3> vertices;
+    std::vector<unsigned int> indices;
+    tie(vertices, indices) = tuple;
+    Set(vertices, indices);
 }

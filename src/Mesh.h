@@ -6,6 +6,8 @@
 #define SENIORRESEARCH_MESH_H
 
 #include <glew.h>
+#include <vector>
+#include "vendor/glm/vec3.hpp"
 
 
 class Mesh {
@@ -18,7 +20,9 @@ public:
     ~Mesh();
 
     void Init(GLfloat* vertices, GLuint *indices, GLuint numOfVertices, GLuint numOfIndices);
-    void Set(GLfloat* vertices, GLuint *indices, GLuint numOfVertices, GLuint numOfIndices) const;
+    void Set(GLfloat* vertices, GLuint *indices, GLuint numOfVertices, GLuint numOfIndices);
+    void Set(const std::tuple<std::vector<glm::vec3>, std::vector<GLuint>>& tuple);
+    void Set(const std::vector<glm::vec3> &vertices, const std::vector<GLuint> &indices);
     void Render() const;
     void ClearMesh();
 private:

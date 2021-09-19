@@ -8,12 +8,14 @@
 #include "src/Shader.h"
 #include "src/GLWindow.h"
 #include "src/Mesh.h"
+#include "src/Revolver.h"
 
 // Window dimensions
 const GLuint WIDTH = 800, HEIGHT = 600;
 
 glm::vec2 mousePos;
 bool mouseDown = false;
+std::vector<glm::vec2> plottedPoints;
 
 static void mousePosCallback(GLFWwindow* window, double x, double y) {
     mousePos = {x, y};
@@ -41,9 +43,12 @@ static glm::vec2 MouseToScreenNorm01(glm::vec2 mouseVec) {
 int main() {
 
     GLWindow window(WIDTH, HEIGHT);
+    //glfwSwapInterval(0); // NOTE: Removes limit from FPS!
+
 
     Shader shader = Shader::Read("../assets/shaders/shader.vert", "../assets/shaders/shader.frag");
     Uniform uniformModel = shader.GenUniform("model");
+    Uniform uniformView = shader.GenUniform("view");
     Uniform uniformProjection = shader.GenUniform("projection");
 
     GLfloat vertices[] = {
@@ -70,6 +75,9 @@ int main() {
     // Game loop
     while (!window.ShouldClose())
     {
+        // setup vars
+        float time = (float) glfwGetTime();
+
         // Input
         auto onScreen = MouseToScreen(mousePos);
         auto normMouse = MouseToScreenNorm01(mousePos);
@@ -77,7 +85,8 @@ int main() {
         // Poll Events
         glfwPollEvents();
 
-        // RENDER ============================
+        // >> RENDER ============================
+
         // Clear Background
         glClearColor(normMouse.x, 0.0f, normMouse.y, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -87,12 +96,18 @@ int main() {
 
         // UNIFORMS
         glm::mat4 model(1.0f);
-        model = glm::translate(model, glm::vec3(0.0f, 0.0f, -2.5f));
-        //model = glm::rotate(model, 45.0f, glm::vec3(0.0f, 1.0f, 0.0f));
-        model = glm::scale(model, glm::vec3(0.4f, 0.4f, 1.0f));
+        model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.5f));
+        //model = glm::rotate(model, 0.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+        //model = glm::scale(model, glm::vec3(0.4f, 0.4f, 1.0f));
 
         uniformModel.SetMat4(model);
+        uniformView.SetMat4(glm::mat4(1.0f));
         uniformProjection.SetMat4(projection);
+
+        if (mouseDown) {
+            plottedPoints.emplace_back(onScreen);
+            mesh.Set(Revolver::Revolve(plottedPoints, 10));
+        }
 
         // Rendering Mesh
         mesh.Render();
