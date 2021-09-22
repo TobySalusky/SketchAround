@@ -15,9 +15,11 @@
 #include "src/ImGuiHelper.h"
 #include "src/Camera.h"
 #include "src/Light.h"
+#include "src/Normals.h"
+#include "src/Sampler.h"
 
 // Window dimensions
-const GLuint WIDTH = 800, HEIGHT = 600;
+const GLuint WIDTH = 1200, HEIGHT = 800;
 bool cameraMode = false;
 float lastTime = 0.0f;
 bool imguiFocus = false;
@@ -65,7 +67,7 @@ int main() {
             0, 1, 2
     };
 
-    Mesh mesh(vertices, indices, sizeof vertices, sizeof indices);
+    Mesh mesh(vertices, indices, sizeof(vertices) / sizeof(GLfloat), sizeof(indices) / sizeof(GLuint));
 
     Camera camera{glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -M_PI_2, 0};
 
@@ -142,6 +144,7 @@ int main() {
         ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
         ImGui::End();
 
+
         ImGuiHelper::EndFrame();
 
         // ====================================
@@ -150,7 +153,8 @@ int main() {
         // UPDATE MESH
         if (!imguiFocus && input->mouseDown) {
             plottedPoints.emplace_back(onScreen);
-            mesh.Set(Revolver::Revolve(plottedPoints, 10));
+            const auto sampled = Sampler::DumbSample(plottedPoints, 0.1f);
+            mesh.Set(Revolver::Revolve(sampled, 10));
         }
 
 
@@ -159,6 +163,27 @@ int main() {
 
         // ending stuff
         lastTime = time;
+
+        // TESTING
+        {
+            if (input->Pressed(GLFW_KEY_N)) {
+//                std::vector<glm::vec3> vertices;
+//                std::vector<unsigned int> indices;
+//                tie(vertices, indices) = Revolver::Revolve(plottedPoints, 3);
+//                Normals::Define(vertices, indices);
+                Normals::Define(vertices, indices, sizeof(vertices) / sizeof(GLfloat), sizeof(indices) / sizeof(GLuint));
+            }
+
+            if (input->Pressed(GLFW_KEY_M)) {
+                printf("init: %lu\n", plottedPoints.size());
+                printf("new: %lu\n", Sampler::DumbSample(plottedPoints, 0.1f).size());
+            }
+
+            if (input->Pressed(GLFW_KEY_X)) {
+                plottedPoints = {};
+                mesh.Set(vertices, indices, sizeof(vertices) / sizeof(GLfloat), sizeof(indices) / sizeof(GLuint));
+            }
+        }
     }
 
     // Terminate GLFW, clearing any resources allocated by GLFW.

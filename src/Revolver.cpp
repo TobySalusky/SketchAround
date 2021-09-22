@@ -12,6 +12,8 @@
 
 #include "Revolver.h"
 
+
+// TODO: wrap end faces!!! (currently hollow)
 std::tuple<std::vector<glm::vec3>, std::vector<unsigned int>> Revolver::Revolve(const std::vector<glm::vec2>& points, int countPerRing) {
     std::vector<glm::vec3> vertices;
     std::vector<unsigned int> indices;
@@ -26,6 +28,9 @@ std::tuple<std::vector<glm::vec3>, std::vector<unsigned int>> Revolver::Revolve(
     }
 
     for (int ring = 0; ring < points.size() - 1; ring++) {
+
+        bool reverse = (points[ring + 1].x - points[ring].x) < 0;
+
         for (int i = 0; i < countPerRing; i++) {
             // define point indices for quad
             unsigned int p1 = i + ring * countPerRing;
@@ -33,10 +38,17 @@ std::tuple<std::vector<glm::vec3>, std::vector<unsigned int>> Revolver::Revolve(
             unsigned int p3 = p1 + countPerRing;
             unsigned int p4 = p2 + countPerRing;
 
-            indices.insert(indices.end(), {
-                p1, p2, p3,
-                p2, p4, p3,
+            if (reverse) {
+                indices.insert(indices.end(), {
+                        p3, p2, p1,
+                        p3, p4, p2,
                 });
+            } else {
+                indices.insert(indices.end(), {
+                        p1, p2, p3,
+                        p2, p4, p3,
+                });
+            }
         }
     }
 

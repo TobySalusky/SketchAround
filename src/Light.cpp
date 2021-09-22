@@ -5,7 +5,7 @@
 #include "Light.h"
 #include "Uniform.h"
 
-Light::Light() : Light(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.5f) {}
+Light::Light() : Light(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec3(0.0f, -1.0f, 0.0f), 0.5f) {}
 
 Light::Light(glm::vec4 ambience, glm::vec3 direction, GLfloat diffuseIntensity) {
     color = ambience.xyz();
