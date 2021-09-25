@@ -26,6 +26,8 @@ const GLuint WIDTH = 800, HEIGHT = 600;
 bool cameraMode = false;
 float lastTime = 0.0f;
 float scaleRadius = 1.0f;
+int countPerRing = 10;
+float sampleLength = 0.1f;
 
 std::vector<glm::vec2> plottedPoints;
 
@@ -109,13 +111,13 @@ int main() {
 
     auto UpdateMesh = [&]() {
         if (!plottedPoints.empty()) {
-            const auto sampled = Sampler::DumbSample(plottedPoints, 0.1f);
+            const auto sampled = Sampler::DumbSample(plottedPoints, sampleLength);
             std::vector<glm::vec2> translatedPoints;
             translatedPoints.reserve(sampled.size());
             for (auto& vec : sampled) {
                 translatedPoints.emplace_back(glm::vec2(vec.x, (vec.y + 0.95f) * scaleRadius));
             }
-            mesh.Set(Revolver::Revolve(translatedPoints, 10));
+            mesh.Set(Revolver::Revolve(translatedPoints, countPerRing));
         } else {
             mesh.Set(vertices, indices, sizeof(vertices) / sizeof(GLfloat), sizeof(indices) / sizeof(GLuint));
         };
@@ -254,9 +256,16 @@ int main() {
         ImGui::ColorEdit3("lines", (float*) &lineColor);
 
         ImGui::SliderFloat("scale-radius", &scaleRadius, 0.1f, 3.0f);
-        if (ImGui::IsItemActive()) {
+        if (ImGui::IsItemActive())
             UpdateMesh();
-        }
+
+        ImGui::SliderInt("count-per-ring", &countPerRing, 3, 40);
+        if (ImGui::IsItemActive())
+            UpdateMesh();
+
+        ImGui::SliderFloat("sample-length", &sampleLength, 0.01f, 0.5f);
+        if (ImGui::IsItemActive())
+            UpdateMesh();
 
         ImGui::End();
 
@@ -281,26 +290,9 @@ int main() {
         // Swap the screen buffers
         window.SwapBuffers();
 
-        // TESTING
-        {
-            if (input->Pressed(GLFW_KEY_N)) {
-//                std::vector<glm::vec3> vertices;
-//                std::vector<unsigned int> indices;
-//                tie(vertices, indices) = Revolver::Revolve(plottedPoints, 3);
-//                Normals::Define(vertices, indices);
-                Normals::Define(vertices, indices, sizeof(vertices) / sizeof(GLfloat), sizeof(indices) / sizeof(GLuint));
-            }
-
-            if (input->Pressed(GLFW_KEY_M)) {
-                printf("init: %lu\n", plottedPoints.size());
-                printf("new: %lu\n", Sampler::DumbSample(plottedPoints, 0.1f).size());
-            }
-
-            if (input->Pressed(GLFW_KEY_X)) {
-                plottedPoints.clear();
-                UpdateMesh();
-            }
-
+        if (input->Pressed(GLFW_KEY_X)) {
+            plottedPoints.clear();
+            UpdateMesh();
         }
 
         // ending stuff
