@@ -96,8 +96,7 @@ int main() {
 
     Texture texture{"../assets/images/test.png"};
 
-    FrameBuffer frameBuffer;
-    frameBuffer.CreateBuffers(WIDTH, HEIGHT);
+
 
     Mesh2D background, linePlot;
 
@@ -112,6 +111,31 @@ int main() {
         };
     };
 
+
+    // >> FRAME BUFFER TESTING!!! TODO: try buffer width/height
+    /*GLuint frameBuffer;
+    glGenFramebuffers(1, &frameBuffer);
+
+    GLuint textureColorBuffer;
+    glGenTextures(1, &textureColorBuffer);
+    glBindTexture(GL_TEXTURE_2D, textureColorBuffer);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, WIDTH, HEIGHT, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    GLuint rbo;
+    glGenRenderbuffers(1, &rbo);
+    glBindRenderbuffer(GL_RENDERBUFFER, rbo);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, WIDTH, HEIGHT);
+
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, frameBuffer);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureColorBuffer, 0);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
+
+    */
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+        printf("problem setting up framebuffer");
+    }
 
     while (!window.ShouldClose()) // >> UPDATE LOOP ======================================
     {
@@ -171,8 +195,8 @@ int main() {
         // >> MODEL 2D ==========================
         shader2D_background.Enable();
         shader2D_background.SetColor({1.0f, 1.0f, 1.0f, 1.0f}); // THIS IS NOT WORKING!!! FIXME!!
-        background.AddQuad({-1.0f, 0.0f}, {1.0f, 1.0f});
-        background.ImmediateClearingRender();
+        //background.AddQuad({-1.0f, 0.0f}, {1.0f, 1.0f});
+        //background.ImmediateClearingRender();
         shader2D_background.Disable();
 
         shader2D.Enable();
@@ -200,7 +224,7 @@ int main() {
         ImGui::End();
 
         ImGui::Begin("OpenGL Texture Text");
-        ImGui::Text("pointer = %u", frameBuffer.GetTexture());
+        ImGui::Text("pointer = %u", texture.ID);
         ImGui::Text("size = %d x %d", WIDTH, HEIGHT);
         ImGui::Image((void*)(intptr_t)texture.ID, {WIDTH, HEIGHT / 2.0f}, {0.0f, 0.0f}, {1.0f, 1.0f});
         //ImGui::Image((void*)(intptr_t)frameBuffer.GetTexture(), {WIDTH, HEIGHT}, {0.0f, 0.0f}, {1.0f, 1.0f});
