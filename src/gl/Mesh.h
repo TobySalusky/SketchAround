@@ -7,7 +7,7 @@
 
 #include <glew.h>
 #include <vector>
-#include "vendor/glm/vec3.hpp"
+#include "../vendor/glm/vec3.hpp"
 
 
 class Mesh {

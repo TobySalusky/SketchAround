@@ -7,13 +7,14 @@
 
 
 #include <iostream>
-#include "vendor/glm/glm.hpp"
+#include "../vendor/glm/glm.hpp"
 
 class Util {
 public:
     static void LogVec3(glm::vec3 vec) {
         std::cout << '<' << vec.x << ", " << vec.y << ", " << vec.z << ">\n";
     }
+    static std::string ReadFile(const char* path);
 };
 
 

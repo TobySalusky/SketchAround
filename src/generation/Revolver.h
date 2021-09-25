@@ -6,7 +6,7 @@
 #define SENIORRESEARCH_REVOLVER_H
 
 
-#include "vendor/glm/vec2.hpp"
+#include "../vendor/glm/vec2.hpp"
 
 class Revolver {
 public:

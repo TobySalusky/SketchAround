@@ -8,6 +8,7 @@
 #include <glew.h>
 #include <glfw3.h>
 #include "Input.h"
+#include "../vendor/imgui/imgui.h"
 
 class GLWindow {
 public:
@@ -27,12 +28,18 @@ public:
     void EnableCursor();
     void DisableCursor();
 
+    bool IsImGuiUsingMouse() { return io->WantCaptureMouse; }
+
+    void SetImGuiIO(ImGuiIO* ioPtr) { io = ioPtr; }
+
 private:
     GLFWwindow* window;
     GLint width, height;
     GLint bufferWidth, bufferHeight;
 
     Input input;
+
+    ImGuiIO* io;
 
     void CreateInput();
 };

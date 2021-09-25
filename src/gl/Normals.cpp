@@ -3,7 +3,7 @@
 //
 
 #include "Normals.h"
-#include "vendor/glm/geometric.hpp"
+#include "../vendor/glm/geometric.hpp"
 
 std::vector<GLfloat> Normals::Define(const GLfloat *vertices, const GLuint *indices, GLuint numOfVertices, GLuint numOfIndices) {
 

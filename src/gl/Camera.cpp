@@ -7,7 +7,7 @@
 #include <iostream>
 
 #include "Camera.h"
-#include "vendor/glm/ext/matrix_transform.hpp"
+#include "../vendor/glm/ext/matrix_transform.hpp"
 
 Camera::Camera(glm::vec3 pos, glm::vec3 worldUp, GLfloat yaw, GLfloat pitch) {
     this->pos = pos;

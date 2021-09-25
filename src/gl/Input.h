@@ -6,8 +6,8 @@
 #define SENIORRESEARCH_INPUT_H
 
 #include <glew.h>
-#include "vendor/glm/detail/type_vec1.hpp"
-#include "vendor/glm/vec2.hpp"
+#include "../vendor/glm/detail/type_vec1.hpp"
+#include "../vendor/glm/vec2.hpp"
 
 class Input {
 public:

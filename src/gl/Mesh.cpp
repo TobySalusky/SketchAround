@@ -95,8 +95,6 @@ void Mesh::Set(const std::vector<glm::vec3> &vertices, const std::vector<GLuint>
 }
 
 void Mesh::Set(const std::tuple<std::vector<glm::vec3>, std::vector<GLuint>> &tuple) {
-    std::vector<glm::vec3> vertices;
-    std::vector<unsigned int> indices;
-    tie(vertices, indices) = tuple;
+    const auto& [vertices, indices] = tuple;
     Set(vertices, indices);
 }

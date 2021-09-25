@@ -5,20 +5,21 @@
 #ifndef SENIORRESEARCH_IMGUIHELPER_H
 #define SENIORRESEARCH_IMGUIHELPER_H
 
-#include "vendor/imgui/imgui.h"
-#include "vendor/imgui/imgui_impl_glfw.h"
-#include "vendor/imgui/imgui_impl_opengl3.h"
+#include "../vendor/imgui/imgui.h"
+#include "../vendor/imgui/imgui_impl_glfw.h"
+#include "../vendor/imgui/imgui_impl_opengl3.h"
 
-#include "GLWindow.h"
+#include "../gl/GLWindow.h"
 
 
 class ImGuiHelper {
 public:
-    static void Initialize(const GLWindow& window);
     static void BeginFrame();
     static void EndFrame();
 
     static void Destroy();
+
+    static void Initialize(GLWindow &window);
 };
 
 

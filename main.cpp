@@ -8,21 +8,24 @@
 
 #include "src/vendor/glm/glm.hpp"
 #include "src/vendor/glm/gtc/type_ptr.hpp"
-#include "src/Shader.h"
-#include "src/GLWindow.h"
-#include "src/Mesh.h"
-#include "src/Revolver.h"
-#include "src/ImGuiHelper.h"
-#include "src/Camera.h"
-#include "src/Light.h"
-#include "src/Normals.h"
-#include "src/Sampler.h"
+#include "src/gl/shaders/Shader.h"
+#include "src/gl/GLWindow.h"
+#include "src/gl/Mesh.h"
+#include "src/generation/Revolver.h"
+#include "src/util/ImGuiHelper.h"
+#include "src/gl/Camera.h"
+#include "src/gl/Light.h"
+#include "src/gl/Normals.h"
+#include "src/generation/Sampler.h"
+#include "src/gl/Texture.h"
+#include "src/gl/FrameBuffer.h"
+#include "src/gl/Mesh2D.h"
+#include "src/gl/shaders/Shader2D.h"
 
 // Window dimensions
-const GLuint WIDTH = 1200, HEIGHT = 800;
+const GLuint WIDTH = 800, HEIGHT = 600;
 bool cameraMode = false;
 float lastTime = 0.0f;
-bool imguiFocus = false;
 
 std::vector<glm::vec2> plottedPoints;
 
@@ -45,13 +48,19 @@ int main() {
     ImGuiHelper::Initialize(window);
 
     Shader shader = Shader::Read("../assets/shaders/shader.vert", "../assets/shaders/shader.frag");
-    Uniform uniformModel = shader.GenUniform("model");
+
+    // 3D-SHADER
+    Uniform uniformModel = shader.GenUniform("model"); // TODO: abstract uniforms to Shader3D > ShaderPhong classes
     Uniform uniformView = shader.GenUniform("view");
     Uniform uniformProjection = shader.GenUniform("projection");
     Uniform uniformAmbientColor = shader.GenUniform("directionalLight.color");
     Uniform uniformAmbientIntensity = shader.GenUniform("directionalLight.ambientIntensity");
     Uniform uniformDirection = shader.GenUniform("directionalLight.direction");
     Uniform uniformDiffuseIntensity = shader.GenUniform("directionalLight.diffuseIntensity");
+
+    // 2D-SHADER
+    Shader2D shader2D = Shader2D::Read("../assets/shaders/shader2D.vert", "../assets/shaders/shader2D.frag");
+    Shader2D shader2D_background = Shader2D::Read("../assets/shaders/shader2D.vert", "../assets/shaders/shader2D.frag");
 
     GLfloat vertices[] = {
             -1.0f, -1.0f, 0.0f,
@@ -85,8 +94,28 @@ int main() {
 
     SetCameraMode(false);
 
+    Texture texture{"../assets/images/test.png"};
+
+    FrameBuffer frameBuffer;
+    frameBuffer.CreateBuffers(WIDTH, HEIGHT);
+
+    Mesh2D background, linePlot;
+
+    glm::vec4 lineColor = {1.0f, 0.0f, 0.0f, 1.0f};
+
+    auto PointsChanged = [&]() {
+        if (!plottedPoints.empty()) {
+            const auto sampled = Sampler::DumbSample(plottedPoints, 0.1f);
+            mesh.Set(Revolver::Revolve(sampled, 10));
+        } else {
+            mesh.Set(vertices, indices, sizeof(vertices) / sizeof(GLfloat), sizeof(indices) / sizeof(GLuint));
+        };
+    };
+
+
     while (!window.ShouldClose()) // >> UPDATE LOOP ======================================
     {
+
         if (input->Down(GLFW_KEY_ESCAPE)) window.Close();
         if (input->Pressed(GLFW_KEY_L)) {
             SetCameraMode(!cameraMode);
@@ -112,9 +141,12 @@ int main() {
         // >> OpenGL RENDER ========================
 
         // Clear Background
+
         //glClearColor(normMouse.x, 0.0f, normMouse.y, 1.0f);
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        // >> 3D RENDERING =================
 
         // SHADER
         shader.Enable();
@@ -122,8 +154,6 @@ int main() {
         // UNIFORMS
         glm::mat4 model(1.0f);
         model = glm::translate(model, glm::vec3(0.0f, 0.0f, -3.5f));
-        //model = glm::rotate(model, 0.0f, glm::vec3(0.0f, 1.0f, 0.0f));
-        //model = glm::scale(model, glm::vec3(0.4f, 0.4f, 1.0f));
 
         mainLight.UseLight(uniformAmbientIntensity, uniformAmbientColor, uniformDirection, uniformDiffuseIntensity);
         uniformModel.SetMat4(model);
@@ -131,19 +161,51 @@ int main() {
         uniformProjection.SetMat4(projection);
 
         // Rendering Mesh
+
+        //frameBuffer.Bind();
         mesh.Render();
+        //frameBuffer.Unbind();
+
+        shader.Disable();
+
+        // >> MODEL 2D ==========================
+        shader2D_background.Enable();
+        shader2D_background.SetColor({1.0f, 1.0f, 1.0f, 1.0f}); // THIS IS NOT WORKING!!! FIXME!!
+        background.AddQuad({-1.0f, 0.0f}, {1.0f, 1.0f});
+        background.ImmediateClearingRender();
+        shader2D_background.Disable();
+
+        shader2D.Enable();
+        shader2D.SetColor(lineColor); // >> MODEL 2D
+
+        linePlot.AddLines(plottedPoints, 0.01f); // FIXME: this is wrecking performance!
+        linePlot.ImmediateClearingRender();
+
+        shader2D.Disable();
+
+        // >> ===================================
+
 
         // >> ImGui Render ====================
 
         ImGuiHelper::BeginFrame();
 
-        ImGui::Begin("POGUE");
-
-        imguiFocus = ImGui::IsWindowHovered() || ImGui::IsWindowFocused();
+        ImGui::Begin("General");
 
         ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+
+        ImGui::ColorEdit3("model", mainLight.ColorPointer());
+        ImGui::ColorEdit3("lines", (float*) &lineColor);
+
         ImGui::End();
 
+        ImGui::Begin("OpenGL Texture Text");
+        ImGui::Text("pointer = %u", frameBuffer.GetTexture());
+        ImGui::Text("size = %d x %d", WIDTH, HEIGHT);
+        ImGui::Image((void*)(intptr_t)texture.ID, {WIDTH, HEIGHT / 2.0f}, {0.0f, 0.0f}, {1.0f, 1.0f});
+        //ImGui::Image((void*)(intptr_t)frameBuffer.GetTexture(), {WIDTH, HEIGHT}, {0.0f, 0.0f}, {1.0f, 1.0f});
+
+        ImGui::End();
 
         ImGuiHelper::EndFrame();
 
@@ -151,18 +213,16 @@ int main() {
 
 
         // UPDATE MESH
-        if (!imguiFocus && input->mouseDown) {
-            plottedPoints.emplace_back(onScreen);
-            const auto sampled = Sampler::DumbSample(plottedPoints, 0.1f);
-            mesh.Set(Revolver::Revolve(sampled, 10));
+        if (!window.IsImGuiUsingMouse() && input->mouseDown) {
+            if (plottedPoints.empty() || plottedPoints[plottedPoints.size() - 1] != onScreen) {
+                plottedPoints.emplace_back(onScreen);
+                PointsChanged();
+            }
         }
 
 
         // Swap the screen buffers
         window.SwapBuffers();
-
-        // ending stuff
-        lastTime = time;
 
         // TESTING
         {
@@ -180,11 +240,16 @@ int main() {
             }
 
             if (input->Pressed(GLFW_KEY_X)) {
-                plottedPoints = {};
-                mesh.Set(vertices, indices, sizeof(vertices) / sizeof(GLfloat), sizeof(indices) / sizeof(GLuint));
+                plottedPoints.clear();
+                PointsChanged();
             }
+
         }
+
+        // ending stuff
+        lastTime = time;
     }
+
 
     // Terminate GLFW, clearing any resources allocated by GLFW.
     ImGuiHelper::Destroy();

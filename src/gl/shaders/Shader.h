@@ -5,7 +5,7 @@
 #ifndef SENIORRESEARCH_SHADER_H
 #define SENIORRESEARCH_SHADER_H
 
-#include "Uniform.h"
+#include "../Uniform.h"
 
 class Shader {
 public:
@@ -14,10 +14,10 @@ public:
     Shader(const char* vertexShaderSource, const char* fragmentShaderSource);
     ~Shader();
 
-    static std::string ReadFile(const char* path);
-    static Shader Read(const char* vertexShaderPath, const char* fragmentShaderPath);
+    static Shader Read(const char* vertexShaderPath, const char* fragmentShaderPath); // TODO: template???
 
     void Enable() const;
+    void Disable() const;
     Uniform GenUniform(const char* identifier) const;
 };
 

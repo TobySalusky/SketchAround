@@ -7,7 +7,7 @@
 
 #include <glew.h>
 #include "Input.h"
-#include "vendor/glm/glm.hpp"
+#include "../vendor/glm/glm.hpp"
 
 class Camera {
 public:

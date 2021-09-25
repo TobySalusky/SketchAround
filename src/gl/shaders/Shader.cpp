@@ -6,6 +6,7 @@
 #include <fstream>
 
 #include "Shader.h"
+#include "../../util/Util.h"
 
 Shader::Shader(const char* vertexShaderSource, const char* fragmentShaderSource) {
 
@@ -67,29 +68,14 @@ void Shader::Enable() const {
     glUseProgram(ID);
 }
 
+void Shader::Disable() const {
+    glUseProgram(0);
+}
+
 Uniform Shader::GenUniform(const char *identifier) const {
     return {glGetUniformLocation(ID, identifier)};
 }
 
-std::string Shader::ReadFile(const char *path) {
-    std:: string content;
-    std::ifstream fileStream(path, std::ios::in);
-
-    if (!fileStream.is_open()) {
-        printf("Failed to read %s! File doesn't exist!", path);
-    }
-
-    std::string line;
-    while (!fileStream.eof())
-    {
-        std::getline(fileStream, line);
-        content.append(line + '\n');
-    }
-    fileStream.close();
-
-    return content;
-}
-
 Shader Shader::Read(const char *vertexShaderPath, const char *fragmentShaderPath) {
-    return Shader(ReadFile(vertexShaderPath).c_str(), ReadFile(fragmentShaderPath).c_str());
+    return {Util::ReadFile(vertexShaderPath).c_str(), Util::ReadFile(fragmentShaderPath).c_str()};
 }

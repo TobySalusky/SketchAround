@@ -9,7 +9,7 @@
 
 #define GLM_SWIZZLE
 
-#include "vendor/glm/glm.hpp"
+#include "../vendor/glm/glm.hpp"
 
 #include "Uniform.h"
 
@@ -19,6 +19,8 @@ public:
     Light(glm::vec4 ambience, glm::vec3 direction, GLfloat diffuseIntensity);
 
     void UseLight(Uniform uniformAmbientIntensity, Uniform uniformAmbientColor, Uniform uniformDirection, Uniform uniformDiffuseIntensity);
+
+    float* ColorPointer() { return (float*) &color; }
 private:
     glm::vec3 color;
     GLfloat ambientIntensity;

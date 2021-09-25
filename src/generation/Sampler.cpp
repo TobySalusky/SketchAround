@@ -3,7 +3,7 @@
 //
 
 #include "Sampler.h"
-#include "vendor/glm/geometric.hpp"
+#include "../vendor/glm/geometric.hpp"
 
 std::vector<glm::vec2> Sampler::DumbSample(std::vector<glm::vec2> inputPoints, const float diff) {
     std::vector<glm::vec2> sampled{inputPoints[0]};

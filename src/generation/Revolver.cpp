@@ -7,8 +7,8 @@
 #include <tuple>
 
 
-#include "vendor/glm/glm.hpp"
-#include "vendor/glm/ext/matrix_transform.hpp"
+#include "../vendor/glm/glm.hpp"
+#include "../vendor/glm/ext/matrix_transform.hpp"
 
 #include "Revolver.h"
 

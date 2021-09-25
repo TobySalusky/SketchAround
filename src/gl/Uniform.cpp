@@ -5,8 +5,8 @@
 #include <glew.h>
 
 #include "Uniform.h"
-#include "vendor/glm/glm.hpp"
-#include "vendor/glm/gtc/type_ptr.hpp"
+#include "../vendor/glm/glm.hpp"
+#include "../vendor/glm/gtc/type_ptr.hpp"
 
 
 void Uniform::SetMat4(glm::mat4 mat4) const {
@@ -23,4 +23,12 @@ void Uniform::SetFloat3(float f1, float f2, float f3) const {
 
 void Uniform::SetFloat3(glm::vec3 vec) const {
     glUniform3f(ID, vec.x, vec.y, vec.z);
+}
+
+void Uniform::SetFloat4(float f1, float f2, float f3, float f4) const {
+    glUniform4f(ID, f1, f2, f3, f4);
+}
+
+void Uniform::SetFloat4(glm::vec4 vec) const {
+    SetFloat4(vec.x, vec.y, vec.z, vec.w);
 }
