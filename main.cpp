@@ -18,7 +18,6 @@
 #include "src/gl/Normals.h"
 #include "src/generation/Sampler.h"
 #include "src/gl/Texture.h"
-#include "src/gl/FrameBuffer.h"
 #include "src/gl/Mesh2D.h"
 #include "src/gl/shaders/Shader2D.h"
 
@@ -26,6 +25,7 @@
 const GLuint WIDTH = 800, HEIGHT = 600;
 bool cameraMode = false;
 float lastTime = 0.0f;
+float scaleRadius = 1.0f;
 
 std::vector<glm::vec2> plottedPoints;
 
@@ -61,6 +61,7 @@ int main() {
     // 2D-SHADER
     Shader2D shader2D = Shader2D::Read("../assets/shaders/shader2D.vert", "../assets/shaders/shader2D.frag");
     Shader2D shader2D_background = Shader2D::Read("../assets/shaders/shader2D.vert", "../assets/shaders/shader2D.frag");
+    Shader2D shader2D_axis = Shader2D::Read("../assets/shaders/shader2D.vert", "../assets/shaders/shader2D.frag");
 
     GLfloat vertices[] = {
             -1.0f, -1.0f, 0.0f,
@@ -98,22 +99,31 @@ int main() {
 
 
 
-    Mesh2D background, linePlot;
+    Mesh2D linePlot;
+    Mesh2D background;
+    Mesh2D axis;
+    background.AddQuad({-1.0f, 0.0f}, {1.0f, -1.0f});
+    axis.AddQuad({-1.0f, -0.945f}, {1.0f, -0.95f});
 
     glm::vec4 lineColor = {1.0f, 0.0f, 0.0f, 1.0f};
 
-    auto PointsChanged = [&]() {
+    auto UpdateMesh = [&]() {
         if (!plottedPoints.empty()) {
             const auto sampled = Sampler::DumbSample(plottedPoints, 0.1f);
-            mesh.Set(Revolver::Revolve(sampled, 10));
+            std::vector<glm::vec2> translatedPoints;
+            translatedPoints.reserve(sampled.size());
+            for (auto& vec : sampled) {
+                translatedPoints.emplace_back(glm::vec2(vec.x, (vec.y + 0.95f) * scaleRadius));
+            }
+            mesh.Set(Revolver::Revolve(translatedPoints, 10));
         } else {
             mesh.Set(vertices, indices, sizeof(vertices) / sizeof(GLfloat), sizeof(indices) / sizeof(GLuint));
         };
     };
 
-
     // >> FRAME BUFFER TESTING!!! TODO: try buffer width/height
-    /*GLuint frameBuffer;
+
+    GLuint frameBuffer;
     glGenFramebuffers(1, &frameBuffer);
 
     GLuint textureColorBuffer;
@@ -132,7 +142,8 @@ int main() {
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureColorBuffer, 0);
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
 
-    */
+
+
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
         printf("problem setting up framebuffer");
     }
@@ -164,6 +175,9 @@ int main() {
 
         // >> OpenGL RENDER ========================
 
+        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, frameBuffer);
+        glEnable(GL_DEPTH_TEST);
+
         // Clear Background
 
         //glClearColor(normMouse.x, 0.0f, normMouse.y, 1.0f);
@@ -177,7 +191,7 @@ int main() {
 
         // UNIFORMS
         glm::mat4 model(1.0f);
-        model = glm::translate(model, glm::vec3(0.0f, 0.0f, -3.5f));
+        model = glm::translate(model, glm::vec3(0.0f, 0.0f, -2.5f));
 
         mainLight.UseLight(uniformAmbientIntensity, uniformAmbientColor, uniformDirection, uniformDiffuseIntensity);
         uniformModel.SetMat4(model);
@@ -192,11 +206,21 @@ int main() {
 
         shader.Disable();
 
+        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+        glDisable(GL_DEPTH_TEST);
+
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+
         // >> MODEL 2D ==========================
         shader2D_background.Enable();
-        shader2D_background.SetColor({1.0f, 1.0f, 1.0f, 1.0f}); // THIS IS NOT WORKING!!! FIXME!!
-        //background.AddQuad({-1.0f, 0.0f}, {1.0f, 1.0f});
-        //background.ImmediateClearingRender();
+        shader2D_background.SetColor({1.0f, 1.0f, 1.0f, 1.0f});
+        background.ImmediateRender();
+        shader2D_background.Disable();
+
+        shader2D_background.Enable();
+        shader2D_background.SetColor({0.2f, 0.2f, 0.2f, 1.0f});
+        axis.ImmediateRender();
         shader2D_background.Disable();
 
         shader2D.Enable();
@@ -211,8 +235,16 @@ int main() {
 
 
         // >> ImGui Render ====================
-
         ImGuiHelper::BeginFrame();
+
+
+        ImGui::Begin("TEST");
+        ImGui::Text("pointer = %u", textureColorBuffer);
+        ImGui::Text("size = %d x %d", WIDTH, HEIGHT);
+        ImGui::Image((void*)(intptr_t)textureColorBuffer, {WIDTH / 2.0f, HEIGHT / 2.0f}, {0.0f, 1.0f}, {1.0f, 0.0f});
+        ImGui::End();
+
+
 
         ImGui::Begin("General");
 
@@ -221,18 +253,15 @@ int main() {
         ImGui::ColorEdit3("model", mainLight.ColorPointer());
         ImGui::ColorEdit3("lines", (float*) &lineColor);
 
-        ImGui::End();
-
-        ImGui::Begin("OpenGL Texture Text");
-        ImGui::Text("pointer = %u", texture.ID);
-        ImGui::Text("size = %d x %d", WIDTH, HEIGHT);
-        ImGui::Image((void*)(intptr_t)texture.ID, {WIDTH, HEIGHT / 2.0f}, {0.0f, 0.0f}, {1.0f, 1.0f});
-        //ImGui::Image((void*)(intptr_t)frameBuffer.GetTexture(), {WIDTH, HEIGHT}, {0.0f, 0.0f}, {1.0f, 1.0f});
+        ImGui::SliderFloat("scale-radius", &scaleRadius, 0.1f, 3.0f);
+        if (ImGui::IsItemActive()) {
+            UpdateMesh();
+        }
 
         ImGui::End();
+
 
         ImGuiHelper::EndFrame();
-
         // ====================================
 
 
@@ -240,7 +269,11 @@ int main() {
         if (!window.IsImGuiUsingMouse() && input->mouseDown) {
             if (plottedPoints.empty() || plottedPoints[plottedPoints.size() - 1] != onScreen) {
                 plottedPoints.emplace_back(onScreen);
-                PointsChanged();
+                UpdateMesh();
+
+                glm::vec newCameraPos = camera.GetPos();
+                newCameraPos.x = onScreen.x;
+                camera.SetPos(newCameraPos);
             }
         }
 
@@ -265,7 +298,7 @@ int main() {
 
             if (input->Pressed(GLFW_KEY_X)) {
                 plottedPoints.clear();
-                PointsChanged();
+                UpdateMesh();
             }
 
         }

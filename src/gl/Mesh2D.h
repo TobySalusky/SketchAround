@@ -25,7 +25,7 @@ public:
     void Clear();
     void ClearingRender();
     void AddLines(const std::vector<glm::vec2> &points, float width);
-    void AddQuad(glm::vec2 tl, glm::vec2 br);
+    void AddQuad(glm::vec2 corner1, glm::vec2 corner2);
 
     void ImmediateClearingRender();
     void ImmediateRender();

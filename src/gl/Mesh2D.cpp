@@ -129,17 +129,18 @@ void Mesh2D::AddLines(const std::vector<glm::vec2> &points, float width) {
     }
 }
 
-void Mesh2D::AddQuad(glm::vec2 tl, glm::vec2 br) {
-    vertices.insert(vertices.end(), {
-            {0.0f, 0.0f},
-            {0.5f, 0.0f},
-            {0.0f, 0.5f},
-            {0.5f, 0.5f},
-    });
+void Mesh2D::AddQuad(glm::vec2 corner1, glm::vec2 corner2) {
     const GLuint p1 = vertices.size();
     const GLuint p2 = p1 + 1;
     const GLuint p3 = p2 + 1;
     const GLuint p4 = p3 + 1;
+
+    vertices.insert(vertices.end(), {
+            corner1,
+            {corner1.x, corner2.y},
+            {corner2.x, corner1.y},
+            corner2,
+    });
     indices.insert(indices.end(), {
             p1, p2, p3,
             p2, p3, p4,

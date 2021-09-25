@@ -16,6 +16,10 @@ public:
     void Update(float deltaTime, Input* input);
 
     glm::mat4 CalculateViewMat();
+
+    void SetPos(glm::vec3 newPos) { pos = newPos; }
+    glm::vec3 GetPos() { return pos; }
+
 private:
     void CalculateDir();
     glm::vec3 pos, front, up, right, worldUp;
