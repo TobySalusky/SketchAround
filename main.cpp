@@ -15,7 +15,6 @@
 #include "src/util/ImGuiHelper.h"
 #include "src/gl/Camera.h"
 #include "src/gl/Light.h"
-#include "src/gl/Normals.h"
 #include "src/generation/Sampler.h"
 #include "src/gl/Texture.h"
 #include "src/gl/Mesh2D.h"
@@ -131,14 +130,14 @@ int main() {
     GLuint textureColorBuffer;
     glGenTextures(1, &textureColorBuffer);
     glBindTexture(GL_TEXTURE_2D, textureColorBuffer);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, WIDTH, HEIGHT, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, window.GetBufferWidth(), window.GetBufferHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     GLuint rbo;
     glGenRenderbuffers(1, &rbo);
     glBindRenderbuffer(GL_RENDERBUFFER, rbo);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, WIDTH, HEIGHT);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, window.GetBufferWidth(), window.GetBufferHeight());
 
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, frameBuffer);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureColorBuffer, 0);
@@ -300,7 +299,7 @@ int main() {
     }
 
 
-    // Terminate GLFW, clearing any resources allocated by GLFW.
+    // Manual Resource Clears
     ImGuiHelper::Destroy();
     glfwTerminate();
 
