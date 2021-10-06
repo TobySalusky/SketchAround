@@ -19,6 +19,7 @@
 #include "src/gl/Texture.h"
 #include "src/gl/Mesh2D.h"
 #include "src/gl/shaders/Shader2D.h"
+#include "src/gl/RenderTarget.h"
 
 // Window dimensions
 const GLuint WIDTH = 800, HEIGHT = 600;
@@ -27,6 +28,8 @@ float lastTime = 0.0f;
 float scaleRadius = 1.0f;
 int countPerRing = 10;
 float sampleLength = 0.1f;
+
+bool graphFocused;
 
 std::vector<glm::vec2> plottedPoints;
 
@@ -122,32 +125,8 @@ int main() {
         };
     };
 
-    // >> FRAME BUFFER TESTING!!! TODO: try buffer width/height
-
-    GLuint frameBuffer;
-    glGenFramebuffers(1, &frameBuffer);
-
-    GLuint textureColorBuffer;
-    glGenTextures(1, &textureColorBuffer);
-    glBindTexture(GL_TEXTURE_2D, textureColorBuffer);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, window.GetBufferWidth(), window.GetBufferHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    GLuint rbo;
-    glGenRenderbuffers(1, &rbo);
-    glBindRenderbuffer(GL_RENDERBUFFER, rbo);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, window.GetBufferWidth(), window.GetBufferHeight());
-
-    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, frameBuffer);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureColorBuffer, 0);
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
-
-
-
-    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-        printf("problem setting up framebuffer");
-    }
+    RenderTarget modelScene{window.GetBufferWidth(), window.GetBufferHeight(), true};
+    RenderTarget graphScene{window.GetBufferWidth(), window.GetBufferHeight() / 2};
 
     while (!window.ShouldClose()) // >> UPDATE LOOP ======================================
     {
@@ -176,8 +155,7 @@ int main() {
 
         // >> OpenGL RENDER ========================
 
-        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, frameBuffer);
-        glEnable(GL_DEPTH_TEST);
+        modelScene.Bind();
 
         // Clear Background
 
@@ -199,19 +177,15 @@ int main() {
         uniformView.SetMat4(camera.CalculateViewMat());
         uniformProjection.SetMat4(projection);
 
-        // Rendering Mesh
-
-        //frameBuffer.Bind();
         mesh.Render();
-        //frameBuffer.Unbind();
 
         shader.Disable();
 
-        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-        glDisable(GL_DEPTH_TEST);
+        RenderTarget::Unbind();
+        graphScene.Bind();
 
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // >> MODEL 2D ==========================
         shader2D_background.Enable();
@@ -232,6 +206,11 @@ int main() {
 
         shader2D.Disable();
 
+        RenderTarget::Unbind();
+
+        glClearColor(0.0f, 1.0f, 0.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+
         // >> ===================================
 
 
@@ -239,13 +218,15 @@ int main() {
         ImGuiHelper::BeginFrame();
 
 
-        ImGui::Begin("TEST");
-        ImGui::Text("pointer = %u", textureColorBuffer);
-        ImGui::Text("size = %d x %d", WIDTH, HEIGHT);
-        ImGui::Image((void*)(intptr_t)textureColorBuffer, {WIDTH / 2.0f, HEIGHT / 2.0f}, {0.0f, 1.0f}, {1.0f, 0.0f});
+        ImGui::Begin("a");
+        ImGui::Image((void*)(intptr_t)modelScene.GetTexture(), {WIDTH / 2.0f, HEIGHT / 2.0f}, {0.0f, 1.0f}, {1.0f, 0.0f});
         ImGui::End();
 
-
+        ImGui::Begin("b");
+        ImGui::ImageButton((void*)(intptr_t)graphScene.GetTexture(), {WIDTH, HEIGHT / 2.0f}, {0.0f, 1.0f}, {1.0f, 0.0f});
+        //graphFocused = ImGui::IsWindowHovered() && ImGui::IsWindowFocused();
+        graphFocused = ImGui::IsItemActive();
+        ImGui::End();
 
         ImGui::Begin("General");
 
@@ -274,7 +255,7 @@ int main() {
 
 
         // UPDATE MESH
-        if (!window.IsImGuiUsingMouse() && input->mouseDown) {
+        if (/*!window.IsImGuiUsingMouse()*/ graphFocused && input->mouseDown) {
             if (plottedPoints.empty() || plottedPoints[plottedPoints.size() - 1] != onScreen) {
                 plottedPoints.emplace_back(onScreen);
                 UpdateMesh();
