@@ -11,7 +11,7 @@ class RenderTarget {
 public:
     RenderTarget(GLint width, GLint height, bool hasDepth = false);
 
-    void Bind() const;
+    static void Bind(const RenderTarget& renderTarget);
     static void Unbind();
 
     [[nodiscard]] GLuint GetTexture() const { return textureID; }

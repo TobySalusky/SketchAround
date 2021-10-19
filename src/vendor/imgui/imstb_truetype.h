@@ -197,7 +197,7 @@
 //    screen where y=0, then you would set the baseline to SF*-y0.
 //
 //  Current point:
-//    Init the current point where the first character will appear. The
+//    Set the current point where the first character will appear. The
 //    first character could extend left of the current point; this is font
 //    dependent. You can either choose a current point that is the leftmost
 //    point and hope, or add some padding, or check the bounding box or
@@ -218,7 +218,7 @@
 //
 //   Quality:
 //
-//    - Enable the functions with Subpixel at the end to allow your characters
+//    - Use the functions with Subpixel at the end to allow your characters
 //      to have subpixel positioning. Since the font is anti-aliased, not
 //      hinted, this is very import for quality. (This is not possible with
 //      baked fonts.)

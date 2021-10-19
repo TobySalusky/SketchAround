@@ -12,6 +12,7 @@
 #include "../vendor/glm/glm.hpp"
 
 #include "Uniform.h"
+#include "shaders/Shader3D.h"
 
 class Light {
 public:
@@ -21,6 +22,9 @@ public:
     void UseLight(Uniform uniformAmbientIntensity, Uniform uniformAmbientColor, Uniform uniformDirection, Uniform uniformDiffuseIntensity);
 
     float* ColorPointer() { return (float*) &color; }
+
+    void Apply(const Shader3D &shader3D);
+
 private:
     glm::vec3 color;
     GLfloat ambientIntensity;

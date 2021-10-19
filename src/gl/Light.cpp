@@ -4,6 +4,7 @@
 
 #include "Light.h"
 #include "Uniform.h"
+#include "shaders/Shader3D.h"
 
 Light::Light() : Light(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec3(0.0f, -1.0f, 0.0f), 0.5f) {}
 
@@ -19,4 +20,8 @@ void Light::UseLight(Uniform uniformAmbientIntensity, Uniform uniformAmbientColo
     uniformAmbientIntensity.SetFloat(ambientIntensity);
     uniformDirection.SetFloat3(direction);
     uniformDiffuseIntensity.SetFloat(diffuseIntensity);
+}
+
+void Light::Apply(const Shader3D &shader3D) {
+    UseLight(shader3D.uniformAmbientIntensity, shader3D.uniformAmbientColor, shader3D.uniformLightDirection, shader3D.uniformDiffuseIntensity);
 }

@@ -10,7 +10,11 @@
 
 class Revolver {
 public:
-    static std::tuple<std::vector<glm::vec3>, std::vector<unsigned int>> Revolve(const std::vector<glm::vec2> &points, int countPerRing = 3);
+    static std::tuple<std::vector<glm::vec3>, std::vector<unsigned int>>
+    Revolve(const std::vector<glm::vec2> &points, int countPerRing, std::vector<glm::vec2> *auxPtr = nullptr);
+
+    std::tuple<std::vector<glm::vec3>, std::vector<unsigned int>>
+    Revolve(const std::vector<glm::vec2> &points, int countPerRing, std::unique_ptr<std::vector<glm::vec2>> auxPtr);
 };
 
 

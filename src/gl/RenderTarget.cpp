@@ -28,16 +28,16 @@ RenderTarget::RenderTarget(GLint width, GLint height, bool hasDepth) : hasDepth(
     }
 }
 
-void RenderTarget::Bind() const {
-    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fboID);
-    if (hasDepth) {
+void RenderTarget::Unbind() {
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+    glDisable(GL_DEPTH_TEST);
+}
+
+void RenderTarget::Bind(const RenderTarget &renderTarget) {
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, renderTarget.fboID);
+    if (renderTarget.hasDepth) {
         glEnable(GL_DEPTH_TEST);
     } else {
         glDisable(GL_DEPTH_TEST);
     }
-}
-
-void RenderTarget::Unbind() {
-    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-    glDisable(GL_DEPTH_TEST);
 }

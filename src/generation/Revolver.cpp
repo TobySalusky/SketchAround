@@ -11,19 +11,21 @@
 #include "../vendor/glm/ext/matrix_transform.hpp"
 
 #include "Revolver.h"
+#include "../gl/Function.h"
 
 
 // TODO: wrap end faces!!! (currently hollow)
-std::tuple<std::vector<glm::vec3>, std::vector<unsigned int>> Revolver::Revolve(const std::vector<glm::vec2>& points, int countPerRing) {
+std::tuple<std::vector<glm::vec3>, std::vector<unsigned int>> Revolver::Revolve(const std::vector<glm::vec2>& points, int countPerRing, std::vector<glm::vec2>* auxPtr) {
     std::vector<glm::vec3> vertices;
     std::vector<unsigned int> indices;
 
     for (const auto &point : points) {
+        float translateY = auxPtr == nullptr ? 0 : Function::GetY(*auxPtr, point.x);
         for (int i = 0; i < countPerRing; i++) {
             float angle = (float) M_PI * 2 * ((float) ((float) i * 1 / (float) countPerRing));
             glm::mat4 rot = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(1.0f,0.0f,0.0f)); // TODO: split mat creation from loop (b/c constant angles)
             glm::vec4 vec = rot * glm::vec4(point, 0.0f, 1.0f);
-            vertices.emplace_back(glm::vec3(vec.x, vec.y, vec.z));
+            vertices.emplace_back(glm::vec3(vec.x, vec.y + translateY, vec.z));
         }
     }
 

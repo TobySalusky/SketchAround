@@ -20,9 +20,17 @@
 #include "src/gl/Mesh2D.h"
 #include "src/gl/shaders/Shader2D.h"
 #include "src/gl/RenderTarget.h"
+#include "src/gl/Material.h"
+#include "src/gl/Function.h"
+
+// enums
+enum DrawMode {
+    MODE_PLOT, MODE_GRAPH
+};
 
 // Window dimensions
 const GLuint WIDTH = 800, HEIGHT = 600;
+DrawMode drawMode = MODE_PLOT;
 bool cameraMode = false;
 float lastTime = 0.0f;
 float scaleRadius = 1.0f;
@@ -32,6 +40,7 @@ float sampleLength = 0.1f;
 bool graphFocused;
 
 std::vector<glm::vec2> plottedPoints;
+std::vector<glm::vec2> graphedPoints;
 
 
 static glm::vec2 MouseToScreen(glm::vec2 mouseVec) {
@@ -54,13 +63,7 @@ int main() {
     Shader shader = Shader::Read("../assets/shaders/shader.vert", "../assets/shaders/shader.frag");
 
     // 3D-SHADER
-    Uniform uniformModel = shader.GenUniform("model"); // TODO: abstract uniforms to Shader3D > ShaderPhong classes
-    Uniform uniformView = shader.GenUniform("view");
-    Uniform uniformProjection = shader.GenUniform("projection");
-    Uniform uniformAmbientColor = shader.GenUniform("directionalLight.color");
-    Uniform uniformAmbientIntensity = shader.GenUniform("directionalLight.ambientIntensity");
-    Uniform uniformDirection = shader.GenUniform("directionalLight.direction");
-    Uniform uniformDiffuseIntensity = shader.GenUniform("directionalLight.diffuseIntensity");
+    Shader3D shader3D = Shader3D::Read("../assets/shaders/shader.vert", "../assets/shaders/shader.frag");
 
     // 2D-SHADER
     Shader2D shader2D = Shader2D::Read("../assets/shaders/shader2D.vert", "../assets/shaders/shader2D.frag");
@@ -110,6 +113,7 @@ int main() {
     axis.AddQuad({-1.0f, -0.945f}, {1.0f, -0.95f});
 
     glm::vec4 lineColor = {1.0f, 0.0f, 0.0f, 1.0f};
+    glm::vec4 auxLineColor = {0.0f, 0.0f, 1.0f, 1.0f};
 
     auto UpdateMesh = [&]() {
         if (!plottedPoints.empty()) {
@@ -119,7 +123,12 @@ int main() {
             for (auto& vec : sampled) {
                 translatedPoints.emplace_back(glm::vec2(vec.x, (vec.y + 0.95f) * scaleRadius));
             }
-            mesh.Set(Revolver::Revolve(translatedPoints, countPerRing));
+            std::vector<glm::vec2> translatedGraph;
+            translatedGraph.reserve(graphedPoints.size());
+            for (auto& vec : graphedPoints) {
+                translatedGraph.emplace_back(glm::vec2(vec.x, (vec.y + 0.95f)));
+            }
+            mesh.Set(Revolver::Revolve(translatedPoints, countPerRing, &translatedGraph));
         } else {
             mesh.Set(vertices, indices, sizeof(vertices) / sizeof(GLfloat), sizeof(indices) / sizeof(GLuint));
         };
@@ -127,6 +136,8 @@ int main() {
 
     RenderTarget modelScene{window.GetBufferWidth(), window.GetBufferHeight(), true};
     RenderTarget graphScene{window.GetBufferWidth(), window.GetBufferHeight() / 2};
+
+    Material material {1.0f, 32};
 
     while (!window.ShouldClose()) // >> UPDATE LOOP ======================================
     {
@@ -155,7 +166,7 @@ int main() {
 
         // >> OpenGL RENDER ========================
 
-        modelScene.Bind();
+        RenderTarget::Bind(modelScene);
 
         // Clear Background
 
@@ -172,17 +183,19 @@ int main() {
         glm::mat4 model(1.0f);
         model = glm::translate(model, glm::vec3(0.0f, 0.0f, -2.5f));
 
-        mainLight.UseLight(uniformAmbientIntensity, uniformAmbientColor, uniformDirection, uniformDiffuseIntensity);
-        uniformModel.SetMat4(model);
-        uniformView.SetMat4(camera.CalculateViewMat());
-        uniformProjection.SetMat4(projection);
+        material.Apply(shader3D);
+        mainLight.Apply(shader3D);
+        camera.Apply(shader3D);
+        shader3D.SetModel(model);
+        shader3D.SetView(camera.CalculateViewMat());
+        shader3D.SetProjection(projection);
 
         mesh.Render();
 
         shader.Disable();
 
         RenderTarget::Unbind();
-        graphScene.Bind();
+        RenderTarget::Bind(graphScene);
 
         glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -197,6 +210,14 @@ int main() {
         shader2D_background.SetColor({0.2f, 0.2f, 0.2f, 1.0f});
         axis.ImmediateRender();
         shader2D_background.Disable();
+
+        shader2D.Enable();
+        shader2D.SetColor(auxLineColor); // >> MODEL 2D
+
+        linePlot.AddLines(graphedPoints, 0.01f); // FIXME: this is wrecking performance!
+        linePlot.ImmediateClearingRender();
+
+        shader2D.Disable();
 
         shader2D.Enable();
         shader2D.SetColor(lineColor); // >> MODEL 2D
@@ -218,22 +239,26 @@ int main() {
         ImGuiHelper::BeginFrame();
 
 
-        ImGui::Begin("a");
-        ImGui::Image((void*)(intptr_t)modelScene.GetTexture(), {WIDTH / 2.0f, HEIGHT / 2.0f}, {0.0f, 1.0f}, {1.0f, 0.0f});
+        ImGui::Begin("Model Scene");
+        ImGui::Image((void *) (intptr_t) modelScene.GetTexture(), {WIDTH / 2.0f, HEIGHT / 2.0f}, {0.0f, 1.0f},
+                     {1.0f, 0.0f});
         ImGui::End();
 
-        ImGui::Begin("b");
-        ImGui::ImageButton((void*)(intptr_t)graphScene.GetTexture(), {WIDTH, HEIGHT / 2.0f}, {0.0f, 1.0f}, {1.0f, 0.0f});
+        ImGui::Begin("Graph Scene");
+        ImGui::ImageButton((void *) (intptr_t) graphScene.GetTexture(), {WIDTH, HEIGHT / 2.0f}, {0.0f, 1.0f},
+                           {1.0f, 0.0f});
         //graphFocused = ImGui::IsWindowHovered() && ImGui::IsWindowFocused();
         graphFocused = ImGui::IsItemActive();
         ImGui::End();
 
         ImGui::Begin("General");
 
-        ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+        ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate,
+                    ImGui::GetIO().Framerate);
 
         ImGui::ColorEdit3("model", mainLight.ColorPointer());
-        ImGui::ColorEdit3("lines", (float*) &lineColor);
+        ImGui::ColorEdit3("lines", (float *) &lineColor);
+        ImGui::ColorEdit3("graphs", (float *) &auxLineColor);
 
         ImGui::SliderFloat("scale-radius", &scaleRadius, 0.1f, 3.0f);
         if (ImGui::IsItemActive())
@@ -249,20 +274,46 @@ int main() {
 
         ImGui::End();
 
+        // MODE window
+        ImGui::Begin("Mode");
+        {
+            if (drawMode == MODE_PLOT) ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.4f, 0.5f, 0.6f, 1.0f});
+            else ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.2f, 0.3f, 0.4f, 1.0f});
+            if (ImGui::Button("Plot")) drawMode = MODE_PLOT;
+            ImGui::PopStyleColor(1);
+
+            if (drawMode == MODE_GRAPH) ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.4f, 0.5f, 0.6f, 1.0f});
+            else ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.2f, 0.3f, 0.4f, 1.0f});
+
+            if (ImGui::Button("Graph")) drawMode = MODE_GRAPH;
+            ImGui::PopStyleColor(1);
+        }
+        ImGui::End();
+
 
         ImGuiHelper::EndFrame();
         // ====================================
 
 
         // UPDATE MESH
-        if (/*!window.IsImGuiUsingMouse()*/ graphFocused && input->mouseDown) {
-            if (plottedPoints.empty() || plottedPoints[plottedPoints.size() - 1] != onScreen) {
-                plottedPoints.emplace_back(onScreen);
-                UpdateMesh();
+        if (graphFocused && input->mouseDown) {
+            switch (drawMode) {
+                case MODE_PLOT:
+                    if (plottedPoints.empty() || plottedPoints[plottedPoints.size() - 1] != onScreen) {
+                        plottedPoints.emplace_back(onScreen);
+                        UpdateMesh();
 
-                glm::vec newCameraPos = camera.GetPos();
-                newCameraPos.x = onScreen.x;
-                camera.SetPos(newCameraPos);
+                        glm::vec newCameraPos = camera.GetPos();
+                        newCameraPos.x = onScreen.x;
+                        camera.SetPos(newCameraPos);
+                    }
+                    break;
+                case MODE_GRAPH:
+                    if (graphedPoints.empty() || onScreen.x > graphedPoints.back().x) {
+                        graphedPoints.emplace_back(onScreen);
+                        UpdateMesh();
+                    }
+                    break;
             }
         }
 
@@ -272,6 +323,7 @@ int main() {
 
         if (input->Pressed(GLFW_KEY_X)) {
             plottedPoints.clear();
+            graphedPoints.clear();
             UpdateMesh();
         }
 

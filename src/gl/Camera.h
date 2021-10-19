@@ -8,6 +8,7 @@
 #include <glew.h>
 #include "Input.h"
 #include "../vendor/glm/glm.hpp"
+#include "shaders/Shader3D.h"
 
 class Camera {
 public:
@@ -19,6 +20,10 @@ public:
 
     void SetPos(glm::vec3 newPos) { pos = newPos; }
     glm::vec3 GetPos() { return pos; }
+
+    void Apply(const Shader3D& shader3D) {
+        shader3D.uniformCameraPosition.SetFloat3(pos);
+    }
 
 private:
     void CalculateDir();
