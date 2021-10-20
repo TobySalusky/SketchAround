@@ -833,7 +833,7 @@ STBTT_DEF int stbtt_IsGlyphEmpty(const stbtt_fontinfo *info, int glyph_index);
 
 STBTT_DEF int stbtt_GetCodepointShape(const stbtt_fontinfo *info, int unicode_codepoint, stbtt_vertex **vertices);
 STBTT_DEF int stbtt_GetGlyphShape(const stbtt_fontinfo *info, int glyph_index, stbtt_vertex **vertices);
-// returns # of vertices and fills *vertices with the pointer to them
+// returns # of vertexData and fills *vertexData with the pointer to them
 //   these are expressed in "unscaled" coordinates
 //
 // The shape is a series of contours. Each one starts with
@@ -913,10 +913,10 @@ typedef struct
 // rasterize a shape with quadratic beziers into a bitmap
 STBTT_DEF void stbtt_Rasterize(stbtt__bitmap *result,        // 1-channel bitmap to draw into
                                float flatness_in_pixels,     // allowable error of curve in pixels
-                               stbtt_vertex *vertices,       // array of vertices defining shape
-                               int num_verts,                // number of vertices in above array
-                               float scale_x, float scale_y, // scale applied to input vertices
-                               float shift_x, float shift_y, // translation applied to input vertices
+                               stbtt_vertex *vertices,       // array of vertexData defining shape
+                               int num_verts,                // number of vertexData in above array
+                               float scale_x, float scale_y, // scale applied to input vertexData
+                               float shift_x, float shift_y, // translation applied to input vertexData
                                int x_off, int y_off,         // another translation applied to input
                                int invert,                   // if non-zero, vertically flip shape
                                void *userdata);              // context for to STBTT_MALLOC
@@ -1662,7 +1662,7 @@ static int stbtt__GetGlyphShapeTT(const stbtt_fontinfo *info, int glyph_index, s
 
       n = 1+ttUSHORT(endPtsOfContours + numberOfContours*2-2);
 
-      m = n + 2*numberOfContours;  // a loose bound on how many vertices we might need
+      m = n + 2*numberOfContours;  // a loose bound on how many vertexData we might need
       vertices = (stbtt_vertex *) STBTT_malloc(m * sizeof(vertices[0]), info->userdata);
       if (vertices == 0)
          return 0;
@@ -1823,7 +1823,7 @@ static int stbtt__GetGlyphShapeTT(const stbtt_fontinfo *info, int glyph_index, s
          // Get indexed glyph.
          comp_num_verts = stbtt_GetGlyphShape(info, gidx, &comp_verts);
          if (comp_num_verts > 0) {
-            // Transform vertices.
+            // Transform vertexData.
             for (i = 0; i < comp_num_verts; ++i) {
                stbtt_vertex* v = &comp_verts[i];
                stbtt_vertex_type x,y;
@@ -1834,7 +1834,7 @@ static int stbtt__GetGlyphShapeTT(const stbtt_fontinfo *info, int glyph_index, s
                v->cx = (stbtt_vertex_type)(m * (mtx[0]*x + mtx[2]*y + mtx[4]));
                v->cy = (stbtt_vertex_type)(n * (mtx[1]*x + mtx[3]*y + mtx[5]));
             }
-            // Append vertices.
+            // Append vertexData.
             tmp = (stbtt_vertex*)STBTT_malloc((num_vertices+comp_num_verts)*sizeof(stbtt_vertex), info->userdata);
             if (!tmp) {
                if (vertices) STBTT_free(vertices, info->userdata);

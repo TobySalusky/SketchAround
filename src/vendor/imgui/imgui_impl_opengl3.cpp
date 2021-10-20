@@ -6,7 +6,7 @@
 // Implemented features:
 //  [X] Renderer: User texture binding. Use 'GLuint' OpenGL texture identifier as void*/ImTextureID. Read the FAQ about ImTextureID!
 //  [X] Renderer: Multi-viewport support. Enable with 'io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable'.
-//  [x] Renderer: Desktop GL only: Support for large meshes (64k+ vertices) with 16-bit indices.
+//  [x] Renderer: Desktop GL only: Support for large meshes (64k+ vertexData) with 16-bit indices.
 
 // You can use unmodified imgui_impl_* files in your project. See examples/ folder for examples of using this.
 // Prefer including the entire imgui/ repository into your project (either as a copy or as a submodule), and only build the backends you need.
@@ -38,7 +38,7 @@
 //  2019-10-25: OpenGL: Using a combination of GL define and runtime GL version to decide whether to use glDrawElementsBaseVertex(). Fix building with pre-3.2 GL loaders.
 //  2019-09-22: OpenGL: Detect default GL loader using __has_include compiler facility.
 //  2019-09-16: OpenGL: Tweak initialization code to allow application calling ImGui_ImplOpenGL3_CreateFontsTexture() before the first NewFrame() call.
-//  2019-05-29: OpenGL: Desktop GL only: Added support for large mesh (64K+ vertices), enable ImGuiBackendFlags_RendererHasVtxOffset flag.
+//  2019-05-29: OpenGL: Desktop GL only: Added support for large mesh (64K+ vertexData), enable ImGuiBackendFlags_RendererHasVtxOffset flag.
 //  2019-04-30: OpenGL: Added support for special ImDrawCallback_ResetRenderState callback to reset render state.
 //  2019-03-29: OpenGL: Not calling glBindBuffer more than necessary in the render loop.
 //  2019-03-15: OpenGL: Added a GL call + comments in ImGui_ImplOpenGL3_Init() to detect uninitialized GL function loaders early.

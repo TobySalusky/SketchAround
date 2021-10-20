@@ -8,13 +8,19 @@
 
 #include "../vendor/glm/vec2.hpp"
 
+struct RevolveData {
+    float scaleRadius{};
+    float scaleZ{};
+    float scaleY{};
+    int countPerRing{};
+    float leanScalar{};
+    std::vector<glm::vec2> *auxPtr{};
+};
+
 class Revolver {
 public:
     static std::tuple<std::vector<glm::vec3>, std::vector<unsigned int>>
-    Revolve(const std::vector<glm::vec2> &points, int countPerRing, std::vector<glm::vec2> *auxPtr = nullptr);
-
-    std::tuple<std::vector<glm::vec3>, std::vector<unsigned int>>
-    Revolve(const std::vector<glm::vec2> &points, int countPerRing, std::unique_ptr<std::vector<glm::vec2>> auxPtr);
+    Revolve(const std::vector<glm::vec2> &points, const RevolveData& revolveData);
 };
 
 

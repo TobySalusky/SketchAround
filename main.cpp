@@ -5,9 +5,12 @@
 #include <iostream>
 
 #include "src/vendor/imgui/imgui.h"
-
 #include "src/vendor/glm/glm.hpp"
+
+#define GLM_SWIZZLE
 #include "src/vendor/glm/gtc/type_ptr.hpp"
+
+#include "src/vendor/glm/gtx/vec_swizzle.hpp"
 #include "src/gl/shaders/Shader.h"
 #include "src/gl/GLWindow.h"
 #include "src/gl/Mesh.h"
@@ -21,7 +24,8 @@
 #include "src/gl/shaders/Shader2D.h"
 #include "src/gl/RenderTarget.h"
 #include "src/gl/Material.h"
-#include "src/gl/Function.h"
+#include "src/graphing/Function.h"
+#include "src/graphing/GraphView.h"
 
 // enums
 enum DrawMode {
@@ -33,7 +37,7 @@ const GLuint WIDTH = 800, HEIGHT = 600;
 DrawMode drawMode = MODE_PLOT;
 bool cameraMode = false;
 float lastTime = 0.0f;
-float scaleRadius = 1.0f;
+float scaleRadius = 1.0f, scaleZ = 1.0f, scaleY = 1.0f, leanScalar = 0.25f;
 int countPerRing = 10;
 float sampleLength = 0.1f;
 
@@ -42,6 +46,7 @@ bool graphFocused;
 std::vector<glm::vec2> plottedPoints;
 std::vector<glm::vec2> graphedPoints;
 
+GraphView graphView {-1.0f, 1.0f, -1.0f, 0.0f};
 
 static glm::vec2 MouseToScreen(glm::vec2 mouseVec) {
     return {mouseVec.x / WIDTH * 2 - 1, (mouseVec.y / HEIGHT - 0.5f) * -2};
@@ -67,8 +72,6 @@ int main() {
 
     // 2D-SHADER
     Shader2D shader2D = Shader2D::Read("../assets/shaders/shader2D.vert", "../assets/shaders/shader2D.frag");
-    Shader2D shader2D_background = Shader2D::Read("../assets/shaders/shader2D.vert", "../assets/shaders/shader2D.frag");
-    Shader2D shader2D_axis = Shader2D::Read("../assets/shaders/shader2D.vert", "../assets/shaders/shader2D.frag");
 
     GLfloat vertices[] = {
             -1.0f, -1.0f, 0.0f,
@@ -88,7 +91,7 @@ int main() {
 
     Camera camera{glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -M_PI_2, 0};
 
-    Light mainLight{{1.0f, 1.0f, 0.0f, 0.5f}, {1.0f, 1.0f, 1.0f}, 1.0f};
+    Light mainLight{{0.5f, 0.5f, 0.5f, 0.5f}, {-1.0f, -1.0f, -1.0f}, 0.8f};
 
     glm::mat4 projection = glm::perspective(45.0f, (GLfloat)window.GetBufferWidth()/(GLfloat)window.GetBufferHeight(), 0.1f, 100.0f);
 
@@ -106,11 +109,7 @@ int main() {
 
 
 
-    Mesh2D linePlot;
-    Mesh2D background;
-    Mesh2D axis;
-    background.AddQuad({-1.0f, 0.0f}, {1.0f, -1.0f});
-    axis.AddQuad({-1.0f, -0.945f}, {1.0f, -0.95f});
+    Mesh2D plot;
 
     glm::vec4 lineColor = {1.0f, 0.0f, 0.0f, 1.0f};
     glm::vec4 auxLineColor = {0.0f, 0.0f, 1.0f, 1.0f};
@@ -118,26 +117,23 @@ int main() {
     auto UpdateMesh = [&]() {
         if (!plottedPoints.empty()) {
             const auto sampled = Sampler::DumbSample(plottedPoints, sampleLength);
-            std::vector<glm::vec2> translatedPoints;
-            translatedPoints.reserve(sampled.size());
-            for (auto& vec : sampled) {
-                translatedPoints.emplace_back(glm::vec2(vec.x, (vec.y + 0.95f) * scaleRadius));
-            }
-            std::vector<glm::vec2> translatedGraph;
-            translatedGraph.reserve(graphedPoints.size());
-            for (auto& vec : graphedPoints) {
-                translatedGraph.emplace_back(glm::vec2(vec.x, (vec.y + 0.95f)));
-            }
-            mesh.Set(Revolver::Revolve(translatedPoints, countPerRing, &translatedGraph));
+            mesh.Set(Revolver::Revolve(sampled, {
+                .scaleRadius=scaleRadius,
+                .scaleZ=scaleZ,
+                .scaleY=scaleY,
+                .countPerRing=countPerRing,
+                .leanScalar=leanScalar,
+                .auxPtr=&graphedPoints,
+            }));
         } else {
             mesh.Set(vertices, indices, sizeof(vertices) / sizeof(GLfloat), sizeof(indices) / sizeof(GLuint));
         };
     };
 
     RenderTarget modelScene{window.GetBufferWidth(), window.GetBufferHeight(), true};
-    RenderTarget graphScene{window.GetBufferWidth(), window.GetBufferHeight() / 2};
+    RenderTarget graphScene{window.GetBufferWidth(), window.GetBufferHeight()};
 
-    Material material {1.0f, 32};
+    Material material {0.8f, 16};
 
     while (!window.ShouldClose()) // >> UPDATE LOOP ======================================
     {
@@ -156,7 +152,7 @@ int main() {
         input->EndUpdate();
         glfwPollEvents();
 
-        auto onScreen = MouseToScreen(input->GetMouse());
+        auto onScreen = (MouseToScreen(input->GetMouse()) + glm::vec2(0.5f, 0.5f)) * 2.0f;
         auto normMouse = MouseToScreenNorm01(input->GetMouse());
 
         if (cameraMode) {
@@ -185,10 +181,10 @@ int main() {
 
         material.Apply(shader3D);
         mainLight.Apply(shader3D);
-        camera.Apply(shader3D);
         shader3D.SetModel(model);
         shader3D.SetView(camera.CalculateViewMat());
         shader3D.SetProjection(projection);
+        shader3D.SetCameraPos(camera.GetPos());
 
         mesh.Render();
 
@@ -197,33 +193,22 @@ int main() {
         RenderTarget::Unbind();
         RenderTarget::Bind(graphScene);
 
-        glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // >> MODEL 2D ==========================
-        shader2D_background.Enable();
-        shader2D_background.SetColor({1.0f, 1.0f, 1.0f, 1.0f});
-        background.ImmediateRender();
-        shader2D_background.Disable();
-
-        shader2D_background.Enable();
-        shader2D_background.SetColor({0.2f, 0.2f, 0.2f, 1.0f});
-        axis.ImmediateRender();
-        shader2D_background.Disable();
-
         shader2D.Enable();
-        shader2D.SetColor(auxLineColor); // >> MODEL 2D
 
-        linePlot.AddLines(graphedPoints, 0.01f); // FIXME: this is wrecking performance!
-        linePlot.ImmediateClearingRender();
+        shader2D.SetModel(graphView.GenProjection());
 
-        shader2D.Disable();
+        plot.AddQuad({-1.0f, 0.0f}, {1.0f, -1.0f}, {1.0f, 1.0f, 1.0f, 1.0f});
+        plot.AddQuad({-1.0f, -0.003f}, {1.0f, 0.003f}, {0.2f, 0.2f, 0.2f, 1.0f});
+        plot.AddQuad({-0.003f, 1.0f}, {0.003f, -1.0f}, {0.2f, 0.2f, 0.2f, 1.0f});
 
-        shader2D.Enable();
-        shader2D.SetColor(lineColor); // >> MODEL 2D
+        plot.AddLines(graphedPoints, auxLineColor); // FIXME: this is wrecking performance!
+        plot.AddLines(plottedPoints, lineColor); // FIXME: this is wrecking performance!
 
-        linePlot.AddLines(plottedPoints, 0.01f); // FIXME: this is wrecking performance!
-        linePlot.ImmediateClearingRender();
+        plot.ImmediateClearingRender();
 
         shader2D.Disable();
 
@@ -245,7 +230,7 @@ int main() {
         ImGui::End();
 
         ImGui::Begin("Graph Scene");
-        ImGui::ImageButton((void *) (intptr_t) graphScene.GetTexture(), {WIDTH, HEIGHT / 2.0f}, {0.0f, 1.0f},
+        ImGui::ImageButton((void *) (intptr_t) graphScene.GetTexture(), {WIDTH / 2.0f, HEIGHT / 2.0f}, {0.0f, 1.0f},
                            {1.0f, 0.0f});
         //graphFocused = ImGui::IsWindowHovered() && ImGui::IsWindowFocused();
         graphFocused = ImGui::IsItemActive();
@@ -256,11 +241,32 @@ int main() {
         ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate,
                     ImGui::GetIO().Framerate);
 
-        ImGui::ColorEdit3("model", mainLight.ColorPointer());
-        ImGui::ColorEdit3("lines", (float *) &lineColor);
-        ImGui::ColorEdit3("graphs", (float *) &auxLineColor);
+        if (ImGui::CollapsingHeader("Colors")) {
+            ImGui::ColorEdit3("model", mainLight.ColorPointer());
+            ImGui::ColorEdit3("lines", (float *) &lineColor);
+            ImGui::ColorEdit3("graphs", (float *) &auxLineColor);
+        }
+
+        if (ImGui::CollapsingHeader("Graph View")) {
+            ImGui::SliderFloat("minX", &graphView.minX, -10.0f, 0.0f);
+            ImGui::SliderFloat("maxX", &graphView.maxX, 0.0f, 10.0f);
+            ImGui::SliderFloat("minY", &graphView.minY, -10.0f, 0.0f);
+            ImGui::SliderFloat("maxY", &graphView.maxY, 0.0f, 10.0f);
+        }
 
         ImGui::SliderFloat("scale-radius", &scaleRadius, 0.1f, 3.0f);
+        if (ImGui::IsItemActive())
+            UpdateMesh();
+
+        ImGui::SliderFloat("scale-z", &scaleZ, 0.1f, 3.0f);
+        if (ImGui::IsItemActive())
+            UpdateMesh();
+
+        ImGui::SliderFloat("scale-y", &scaleY, 0.1f, 3.0f);
+        if (ImGui::IsItemActive())
+            UpdateMesh();
+
+        ImGui::SliderFloat("lean-scalar", &leanScalar, 0.0f, 1.0f);
         if (ImGui::IsItemActive())
             UpdateMesh();
 
@@ -301,6 +307,7 @@ int main() {
                 case MODE_PLOT:
                     if (plottedPoints.empty() || plottedPoints[plottedPoints.size() - 1] != onScreen) {
                         plottedPoints.emplace_back(onScreen);
+                        //printf("%f\n", onScreen.x);
                         UpdateMesh();
 
                         glm::vec newCameraPos = camera.GetPos();

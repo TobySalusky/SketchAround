@@ -6,12 +6,10 @@
 #include "../../util/Util.h"
 
 Shader2D::Shader2D(const char *vertexShaderSource, const char *fragmentShaderSource) : Shader(vertexShaderSource, fragmentShaderSource),
-    uniformModel(GenUniform("model")),
-    uniformColor(GenUniform("color2D"))
+    uniformModel(GenUniform("model"))
 {
     Enable();
     SetModel(glm::mat4(1.0f));
-    SetColor(glm::vec4(1.0f, 1.0f , 1.0f, 1.0f));
     Disable();
 }
 

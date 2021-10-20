@@ -11,21 +11,30 @@
 #include "../vendor/glm/ext/matrix_transform.hpp"
 
 #include "Revolver.h"
-#include "../gl/Function.h"
+#include "../graphing/Function.h"
 
 
 // TODO: wrap end faces!!! (currently hollow)
-std::tuple<std::vector<glm::vec3>, std::vector<unsigned int>> Revolver::Revolve(const std::vector<glm::vec2>& points, int countPerRing, std::vector<glm::vec2>* auxPtr) {
+std::tuple<std::vector<glm::vec3>, std::vector<unsigned int>> Revolver::Revolve(const std::vector<glm::vec2>& points, const RevolveData& revolveData) {
     std::vector<glm::vec3> vertices;
     std::vector<unsigned int> indices;
 
+    const bool auxData = revolveData.auxPtr != nullptr;
+    const int countPerRing = revolveData.countPerRing;
+
     for (const auto &point : points) {
-        float translateY = auxPtr == nullptr ? 0 : Function::GetY(*auxPtr, point.x);
+        float translateY = !auxData ? 0 : Function::GetY(*revolveData.auxPtr, point.x);
+        float angleLean = !auxData ? 0 : Function::GetSlopeRadians(*revolveData.auxPtr, point.x);
         for (int i = 0; i < countPerRing; i++) {
             float angle = (float) M_PI * 2 * ((float) ((float) i * 1 / (float) countPerRing));
             glm::mat4 rot = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(1.0f,0.0f,0.0f)); // TODO: split mat creation from loop (b/c constant angles)
-            glm::vec4 vec = rot * glm::vec4(point, 0.0f, 1.0f);
-            vertices.emplace_back(glm::vec3(vec.x, vec.y + translateY, vec.z));
+            glm::vec4 vec = rot * glm::vec4(0.0f, point.y * revolveData.scaleRadius, 0.0f, 1.0f);
+            if (auxData) {
+                printf("%f\n", angleLean);
+                vec = glm::rotate(glm::mat4(1.0f), angleLean * revolveData.leanScalar, {0.0f, 0.0f, 1.0f}) * vec;
+            }
+            vec.x += point.x;
+            vertices.emplace_back(glm::vec3(vec.x, vec.y * revolveData.scaleY + translateY, vec.z * revolveData.scaleZ));
         }
     }
 
@@ -42,13 +51,13 @@ std::tuple<std::vector<glm::vec3>, std::vector<unsigned int>> Revolver::Revolve(
 
             if (reverse) {
                 indices.insert(indices.end(), {
-                        p3, p2, p1,
-                        p3, p4, p2,
+                        p2, p3, p1,
+                        p4, p3, p2,
                 });
             } else {
                 indices.insert(indices.end(), {
-                        p1, p2, p3,
-                        p2, p4, p3,
+                        p1, p3, p2,
+                        p2, p3, p4,
                 });
             }
         }

@@ -14,6 +14,7 @@ public:
     void SetModel(glm::mat4 model) { uniformModel.SetMat4(model); }
     void SetView(glm::mat4 model) { uniformView.SetMat4(model); }
     void SetProjection(glm::mat4 model) { uniformProjection.SetMat4(model); }
+    void SetCameraPos(glm::vec3 pos) { uniformCameraPosition.SetFloat3(pos); }
 
     static Shader3D Read(const char* vertexShaderPath, const char* fragmentShaderPath);
 
@@ -25,7 +26,6 @@ private:
 
     friend class Light;
     friend class Material;
-    friend class Camera;
 };
 
 

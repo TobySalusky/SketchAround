@@ -1263,7 +1263,7 @@ void    ImGui::EndTable()
     // Strip out dummy channel draw calls
     // We have no way to prevent user submitting direct ImDrawList calls into a hidden column (but ImGui:: calls will be clipped out)
     // Pros: remove draw calls which will have no effect. since they'll have zero-size cliprect they may be early out anyway.
-    // Cons: making it harder for users watching metrics/debugger to spot the wasted vertices.
+    // Cons: making it harder for users watching metrics/debugger to spot the wasted vertexData.
     if (table->DummyDrawChannel != (ImGuiTableColumnIdx)-1)
     {
         ImDrawChannel* dummy_channel = &table->DrawSplitter._Channels[table->DummyDrawChannel];

@@ -21,10 +21,6 @@ public:
     void SetPos(glm::vec3 newPos) { pos = newPos; }
     glm::vec3 GetPos() { return pos; }
 
-    void Apply(const Shader3D& shader3D) {
-        shader3D.uniformCameraPosition.SetFloat3(pos);
-    }
-
 private:
     void CalculateDir();
     glm::vec3 pos, front, up, right, worldUp;

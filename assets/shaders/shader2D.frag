@@ -1,11 +1,9 @@
 #version 330 core
 
+in vec4 vCol;
 out vec4 color;
-
-uniform vec4 color2D;
-
 
 void main()
 {
-    color = color2D;
+    color = vCol;
 }

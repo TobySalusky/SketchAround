@@ -20,21 +20,35 @@ public:
     ~Mesh2D();
 
     void Init();
-    void Set(GLfloat* vertices, GLuint *indices, GLuint numOfVertices, GLuint numOfIndices);
+    void Set(GLfloat* vertexDataArr, GLuint *indices, GLuint vertexDataCount, GLuint numOfIndices);
     void Render() const;
     void Clear();
     void ClearingRender();
-    void AddLines(const std::vector<glm::vec2> &points, float width);
-    void AddQuad(glm::vec2 corner1, glm::vec2 corner2);
+    void AddLines(const std::vector<glm::vec2> &points, glm::vec4 color, float width = 0.01f);
+    void AddQuad(glm::vec2 corner1, glm::vec2 corner2, glm::vec4 color);
+    void AddQuad(glm::vec2 corner1, glm::vec2 corner2, glm::vec3 color) {
+        AddQuad(corner1, corner2, glm::vec4(color.r, color.g, color.b, 1.0f));
+    }
 
     void ImmediateClearingRender();
     void ImmediateRender();
 
 private:
     GLuint VAO, VBO, IBO, indexCount;
-    std::vector<glm::vec2> vertices;
+    std::vector<float> vertexData;
     std::vector<GLuint> indices;
 
+    void AddVertex(glm::vec2 pos, glm::vec4 color) {
+        vertexData.insert(vertexData.end(), {
+                pos.x, pos.y, color.r, color.g, color.b, color.a
+        });
+    }
+
+    void AddVertex(glm::vec2 pos, glm::vec3 color) {
+        vertexData.insert(vertexData.end(), {
+                pos.x, pos.y, color.r, color.g, color.b, 1.0f
+        });
+    }
 };
 
 
