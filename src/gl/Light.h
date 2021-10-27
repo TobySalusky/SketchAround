@@ -21,7 +21,7 @@ public:
 
     void UseLight(Uniform uniformAmbientIntensity, Uniform uniformAmbientColor, Uniform uniformDirection, Uniform uniformDiffuseIntensity);
 
-    float* ColorPointer() { return (float*) &color; }
+    void SetColor(glm::vec3 color) { this->color = color; }
 
     void Apply(const Shader3D &shader3D);
 

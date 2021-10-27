@@ -27,6 +27,11 @@ void ImGuiHelper::Initialize(GLWindow& window) {
     ImGui::StyleColorsDark();
     ImGui_ImplGlfw_InitForOpenGL(window.GetWindowPtr(), true);
     ImGui_ImplOpenGL3_Init("#version 330");
+
+    ImGuiStyle& style = ImGui::GetStyle();
+    //style.Colors[ImGuiCol_Button] = {255/255.0f, 188/255.0f, 111/255.0f, 1.0f};
+    float back = 0.1f;
+    style.Colors[ImGuiCol_WindowBg] = {back, back, back, 1.0f};
 }
 
 void ImGuiHelper::BeginFrame() {

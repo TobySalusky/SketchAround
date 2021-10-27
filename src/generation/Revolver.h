@@ -14,7 +14,8 @@ struct RevolveData {
     float scaleY{};
     int countPerRing{};
     float leanScalar{};
-    std::vector<glm::vec2> *auxPtr{};
+    std::vector<glm::vec2> *graphYPtr{};
+    std::vector<glm::vec2> *graphZPtr{};
 };
 
 class Revolver {

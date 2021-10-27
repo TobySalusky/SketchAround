@@ -19,22 +19,30 @@ std::tuple<std::vector<glm::vec3>, std::vector<unsigned int>> Revolver::Revolve(
     std::vector<glm::vec3> vertices;
     std::vector<unsigned int> indices;
 
-    const bool auxData = revolveData.auxPtr != nullptr;
+    const bool hasGraphY = revolveData.graphYPtr != nullptr;
+    const bool hasGraphZ = revolveData.graphZPtr != nullptr;
     const int countPerRing = revolveData.countPerRing;
 
     for (const auto &point : points) {
-        float translateY = !auxData ? 0 : Function::GetY(*revolveData.auxPtr, point.x);
-        float angleLean = !auxData ? 0 : Function::GetSlopeRadians(*revolveData.auxPtr, point.x);
+        float translateY = !hasGraphY ? 0 : Function::GetY(*revolveData.graphYPtr, point.x);
+        float angleLeanY = !hasGraphY ? 0 : Function::GetSlopeRadians(*revolveData.graphYPtr, point.x);
+
+        float translateZ = !hasGraphZ ? 0 : Function::GetY(*revolveData.graphZPtr, point.x);
+        float angleLeanZ = !hasGraphZ ? 0 : -Function::GetSlopeRadians(*revolveData.graphZPtr, point.x);
+        // todo: lean
+
         for (int i = 0; i < countPerRing; i++) {
             float angle = (float) M_PI * 2 * ((float) ((float) i * 1 / (float) countPerRing));
             glm::mat4 rot = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(1.0f,0.0f,0.0f)); // TODO: split mat creation from loop (b/c constant angles)
             glm::vec4 vec = rot * glm::vec4(0.0f, point.y * revolveData.scaleRadius, 0.0f, 1.0f);
-            if (auxData) {
-                printf("%f\n", angleLean);
-                vec = glm::rotate(glm::mat4(1.0f), angleLean * revolveData.leanScalar, {0.0f, 0.0f, 1.0f}) * vec;
+            if (hasGraphY) {
+                vec = glm::rotate(glm::mat4(1.0f), angleLeanY * revolveData.leanScalar, {0.0f, 0.0f, 1.0f}) * vec;
+            }
+            if (hasGraphZ) { // FIXME: this is so not right!!
+                vec = glm::rotate(glm::mat4(1.0f), angleLeanZ * revolveData.leanScalar, {0.0f, 1.0f, 0.0f}) * vec;
             }
             vec.x += point.x;
-            vertices.emplace_back(glm::vec3(vec.x, vec.y * revolveData.scaleY + translateY, vec.z * revolveData.scaleZ));
+            vertices.emplace_back(glm::vec3(vec.x, vec.y * revolveData.scaleY + translateY, vec.z * revolveData.scaleZ + translateZ));
         }
     }
 
