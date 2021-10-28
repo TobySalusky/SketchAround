@@ -5,14 +5,13 @@
 #include "Mesh.h"
 #include "Normals.h"
 
-Mesh::Mesh() {
+Mesh::Mesh() : Mesh(nullptr, nullptr, 0, 0) {}
+
+Mesh::Mesh(GLfloat *vertices, GLuint *indices, GLuint numOfVertices, GLuint numOfIndices) {
     VBO = 0;
     VAO = 0;
     IBO = 0;
     indexCount = 0;
-}
-
-Mesh::Mesh(GLfloat *vertices, GLuint *indices, GLuint numOfVertices, GLuint numOfIndices) : Mesh() {
     Init(vertices, indices, numOfVertices, numOfIndices);
 }
 
@@ -29,11 +28,10 @@ void Mesh::Init(GLfloat *vertices, GLuint *indices, GLuint numOfVertices, GLuint
     glGenBuffers(1, &IBO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices[0]) * numOfIndices, nullptr, usageHint);
-
     glGenBuffers(1, &VBO);
+
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices[0]) * numOfVertices, nullptr, usageHint);
-
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*) 0);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*) (3 * sizeof(GLfloat)));

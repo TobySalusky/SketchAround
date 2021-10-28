@@ -38,16 +38,8 @@ const GLuint WIDTH = 800, HEIGHT = 600;
 DrawMode drawMode = MODE_PLOT;
 bool cameraMode = false;
 float lastTime = 0.0f;
-float scaleRadius = 1.0f, scaleZ = 1.0f, scaleY = 1.0f, leanScalar = 0.25f;
-int countPerRing = 10;
-float sampleLength = 0.1f;
 
 bool graphFocused;
-
-std::vector<Lathe> lathes {Lathe()};
-Lathe* lathe; // TODO: use unique_ptr?? -- sus...
-
-GraphView graphView {-1.0f, 1.0f, -1.0f, 0.0f};
 
 glm::vec2 MouseToScreen(glm::vec2 mouseVec) {
     return {mouseVec.x / WIDTH * 2 - 1, (mouseVec.y / HEIGHT - 0.5f) * -2};
@@ -59,6 +51,9 @@ glm::vec2 MouseToScreenNorm01(glm::vec2 mouseVec) {
 
 // The MAIN function, from here we start the application and run the game loop
 int main() {
+
+    GraphView graphView {-1.0f, 1.0f, -1.0f, 0.0f};
+
 
     GLWindow window(WIDTH, HEIGHT);
     Input* input = window.GetInput();
@@ -74,21 +69,9 @@ int main() {
     // 2D-SHADER
     Shader2D shader2D = Shader2D::Read("../assets/shaders/shader2D.vert", "../assets/shaders/shader2D.frag");
 
-    GLfloat vertices[] = {
-            -1.0f, -1.0f, 0.0f,
-            0.0f, -1.0f, 1.0f,
-            1.0f, -1.0f, 0.0f,
-            0.0f, 1.0f, 0.0f,
-    };
+    std::vector<Lathe*> lathes {new Lathe()};
+    Lathe* lathe; // TODO: use unique_ptr?? -- sus...
 
-    GLuint indices[] = {
-            0, 3, 1,
-            1, 3, 2,
-            2, 3, 0,
-            0, 1, 2
-    };
-
-    Mesh mesh(vertices, indices, sizeof(vertices) / sizeof(GLfloat), sizeof(indices) / sizeof(GLuint));
 
     Camera camera{glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -M_PI_2, 0};
 
@@ -117,20 +100,7 @@ int main() {
     glm::vec4 graphColorZ = {0.0f, 1.0f, 0.0f, 1.0f};
 
     auto UpdateMesh = [&]() {
-        if (!lathe->plottedPoints.empty()) {
-            const auto sampled = Sampler::DumbSample(lathe->plottedPoints, sampleLength);
-            mesh.Set(Revolver::Revolve(sampled, {
-                .scaleRadius=scaleRadius,
-                .scaleZ=scaleZ,
-                .scaleY=scaleY,
-                .countPerRing=countPerRing,
-                .leanScalar=leanScalar,
-                .graphYPtr=&(lathe->graphedPointsY),
-                .graphZPtr=&(lathe->graphedPointsZ),
-            }));
-        } else {
-            mesh.Set(vertices, indices, sizeof(vertices) / sizeof(GLfloat), sizeof(indices) / sizeof(GLuint));
-        };
+        lathe->UpdateMesh();
     };
     const auto SetLathe = [&](Lathe* lathePtr) {
         lathe = lathePtr;
@@ -142,7 +112,7 @@ int main() {
 
     Material material {0.8f, 16};
 
-    SetLathe(&lathes[0]);
+    SetLathe(lathes[0]);
 
     while (!window.ShouldClose()) // >> UPDATE LOOP ======================================
     {
@@ -185,23 +155,21 @@ int main() {
         shader.Enable();
 
         // UNIFORMS
-        glm::mat4 model(1.0f);
-        model = glm::translate(model, glm::vec3(0.0f, 0.0f, -2.5f));
-
-        mainLight.SetColor(lathe->color);
-        mainLight.Apply(shader3D);
         material.Apply(shader3D);
-        shader3D.SetModel(model);
+
         shader3D.SetView(camera.CalculateViewMat());
         shader3D.SetProjection(projection);
         shader3D.SetCameraPos(camera.GetPos());
 
-        mesh.Render();
 
-        /*model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(0.0f, 0.0f, -5.5f));
-        shader3D.SetModel(model);
-        mesh.Render();*/
+
+        for (const auto renderLathe : lathes) {
+            shader3D.SetModel(renderLathe->GenModelMat());
+            mainLight.SetColor(renderLathe->color);
+            mainLight.Apply(shader3D);
+
+            renderLathe->mesh->Render();
+        }
 
         shader.Disable();
 
@@ -263,10 +231,11 @@ int main() {
                     ImGui::GetIO().Framerate);
 
         if (ImGui::CollapsingHeader("Colors")) {
-            ImGui::ColorEdit3("model", (float *) &lathe->color);
+            ImGui::ColorEdit3("modelMat", (float *) &lathe->color);
             ImGui::ColorEdit3("lines", (float *) &lineColor);
             ImGui::ColorEdit3("graph-y", (float *) &graphColorY);
             ImGui::ColorEdit3("graph-z", (float *) &graphColorZ);
+            ImGui::SliderFloat3("translate", (float *) &lathe->modelTranslation, -5.f, 5.f);
         }
 
         if (ImGui::CollapsingHeader("Graph View")) {
@@ -276,28 +245,7 @@ int main() {
             ImGui::SliderFloat("maxY", &graphView.maxY, 0.0f, 10.0f);
         }
 
-        const auto BindUIMeshUpdate = [&]() {
-            if (ImGui::IsItemActive())
-                UpdateMesh();
-        };
-
-        ImGui::SliderFloat("scale-radius", &scaleRadius, 0.1f, 3.0f);
-        BindUIMeshUpdate();
-
-        ImGui::SliderFloat("scale-z", &scaleZ, 0.1f, 3.0f);
-        BindUIMeshUpdate();
-
-        ImGui::SliderFloat("scale-y", &scaleY, 0.1f, 3.0f);
-        BindUIMeshUpdate();
-
-        ImGui::SliderFloat("lean-scalar", &leanScalar, 0.0f, 1.0f);
-        BindUIMeshUpdate();
-
-        ImGui::SliderInt("count-per-ring", &countPerRing, 3, 40);
-        BindUIMeshUpdate();
-
-        ImGui::SliderFloat("sample-length", &sampleLength, 0.01f, 0.5f);
-        BindUIMeshUpdate();
+        lathe->HyperParameterUI();
 
         ImGui::End();
 
@@ -325,12 +273,12 @@ int main() {
         ImGui::Begin("Models");
         {
             for (int i = 0; i < lathes.size(); i++) {
-                bool isCurrentLathe = lathe == &lathes[i];
+                bool isCurrentLathe = lathe == lathes[i];
                 if (isCurrentLathe) ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.4f, 0.5f, 0.6f, 1.0f});
                 else ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.2f, 0.3f, 0.4f, 1.0f});
 
                 if (ImGui::Button(std::to_string(i).c_str(), { ImGui::GetWindowContentRegionWidth() - 19.0f, 24.0f})) {
-                    SetLathe(&lathes[i]);
+                    SetLathe(lathes[i]);
                 }
 
                 ImGui::PopStyleColor(1);
@@ -339,16 +287,16 @@ int main() {
                 if (ImGui::Button((std::string("X##") + std::to_string(i)).c_str()) && lathes.size() > 1) {
                     lathes.erase(lathes.begin() + i);
                     if (isCurrentLathe) {
-                        SetLathe(&lathes[i == lathes.size() ? i - 1 : i]);
+                        SetLathe(lathes[i == lathes.size() ? i - 1 : i]);
                     }
-                    else if (&lathes[i] < lathe) {
+                    else if (lathes[i] < lathe) {
                         SetLathe(lathe - 1);
                     }
                 }
             }
             if (ImGui::Button("+", {ImGui::GetWindowContentRegionWidth(), 24.0f})) {
-                lathes.emplace_back(Lathe());
-                SetLathe(&lathes[lathes.size() - 1]);
+                lathes.emplace_back(new Lathe());
+                SetLathe(lathes[lathes.size() - 1]);
             }
         }
         ImGui::End();
@@ -396,16 +344,16 @@ int main() {
 
         if (input->Down(GLFW_KEY_LEFT_SHIFT)) {
             if (input->Pressed(GLFW_KEY_UP)) {
-                if (lathe == &lathes[0]) {
-                    SetLathe(&lathes[lathes.size() - 1]);
+                if (lathe == lathes[0]) {
+                    SetLathe(lathes[lathes.size() - 1]);
                 } else {
                     SetLathe(lathe - 1);
                 }
             }
 
             if (input->Pressed(GLFW_KEY_DOWN)) {
-                if (lathe == &lathes[lathes.size() - 1]) {
-                    SetLathe(&lathes[0]);
+                if (lathe == lathes[lathes.size() - 1]) {
+                    SetLathe(lathes[0]);
                 } else {
                     SetLathe(lathe + 1);
                 }
