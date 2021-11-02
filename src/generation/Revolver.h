@@ -14,6 +14,8 @@ struct RevolveData {
     float scaleY{};
     int countPerRing{};
     float leanScalar{};
+    bool wrapStart{};
+    bool wrapEnd{};
     std::vector<glm::vec2> *graphYPtr{};
     std::vector<glm::vec2> *graphZPtr{};
 };

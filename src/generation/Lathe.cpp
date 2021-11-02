@@ -29,17 +29,30 @@ void Lathe::HyperParameterUI() {
 
     ImGui::SliderFloat("sample-length", &sampleLength, 0.01f, 0.5f);
     BindUIMeshUpdate();
+
+    if (ImGui::Checkbox("wrap-start", &wrapStart)) {
+        UpdateMesh();
+    }
+
+    ImGui::SameLine();
+    if (ImGui::Checkbox("wrap-end", &wrapEnd)) {
+        UpdateMesh();
+    }
+    BindUIMeshUpdate();
+
 }
 
 void Lathe::UpdateMesh() {
     if (!plottedPoints.empty()) {
         const auto sampled = Sampler::DumbSample(plottedPoints, sampleLength);
-        mesh->Set(Revolver::Revolve(sampled, {
+        mesh.Set(Revolver::Revolve(sampled, {
                 .scaleRadius=scaleRadius,
                 .scaleZ=scaleZ,
                 .scaleY=scaleY,
                 .countPerRing=countPerRing,
                 .leanScalar=leanScalar,
+                .wrapStart=wrapStart,
+                .wrapEnd=wrapEnd,
                 .graphYPtr=&(graphedPointsY),
                 .graphZPtr=&(graphedPointsZ),
         }));
@@ -57,6 +70,6 @@ void Lathe::UpdateMesh() {
                 2, 3, 0,
                 0, 1, 2
         };
-        mesh->Set(vertices, indices, sizeof(vertices) / sizeof(GLfloat), sizeof(indices) / sizeof(GLuint));
+        mesh.Set(vertices, indices, sizeof(vertices) / sizeof(GLfloat), sizeof(indices) / sizeof(GLuint));
     };
 }

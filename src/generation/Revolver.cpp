@@ -71,5 +71,16 @@ std::tuple<std::vector<glm::vec3>, std::vector<unsigned int>> Revolver::Revolve(
         }
     }
 
+    const auto WrapEnd = [&](unsigned int startIndex) {
+        for (int i = 0; i < countPerRing - 2; i++) {
+            indices.insert(indices.end(), {
+                    startIndex, (startIndex + 1 + i), (startIndex + 2 + i),
+            });
+        }
+    };
+
+    if (revolveData.wrapStart) WrapEnd(0);
+    if (revolveData.wrapEnd) WrapEnd((points.size() - 1) * countPerRing);
+
     return std::make_tuple(vertices, indices);
 }

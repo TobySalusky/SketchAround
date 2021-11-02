@@ -26,6 +26,8 @@ public:
     int countPerRing = 10;
     float sampleLength = 0.1f;
 
+    bool wrapStart = true, wrapEnd = true;
+
     std::vector<glm::vec2> plottedPoints;
     std::vector<glm::vec2> graphedPointsY;
     std::vector<glm::vec2> graphedPointsZ;
@@ -39,7 +41,7 @@ public:
     void HyperParameterUI();
 
     void UpdateMesh();
-    std::unique_ptr<Mesh> mesh{new Mesh(nullptr, nullptr, 0, 0)};
+    Mesh mesh{nullptr, nullptr, 0, 0};
 private:
 };
 

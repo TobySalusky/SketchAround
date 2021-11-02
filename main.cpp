@@ -34,7 +34,7 @@ enum DrawMode {
 };
 
 // Window dimensions
-const GLuint WIDTH = 800, HEIGHT = 600;
+const GLuint WIDTH = 1600, HEIGHT = 900;
 DrawMode drawMode = MODE_PLOT;
 bool cameraMode = false;
 float lastTime = 0.0f;
@@ -69,7 +69,7 @@ int main() {
     // 2D-SHADER
     Shader2D shader2D = Shader2D::Read("../assets/shaders/shader2D.vert", "../assets/shaders/shader2D.frag");
 
-    std::vector<Lathe*> lathes {new Lathe()};
+    std::vector<Lathe*> lathes {new Lathe()}; // TODO: release memory please (never deleted!)
     Lathe* lathe; // TODO: use unique_ptr?? -- sus...
 
 
@@ -168,7 +168,7 @@ int main() {
             mainLight.SetColor(renderLathe->color);
             mainLight.Apply(shader3D);
 
-            renderLathe->mesh->Render();
+            renderLathe->mesh.Render();
         }
 
         shader.Disable();
