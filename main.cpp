@@ -33,6 +33,9 @@
 #include "src/Enums.h"
 #include "src/generation/Lathe.h"
 #include "src/generation/CrossSectional.h"
+#include "src/misc/Undo.h"
+
+#define UNDO(a) undos.emplace_back(Undo([](Undo::State state) { a }));
 
 // Window dimensions
 const GLuint WIDTH = 1600, HEIGHT = 900;
@@ -52,6 +55,8 @@ glm::vec2 MouseToScreenNorm01(glm::vec2 mouseVec) {
 
 // The MAIN function, from here we start the application and run the game loop
 int main() {
+
+    std::vector<Undo> undos;
 
     GraphView graphView {-1.0f, 1.0f, -1.0f, 0.0f};
 
@@ -106,6 +111,8 @@ int main() {
     const auto AddSetLathe = [&]() {
         modelObjects.emplace_back(new CrossSectional());
         SetLathe(modelObjects[modelObjects.size() - 1]);
+        // TODO: undo doesn't change current model index!!
+        UNDO(state.modelObjects.pop_back();); // FIXME: leaking memory? (b/c modelObjects are pointers)
     };
 
     RenderTarget modelScene{window.GetBufferWidth(), window.GetBufferHeight(), true};
@@ -114,6 +121,7 @@ int main() {
     Material material {0.8f, 16};
 
     SetLathe(modelObjects[0]);
+
 
     while (!window.ShouldClose()) // >> UPDATE LOOP ======================================
     {
@@ -305,6 +313,7 @@ int main() {
         // UPDATE MESH
         if (graphFocused && input->mouseDown) {
             modelObject->InputPoints({drawMode, onScreen, camera});
+            // TODO: add undo for drawing
         }
 
 
@@ -352,7 +361,14 @@ int main() {
         }
         if (input->Pressed(GLFW_KEY_P)) drawMode = Enums::DrawMode::MODE_PLOT;
         if (input->Pressed(GLFW_KEY_Y)) drawMode = Enums::DrawMode::MODE_GRAPH_Y;
-        if (input->Pressed(GLFW_KEY_Z)) drawMode = Enums::DrawMode::MODE_GRAPH_Z;
+        if (input->Pressed(GLFW_KEY_T)) drawMode = Enums::DrawMode::MODE_GRAPH_Z;
+
+        if (input->Pressed(GLFW_KEY_Z) && input->Down(GLFW_KEY_LEFT_SHIFT)) {
+            if (!undos.empty()) {
+                undos.back().Apply({modelObjects});
+                undos.pop_back();
+            }
+        }
 
         // ending stuff
         lastTime = time;
