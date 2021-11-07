@@ -11,7 +11,10 @@
 
 class Sampler {
 public:
-    static std::vector<glm::vec2> DumbSample(std::vector<glm::vec2> inputPoints, const float diff = 0.025f);
+    static std::vector<glm::vec2> DumbSample(const std::vector<glm::vec2>& inputPoints, float diff = 0.025f);
+    static std::vector<glm::vec2> SampleTo(const std::vector<glm::vec2>& inputPoints, int newPointCount);
+private:
+    static std::vector<glm::vec2> DumbSampleLimited(const std::vector<glm::vec2>& inputPoints, float diff, int limit);
 };
 
 

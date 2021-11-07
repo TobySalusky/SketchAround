@@ -27,6 +27,9 @@
 #include "src/graphing/Function.h"
 #include "src/graphing/GraphView.h"
 #include "src/generation/Lathe.h"
+#include "src/util/Util.h"
+#include "src/animation/LineLerper.h"
+#include "src/generation/CrossSectionTracer.h"
 
 // enums
 enum DrawMode {
@@ -53,7 +56,6 @@ glm::vec2 MouseToScreenNorm01(glm::vec2 mouseVec) {
 int main() {
 
     GraphView graphView {-1.0f, 1.0f, -1.0f, 0.0f};
-
 
     GLWindow window(WIDTH, HEIGHT);
     Input* input = window.GetInput();
@@ -105,6 +107,11 @@ int main() {
     const auto SetLathe = [&](Lathe* lathePtr) {
         lathe = lathePtr;
         UpdateMesh();
+    };
+
+    const auto AddSetLathe = [&]() {
+        lathes.emplace_back(new Lathe());
+        SetLathe(lathes[lathes.size() - 1]);
     };
 
     RenderTarget modelScene{window.GetBufferWidth(), window.GetBufferHeight(), true};
@@ -164,6 +171,8 @@ int main() {
 
 
         for (const auto renderLathe : lathes) {
+            if (!renderLathe->visible) continue;
+
             shader3D.SetModel(renderLathe->GenModelMat());
             mainLight.SetColor(renderLathe->color);
             mainLight.Apply(shader3D);
@@ -196,6 +205,56 @@ int main() {
         plot.AddLines(lathe->graphedPointsY, SelectOpacity(MODE_GRAPH_Y, graphColorY));
         plot.AddLines(lathe->graphedPointsZ, SelectOpacity(MODE_GRAPH_Z, graphColorZ));
         plot.AddLines(lathe->plottedPoints, SelectOpacity(MODE_PLOT, lineColor));
+
+        // line gizmo
+        {
+            std::vector<glm::vec2> gizmo {{onScreen.x, -1.0f}, {onScreen.x, 1.0f}};
+            float col = 0.7f;
+            plot.AddLines(gizmo, {col, col, col, 1.0f}, 0.001f);
+        }
+
+        {
+            if (lathe->plottedPoints.size() >= 2 && lathe->graphedPointsY.size() >= 2) {
+                const auto sampled = Sampler::DumbSample(lathe->plottedPoints, lathe->sampleLength);
+                const auto sampled2 = Sampler::DumbSample(lathe->graphedPointsY, lathe->sampleLength);
+                const auto segments = CrossSectionTracer::TraceSegments(sampled, sampled2, {});
+                for (const auto& segment : segments) {
+                    float col = 0.5f;
+                    plot.AddLines({segment.p1, segment.p2}, {col, col, col, 1.0f}, 0.001f);
+                }
+            }
+        }
+
+        /*{
+            // test animation!!
+            if (lathe->plottedPoints.size() >= 2 && lathe->graphedPointsY.size() >= 2 && lathe == lathes[0]) {
+                const auto vecAnim = LineLerper::MorphPolyLine(lathe->plottedPoints, lathe->graphedPointsY, fmod(Util::sin01(time * 2.5f), 1.0f), 30);
+                plot.AddLines(vecAnim,{1.0f, 0.5f, 0.5f, 1.0f});
+
+                Lathe* otherLathe = lathes[1];
+
+                otherLathe->plottedPoints.clear();
+                otherLathe->plottedPoints.insert(otherLathe->plottedPoints.end(), vecAnim.begin(), vecAnim.end());
+                otherLathe->UpdateMesh();
+            }
+        }*/
+
+        // angle gizmos
+        if (drawMode == MODE_GRAPH_Y) {
+            float pointY = Function::GetY(lathe->graphedPointsY, onScreen.x);
+            float pointAngle = Util::SlopeToRadians(Function::GetAverageSlope(lathe->graphedPointsY, onScreen.x, 5));
+            if (pointY != 0) {
+                std::vector<glm::vec2> gizmo {{onScreen.x, pointY}, glm::vec2(onScreen.x, pointY) + Util::Polar(0.1f, -pointAngle)};
+                plot.AddLines(gizmo, {1.0f, 0.0f, 1.0f, 1.0f});
+            }
+        } else if (drawMode == MODE_GRAPH_Z) {
+            float pointY = Function::GetY(lathe->graphedPointsZ, onScreen.x);
+            float pointAngle = Util::SlopeToRadians(Function::GetAverageSlope(lathe->graphedPointsZ, onScreen.x, 5));
+            if (pointY != 0) {
+                std::vector<glm::vec2> gizmo {{onScreen.x, pointY}, glm::vec2(onScreen.x, pointY) + Util::Polar(0.1f, -pointAngle)};
+                plot.AddLines(gizmo, {1.0f, 0.0f, 1.0f, 1.0f});
+            }
+        }
 
         plot.ImmediateClearingRender();
 
@@ -277,11 +336,14 @@ int main() {
                 if (isCurrentLathe) ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.4f, 0.5f, 0.6f, 1.0f});
                 else ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.2f, 0.3f, 0.4f, 1.0f});
 
-                if (ImGui::Button(std::to_string(i).c_str(), { ImGui::GetWindowContentRegionWidth() - 19.0f, 24.0f})) {
+                if (ImGui::Button(std::to_string(i).c_str(), { ImGui::GetWindowContentRegionWidth() - 39.0f, 24.0f})) {
                     SetLathe(lathes[i]);
                 }
 
                 ImGui::PopStyleColor(1);
+
+                ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - 29.0f);
+                ImGui::Checkbox((std::string("##") + std::to_string(i)).c_str(), &lathes[i]->visible);
 
                 ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - 9.0f);
                 if (ImGui::Button((std::string("X##") + std::to_string(i)).c_str()) && lathes.size() > 1) {
@@ -295,8 +357,7 @@ int main() {
                 }
             }
             if (ImGui::Button("+", {ImGui::GetWindowContentRegionWidth(), 24.0f})) {
-                lathes.emplace_back(new Lathe());
-                SetLathe(lathes[lathes.size() - 1]);
+                AddSetLathe();
             }
         }
         ImGui::End();
@@ -335,19 +396,34 @@ int main() {
         // Swap the screen buffers
         window.SwapBuffers();
 
+
+
         if (input->Pressed(GLFW_KEY_X)) {
-            lathe->plottedPoints.clear();
-            lathe->graphedPointsY.clear();
-            lathe->graphedPointsZ.clear();
+            if (input->Down(GLFW_KEY_LEFT_SHIFT)) {
+                lathe->plottedPoints.clear();
+                lathe->graphedPointsY.clear();
+                lathe->graphedPointsZ.clear();
+            } else {
+                if (drawMode == MODE_GRAPH_Y) lathe->graphedPointsY.clear();
+                else if (drawMode == MODE_GRAPH_Z) lathe->graphedPointsZ.clear();
+                else if (drawMode == MODE_PLOT) lathe->plottedPoints.clear();
+            }
             UpdateMesh();
         }
+
+        const auto GetLatheIndex = [&]() {
+            for (int i = 0; i < lathes.size(); i++) {
+                if (lathe == lathes[i]) return i;
+            }
+            return -1;
+        };
 
         if (input->Down(GLFW_KEY_LEFT_SHIFT)) {
             if (input->Pressed(GLFW_KEY_UP)) {
                 if (lathe == lathes[0]) {
                     SetLathe(lathes[lathes.size() - 1]);
                 } else {
-                    SetLathe(lathe - 1);
+                    SetLathe(lathes[GetLatheIndex() - 1]);
                 }
             }
 
@@ -355,10 +431,17 @@ int main() {
                 if (lathe == lathes[lathes.size() - 1]) {
                     SetLathe(lathes[0]);
                 } else {
-                    SetLathe(lathe + 1);
+                    SetLathe(lathes[GetLatheIndex() + 1]);
                 }
             }
         }
+
+        if (input->Pressed(GLFW_KEY_N)) {
+            AddSetLathe();
+        }
+        if (input->Pressed(GLFW_KEY_P)) drawMode = MODE_PLOT;
+        if (input->Pressed(GLFW_KEY_Y)) drawMode = MODE_GRAPH_Y;
+        if (input->Pressed(GLFW_KEY_Z)) drawMode = MODE_GRAPH_Z;
 
         // ending stuff
         lastTime = time;

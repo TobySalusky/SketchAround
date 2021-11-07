@@ -26,7 +26,9 @@ public:
     int countPerRing = 10;
     float sampleLength = 0.1f;
 
-    bool wrapStart = true, wrapEnd = true;
+    bool wrapStart = false, wrapEnd = false;
+
+    bool visible = true;
 
     std::vector<glm::vec2> plottedPoints;
     std::vector<glm::vec2> graphedPointsY;

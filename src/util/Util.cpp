@@ -24,3 +24,7 @@ std::string Util::ReadFile(const char *path) {
 
     return content;
 }
+
+glm::vec2 Util::Polar(float mag, float angle) {
+    return {sin(angle) * mag, cos(angle) * mag};
+}

@@ -20,6 +20,9 @@ public:
     static void Destroy();
 
     static void Initialize(GLWindow &window);
+
+private:
+    static ImVec4 RGB(int r, int g, int b);
 };
 
 

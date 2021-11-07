@@ -12,6 +12,7 @@
 
 #include "Revolver.h"
 #include "../graphing/Function.h"
+#include "../util/Util.h"
 
 
 // TODO: wrap end faces!!! (currently hollow)
@@ -25,10 +26,12 @@ std::tuple<std::vector<glm::vec3>, std::vector<unsigned int>> Revolver::Revolve(
 
     for (const auto &point : points) {
         float translateY = !hasGraphY ? 0 : Function::GetY(*revolveData.graphYPtr, point.x);
-        float angleLeanY = !hasGraphY ? 0 : Function::GetSlopeRadians(*revolveData.graphYPtr, point.x);
+        //float angleLeanY = !hasGraphY ? 0 : Function::GetSlopeRadians(*revolveData.graphYPtr, point.x);
+        float angleLeanY = !hasGraphY ? 0 : Util::SlopeToRadians(Function::GetAverageSlope(*revolveData.graphYPtr, point.x, 5));
 
         float translateZ = !hasGraphZ ? 0 : Function::GetY(*revolveData.graphZPtr, point.x);
-        float angleLeanZ = !hasGraphZ ? 0 : -Function::GetSlopeRadians(*revolveData.graphZPtr, point.x);
+        //float angleLeanZ = !hasGraphZ ? 0 : -Function::GetSlopeRadians(*revolveData.graphZPtr, point.x);
+        float angleLeanZ = !hasGraphZ ? 0 : -Util::SlopeToRadians(Function::GetAverageSlope(*revolveData.graphZPtr, point.x, 5));
         // todo: lean
 
         for (int i = 0; i < countPerRing; i++) {
@@ -57,7 +60,12 @@ std::tuple<std::vector<glm::vec3>, std::vector<unsigned int>> Revolver::Revolve(
             unsigned int p3 = p1 + countPerRing;
             unsigned int p4 = p2 + countPerRing;
 
-            if (reverse) {
+            indices.insert(indices.end(), {
+                    p1, p3, p2,
+                    p2, p3, p4,
+            });
+
+            /*if (reverse) {
                 indices.insert(indices.end(), {
                         p2, p3, p1,
                         p4, p3, p2,
@@ -67,7 +75,7 @@ std::tuple<std::vector<glm::vec3>, std::vector<unsigned int>> Revolver::Revolve(
                         p1, p3, p2,
                         p2, p3, p4,
                 });
-            }
+            }*/
         }
     }
 

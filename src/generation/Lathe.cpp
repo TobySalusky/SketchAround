@@ -5,6 +5,7 @@
 #include "Lathe.h"
 #include "Revolver.h"
 #include "Sampler.h"
+#include "CrossSectionTracer.h"
 
 void Lathe::HyperParameterUI() {
 
@@ -43,7 +44,7 @@ void Lathe::HyperParameterUI() {
 }
 
 void Lathe::UpdateMesh() {
-    if (!plottedPoints.empty()) {
+    /*if (!plottedPoints.empty()) {
         const auto sampled = Sampler::DumbSample(plottedPoints, sampleLength);
         mesh.Set(Revolver::Revolve(sampled, {
                 .scaleRadius=scaleRadius,
@@ -56,6 +57,11 @@ void Lathe::UpdateMesh() {
                 .graphYPtr=&(graphedPointsY),
                 .graphZPtr=&(graphedPointsZ),
         }));
+    }*/
+    if (plottedPoints.size() >=2 && graphedPointsY.size() >= 2) {
+        const auto sampled = Sampler::DumbSample(plottedPoints, sampleLength);
+        const auto sampled2 = Sampler::DumbSample(graphedPointsY, sampleLength);
+        mesh.Set(CrossSectionTracer::Trace(sampled, sampled2, {}));
     } else {
         GLfloat vertices[] = {
                 -1.0f, -1.0f, 0.0f,

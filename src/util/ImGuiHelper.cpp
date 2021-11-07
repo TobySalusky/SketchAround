@@ -32,6 +32,12 @@ void ImGuiHelper::Initialize(GLWindow& window) {
     //style.Colors[ImGuiCol_Button] = {255/255.0f, 188/255.0f, 111/255.0f, 1.0f};
     float back = 0.1f;
     style.Colors[ImGuiCol_WindowBg] = {back, back, back, 1.0f};
+    /*style.Colors[ImGuiCol_WindowBg] = RGB(24, 35, 24);
+    style.Colors[ImGuiCol_Button] = RGB(161, 119, 77);
+    style.Colors[ImGuiCol_SliderGrab] = RGB(161, 119, 77);
+    style.Colors[ImGuiCol_MenuBarBg] = RGB(161, 119, 77);
+    style.Colors[ImGuiCol_ButtonHovered] = RGB(255, 155, 60);
+    style.Colors[ImGuiCol_ButtonActive] = RGB(255, 178, 101);*/
 }
 
 void ImGuiHelper::BeginFrame() {
@@ -48,4 +54,8 @@ void ImGuiHelper::EndFrame() {
 void ImGuiHelper::Destroy() {
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
+}
+
+ImVec4 ImGuiHelper::RGB(int r, int g, int b) {
+    return ImVec4((float) r / 255.0f, (float) g / 255.0f, (float) b / 255.0f, 1.0f);
 }

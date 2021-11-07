@@ -12,6 +12,7 @@ class Function {
 public:
     static float GetY(const std::vector<glm::vec2>& funcPoints, float x);
     static float GetSlope(const std::vector<glm::vec2>& funcPoints, float x);
+    static float GetAverageSlope(const std::vector<glm::vec2>& funcPoints, float x, int count);
     static float GetSlopeRadians(const std::vector<glm::vec2>& funcPoints, float x);
 };
 
