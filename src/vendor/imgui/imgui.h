@@ -725,7 +725,7 @@ namespace ImGui
     // - Full-featured replacement for old Columns API.
     // - See Demo->Tables for demo code.
     // - See top of imgui_tables.cpp for general commentary.
-    // - See ImGuiTableFlags_ and ImGuiTableColumnFlags_ enums for a description of available flags.
+    // - See ImGuiTableFlags_ and ImGuiTableColumnFlags_ Enums for a description of available flags.
     // The typical call flow is:
     // - 1. Call BeginTable().
     // - 2. Optionally call TableSetupColumn() to submit column name/flags/defaults.
@@ -915,7 +915,7 @@ namespace ImGui
     IMGUI_API void          ColorConvertHSVtoRGB(float h, float s, float v, float& out_r, float& out_g, float& out_b);
 
     // Inputs Utilities: Keyboard
-    // - For 'int user_key_index' you can use your own indices/enums according to how your backend/engine stored them in io.KeysDown[].
+    // - For 'int user_key_index' you can use your own indices/Enums according to how your backend/engine stored them in io.KeysDown[].
     // - We don't know the meaning of those value. You can use GetKeyIndex() to map a ImGuiKey_ value into the user index.
     IMGUI_API int           GetKeyIndex(ImGuiKey imgui_key);                                    // map ImGuiKey_* values into user's key index. == io.KeyMap[key]
     IMGUI_API bool          IsKeyDown(int user_key_index);                                      // is key being held. == io.KeysDown[user_key_index].
@@ -925,7 +925,7 @@ namespace ImGui
     IMGUI_API void          CaptureKeyboardFromApp(bool want_capture_keyboard_value = true);    // attention: misleading name! manually override io.WantCaptureKeyboard flag next frame (said flag is entirely left for your application to handle). e.g. force capture keyboard when your widget is being hovered. This is equivalent to setting "io.WantCaptureKeyboard = want_capture_keyboard_value"; after the next NewFrame() call.
 
     // Inputs Utilities: Mouse
-    // - To refer to a mouse button, you may use named enums in your code e.g. ImGuiMouseButton_Left, ImGuiMouseButton_Right.
+    // - To refer to a mouse button, you may use named Enums in your code e.g. ImGuiMouseButton_Left, ImGuiMouseButton_Right.
     // - You can also use regular integer: it is forever guaranteed that 0=Left, 1=Right, 2=Middle.
     // - Dragging operations are only reported after mouse has moved a certain distance away from the initial clicking position (see 'lock_threshold' and 'io.MouseDraggingThreshold')
     IMGUI_API bool          IsMouseDown(ImGuiMouseButton button);                               // is mouse button held?
@@ -1698,7 +1698,7 @@ enum ImGuiSliderFlags_
 };
 
 // Identify a mouse button.
-// Those values are guaranteed to be stable and we frequently use 0/1 directly. Named enums provided for convenience.
+// Those values are guaranteed to be stable and we frequently use 0/1 directly. Named Enums provided for convenience.
 enum ImGuiMouseButton_
 {
     ImGuiMouseButton_Left = 0,
@@ -1971,7 +1971,7 @@ struct ImGuiIO
     bool        KeyShift;                       // Keyboard modifier pressed: Shift
     bool        KeyAlt;                         // Keyboard modifier pressed: Alt
     bool        KeySuper;                       // Keyboard modifier pressed: Cmd/Super/Windows
-    bool        KeysDown[512];                  // Keyboard keys that are pressed (ideally left in the "native" order your engine has access to keyboard keys, so you can use your own defines/enums for keys).
+    bool        KeysDown[512];                  // Keyboard keys that are pressed (ideally left in the "native" order your engine has access to keyboard keys, so you can use your own defines/Enums for keys).
     float       NavInputs[ImGuiNavInput_COUNT]; // Gamepad inputs. Cleared back to zero by EndFrame(). Keyboard keys will be auto-mapped and be written here by NewFrame().
 
     // Functions

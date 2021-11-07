@@ -17,7 +17,7 @@ Index of this file:
 // [SECTION] Macros
 // [SECTION] Generic helpers
 // [SECTION] ImDrawList support
-// [SECTION] Widgets support: flags, enums, data structures
+// [SECTION] Widgets support: flags, Enums, data structures
 // [SECTION] Navigation support
 // [SECTION] Columns support
 // [SECTION] Multi-select support
@@ -740,7 +740,7 @@ struct ImDrawDataBuilder
 };
 
 //-----------------------------------------------------------------------------
-// [SECTION] Widgets support: flags, enums, data structures
+// [SECTION] Widgets support: flags, Enums, data structures
 //-----------------------------------------------------------------------------
 
 // Transient per-window flags, reset at the beginning of the frame. For child window, inherited from parent on first Begin().
@@ -870,7 +870,7 @@ enum ImGuiTooltipFlags_
 };
 
 // FIXME: this is in development, not exposed/functional as a generic feature yet.
-// Horizontal/Vertical enums are fixed to 0/1 so they may be used to index ImVec2
+// Horizontal/Vertical Enums are fixed to 0/1 so they may be used to index ImVec2
 enum ImGuiLayoutType_
 {
     ImGuiLayoutType_Horizontal = 0,
@@ -886,7 +886,7 @@ enum ImGuiLogType
     ImGuiLogType_Clipboard
 };
 
-// X/Y enums are fixed to 0/1 so they may be used to index ImVec2
+// X/Y Enums are fixed to 0/1 so they may be used to index ImVec2
 enum ImGuiAxis
 {
     ImGuiAxis_None = -1,

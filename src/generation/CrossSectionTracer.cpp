@@ -61,7 +61,7 @@ CrossSectionTracer::Inflate(const std::vector<Segment> &segments, CrossSectionTr
     return {vertices, indices};
 }
 
-std::vector<Segment>
+std::vector<CrossSectionTracer::Segment>
 CrossSectionTracer::TraceSegments(const std::vector<glm::vec2> &points, const std::vector<glm::vec2> &pathTrace, CrossSectionTraceData data) {
     std::vector<Segment> segments;
 

@@ -1,0 +1,113 @@
+//
+// Created by Tobiathan on 11/7/21.
+//
+
+#include "CrossSectional.h"
+#include "Sampler.h"
+#include "CrossSectionTracer.h"
+
+void CrossSectional::HyperParameterUI() {
+    const auto BindUIMeshUpdate = [&]() {
+        if (ImGui::IsItemActive())
+            UpdateMesh();
+    };
+    ImGui::SliderInt("count-per-ring", &countPerRing, 3, 40);
+    BindUIMeshUpdate();
+
+    ImGui::SliderFloat("sample-length", &sampleLength, 0.01f, 0.5f);
+    BindUIMeshUpdate();
+}
+
+void CrossSectional::UpdateMesh() {
+
+    segments.clear();
+
+    if (boundPoints.size() >=2 && centralPoints.size() >= 2) {
+        const auto sampled = Sampler::DumbSample(boundPoints, sampleLength);
+        const auto sampled2 = Sampler::DumbSample(centralPoints, sampleLength);
+        const auto tempSegments = CrossSectionTracer::TraceSegments(sampled, sampled2, {});
+        mesh.Set(CrossSectionTracer::Inflate(tempSegments, {}));
+        segments.insert(segments.end(), tempSegments.begin(), tempSegments.end());
+    } else {
+
+        GLfloat vertices[] = {
+                -1.0f, -1.0f, 0.0f,
+                0.0f, -1.0f, 1.0f,
+                1.0f, -1.0f, 0.0f,
+                0.0f, 1.0f, 0.0f,
+        };
+
+        GLuint indices[] = {
+                0, 3, 1,
+                1, 3, 2,
+                2, 3, 0,
+                0, 1, 2
+        };
+        mesh.Set(vertices, indices, sizeof(vertices) / sizeof(GLfloat), sizeof(indices) / sizeof(GLuint));
+    };
+}
+
+void CrossSectional::RenderSelf2D(RenderInfo2D renderInfo) {
+    renderInfo.plot.AddLines(centralPoints, centralColor);
+    renderInfo.plot.AddLines(boundPoints, boundColor);
+}
+
+void CrossSectional::RenderGizmos2D(RenderInfo2D renderInfo) {
+    if (renderInfo.drawMode == Enums::MODE_GRAPH_Y) FunctionalAngleGizmo(renderInfo, centralPoints);
+
+    if (segments.empty()) return;
+
+    float col = 0.5f;
+    for (const auto& segment : segments) {
+        renderInfo.plot.AddLines({segment.p1, segment.p2}, {col, col, col, 1.0f}, 0.001f);
+    }
+}
+
+void CrossSectional::AuxParameterUI() {
+    if (ImGui::CollapsingHeader("Aux")) {
+        ImGui::ColorEdit3("model-color", (float *) &color);
+        ImGui::ColorEdit3("bound-color", (float *) &boundColor);
+        ImGui::ColorEdit3("central-color", (float *) &centralColor);
+        ImGui::SliderFloat3("translate", (float *) &modelTranslation, -5.f, 5.f);
+    }
+}
+
+void CrossSectional::ModeSetUI(Enums::DrawMode drawMode) {
+    ModeSet("Bounds", Enums::DrawMode::MODE_PLOT, boundPoints, drawMode);
+    ModeSet("Central-Trace", Enums::DrawMode::MODE_GRAPH_Y, centralPoints, drawMode);
+}
+
+void CrossSectional::ClearAll() {
+    boundPoints.clear();
+    centralPoints.clear();
+}
+
+void CrossSectional::ClearSingle(Enums::DrawMode drawMode) {
+    if (drawMode == Enums::DrawMode::MODE_PLOT) boundPoints.clear();
+    else if (drawMode == Enums::DrawMode::MODE_GRAPH_Y) centralPoints.clear();
+}
+
+void CrossSectional::InputPoints(MouseInputInfo renderInfo) {
+    const auto& onScreen = renderInfo.onScreen;
+    switch (renderInfo.drawMode) {
+        case Enums::DrawMode::MODE_PLOT:
+            if (boundPoints.empty() || boundPoints[boundPoints.size() - 1] != onScreen) {
+                boundPoints.emplace_back(onScreen);
+                //printf("%f\n", onScreen.x);
+                UpdateMesh();
+
+                glm::vec newCameraPos = renderInfo.camera.GetPos();
+                newCameraPos.x = onScreen.x;
+                renderInfo.camera.SetPos(newCameraPos);
+            }
+            break;
+        case Enums::DrawMode::MODE_GRAPH_Y:
+            if (centralPoints.empty() || onScreen.x > centralPoints.back().x) {
+                centralPoints.emplace_back(onScreen);
+                UpdateMesh();
+            }
+            break;
+        case Enums::MODE_GRAPH_Z:
+            break;
+    }
+}

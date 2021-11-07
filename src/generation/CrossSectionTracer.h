@@ -10,9 +10,6 @@
 #include "../vendor/glm/vec2.hpp"
 
 
-struct Segment {
-    glm::vec2 p1{}, p2{};
-};
 
 struct CrossSectionTraceData {
 
@@ -20,6 +17,10 @@ struct CrossSectionTraceData {
 
 class CrossSectionTracer {
 public:
+    struct Segment {
+        glm::vec2 p1{}, p2{};
+    };
+
     static std::tuple<std::vector<glm::vec3>, std::vector<unsigned int>> Trace(const std::vector<glm::vec2> &points, const std::vector<glm::vec2> &pathTrace, CrossSectionTraceData data);
     static std::tuple<std::vector<glm::vec3>, std::vector<unsigned int>> Inflate(const std::vector<Segment> &segments, CrossSectionTraceData data);
     static std::vector<Segment> TraceSegments(const std::vector<glm::vec2> &points, const std::vector<glm::vec2> &pathTrace, CrossSectionTraceData data);
