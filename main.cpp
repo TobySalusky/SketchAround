@@ -178,7 +178,7 @@ int main() {
             if (!renderModelObject->IsVisible()) continue;
 
             renderModelObject->Render3D({shader3D, mainLight});
-            renderModelObject->RenderGizmos3D({shader3D, mainLight});
+            if (renderModelObject == modelObject) renderModelObject->RenderGizmos3D({shader3D, mainLight});
         }
 
         // 3D Gizmos

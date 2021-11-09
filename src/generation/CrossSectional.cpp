@@ -30,21 +30,7 @@ void CrossSectional::UpdateMesh() {
         mesh.Set(CrossSectionTracer::Inflate(tempSegments, {}));
         segments.insert(segments.end(), tempSegments.begin(), tempSegments.end());
     } else {
-
-        GLfloat vertices[] = {
-                -1.0f, -1.0f, 0.0f,
-                0.0f, -1.0f, 1.0f,
-                1.0f, -1.0f, 0.0f,
-                0.0f, 1.0f, 0.0f,
-        };
-
-        GLuint indices[] = {
-                0, 3, 1,
-                1, 3, 2,
-                2, 3, 0,
-                0, 1, 2
-        };
-        mesh.Set(vertices, indices, sizeof(vertices) / sizeof(GLfloat), sizeof(indices) / sizeof(GLuint));
+        mesh.Set(MeshUtil::Empty());
     };
 }
 
