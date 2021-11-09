@@ -10,7 +10,7 @@ Figure 1. Leg: Demonstration of cross-sectional inflation
 
 Figure 2. Tree: Demonstration of parameterized revolved surfaces & multi-component models
 
-![demo revolved tree](https://raw.githubusercontent.com/TobySalusky/SeniorResearch/main/docs/images/LegDemo.png?raw=true)
+![demo revolved tree](https://raw.githubusercontent.com/TobySalusky/SeniorResearch/main/docs/images/TreeDemo.png?raw=true)
 
 > Written in **`C++`**
 > 
