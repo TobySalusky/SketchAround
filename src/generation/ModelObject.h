@@ -55,7 +55,8 @@ public:
     virtual void ClearAll() {}
     virtual void ClearSingle(Enums::DrawMode drawMode) {}
 
-    void Render(RenderInfo3D renderInfo);
+    void Render3D(RenderInfo3D renderInfo);
+    virtual void RenderGizmos3D(RenderInfo3D renderInfo);
     void Render2D(RenderInfo2D renderInfo);
 
     virtual void RenderSelf2D(RenderInfo2D renderInfo) {}

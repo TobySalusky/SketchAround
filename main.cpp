@@ -34,11 +34,12 @@
 #include "src/generation/Lathe.h"
 #include "src/generation/CrossSectional.h"
 #include "src/misc/Undo.h"
+#include "src/gl/MeshUtil.h"
 
 #define UNDO(a) undos.emplace_back(Undo([](Undo::State state) { a }));
 
 // Window dimensions
-const GLuint WIDTH = 1600, HEIGHT = 900;
+const GLuint WIDTH = 800, HEIGHT = 600;
 Enums::DrawMode drawMode = Enums::DrawMode::MODE_PLOT;
 bool cameraMode = false;
 float lastTime = 0.0f;
@@ -81,6 +82,7 @@ int main() {
     Camera camera{glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -M_PI_2, 0};
 
     Light mainLight{{0.5f, 0.5f, 0.5f, 0.5f}, {-1.0f, -1.0f, -1.0f}, 0.8f};
+    Light line3DGizmoLight{{1.0f, 0.0f, 0.0f, 0.5f}, {-1.0f, -1.0f, -1.0f}, 1.0f};
 
     glm::mat4 projection = glm::perspective(45.0f, (GLfloat)window.GetBufferWidth()/(GLfloat)window.GetBufferHeight(), 0.1f, 100.0f);
 
@@ -96,7 +98,8 @@ int main() {
 
     Texture texture{"../assets/images/test.png"};
 
-
+    Mesh planeGizmo {};
+    Mesh line3DGizmo {};
 
     Mesh2D plot;
 
@@ -147,7 +150,6 @@ int main() {
             camera.Update(deltaTime, input);
         }
 
-
         // >> OpenGL RENDER ========================
 
         RenderTarget::Bind(modelScene);
@@ -175,7 +177,22 @@ int main() {
         for (const auto renderModelObject : modelObjects) {
             if (!renderModelObject->IsVisible()) continue;
 
-            renderModelObject->Render({shader3D, mainLight});
+            renderModelObject->Render3D({shader3D, mainLight});
+            renderModelObject->RenderGizmos3D({shader3D, mainLight});
+        }
+
+        // 3D Gizmos
+        {
+            /*line3DGizmoLight.Apply(shader3D);
+            planeGizmo.Set(MeshUtil::Square({onScreen.x, 0.0f, 0.0f}, {1.0f, 0.0f, 0.0f}, 2.0f));
+            planeGizmo.Render3D();
+
+            line3DGizmo.Set(MeshUtil::PolyLine({
+               {-1.0f, -1.0f, -1.0f},
+               {0.0f, 0.0f, 0.0f},
+               {1.0f, 0.0f, 1.0f},
+            }));
+            line3DGizmo.Render();*/
         }
 
         shader.Disable();
@@ -231,7 +248,7 @@ int main() {
         // >> ===================================
 
 
-        // >> ImGui Render ====================
+        // >> ImGui Render3D ====================
         ImGuiHelper::BeginFrame();
 
 
@@ -249,7 +266,7 @@ int main() {
 
         ImGui::Begin("General");
 
-        ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate,
+        ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate,
                     ImGui::GetIO().Framerate);
 
         modelObject->AuxParameterUI();

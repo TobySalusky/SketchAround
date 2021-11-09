@@ -5,6 +5,7 @@
 #include "CrossSectional.h"
 #include "Sampler.h"
 #include "CrossSectionTracer.h"
+#include "../gl/MeshUtil.h"
 
 void CrossSectional::HyperParameterUI() {
     const auto BindUIMeshUpdate = [&]() {
@@ -109,5 +110,32 @@ void CrossSectional::InputPoints(MouseInputInfo renderInfo) {
             break;
         case Enums::MODE_GRAPH_Z:
             break;
+    }
+}
+
+std::vector<glm::vec3> Convert (const std::vector<glm::vec2>& vec) {
+    std::vector<glm::vec3> points3D;
+    points3D.reserve(vec.size());
+    for (const auto& point : vec) {
+        points3D.emplace_back(glm::vec3(point.x, point.y, 0.0f));
+    }
+    return points3D;
+}
+
+
+
+void CrossSectional::RenderGizmos3D(RenderInfo3D renderInfo) {
+    if (centralPoints.size() > 2) {
+        centralAxisMesh.Set(MeshUtil::PolyLine(Convert(centralPoints)));
+        lineLight.SetColor(centralColor);
+        lineLight.Apply(renderInfo.shader3D);
+        centralAxisMesh.Render();
+    }
+
+    if (boundPoints.size() > 2) {
+        centralAxisMesh.Set(MeshUtil::PolyLine(Convert(boundPoints)));
+        lineLight.SetColor(boundColor);
+        lineLight.Apply(renderInfo.shader3D);
+        centralAxisMesh.Render();
     }
 }

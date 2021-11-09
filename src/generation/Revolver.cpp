@@ -90,5 +90,5 @@ std::tuple<std::vector<glm::vec3>, std::vector<unsigned int>> Revolver::Revolve(
     if (revolveData.wrapStart) WrapEnd(0);
     if (revolveData.wrapEnd) WrapEnd((points.size() - 1) * countPerRing);
 
-    return std::make_tuple(vertices, indices);
+    return {vertices, indices};
 }

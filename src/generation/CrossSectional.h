@@ -25,6 +25,8 @@ public:
     void RenderSelf2D(RenderInfo2D renderInfo) final;
     void RenderGizmos2D(RenderInfo2D renderInfo) final;
 
+    void RenderGizmos3D(RenderInfo3D renderInfo) final;
+
 private:
     int countPerRing = 10;
 
@@ -37,6 +39,9 @@ private:
 
     glm::vec4 boundColor = {1.0f, 0.0f, 0.0f, 1.0f};
     glm::vec4 centralColor = {0.0f, 0.0f, 1.0f, 1.0f};
+
+    Mesh centralAxisMesh = {};
+    Light lineLight = {{1.0f, 0.0f, 0.0f, 0.5f}, {-1.0f, -1.0f, -1.0f}, 1.0f};
 };
 
 

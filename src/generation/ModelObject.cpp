@@ -9,7 +9,7 @@
 #include "../graphing/Function.h"
 #include "../util/Util.h"
 
-void ModelObject::Render(RenderInfo3D renderInfo) {
+void ModelObject::Render3D(RenderInfo3D renderInfo) {
     renderInfo.shader3D.SetModel(GenModelMat());
     renderInfo.mainLight.SetColor(color);
     renderInfo.mainLight.Apply(renderInfo.shader3D);
@@ -30,3 +30,5 @@ void ModelObject::FunctionalAngleGizmo(RenderInfo2D renderInfo, const std::vecto
         renderInfo.plot.AddLines(gizmo, {1.0f, 0.0f, 1.0f, 1.0f});
     }
 }
+
+void ModelObject::RenderGizmos3D(RenderInfo3D renderInfo) {}
