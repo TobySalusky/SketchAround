@@ -22,6 +22,7 @@
 #include "../Enums.h"
 #include "../gl/Mesh2D.h"
 #include "../gl/Camera.h"
+#include "../editing/EditingContext.h"
 
 
 struct RenderInfo3D {
@@ -41,13 +42,21 @@ struct MouseInputInfo {
     Camera& camera;
 };
 
+struct EditingInfo {
+    EditingContext& editContext;
+    Input& input;
+    Enums::DrawMode drawMode;
+    glm::vec2 onScreen;
+    Camera& camera;
+};
+
 class ModelObject {
 public:
     ModelObject() = default;
 
     virtual void HyperParameterUI() {}
     virtual void AuxParameterUI() {}
-    virtual void ModeSetUI(Enums::DrawMode drawMode) {}
+    virtual void ModeSetUI(Enums::DrawMode& drawMode) {}
 
     virtual void InputPoints(MouseInputInfo renderInfo) {}
     virtual void UpdateMesh() {}
@@ -69,6 +78,10 @@ public:
     [[nodiscard]] bool IsVisible() const { return visible; };
     [[nodiscard]] bool* VisibilityPtr() { return &visible; };
 
+    void EditMakeup(EditingInfo info);
+
+    virtual std::vector<glm::vec2>& GetPointsRefByMode(Enums::DrawMode drawMode) = 0;
+
 protected:
     bool visible = true;
     glm::vec3 color = {0.5f, 0.5f, 0.5f};
@@ -77,7 +90,7 @@ protected:
 
     Mesh mesh{nullptr, nullptr, 0, 0};
 
-    void ModeSet (const char* title, Enums::DrawMode newDrawMode, std::vector<glm::vec2>& clearableVec, Enums::DrawMode drawMode) {
+    void ModeSet (const char* title, Enums::DrawMode newDrawMode, std::vector<glm::vec2>& clearableVec, Enums::DrawMode& drawMode) {
         if (drawMode == newDrawMode) ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.4f, 0.5f, 0.6f, 1.0f});
         else ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.2f, 0.3f, 0.4f, 1.0f});
         if (ImGui::Button(title)) drawMode = newDrawMode;
@@ -91,6 +104,7 @@ protected:
     };
 
     static void FunctionalAngleGizmo(RenderInfo2D renderInfo, const std::vector<glm::vec2>& points);
+    void EditCurrentLines(EditingInfo info);
 };
 
 

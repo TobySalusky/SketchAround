@@ -12,6 +12,9 @@ public:
     enum DrawMode {
         MODE_PLOT, MODE_GRAPH_Y, MODE_GRAPH_Z
     };
+    enum TransformationType {
+        TRANSFORM_DRAG, TRANSFORM_ROTATE, TRANSFORM_SCALE, TRANSFORM_SMEAR
+    };
 };
 
 

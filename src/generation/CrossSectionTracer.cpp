@@ -12,13 +12,13 @@
 
 
 std::tuple<std::vector<glm::vec3>, std::vector<unsigned int>>
-CrossSectionTracer::Trace(const std::vector<glm::vec2> &points, const std::vector<glm::vec2> &pathTrace, CrossSectionTraceData data) {
+CrossSectionTracer::Trace(const std::vector<glm::vec2> &points, const std::vector<glm::vec2> &pathTrace, const CrossSectionTraceData& data) {
     return Inflate(TraceSegments(points, pathTrace, data), data);
 }
 
 std::tuple<std::vector<glm::vec3>, std::vector<unsigned int>>
-CrossSectionTracer::Inflate(const std::vector<Segment> &segments, CrossSectionTraceData data) {
-    const int countPerRing = 10;
+CrossSectionTracer::Inflate(const std::vector<Segment> &segments, const CrossSectionTraceData& data) {
+    const int countPerRing = data.countPerRing;
 
     std::vector<glm::vec3> vertices;
     std::vector<unsigned int> indices;
@@ -58,11 +58,24 @@ CrossSectionTracer::Inflate(const std::vector<Segment> &segments, CrossSectionTr
         }
     }
 
+    const auto WrapEnd = [&](unsigned int startIndex) {
+        for (int i = 0; i < countPerRing - 2; i++) {
+            indices.insert(indices.end(), {
+                    startIndex, (startIndex + 1 + i), (startIndex + 2 + i),
+            });
+        }
+    };
+
+    if (!segments.empty()) {
+        if (data.wrapStart) WrapEnd(0);
+        if (data.wrapEnd) WrapEnd((segments.size() - 1) * countPerRing);
+    }
+
     return {vertices, indices};
 }
 
 std::vector<CrossSectionTracer::Segment>
-CrossSectionTracer::TraceSegments(const std::vector<glm::vec2> &points, const std::vector<glm::vec2> &pathTrace, CrossSectionTraceData data) {
+CrossSectionTracer::TraceSegments(const std::vector<glm::vec2> &points, const std::vector<glm::vec2> &pathTrace, const CrossSectionTraceData& data) {
     std::vector<Segment> segments;
 
     // TODO: optimize!!!

@@ -13,7 +13,7 @@ class CrossSectional : public ModelObject {
 public:
     void HyperParameterUI() final;
     void AuxParameterUI() final;
-    void ModeSetUI(Enums::DrawMode drawMode) final;
+    void ModeSetUI(Enums::DrawMode& drawMode) final;
     void UpdateMesh() final;
 
     void InputPoints(MouseInputInfo renderInfo) override;
@@ -27,10 +27,15 @@ public:
 
     void RenderGizmos3D(RenderInfo3D renderInfo) final;
 
+    std::vector<glm::vec2>& GetPointsRefByMode(Enums::DrawMode drawMode) final;
+
 private:
     int countPerRing = 10;
+    bool wrapStart = false, wrapEnd = false;
 
     //bool wrapStart = false, wrapEnd = false;
+
+    CrossSectionTracer::CrossSectionTraceData GenTraceData();
 
     std::vector<glm::vec2> boundPoints;
     std::vector<glm::vec2> centralPoints;

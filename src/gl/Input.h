@@ -13,15 +13,15 @@ class Input {
 public:
     GLfloat mouseX = 0.0f, mouseY = 0.0f, lastMouseX = 0.0f, lastMouseY = 0.0f, mouseDiffX = 0.0f, mouseDiffY = 0.0f;
 
-    bool mouseDown = false;
+    bool mouseDown = false, mousePressed = false, mouseUnpressed = false;
 
     void SetKey(int key, bool val);
 
-    bool Pressed(int key) { return keysPressed[key]; }
-    bool Unpressed(int key) { return keysUnpressed[key]; }
+    [[nodiscard]] bool Pressed(int key) const { return keysPressed[key]; }
+    [[nodiscard]] bool Unpressed(int key) const { return keysUnpressed[key]; }
 
-    bool Down(int key) { return keys[key]; }
-    bool Up(int key) { return !keys[key]; }
+    [[nodiscard]] bool Down(int key) const { return keys[key]; }
+    [[nodiscard]] bool Up(int key) const { return !keys[key]; }
 
     void EndUpdate();
 

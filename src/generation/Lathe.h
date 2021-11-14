@@ -13,7 +13,7 @@ public:
     void HyperParameterUI() final;
     void AuxParameterUI() final;
     void UpdateMesh() final;
-    void ModeSetUI(Enums::DrawMode drawMode) final;
+    void ModeSetUI(Enums::DrawMode& drawMode) final;
 
     void InputPoints(MouseInputInfo renderInfo) override;
 
@@ -23,6 +23,8 @@ public:
 
     void RenderSelf2D(RenderInfo2D renderInfo) final;
     void RenderGizmos2D(RenderInfo2D renderInfo) final;
+
+    std::vector<glm::vec2>& GetPointsRefByMode(Enums::DrawMode drawMode) final;
 
 private:
     float scaleRadius = 1.0f, scaleZ = 1.0f, scaleY = 1.0f, leanScalar = 0.25f;

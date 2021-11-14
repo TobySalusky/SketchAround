@@ -35,16 +35,18 @@
 #include "src/generation/CrossSectional.h"
 #include "src/misc/Undo.h"
 #include "src/gl/MeshUtil.h"
+#include "src/animation/Timeline.h"
+#include "src/util/Rectangle.h"
 
 #define UNDO(a) undos.emplace_back(Undo([](Undo::State state) { a }));
 
 // Window dimensions
-const GLuint WIDTH = 800, HEIGHT = 600;
-Enums::DrawMode drawMode = Enums::DrawMode::MODE_PLOT;
+const GLuint WIDTH = 1000, HEIGHT = 800;
+Enums::DrawMode drawMode = Enums::MODE_PLOT;
 bool cameraMode = false;
 float lastTime = 0.0f;
 
-bool graphFocused;
+bool graphFocused = false;
 
 glm::vec2 MouseToScreen(glm::vec2 mouseVec) {
     return {mouseVec.x / WIDTH * 2 - 1, (mouseVec.y / HEIGHT - 0.5f) * -2};
@@ -96,12 +98,12 @@ int main() {
 
     SetCameraMode(false);
 
-    Texture texture{"../assets/images/test.png"};
+    //Texture texture{"../assets/images/test.png"};
 
     Mesh planeGizmo {};
-    Mesh line3DGizmo {};
 
     Mesh2D plot;
+    Rectangle plotRect;
 
     auto UpdateMesh = [&]() {
         modelObject->UpdateMesh();
@@ -126,29 +128,27 @@ int main() {
     SetLathe(modelObjects[0]);
 
 
+    EditingContext editContext;
+
+    Timeline timeline = Timeline::Create(window);
+
     while (!window.ShouldClose()) // >> UPDATE LOOP ======================================
     {
-
-        if (input->Down(GLFW_KEY_ESCAPE)) window.Close();
-        if (input->Pressed(GLFW_KEY_L)) {
-            SetCameraMode(!cameraMode);
-        }
-
-        // setup vars
+        // setup time
         auto time = (float) glfwGetTime();
         float deltaTime = time - lastTime;
 
-        // Update Events
-        // Input
+        // hotkeys
+        if (input->Down(GLFW_KEY_ESCAPE)) window.Close();
+        if (input->Pressed(GLFW_KEY_L)) SetCameraMode(!cameraMode);
+
+        // Input Updating
         input->EndUpdate();
         glfwPollEvents();
+        glm::vec2 onScreen = Util::NormalizeToRectNPFlipped(input->GetMouse(), plotRect);
 
-        auto onScreen = (MouseToScreen(input->GetMouse()) + glm::vec2(0.5f, 0.5f)) * 2.0f;
-        auto normMouse = MouseToScreenNorm01(input->GetMouse());
-
-        if (cameraMode) {
-            camera.Update(deltaTime, input);
-        }
+        // Update Events Start
+        if (cameraMode) camera.Update(deltaTime, input);
 
         // >> OpenGL RENDER ========================
 
@@ -167,13 +167,11 @@ int main() {
 
         // UNIFORMS
         material.Apply(shader3D);
-
         shader3D.SetView(camera.CalculateViewMat());
         shader3D.SetProjection(projection);
         shader3D.SetCameraPos(camera.GetPos());
 
-
-
+        // Rendering models
         for (const auto renderModelObject : modelObjects) {
             if (!renderModelObject->IsVisible()) continue;
 
@@ -185,14 +183,7 @@ int main() {
         {
             /*line3DGizmoLight.Apply(shader3D);
             planeGizmo.Set(MeshUtil::Square({onScreen.x, 0.0f, 0.0f}, {1.0f, 0.0f, 0.0f}, 2.0f));
-            planeGizmo.Render3D();
-
-            line3DGizmo.Set(MeshUtil::PolyLine({
-               {-1.0f, -1.0f, -1.0f},
-               {0.0f, 0.0f, 0.0f},
-               {1.0f, 0.0f, 1.0f},
-            }));
-            line3DGizmo.Render();*/
+            planeGizmo.Render3D();*/
         }
 
         shader.Disable();
@@ -216,7 +207,8 @@ int main() {
 
         // line gizmo
         {
-            std::vector<glm::vec2> gizmo {{onScreen.x, -1.0f}, {onScreen.x, 1.0f}};
+            std::vector<glm::vec2> gizmo{{onScreen.x, -1.0f},
+                                         {onScreen.x, 1.0f}};
             float col = 0.7f;
             plot.AddLines(gizmo, {col, col, col, 1.0f}, 0.001f);
         }
@@ -242,8 +234,16 @@ int main() {
 
         RenderTarget::Unbind();
 
+        timeline.Render(shader2D, drawMode);
+
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+
+        // >> ===================================
+
+        // >> TIMELINE ==========================
+
+
 
         // >> ===================================
 
@@ -251,35 +251,31 @@ int main() {
         // >> ImGui Render3D ====================
         ImGuiHelper::BeginFrame();
 
-
+        // 3D-view Window
         ImGui::Begin("Model Scene");
-        ImGui::Image((void *) (intptr_t) modelScene.GetTexture(), {WIDTH / 2.0f, HEIGHT / 2.0f}, {0.0f, 1.0f},
-                     {1.0f, 0.0f});
-        ImGui::End();
-
-        ImGui::Begin("Graph Scene");
-        ImGui::ImageButton((void *) (intptr_t) graphScene.GetTexture(), {WIDTH / 2.0f, HEIGHT / 2.0f}, {0.0f, 1.0f},
-                           {1.0f, 0.0f});
-        //graphFocused = ImGui::IsWindowHovered() && ImGui::IsWindowFocused();
-        graphFocused = ImGui::IsItemActive();
-        ImGui::End();
-
-        ImGui::Begin("General");
-
-        ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate,
-                    ImGui::GetIO().Framerate);
-
-        modelObject->AuxParameterUI();
-
-        if (ImGui::CollapsingHeader("Graph View")) {
-            ImGui::SliderFloat("minX", &graphView.minX, -10.0f, 0.0f);
-            ImGui::SliderFloat("maxX", &graphView.maxX, 0.0f, 10.0f);
-            ImGui::SliderFloat("minY", &graphView.minY, -10.0f, 0.0f);
-            ImGui::SliderFloat("maxY", &graphView.maxY, 0.0f, 10.0f);
+        {
+            ImGui::Image((void *) (intptr_t) modelScene.GetTexture(), {WIDTH / 2.0f, HEIGHT / 2.0f}, {0.0f, 1.0f},
+                         {1.0f, 0.0f});
         }
+        ImGui::End();
 
-        modelObject->HyperParameterUI();
+        // Settings Window
+        ImGui::Begin("General");
+        {
+            ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate,
+                        ImGui::GetIO().Framerate);
 
+            modelObject->AuxParameterUI();
+
+            if (ImGui::CollapsingHeader("Graph View")) {
+                ImGui::SliderFloat("minX", &graphView.minX, -10.0f, 0.0f);
+                ImGui::SliderFloat("maxX", &graphView.maxX, 0.0f, 10.0f);
+                ImGui::SliderFloat("minY", &graphView.minY, -10.0f, 0.0f);
+                ImGui::SliderFloat("maxY", &graphView.maxY, 0.0f, 10.0f);
+            }
+
+            modelObject->HyperParameterUI();
+        }
         ImGui::End();
 
         // MODE window
@@ -289,6 +285,7 @@ int main() {
         }
         ImGui::End();
 
+        // Model Instantiation Window
         ImGui::Begin("Models");
         {
             for (int i = 0; i < modelObjects.size(); i++) {
@@ -322,15 +319,26 @@ int main() {
         }
         ImGui::End();
 
+        // Timeline window
+        timeline.GUI(WIDTH, HEIGHT);
+
+        // Graph window (must be last??)
+        ImGui::Begin("Graph Scene");
+        {
+            ImGui::ImageButton((void *) (intptr_t) graphScene.GetTexture(), {WIDTH / 2.0f, HEIGHT / 2.0f}, {0.0f, 1.0f},
+                               {1.0f, 0.0f});
+            plotRect = ImGuiHelper::ItemRectRemovePadding(4.0f, 3.0f);
+            // TODO: IsItemActive works perfectly for mouse, but focus works better for keyboard :/
+            graphFocused = ImGui::IsItemFocused();
+        }
+        ImGui::End();
 
         ImGuiHelper::EndFrame();
         // ====================================
 
-
-        // UPDATE MESH
-        if (graphFocused && input->mouseDown) {
-            modelObject->InputPoints({drawMode, onScreen, camera});
-            // TODO: add undo for drawing
+        // >> UPDATE MESH
+        if (graphFocused && !cameraMode) {
+            modelObject->EditMakeup({editContext, *input, drawMode, onScreen, camera});
         }
 
 
@@ -376,9 +384,9 @@ int main() {
         if (input->Pressed(GLFW_KEY_N)) {
             AddSetLathe();
         }
-        if (input->Pressed(GLFW_KEY_P)) drawMode = Enums::DrawMode::MODE_PLOT;
-        if (input->Pressed(GLFW_KEY_Y)) drawMode = Enums::DrawMode::MODE_GRAPH_Y;
-        if (input->Pressed(GLFW_KEY_T)) drawMode = Enums::DrawMode::MODE_GRAPH_Z;
+        if (input->Pressed(GLFW_KEY_P)) drawMode = Enums::MODE_PLOT;
+        if (input->Pressed(GLFW_KEY_Y)) drawMode = Enums::MODE_GRAPH_Y;
+        if (input->Pressed(GLFW_KEY_T)) drawMode = Enums::MODE_GRAPH_Z;
 
         if (input->Pressed(GLFW_KEY_Z) && input->Down(GLFW_KEY_LEFT_SHIFT)) {
             if (!undos.empty()) {
@@ -386,6 +394,9 @@ int main() {
                 undos.pop_back();
             }
         }
+
+        // POST UPDATE EVENTS
+        timeline.Update({*input, deltaTime, *modelObject, drawMode});
 
         // ending stuff
         lastTime = time;

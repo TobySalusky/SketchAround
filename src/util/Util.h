@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include "../vendor/glm/glm.hpp"
+#include "Rectangle.h"
 
 class Util {
 public:
@@ -33,8 +34,28 @@ public:
         return f1 * (1 - t) + f2 * t;
     }
 
-    static float sin01(float x) {
+    static float Sin01(float x) {
         return (sin(x) + 1.0f) / 2.0f;
+    }
+
+    static glm::vec2 NormalizeToRect01(glm::vec2 pos, Rectangle rect) {
+        return {(pos.x - rect.x) / rect.width, ((pos.y - rect.y) / rect.height)};
+    }
+
+    static glm::vec2 NormalizeToRect01Flipped(glm::vec2 pos, Rectangle rect) {
+        return NormalizeToRect01(pos, rect) * glm::vec2(1.0f, -1.0f);
+    }
+
+    static glm::vec2 NormalizeToRectNP(glm::vec2 pos, Rectangle rect) {
+        return NormalizeToRect01(pos, rect) * 2.0f - glm::vec2(1.0f, 1.0f);
+    }
+
+    static glm::vec2 NormalizeToRectNPFlipped(glm::vec2 pos, Rectangle rect) {
+        return NormalizeToRectNP(pos, rect) * glm::vec2(1.0f, -1.0f);
+    }
+
+    static bool VecIsNormalizedNP(glm::vec2 vec) {
+        return vec.x >= -1.0f && vec.x <= 1.0f && vec.y >= -1.0f && vec.y <= 1.0f;
     }
 };
 

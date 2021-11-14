@@ -17,6 +17,17 @@ void CrossSectional::HyperParameterUI() {
 
     ImGui::SliderFloat("sample-length", &sampleLength, 0.01f, 0.5f);
     BindUIMeshUpdate();
+
+
+
+    if (ImGui::Checkbox("wrap-start", &wrapStart)) {
+        UpdateMesh();
+    }
+
+    ImGui::SameLine();
+    if (ImGui::Checkbox("wrap-end", &wrapEnd)) {
+        UpdateMesh();
+    }
 }
 
 void CrossSectional::UpdateMesh() {
@@ -26,8 +37,10 @@ void CrossSectional::UpdateMesh() {
     if (boundPoints.size() >=2 && centralPoints.size() >= 2) {
         const auto sampled = Sampler::DumbSample(boundPoints, sampleLength);
         const auto sampled2 = Sampler::DumbSample(centralPoints, sampleLength);
-        const auto tempSegments = CrossSectionTracer::TraceSegments(sampled, sampled2, {});
-        mesh.Set(CrossSectionTracer::Inflate(tempSegments, {}));
+
+        const CrossSectionTracer::CrossSectionTraceData traceData = GenTraceData();
+        const auto tempSegments = CrossSectionTracer::TraceSegments(sampled, sampled2, traceData);
+        mesh.Set(CrossSectionTracer::Inflate(tempSegments, traceData));
         segments.insert(segments.end(), tempSegments.begin(), tempSegments.end());
     } else {
         mesh.Set(MeshUtil::Empty());
@@ -59,7 +72,7 @@ void CrossSectional::AuxParameterUI() {
     }
 }
 
-void CrossSectional::ModeSetUI(Enums::DrawMode drawMode) {
+void CrossSectional::ModeSetUI(Enums::DrawMode& drawMode) {
     ModeSet("Bounds", Enums::DrawMode::MODE_PLOT, boundPoints, drawMode);
     ModeSet("Central-Trace", Enums::DrawMode::MODE_GRAPH_Y, centralPoints, drawMode);
 }
@@ -112,16 +125,25 @@ std::vector<glm::vec3> Convert (const std::vector<glm::vec2>& vec) {
 
 void CrossSectional::RenderGizmos3D(RenderInfo3D renderInfo) {
     if (centralPoints.size() > 2) {
-        centralAxisMesh.Set(MeshUtil::PolyLine(Convert(centralPoints)));
+        centralAxisMesh.Set(MeshUtil::PolyLine(Convert(Sampler::DumbSample(centralPoints, 0.075f))));
         lineLight.SetColor(centralColor);
         lineLight.Apply(renderInfo.shader3D);
         centralAxisMesh.Render();
     }
 
     if (boundPoints.size() > 2) {
-        centralAxisMesh.Set(MeshUtil::PolyLine(Convert(boundPoints)));
+        centralAxisMesh.Set(MeshUtil::PolyLine(Convert(Sampler::DumbSample(boundPoints, 0.075f))));
         lineLight.SetColor(boundColor);
         lineLight.Apply(renderInfo.shader3D);
         centralAxisMesh.Render();
     }
+}
+
+CrossSectionTracer::CrossSectionTraceData CrossSectional::GenTraceData() {
+    return {countPerRing, wrapStart, wrapEnd};
+}
+
+std::vector<glm::vec2>& CrossSectional::GetPointsRefByMode(Enums::DrawMode drawMode) {
+    if (drawMode == Enums::MODE_GRAPH_Y) return centralPoints;
+    return boundPoints;
 }

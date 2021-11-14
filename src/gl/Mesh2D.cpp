@@ -3,6 +3,7 @@
 //
 
 #include "Mesh2D.h"
+#include "../util/Util.h"
 
 Mesh2D::Mesh2D() {
     VBO = 0;
@@ -157,4 +158,15 @@ void Mesh2D::AddQuad(glm::vec2 corner1, glm::vec2 corner2, glm::vec4 color) {
             p1, p2, p3,
             p2, p3, p4,
     });
+}
+
+void Mesh2D::AddPolygonOutline(glm::vec2 center, float rad, int pointCount, glm::vec4 color, float width) {
+    std::vector<glm::vec2> points;
+
+    for (int i = 0; i <= pointCount; i++) {
+        float angle = (float) M_PI * 2 * ((float) ((float) i * 1 / (float) pointCount));
+        points.emplace_back(center + Util::Polar(rad, angle));
+    }
+
+    AddLines(points, color, width);
 }

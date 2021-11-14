@@ -29,6 +29,7 @@ public:
     void AddQuad(glm::vec2 corner1, glm::vec2 corner2, glm::vec3 color) {
         AddQuad(corner1, corner2, glm::vec4(color.r, color.g, color.b, 1.0f));
     }
+    void AddPolygonOutline(glm::vec2 center, float rad, int pointCount, glm::vec4 color, float width = 0.01f);
 
     void ImmediateClearingRender();
     void ImmediateRender();

@@ -82,6 +82,15 @@ void Lathe::RenderSelf2D(RenderInfo2D renderInfo) {
 void Lathe::RenderGizmos2D(RenderInfo2D renderInfo) {
     if (renderInfo.drawMode == Enums::MODE_GRAPH_Y) FunctionalAngleGizmo(renderInfo, graphedPointsY);
     else if (renderInfo.drawMode == Enums::MODE_GRAPH_Z) FunctionalAngleGizmo(renderInfo, graphedPointsZ);
+
+    const auto WrapGizmo = [&](glm::vec2 startPos) {
+        // TODO: make dotted-line
+        renderInfo.plot.AddLines({startPos, {startPos.x, 0.0f}}, {0.7f, 0.85f, 0.7f, 1.0f}, 0.002f);
+    };
+    if (plottedPoints.size() >= 2) {
+        if (wrapStart) WrapGizmo(plottedPoints.front());
+        if (wrapEnd) WrapGizmo(plottedPoints.back());
+    }
 }
 
 void Lathe::AuxParameterUI() {
@@ -94,7 +103,7 @@ void Lathe::AuxParameterUI() {
     }
 }
 
-void Lathe::ModeSetUI(Enums::DrawMode drawMode) {
+void Lathe::ModeSetUI(Enums::DrawMode& drawMode) {
     ModeSet("Plot", Enums::DrawMode::MODE_PLOT, plottedPoints, drawMode);
     ModeSet("Graph-Y", Enums::DrawMode::MODE_GRAPH_Y, graphedPointsY, drawMode);
     ModeSet("Graph-Z", Enums::DrawMode::MODE_GRAPH_Z, graphedPointsZ, drawMode);
@@ -122,9 +131,10 @@ void Lathe::InputPoints(MouseInputInfo renderInfo) {
                 //printf("%f\n", onScreen.x);
                 UpdateMesh();
 
-                glm::vec newCameraPos = renderInfo.camera.GetPos();
-                newCameraPos.x = onScreen.x;
-                renderInfo.camera.SetPos(newCameraPos);
+
+//                glm::vec newCameraPos = renderInfo.camera.GetPos();
+//                newCameraPos.x = onScreen.x;
+//                renderInfo.camera.SetPos(newCameraPos);
             }
             break;
         case Enums::DrawMode::MODE_GRAPH_Z:
@@ -137,4 +147,10 @@ void Lathe::InputPoints(MouseInputInfo renderInfo) {
             break;
     }
 
+}
+
+std::vector<glm::vec2>& Lathe::GetPointsRefByMode(Enums::DrawMode drawMode) {
+    if (drawMode == Enums::MODE_GRAPH_Y) return graphedPointsY;
+    if (drawMode == Enums::MODE_GRAPH_Z) return graphedPointsZ;
+    return plottedPoints;
 }

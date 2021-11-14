@@ -92,10 +92,14 @@ void GLWindow::CreateInput() {
     glfwSetMouseButtonCallback(window, [](GLFWwindow* rawSelf, int button, int action, int mods){
         auto self = static_cast<GLWindow*>(glfwGetWindowUserPointer(rawSelf));
         if (button == GLFW_MOUSE_BUTTON_LEFT) {
-            if (action == GLFW_PRESS)
+            if (action == GLFW_PRESS) {
                 self->input.mouseDown = true;
-            else if (action == GLFW_RELEASE)
+                self->input.mousePressed = true;
+            }
+            else if (action == GLFW_RELEASE) {
                 self->input.mouseDown = false;
+                self->input.mouseUnpressed = true;
+            }
         }
     });
 }
