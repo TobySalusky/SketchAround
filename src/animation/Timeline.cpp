@@ -10,6 +10,8 @@ void Timeline::Update(const TimelineUpdateInfo& info) {
     const auto&[input, deltaTime, modelObject, drawMode] = info;
 
     const auto SampleAtTime = [&](float time) {
+        bool diffFlag = false;
+
         for (auto& [mode, keyFrameLayer] : keyFrameLayers) {
             if (keyFrameLayer.HasValue()) {
                 auto& pointsRef = info.modelObject.GetPointsRefByMode(mode);
@@ -17,8 +19,19 @@ void Timeline::Update(const TimelineUpdateInfo& info) {
 
                 auto animatedPoints = keyFrameLayer.GetAnimatedVal(time);
                 pointsRef.insert(pointsRef.end(), animatedPoints.begin(), animatedPoints.end());
-                info.modelObject.UpdateMesh();
+                diffFlag = true;
             }
+        }
+
+        for (auto& [valLabel, keyFrameLayer] : floatKeyFrameLayers) {
+            if (keyFrameLayer.HasValue()) {
+                *floatKeyFrameLayerPtrs[valLabel] = keyFrameLayer.GetAnimatedVal(time);
+                diffFlag = true;
+            }
+        }
+
+        if (diffFlag) {
+            info.modelObject.UpdateMesh();
         }
     };
 
@@ -39,6 +52,10 @@ void Timeline::Update(const TimelineUpdateInfo& info) {
             if (input.Down(GLFW_KEY_LEFT_SHIFT)) {
                 for (auto& [mode, keyFrameLayer] : keyFrameLayers) {
                     keyFrameLayers[mode].RemoveAtTime(currentTime);
+                }
+
+                for (auto& [valLabel, keyFrameLayer] : floatKeyFrameLayers) {
+                    floatKeyFrameLayers[valLabel].RemoveAtTime(currentTime);
                 }
             } else {
                 keyFrameLayers[drawMode].RemoveAtTime(currentTime);
@@ -78,16 +95,22 @@ void Timeline::Render(const Shader2D& shader2D, Enums::DrawMode drawMode) {
     glClear(GL_COLOR_BUFFER_BIT);
     shader2D.Enable();
 
-    float height = 0.2f * (float) ((int) drawMode + 1);
+    float height = RowToHeight(drawMode);
     canvas.AddQuad({-1.0f, height - 0.1f}, {1.0f, height + 0.1f}, {0.21f, 0.21f, 0.21f, 1.0f});
 
     for (float i = -0.9f; i < 1.0f; i += 0.1f) { // NOLINT(cert-flp30-c)
         TopToBottomLineAt(i, {0.35f, 0.35f, 0.35f, 1.0f});
     }
-    TopToBottomLineAt(currentTime, {0.8f, 0.8f, 1.0f, 0.0f}, 0.004f);
+    TopToBottomLineAt(currentTime, focused ? glm::vec4(0.8f, 0.8f, 1.0f, 0.0f) : glm::vec4(0.55f, 0.55f, 0.7f, 0.0f), 0.004f);
 
     for (auto& [mode, keyFrameLayer] : keyFrameLayers) {
         keyFrameLayer.Render(canvas, (int) mode, currentTime);
+    }
+
+    int floatLayerInc = 0;
+    for (auto& [label, keyFrameLayer] : floatKeyFrameLayers) {
+        keyFrameLayer.Render(canvas, 3 + floatLayerInc, currentTime);
+        floatLayerInc++;
     }
 
     canvas.ImmediateClearingRender();
@@ -98,8 +121,7 @@ void Timeline::Render(const Shader2D& shader2D, Enums::DrawMode drawMode) {
 void Timeline::GUI(unsigned int WIDTH, unsigned int HEIGHT) {
     ImGui::Begin("Timeline");
     {
-        ImGui::ImageButton((void *) (intptr_t) scene.GetTexture(), {WIDTH / 2.0f, HEIGHT / 2.0f}, {0.0f, 1.0f},
-                           {1.0f, 0.0f});
+        ImGui::ImageButton((void *) (intptr_t) scene.GetTexture(), {WIDTH / 2.0f, HEIGHT / 2.0f}, {0.0f, 1.0f}, {1.0f, 0.0f});
         guiRect = ImGuiHelper::ItemRectRemovePadding(4.0f, 3.0f);
         focused = ImGui::IsItemFocused();
     }

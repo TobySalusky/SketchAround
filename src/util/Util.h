@@ -57,6 +57,12 @@ public:
     static bool VecIsNormalizedNP(glm::vec2 vec) {
         return vec.x >= -1.0f && vec.x <= 1.0f && vec.y >= -1.0f && vec.y <= 1.0f;
     }
+
+    static float SinSmooth01(float t) {
+        if (t < 0.0f) return 0.0f;
+        if (t > 1.0f) return 1.0f;
+        return (sin((t * (float) M_PI) - ((float) M_PI / 2.0f)) + 1.0f) / 2.0f;
+    }
 };
 
 

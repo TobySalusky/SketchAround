@@ -11,8 +11,8 @@
 
 class CrossSectional : public ModelObject {
 public:
-    void HyperParameterUI() final;
-    void AuxParameterUI() final;
+    void HyperParameterUI(const UIInfo& info) final;
+    void AuxParameterUI(const UIInfo& info) final;
     void ModeSetUI(Enums::DrawMode& drawMode) final;
     void UpdateMesh() final;
 

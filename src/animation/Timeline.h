@@ -32,6 +32,30 @@ public:
 
     [[nodiscard]] bool IsFocused() const { return focused; }
 
+    bool HasFloatLayer(const std::string& valLabel) {
+        return floatKeyFrameLayers.contains(valLabel);
+    }
+
+    void AddFloatLayer(const std::string& valLabel, float* valPtr) {
+        floatKeyFrameLayers[valLabel] = KeyFrameLayer<float>();
+        floatKeyFrameLayerPtrs[valLabel] = valPtr;
+        UpdateFloat(valLabel, *valPtr);
+    }
+
+    void RemoveFloatLayer(const std::string& valLabel) {
+        floatKeyFrameLayers.erase(valLabel);
+        floatKeyFrameLayerPtrs.erase(valLabel);
+    }
+
+
+    void UpdateFloat(const std::string& valLabel, float val) {
+        floatKeyFrameLayers[valLabel].Insert({val, currentTime});
+    }
+
+    static float RowToHeight(int row) {
+        return 0.9f - (float) row * 0.2f;
+    }
+
 private:
 
     bool playing = false;
@@ -42,6 +66,8 @@ private:
     Rectangle guiRect;
 
     std::unordered_map<Enums::DrawMode, KeyFrameLayer<std::vector<glm::vec2>>> keyFrameLayers;
+    std::unordered_map<std::string, KeyFrameLayer<float>> floatKeyFrameLayers;
+    std::unordered_map<std::string, float*> floatKeyFrameLayerPtrs;
 
     explicit Timeline(RenderTarget timelineScene) : scene(timelineScene) {
         keyFrameLayers[Enums::MODE_PLOT] = KeyFrameLayer<std::vector<glm::vec2>>();

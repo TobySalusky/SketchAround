@@ -21,8 +21,13 @@ struct KeyFrame {
         return Lerp(frame1, frame2, t);
     }
 
+    static float Lerp(const KeyFrame<float>& frame1, const KeyFrame<float>& frame2, float t) {
+        return frame1.val + (frame2.val - frame1.val) * t;
+    }
+
+
     static std::vector<glm::vec2> Lerp(const KeyFrame<std::vector<glm::vec2>>& frame1, const KeyFrame<std::vector<glm::vec2>>& frame2, float t) {
-        // TODO: find count
+        // TODO: better count??
         return LineLerper::MorphPolyLine(frame1.val, frame2.val, t, (int) std::max(frame1.val.size(), frame2.val.size()));
     }
 };

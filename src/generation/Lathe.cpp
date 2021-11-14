@@ -6,30 +6,49 @@
 #include "Sampler.h"
 #include "CrossSectionTracer.h"
 #include "Revolver.h"
+#include "../animation/Timeline.h" // FIXME? cyclical dependency sus
 
-void Lathe::HyperParameterUI() {
+void Lathe::HyperParameterUI(const UIInfo& info) {
 
-    const auto BindUIMeshUpdate = [&]() {
+    const auto BindUIMeshUpdate = [&] { // TODO: extract as ModelObject class funcs
         if (ImGui::IsItemActive())
             UpdateMesh();
     };
-    ImGui::SliderFloat("scale-radius", &scaleRadius, 0.1f, 3.0f);
-    BindUIMeshUpdate();
 
-    ImGui::SliderFloat("scale-z", &scaleZ, 0.1f, 3.0f);
-    BindUIMeshUpdate();
+    const auto AnimatableSliderValUpdateBound = [&] (const std::string& label, float* ptr, float min, float max) {
+        bool animated = info.timeline.HasFloatLayer(label);
+        ImGui::Checkbox(("##" + label).c_str(), &animated);
+        if (ImGui::IsItemClicked()) {
+            if (!animated) {
+                info.timeline.AddFloatLayer(label, ptr);
+            } else {
+                info.timeline.RemoveFloatLayer(label);
+            }
+        }
 
-    ImGui::SliderFloat("scale-y", &scaleY, 0.1f, 3.0f);
-    BindUIMeshUpdate();
+        ImGui::SameLine();
+        ImGui::SliderFloat(label.c_str(), ptr, min, max);
+        if (ImGui::IsItemActive()) {
+            if (animated) {
+                info.timeline.UpdateFloat(label, *ptr);
+            }
+            UpdateMesh();
+        }
+    };
 
-    ImGui::SliderFloat("lean-scalar", &leanScalar, 0.0f, 1.0f);
-    BindUIMeshUpdate();
+    AnimatableSliderValUpdateBound("scale-radius", &scaleRadius, 0.1f, 3.0f);
 
+    AnimatableSliderValUpdateBound("scale-z", &scaleZ, 0.1f, 3.0f);
+
+    AnimatableSliderValUpdateBound("scale-y", &scaleY, 0.1f, 3.0f);
+
+    AnimatableSliderValUpdateBound("lean-scalar", &leanScalar, 0.0f, 1.0f);
+
+    // TODO:
     ImGui::SliderInt("count-per-ring", &countPerRing, 3, 40);
     BindUIMeshUpdate();
 
-    ImGui::SliderFloat("sample-length", &sampleLength, 0.01f, 0.5f);
-    BindUIMeshUpdate();
+    AnimatableSliderValUpdateBound("sample-length", &sampleLength, 0.01f, 0.5f);
 
     if (ImGui::Checkbox("wrap-start", &wrapStart)) {
         UpdateMesh();
@@ -93,7 +112,7 @@ void Lathe::RenderGizmos2D(RenderInfo2D renderInfo) {
     }
 }
 
-void Lathe::AuxParameterUI() {
+void Lathe::AuxParameterUI(const UIInfo& info) {
     if (ImGui::CollapsingHeader("Aux")) {
         ImGui::ColorEdit3("model-color", (float *) &color);
         ImGui::ColorEdit3("plot-color", (float *) &plotColor);

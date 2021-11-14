@@ -50,12 +50,18 @@ struct EditingInfo {
     Camera& camera;
 };
 
+class Timeline;
+
+struct UIInfo {
+    Timeline& timeline;
+};
+
 class ModelObject {
 public:
     ModelObject() = default;
 
-    virtual void HyperParameterUI() {}
-    virtual void AuxParameterUI() {}
+    virtual void HyperParameterUI(const UIInfo& info) {}
+    virtual void AuxParameterUI(const UIInfo& info) {}
     virtual void ModeSetUI(Enums::DrawMode& drawMode) {}
 
     virtual void InputPoints(MouseInputInfo renderInfo) {}

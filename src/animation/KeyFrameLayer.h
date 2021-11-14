@@ -10,6 +10,7 @@
 #include "../vendor/glm/vec2.hpp"
 #include "../gl/Mesh2D.h"
 #include "../Enums.h"
+#include "../util/Util.h"
 
 
 template <class T>
@@ -22,6 +23,10 @@ public:
                 return;
             }
         }
+    }
+
+    static float RowToHeight(int row) {
+        return 0.9f - (float) row * 0.2f;
     }
 
     void Render(Mesh2D& canvas, int line, float time) {
@@ -52,7 +57,7 @@ public:
                 const auto& frame = frames[i];
                 bool selected = (frame.time == frame1.time || frame.time == frame2.time);
 
-                canvas.AddLines({{frame.time, 0.2f * (float) (line + 1) - 0.1f}, {frame.time, 0.2f * (float) (line + 1) + 0.1f}}, {0.43f, 0.43f, 0.43f, 1.0f}, 0.003f);
+                canvas.AddLines({{frame.time, RowToHeight(line) - 0.1f}, {frame.time, RowToHeight(line) + 0.1f}}, {0.43f, 0.43f, 0.43f, 1.0f}, 0.003f);
 
                 glm::vec4 color = [&]{
                     if (frame.time == frame1.time && frame.time == frame2.time) return glm::vec4(1.0f, 0.5f, 0.0f, 1.0f);
@@ -60,20 +65,39 @@ public:
                     if (frame.time == frame2.time) return (glm::vec4(1.0f, 0.5f, 0.0f, 1.0f) * t + glm::vec4(1.0f, 1.0f, 1.0f, 1.0f) * (1.0f - t));
                     return glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
                 }();
-                canvas.AddPolygonOutline({frame.time, 0.2f * (float) (line + 1)}, 0.03f, 5, color);
+                canvas.AddPolygonOutline({frame.time, RowToHeight(line)}, 0.03f, 5, color);
                 if (i != frames.size() - 1) {
+                    glm::vec2 p1 = glm::vec2(frame.time, RowToHeight(line) - 0.1f);
+                    glm::vec2 p2 = glm::vec2(frames[i + 1].time, RowToHeight(line) + 0.1f);
+
                     bool onLine = (frame.time == frame1.time && frame.time != frame2.time);
                     glm::vec4 lineColor = onLine ? glm::vec4(0.85f, 1.0f, 0.85f, 1.0f) : glm::vec4(0.7f, 0.7f, 0.7f, 1.0f);
-                    canvas.AddLines({{frame.time, 0.2f * (float) (line + 1) - 0.1f}, {frames[i + 1].time, 0.2f * (float) (line + 1) + 0.1f}}, lineColor, 0.003f);
+
+                    const auto GetGraphPosAtT = [&](float t) {
+                        return p1 + glm::vec2(t, Util::SinSmooth01(t)) * (p2 - p1);
+                    };
+
+                    {
+                        int pCount = std::round((frames[i + 1].time - frame.time) * 10.0f) * 4 + 1;
+                        std::vector<glm::vec2> vec;
+                        vec.reserve(pCount);
+
+                        for (int drawP = 0; drawP <= pCount; drawP++) {
+                            vec.push_back(GetGraphPosAtT((float) drawP / (float) pCount));
+                        }
+
+                        canvas.AddLines(vec, lineColor, 0.003f);
+                    }
+
                     if (onLine) {
-                        canvas.AddPolygonOutline(glm::vec2(frame.time, 0.2f * (float) (line + 1) - 0.1f) * (1.0f - t) + glm::vec2(frames[i + 1].time, 0.2f * (float) (line + 1) + 0.1f) * t, 0.013f, 6, lineColor);
+                        canvas.AddPolygonOutline(GetGraphPosAtT(t), 0.013f, 6, lineColor);
                     }
                 }
             }
 
         }
-        SideToSideLine(0.2f * (float) (line + 1) - 0.1f);
-        SideToSideLine(0.2f * (float) (line + 1) + 0.1f);
+        SideToSideLine(RowToHeight(line) - 0.1f);
+        SideToSideLine(RowToHeight(line) + 0.1f);
     }
 
     bool HasValue() {
@@ -97,6 +121,7 @@ public:
         }();
 
         float t = (time - frame1.time) / (frame2.time - frame1.time); // Linear
+        t = Util::SinSmooth01(t);
 
         return KeyFrame<T>::GetAnimatedValueAtT(frame1, frame2, t);
     }

@@ -265,7 +265,7 @@ int main() {
             ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate,
                         ImGui::GetIO().Framerate);
 
-            modelObject->AuxParameterUI();
+            modelObject->AuxParameterUI({timeline});
 
             if (ImGui::CollapsingHeader("Graph View")) {
                 ImGui::SliderFloat("minX", &graphView.minX, -10.0f, 0.0f);
@@ -274,7 +274,7 @@ int main() {
                 ImGui::SliderFloat("maxY", &graphView.maxY, 0.0f, 10.0f);
             }
 
-            modelObject->HyperParameterUI();
+            modelObject->HyperParameterUI({timeline});
         }
         ImGui::End();
 

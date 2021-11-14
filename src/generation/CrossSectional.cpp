@@ -7,7 +7,7 @@
 #include "CrossSectionTracer.h"
 #include "../gl/MeshUtil.h"
 
-void CrossSectional::HyperParameterUI() {
+void CrossSectional::HyperParameterUI(const UIInfo& info) {
     const auto BindUIMeshUpdate = [&]() {
         if (ImGui::IsItemActive())
             UpdateMesh();
@@ -63,7 +63,7 @@ void CrossSectional::RenderGizmos2D(RenderInfo2D renderInfo) {
     }
 }
 
-void CrossSectional::AuxParameterUI() {
+void CrossSectional::AuxParameterUI(const UIInfo& info) {
     if (ImGui::CollapsingHeader("Aux")) {
         ImGui::ColorEdit3("model-color", (float *) &color);
         ImGui::ColorEdit3("bound-color", (float *) &boundColor);
