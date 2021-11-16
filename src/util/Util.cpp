@@ -28,3 +28,10 @@ std::string Util::ReadFile(const char *path) {
 glm::vec2 Util::Polar(float mag, float angle) {
     return {sin(angle) * mag, cos(angle) * mag};
 }
+
+glm::vec2 Util::AveragePos(const std::vector<glm::vec2> &points)  {
+    glm::vec2 pointSum = std::accumulate(points.begin(),  points.end(), glm::vec2(0, 0), [](glm::vec2 p1, glm::vec2 p2) {
+        return p1 + p2;
+    });
+    return pointSum / (float) points.size();
+}

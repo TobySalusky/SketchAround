@@ -7,11 +7,24 @@
 
 
 #include <iostream>
+#include <vector>
+#include <numeric>
 #include "../vendor/glm/glm.hpp"
 #include "Rectangle.h"
 
+typedef glm::vec2 Vec2;
+typedef glm::vec2 Vec3;
+typedef glm::vec4 Vec4;
+typedef glm::vec4 RGBA;
+typedef std::vector<glm::vec2> Vec2List;
+typedef std::vector<glm::vec3> Vec3List;
+
+
+
 class Util {
 public:
+    static glm::vec2 AveragePos(const std::vector<glm::vec2>& points);
+
     static void LogVec3(glm::vec3 vec) {
         std::cout << '<' << vec.x << ", " << vec.y << ", " << vec.z << ">\n";
     }

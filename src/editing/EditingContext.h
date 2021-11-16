@@ -6,10 +6,7 @@
 #define SENIORRESEARCH_EDITINGCONTEXT_H
 
 
-#include "../Enums.h"
-#include "../vendor/glm/vec2.hpp"
-
-#include <vector>
+#include "../util/Includes.h"
 
 class EditingContext {
 public:
@@ -26,9 +23,7 @@ public:
         transformStartInfo = initInfo;
         lastMousePos = initInfo.initMousePos;
 
-        if (transformType == Enums::TRANSFORM_SMEAR) {
-            transformStoreInitPoints = points; // copy points
-        }
+        transformStoreInitPoints = points;
     }
 
     [[nodiscard]] bool IsTransformationActive() const { return transformationActive; }
@@ -38,7 +33,9 @@ public:
     [[nodiscard]] glm::vec2 GetTransformStartPos() const { return transformStartInfo.initMousePos; }
 
 
-    void CancelTransform() {
+    void CancelTransform(std::vector<glm::vec2>& points) {
+        points.clear();
+        points.insert(points.end(), transformStoreInitPoints.begin(),  transformStoreInitPoints.end());
         EndTransform();
     }
 

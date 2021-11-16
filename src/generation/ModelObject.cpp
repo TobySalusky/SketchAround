@@ -3,13 +3,12 @@
 //
 
 #include "ModelObject.h"
-#include "Revolver.h"
 #include "Sampler.h"
-#include "CrossSectionTracer.h"
 #include "../graphing/Function.h"
 #include "../util/Util.h"
 
 #include <glfw3.h>
+#include <numeric>
 
 void ModelObject::Render3D(RenderInfo3D renderInfo) {
     renderInfo.shader3D.SetModel(GenModelMat());
@@ -77,20 +76,25 @@ void ModelObject::EditCurrentLines(EditingInfo info) {
                 float lastAngle = Util::Angle(editContext.GetLastMousePos());
                 float newAngle = Util::Angle(info.onScreen);
                 float angleDiff = newAngle - lastAngle;
-                Diff([=](glm::vec2 vec) {
-                    float angle = Util::Angle(vec);
-                    float mag = glm::length(vec);
-                    return Util::Polar(mag, -(angle - (float) M_PI_2 + angleDiff));
+
+                const Vec2 avgPos = Util::AveragePos(points);
+                Diff([=](Vec2 vec) {
+                    float angle = Util::Angle(vec - avgPos);
+                    float mag = glm::length(vec - avgPos);
+                    return avgPos + Util::Polar(mag, -(angle - (float) M_PI_2 + angleDiff));
                 });
                 break;
             }
             case Enums::TRANSFORM_SCALE: {
-                float lastMag = glm::length(editContext.GetLastMousePos());
-                float newMag = glm::length(info.onScreen);
+                const Vec2 avgPos = Util::AveragePos(points);
+
+                float lastMag = glm::length(editContext.GetLastMousePos() - avgPos);
+                float newMag = glm::length(info.onScreen - avgPos);
+
                 Diff([=](glm::vec2 vec) {
-                    float angle = Util::Angle(vec);
-                    float mag = glm::length(vec);
-                    return Util::Polar(mag / lastMag * newMag, -(angle - (float) M_PI_2));
+                    float angle = Util::Angle(vec - avgPos);
+                    float mag = glm::length(vec - avgPos);
+                    return avgPos + Util::Polar(mag / lastMag * newMag, -(angle - (float) M_PI_2));
                 });
                 break;
             }
@@ -101,12 +105,7 @@ void ModelObject::EditCurrentLines(EditingInfo info) {
 
                 glm::vec2 initPos = editContext.GetTransformStartPos();
                 glm::vec2 delta = info.onScreen - initPos;
-//                DiffBase([=](glm::vec2 vec) { // CIRCULAR DROP-OFF
-//                    float initMag = glm::length(vec - initPos);
-//                    float mult = sqrt(rad - initMag * initMag);
-//                    if (std::isnan(mult)) mult = 0;
-//                    return vec + delta * mult;
-//                });
+
                 DiffBase([=](glm::vec2 vec) {
                     float initMag = glm::length(vec - initPos);
                     return vec + delta * SmearFalloff(initMag);
@@ -121,7 +120,8 @@ void ModelObject::EditCurrentLines(EditingInfo info) {
         } else if (input.Pressed(GLFW_KEY_ENTER)) {
             editContext.FinalizeTransform();
         } else if (input.Pressed(GLFW_KEY_SPACE)) {
-            editContext.CancelTransform();
+            editContext.CancelTransform(points);
+            UpdateMesh();
         }
 
     } else {

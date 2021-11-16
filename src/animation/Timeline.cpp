@@ -44,8 +44,7 @@ void Timeline::Update(const TimelineUpdateInfo& info) {
             const std::vector<glm::vec2> pointsRef = modelObject.GetPointsRefByMode(drawMode);
 
             if (pointsRef.size() >= 2) {
-                std::vector<glm::vec2> pointsCopy = pointsRef;
-                keyFrameLayers[drawMode].Insert({pointsCopy, currentTime});
+                keyFrameLayers[drawMode].Insert({pointsRef, currentTime});
             }
         }
         if (input.Pressed(GLFW_KEY_X)) {
