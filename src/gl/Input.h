@@ -14,6 +14,7 @@ public:
     GLfloat mouseX = 0.0f, mouseY = 0.0f, lastMouseX = 0.0f, lastMouseY = 0.0f, mouseDiffX = 0.0f, mouseDiffY = 0.0f;
 
     bool mouseDown = false, mousePressed = false, mouseUnpressed = false;
+    bool mouseRightDown = false, mouseRightPressed = false, mouseRightUnpressed = false;
 
     void SetKey(int key, bool val);
 

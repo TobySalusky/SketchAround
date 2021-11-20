@@ -48,6 +48,7 @@ struct EditingInfo {
     Enums::DrawMode drawMode;
     glm::vec2 onScreen;
     Camera& camera;
+    bool graphFocused;
 };
 
 class Timeline;
@@ -64,11 +65,14 @@ public:
     virtual void AuxParameterUI(const UIInfo& info) {}
     virtual void ModeSetUI(Enums::DrawMode& drawMode) {}
 
-    virtual void InputPoints(MouseInputInfo renderInfo) {}
+    virtual Enums::LineType LineTypeByMode(Enums::DrawMode drawMode) = 0;
+
+    virtual void InputPoints(MouseInputInfo renderInfo);
     virtual void UpdateMesh() {}
+    virtual std::tuple<std::vector<glm::vec3>, std::vector<GLuint>> GenMeshTuple() = 0;
 
     virtual void ClearAll() {}
-    virtual void ClearSingle(Enums::DrawMode drawMode) {}
+    void ClearSingle(Enums::DrawMode drawMode);
 
     void Render3D(RenderInfo3D renderInfo);
     virtual void RenderGizmos3D(RenderInfo3D renderInfo);
@@ -88,11 +92,31 @@ public:
 
     virtual std::vector<glm::vec2>& GetPointsRefByMode(Enums::DrawMode drawMode) = 0;
 
+    void DiffPoints(Enums::DrawMode drawMode) {
+        diffed[drawMode] = true;
+    }
+
+    bool HasDiff(Enums::DrawMode drawMode) {
+        return diffed[drawMode];
+    }
+
+    void UnDiffAll() {
+        UnDiffPoints(Enums::MODE_PLOT);
+        UnDiffPoints(Enums::MODE_GRAPH_Y);
+        UnDiffPoints(Enums::MODE_GRAPH_Z);
+    }
+
+    void UnDiffPoints(Enums::DrawMode drawMode) {
+        diffed[drawMode] = false;
+    }
+
 protected:
     bool visible = true;
     glm::vec3 color = {0.5f, 0.5f, 0.5f};
-    glm::vec3 modelTranslation = {0.0f, 0.0f, -2.5f};
+    glm::vec3 modelTranslation = {0.0f, 0.0f, 0.0f};
     float sampleLength = 0.1f;
+
+    bool diffed[3] {};
 
     Mesh mesh{nullptr, nullptr, 0, 0};
 

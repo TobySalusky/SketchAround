@@ -6,6 +6,7 @@
 #define SENIORRESEARCH_INCLUDES_H
 
 #include <vector>
+#include <optional>
 #include "Util.h"
 #include "../Enums.h"
 

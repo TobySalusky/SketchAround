@@ -49,7 +49,7 @@ void CrossSectional::UpdateMesh() {
 
 void CrossSectional::RenderSelf2D(RenderInfo2D renderInfo) {
     renderInfo.plot.AddLines(centralPoints, centralColor);
-    renderInfo.plot.AddLines(boundPoints, boundColor);
+    renderInfo.plot.AddLines(boundPoints, {0.0f, 0.0f, 0.0f, 1.0f});
 }
 
 void CrossSectional::RenderGizmos2D(RenderInfo2D renderInfo) {
@@ -80,36 +80,8 @@ void CrossSectional::ModeSetUI(Enums::DrawMode& drawMode) {
 void CrossSectional::ClearAll() {
     boundPoints.clear();
     centralPoints.clear();
-}
-
-void CrossSectional::ClearSingle(Enums::DrawMode drawMode) {
-    if (drawMode == Enums::DrawMode::MODE_PLOT) boundPoints.clear();
-    else if (drawMode == Enums::DrawMode::MODE_GRAPH_Y) centralPoints.clear();
-}
-
-void CrossSectional::InputPoints(MouseInputInfo renderInfo) {
-    const auto& onScreen = renderInfo.onScreen;
-    switch (renderInfo.drawMode) {
-        case Enums::DrawMode::MODE_PLOT:
-            if (boundPoints.empty() || boundPoints[boundPoints.size() - 1] != onScreen) {
-                boundPoints.emplace_back(onScreen);
-                //printf("%f\n", onScreen.x);
-                UpdateMesh();
-
-                glm::vec newCameraPos = renderInfo.camera.GetPos();
-                newCameraPos.x = onScreen.x;
-                renderInfo.camera.SetPos(newCameraPos);
-            }
-            break;
-        case Enums::DrawMode::MODE_GRAPH_Y:
-            if (centralPoints.empty() || onScreen.x > centralPoints.back().x) {
-                centralPoints.emplace_back(onScreen);
-                UpdateMesh();
-            }
-            break;
-        case Enums::MODE_GRAPH_Z:
-            break;
-    }
+    DiffPoints(Enums::MODE_PLOT);
+    DiffPoints(Enums::MODE_GRAPH_Y);
 }
 
 std::vector<glm::vec3> Convert (const std::vector<glm::vec2>& vec) {
@@ -146,4 +118,21 @@ CrossSectionTracer::CrossSectionTraceData CrossSectional::GenTraceData() {
 std::vector<glm::vec2>& CrossSectional::GetPointsRefByMode(Enums::DrawMode drawMode) {
     if (drawMode == Enums::MODE_GRAPH_Y) return centralPoints;
     return boundPoints;
+}
+
+Enums::LineType CrossSectional::LineTypeByMode(Enums::DrawMode drawMode) {
+    if (drawMode == Enums::MODE_PLOT) return Enums::POLYLINE;
+    return Enums::PIECEWISE;
+}
+
+std::tuple<std::vector<glm::vec3>, std::vector<GLuint>> CrossSectional::GenMeshTuple() {
+    if (boundPoints.size() >=2 && centralPoints.size() >= 2) {
+        const auto sampled = Sampler::DumbSample(boundPoints, sampleLength);
+        const auto sampled2 = Sampler::DumbSample(centralPoints, sampleLength);
+
+        const CrossSectionTracer::CrossSectionTraceData traceData = GenTraceData();
+        return CrossSectionTracer::Trace(sampled, sampled2, traceData);
+    }
+
+    return MeshUtil::Empty();
 }

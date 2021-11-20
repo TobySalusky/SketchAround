@@ -9,17 +9,32 @@
 #include "Input.h"
 #include "../vendor/glm/glm.hpp"
 #include "shaders/Shader3D.h"
+#include "../util/Util.h"
 
 class Camera {
 public:
     Camera(glm::vec3 pos, glm::vec3 worldUp, GLfloat yaw, GLfloat pitch);
 
-    void Update(float deltaTime, Input* input);
+    void Update(float deltaTime, Input* input, bool cameraMode);
 
     glm::mat4 CalculateViewMat();
 
     void SetPos(glm::vec3 newPos) { pos = newPos; }
     glm::vec3 GetPos() { return pos; }
+
+    [[nodiscard]] GLfloat GetYaw() const;
+
+    void SetYaw(GLfloat yaw);
+
+    [[nodiscard]] GLfloat GetPitch() const;
+
+    [[nodiscard]] Vec3 GenRight() const { return right; }
+
+    void SetPitch(GLfloat pitch);
+
+    static float ClampedPitch(float pitch) {
+        return std::clamp(pitch, -(float)M_PI_2 * 0.999f, (float)M_PI_2 * 0.999f);
+    }
 
 private:
     void CalculateDir();

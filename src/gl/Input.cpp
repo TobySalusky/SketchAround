@@ -14,6 +14,15 @@ void Input::EndUpdate() {
 
     mousePressed = false;
     mouseUnpressed = false;
+
+    mouseRightPressed = false;
+    mouseRightUnpressed = false;
+
+    lastMouseX = mouseX;
+    lastMouseY = mouseY;
+
+    mouseDiffX = mouseX - lastMouseX;
+    mouseDiffY = mouseY - lastMouseY;
 }
 
 void Input::SetKey(int key, bool val) {

@@ -25,6 +25,10 @@ public:
     void Set(const std::vector<glm::vec3> &vertices, const std::vector<GLuint> &indices);
     void Render() const;
     void ClearMesh();
+
+    static std::string GenOBJ(const std::vector<glm::vec3> &vertices, const std::vector<GLuint> &indices);
+    static std::string GenOBJ(const std::tuple<std::vector<glm::vec3>, std::vector<GLuint>> &tuple);
+
 private:
     GLuint VAO, VBO, IBO, indexCount;
 };

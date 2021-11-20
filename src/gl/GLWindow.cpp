@@ -79,14 +79,8 @@ void GLWindow::CreateInput() {
     glfwSetCursorPosCallback(window, [](GLFWwindow* rawSelf, double xPos, double yPos){
         auto self = static_cast<GLWindow*>(glfwGetWindowUserPointer(rawSelf));
 
-        self->input.lastMouseX = self->input.mouseX;
-        self->input.lastMouseY = self->input.mouseY;
-
         self->input.mouseX = (float) xPos;
         self->input.mouseY = (float) yPos;
-
-        self->input.mouseDiffX = self->input.mouseX - self->input.lastMouseX;
-        self->input.mouseDiffY = self->input.mouseY - self->input.lastMouseY;
     });
 
     glfwSetMouseButtonCallback(window, [](GLFWwindow* rawSelf, int button, int action, int mods){
@@ -99,6 +93,15 @@ void GLWindow::CreateInput() {
             else if (action == GLFW_RELEASE) {
                 self->input.mouseDown = false;
                 self->input.mouseUnpressed = true;
+            }
+        } else if (button == GLFW_MOUSE_BUTTON_RIGHT) {
+            if (action == GLFW_PRESS) {
+                self->input.mouseRightDown = true;
+                self->input.mouseRightPressed = true;
+            }
+            else if (action == GLFW_RELEASE) {
+                self->input.mouseRightDown = false;
+                self->input.mouseRightUnpressed = true;
             }
         }
     });

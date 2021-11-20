@@ -16,11 +16,7 @@ public:
     void ModeSetUI(Enums::DrawMode& drawMode) final;
     void UpdateMesh() final;
 
-    void InputPoints(MouseInputInfo renderInfo) override;
-
     void ClearAll() override;
-
-    void ClearSingle(Enums::DrawMode drawMode) override;
 
     void RenderSelf2D(RenderInfo2D renderInfo) final;
     void RenderGizmos2D(RenderInfo2D renderInfo) final;
@@ -28,6 +24,10 @@ public:
     void RenderGizmos3D(RenderInfo3D renderInfo) final;
 
     std::vector<glm::vec2>& GetPointsRefByMode(Enums::DrawMode drawMode) final;
+
+    Enums::LineType LineTypeByMode(Enums::DrawMode drawMode) final;
+
+    std::tuple<std::vector<glm::vec3>, std::vector<GLuint>> GenMeshTuple() final;
 
 private:
     int countPerRing = 10;

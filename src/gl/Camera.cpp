@@ -22,30 +22,34 @@ Camera::Camera(glm::vec3 pos, glm::vec3 worldUp, GLfloat yaw, GLfloat pitch) {
     CalculateDir();
 }
 
-void Camera::Update(float deltaTime, Input *input) {
+void Camera::Update(float deltaTime, Input *input, bool cameraMode) {
 
-    // mouse input
-    yaw += turnSpeed * input->mouseDiffX;
-    pitch -= turnSpeed * input->mouseDiffY;
-    pitch = std::clamp(pitch, -(float)M_PI_2 * 0.999f, (float)M_PI_2 * 0.999f);
+    if (cameraMode) {
+        // mouse input
+        yaw += turnSpeed * input->mouseDiffX;
+        pitch -= turnSpeed * input->mouseDiffY;
+        pitch = ClampedPitch(pitch);
+
+        // key input
+        glm::vec3 dir{0.0f, 0.0f, 0.0f};
+        glm::vec3 vertical{0.0f, 0.0f, 0.0f};
+
+        if (input->Down(GLFW_KEY_W)) dir += front;
+        if (input->Down(GLFW_KEY_S)) dir -= front;
+        if (input->Down(GLFW_KEY_A)) dir -= right;
+        if (input->Down(GLFW_KEY_D)) dir += right;
+
+        if (glm::length(dir) > 0) dir = glm::normalize(dir);
+
+        if (input->Down(GLFW_KEY_SPACE)) vertical += worldUp;
+        if (input->Down(GLFW_KEY_LEFT_SHIFT)) vertical -= worldUp;
+
+        pos += (dir + vertical) * movementSpeed * deltaTime;
+
+    }
 
     CalculateDir();
 
-    // key input
-    glm::vec3 dir{0.0f, 0.0f, 0.0f};
-    glm::vec3 vertical{0.0f, 0.0f, 0.0f};
-
-    if (input->Down(GLFW_KEY_W)) dir += front;
-    if (input->Down(GLFW_KEY_S)) dir -= front;
-    if (input->Down(GLFW_KEY_A)) dir -= right;
-    if (input->Down(GLFW_KEY_D)) dir += right;
-
-    if (glm::length(dir) > 0) dir = glm::normalize(dir);
-
-    if (input->Down(GLFW_KEY_SPACE)) vertical += worldUp;
-    if (input->Down(GLFW_KEY_LEFT_SHIFT)) vertical -= worldUp;
-
-    pos += (dir + vertical) * movementSpeed * deltaTime;
 }
 
 glm::mat4 Camera::CalculateViewMat() {
@@ -61,4 +65,20 @@ void Camera::CalculateDir() {
 
     right = glm::normalize(glm::cross(front, worldUp));
     up = glm::normalize(glm::cross(right, front));
+}
+
+GLfloat Camera::GetYaw() const {
+    return yaw;
+}
+
+void Camera::SetYaw(GLfloat yaw) {
+    Camera::yaw = yaw;
+}
+
+GLfloat Camera::GetPitch() const {
+    return pitch;
+}
+
+void Camera::SetPitch(GLfloat pitch) {
+    Camera::pitch = pitch;
 }

@@ -17,6 +17,8 @@
 
 class Timeline {
 public:
+    float playbackSpeed = 1.0f;
+
     struct TimelineUpdateInfo {
         const Input& input;
         float deltaTime;
@@ -31,6 +33,7 @@ public:
     void GUI(unsigned int WIDTH, unsigned int HEIGHT);
 
     [[nodiscard]] bool IsFocused() const { return focused; }
+    [[nodiscard]] bool IsPlaying() const { return playing; }
 
     bool HasFloatLayer(const std::string& valLabel) {
         return floatKeyFrameLayers.contains(valLabel);
@@ -52,12 +55,15 @@ public:
         floatKeyFrameLayers[valLabel].Insert({val, currentTime});
     }
 
+    void RenderOnionSkin(Mesh2D& plot);
+
     static float RowToHeight(int row) {
         return 0.9f - (float) row * 0.2f;
     }
 
-private:
 
+
+private:
     bool playing = false;
     bool focused = false, lastFocused = false;
     float currentTime = 0.0f;

@@ -15,16 +15,17 @@ public:
     void UpdateMesh() final;
     void ModeSetUI(Enums::DrawMode& drawMode) final;
 
-    void InputPoints(MouseInputInfo renderInfo) override;
-
     void ClearAll() override;
 
-    void ClearSingle(Enums::DrawMode drawMode) override;
 
     void RenderSelf2D(RenderInfo2D renderInfo) final;
     void RenderGizmos2D(RenderInfo2D renderInfo) final;
 
     std::vector<glm::vec2>& GetPointsRefByMode(Enums::DrawMode drawMode) final;
+
+    Enums::LineType LineTypeByMode(Enums::DrawMode drawMode) final;
+
+    std::tuple<std::vector<glm::vec3>, std::vector<GLuint>> GenMeshTuple() final;
 
 private:
     float scaleRadius = 1.0f, scaleZ = 1.0f, scaleY = 1.0f, leanScalar = 0.25f;
@@ -36,7 +37,7 @@ private:
     std::vector<glm::vec2> graphedPointsY;
     std::vector<glm::vec2> graphedPointsZ;
 
-    glm::vec4 plotColor = {1.0f, 0.0f, 0.0f, 1.0f};
+    glm::vec4 plotColor = {0.0f, 0.0f, 0.0f, 1.0f};
     glm::vec4 graphColorY = {0.0f, 0.0f, 1.0f, 1.0f};
     glm::vec4 graphColorZ = {0.0f, 1.0f, 0.0f, 1.0f};
 };

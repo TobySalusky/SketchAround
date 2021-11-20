@@ -15,6 +15,9 @@ public:
     enum TransformationType {
         TRANSFORM_DRAG, TRANSFORM_ROTATE, TRANSFORM_SCALE, TRANSFORM_SMEAR
     };
+    enum LineType {
+        POLYLINE, PIECEWISE
+    };
 };
 
 

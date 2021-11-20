@@ -14,7 +14,7 @@ void Timeline::Update(const TimelineUpdateInfo& info) {
 
         for (auto& [mode, keyFrameLayer] : keyFrameLayers) {
             if (keyFrameLayer.HasValue()) {
-                auto& pointsRef = info.modelObject.GetPointsRefByMode(mode);
+                Vec2List& pointsRef = info.modelObject.GetPointsRefByMode(mode);
                 pointsRef.clear();
 
                 auto animatedPoints = keyFrameLayer.GetAnimatedVal(time);
@@ -35,50 +35,67 @@ void Timeline::Update(const TimelineUpdateInfo& info) {
         }
     };
 
-    if (focused) {
+    // mouse pos ===
+    glm::vec2 mousePos = Util::NormalizeToRectNPFlipped(input.GetMouse(), guiRect);
+    bool mouseOnGUI = Util::VecIsNormalizedNP(mousePos);
 
-        // INPUT =======
-        if (input.Pressed(GLFW_KEY_SPACE)) playing ^= true;
-        // add keyframe
-        if (input.Pressed(GLFW_KEY_K)) {
-            const std::vector<glm::vec2> pointsRef = modelObject.GetPointsRefByMode(drawMode);
-
-            if (pointsRef.size() >= 2) {
-                keyFrameLayers[drawMode].Insert({pointsRef, currentTime});
-            }
-        }
-        if (input.Pressed(GLFW_KEY_X)) {
-            if (input.Down(GLFW_KEY_LEFT_SHIFT)) {
-                for (auto& [mode, keyFrameLayer] : keyFrameLayers) {
-                    keyFrameLayers[mode].RemoveAtTime(currentTime);
-                }
-
-                for (auto& [valLabel, keyFrameLayer] : floatKeyFrameLayers) {
-                    floatKeyFrameLayers[valLabel].RemoveAtTime(currentTime);
-                }
-            } else {
-                keyFrameLayers[drawMode].RemoveAtTime(currentTime);
-            }
-        }
-
-        // mouse pos ===
-        glm::vec2 mousePos = Util::NormalizeToRectNPFlipped(input.GetMouse(), guiRect);
-        bool mouseOnGUI = Util::VecIsNormalizedNP(mousePos);
-
-        // Time-picker ===
-        if (mouseOnGUI && input.mousePressed && lastFocused) {
-            currentTime = std::round(mousePos.x * 10.0f) / 10.0f;
-            //TODO: SampleAtTime(currentTime);
-            // MUST HAVE AUTO-CREATION OF KEYFRAMES FIRST!!!
-        }
+    // Time-picker ===
+    if (mouseOnGUI && input.mousePressed) {
+        currentTime = std::round(mousePos.x * 10.0f) / 10.0f;
+        SampleAtTime(currentTime);
     }
 
-    if (playing) {
-        currentTime += deltaTime;
+    if (focused) {
+        if (input.Pressed(GLFW_KEY_SPACE)) playing ^= true;
+    }
+
+    if (!playing) {
+        // auto-keying points
+        {
+            for (const auto mode : {Enums::MODE_PLOT, Enums::MODE_GRAPH_Y, Enums::MODE_GRAPH_Z}) {
+                if (modelObject.HasDiff(mode)) {
+                    if (!modelObject.GetPointsRefByMode(mode).empty()) {
+                        keyFrameLayers[mode].Insert({modelObject.GetPointsRefByMode(mode), currentTime});
+                    } else {
+                        keyFrameLayers[mode].RemoveAtTime(currentTime);
+                    }
+                }
+            }
+        }
+
+        if (focused) {
+
+            // INPUT =======
+            // add keyframe
+            if (input.Pressed(GLFW_KEY_K)) {
+                const std::vector<glm::vec2> pointsRef = modelObject.GetPointsRefByMode(drawMode);
+
+                if (pointsRef.size() >= 2) {
+                    keyFrameLayers[drawMode].Insert({pointsRef, currentTime});
+                }
+            }
+
+            if (input.Pressed(GLFW_KEY_X)) {
+                if (input.Down(GLFW_KEY_LEFT_SHIFT)) {
+                    for (auto& [mode, keyFrameLayer] : keyFrameLayers) {
+                        keyFrameLayers[mode].RemoveAtTime(currentTime);
+                    }
+
+                    for (auto& [valLabel, keyFrameLayer] : floatKeyFrameLayers) {
+                        floatKeyFrameLayers[valLabel].RemoveAtTime(currentTime);
+                    }
+                } else {
+                    keyFrameLayers[drawMode].RemoveAtTime(currentTime);
+                }
+            }
+        }
+
+    } else {
+        currentTime += deltaTime * playbackSpeed;
         if (currentTime > 1.0f) currentTime = -1.0f;
+        if (currentTime < -1.0f) currentTime = 1.0f;
 
         SampleAtTime(currentTime);
-
     }
 
     lastFocused = focused;
@@ -126,3 +143,16 @@ void Timeline::GUI(unsigned int WIDTH, unsigned int HEIGHT) {
     }
     ImGui::End();
 }
+
+void Timeline::RenderOnionSkin(Mesh2D& plot) {
+
+    const auto back = keyFrameLayers[Enums::MODE_PLOT].KeyFrameBelow(currentTime);
+    const auto forward = keyFrameLayers[Enums::MODE_PLOT].KeyFrameAbove(currentTime);
+
+    if (back.has_value()) plot.AddLines(back.value()->val, Util::RGB(255, 185, 185));
+    if (forward.has_value()) plot.AddLines(forward.value()->val, Util::RGB(197, 255, 175));
+
+}
+
+
+

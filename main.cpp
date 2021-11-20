@@ -1,8 +1,8 @@
 #include <glew.h>
 #include <glfw3.h>
-#include <vector>
 #include <cmath>
 #include <iostream>
+#include <string>
 
 #include "src/vendor/imgui/imgui.h"
 #include "src/vendor/glm/glm.hpp"
@@ -27,32 +27,33 @@
 #include "src/graphing/Function.h"
 #include "src/graphing/GraphView.h"
 #include "src/generation/ModelObject.h"
-#include "src/util/Util.h"
 #include "src/generation/CrossSectionTracer.h"
 
-#include "src/Enums.h"
+#include "src/util/Includes.h"
 #include "src/generation/Lathe.h"
 #include "src/generation/CrossSectional.h"
 #include "src/misc/Undo.h"
 #include "src/gl/MeshUtil.h"
 #include "src/animation/Timeline.h"
 #include "src/util/Rectangle.h"
+#include "src/gl/Display3DContext.h"
 
 #define UNDO(a) undos.emplace_back(Undo([](Undo::State state) { a }));
 
 // Window dimensions
-const GLuint WIDTH = 1000, HEIGHT = 800;
+const GLuint WIDTH = 1000, HEIGHT = 700;
 Enums::DrawMode drawMode = Enums::MODE_PLOT;
 bool cameraMode = false;
 float lastTime = 0.0f;
 
 bool graphFocused = false;
+bool displayFocused = false;
 
-glm::vec2 MouseToScreen(glm::vec2 mouseVec) {
+Vec2 MouseToScreen(Vec2 mouseVec) {
     return {mouseVec.x / WIDTH * 2 - 1, (mouseVec.y / HEIGHT - 0.5f) * -2};
 }
 
-glm::vec2 MouseToScreenNorm01(glm::vec2 mouseVec) {
+Vec2 MouseToScreenNorm01(Vec2 mouseVec) {
     return {mouseVec.x / WIDTH, mouseVec.y / HEIGHT};
 }
 
@@ -81,7 +82,7 @@ int main() {
     ModelObject* modelObject; // TODO: use unique_ptr?? -- sus...
 
 
-    Camera camera{glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -M_PI_2, 0};
+    Camera camera{glm::vec3(0.0f, 0.0f, 2.5f), glm::vec3(0.0f, 1.0f, 0.0f), -M_PI_2, 0};
 
     Light mainLight{{0.5f, 0.5f, 0.5f, 0.5f}, {-1.0f, -1.0f, -1.0f}, 0.8f};
     Light line3DGizmoLight{{1.0f, 0.0f, 0.0f, 0.5f}, {-1.0f, -1.0f, -1.0f}, 1.0f};
@@ -104,6 +105,7 @@ int main() {
 
     Mesh2D plot;
     Rectangle plotRect;
+    Rectangle displayRect;
 
     auto UpdateMesh = [&]() {
         modelObject->UpdateMesh();
@@ -145,10 +147,10 @@ int main() {
         // Input Updating
         input->EndUpdate();
         glfwPollEvents();
-        glm::vec2 onScreen = Util::NormalizeToRectNPFlipped(input->GetMouse(), plotRect);
+        Vec2 onScreen = Util::NormalizeToRectNPFlipped(input->GetMouse(), plotRect);
 
         // Update Events Start
-        if (cameraMode) camera.Update(deltaTime, input);
+        camera.Update(deltaTime, input, cameraMode);
 
         // >> OpenGL RENDER ========================
 
@@ -203,6 +205,8 @@ int main() {
         plot.AddQuad({-1.0f, -0.003f}, {1.0f, 0.003f}, {0.2f, 0.2f, 0.2f, 1.0f});
         plot.AddQuad({-0.003f, 1.0f}, {0.003f, -1.0f}, {0.2f, 0.2f, 0.2f, 1.0f});
 
+        if (!timeline.IsPlaying()) timeline.RenderOnionSkin(plot);
+
         modelObject->Render2D({plot, drawMode, onScreen});
 
         // line gizmo
@@ -212,7 +216,6 @@ int main() {
             float col = 0.7f;
             plot.AddLines(gizmo, {col, col, col, 1.0f}, 0.001f);
         }
-
 
         /*{
             // test animation!!
@@ -254,8 +257,10 @@ int main() {
         // 3D-view Window
         ImGui::Begin("Model Scene");
         {
-            ImGui::Image((void *) (intptr_t) modelScene.GetTexture(), {WIDTH / 2.0f, HEIGHT / 2.0f}, {0.0f, 1.0f},
+            ImGui::ImageButton((void*) (intptr_t) modelScene.GetTexture(), {WIDTH / 2.0f, HEIGHT / 2.0f}, {0.0f, 1.0f},
                          {1.0f, 0.0f});
+            displayRect = ImGuiHelper::ItemRectRemovePadding(4.0f, 3.0f);
+            displayFocused = ImGui::IsItemActive();
         }
         ImGui::End();
 
@@ -264,6 +269,8 @@ int main() {
         {
             ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate,
                         ImGui::GetIO().Framerate);
+
+            ImGui::SliderFloat("playback-speed", &timeline.playbackSpeed, -5.0f,  5.0f);
 
             modelObject->AuxParameterUI({timeline});
 
@@ -337,8 +344,8 @@ int main() {
         // ====================================
 
         // >> UPDATE MESH
-        if (graphFocused && !cameraMode) {
-            modelObject->EditMakeup({editContext, *input, drawMode, onScreen, camera});
+        if (!cameraMode) {
+            modelObject->EditMakeup({editContext, *input, drawMode, onScreen, camera, graphFocused});
         }
 
 
@@ -346,6 +353,11 @@ int main() {
         window.SwapBuffers();
 
 
+        Display3DContext::Update({*input, camera, displayRect, displayFocused});
+
+        if (input->Down(GLFW_KEY_LEFT_SHIFT) && input->Pressed(GLFW_KEY_E)) {
+            printf("%s", Mesh::GenOBJ(modelObject->GenMeshTuple()).c_str());
+        }
 
         if (input->Pressed(GLFW_KEY_X)) {
             if (input->Down(GLFW_KEY_LEFT_SHIFT)) {
@@ -397,6 +409,7 @@ int main() {
 
         // POST UPDATE EVENTS
         timeline.Update({*input, deltaTime, *modelObject, drawMode});
+        modelObject->UnDiffAll();
 
         // ending stuff
         lastTime = time;

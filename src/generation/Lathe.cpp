@@ -60,10 +60,11 @@ void Lathe::HyperParameterUI(const UIInfo& info) {
     }
 }
 
-void Lathe::UpdateMesh() {
+std::tuple<std::vector<glm::vec3>, std::vector<GLuint>> Lathe::GenMeshTuple() {
+
     if (!plottedPoints.empty()) {
         const auto sampled = Sampler::DumbSample(plottedPoints, sampleLength);
-        mesh.Set(Revolver::Revolve(sampled, {
+        return Revolver::Revolve(sampled, {
                 .scaleRadius=scaleRadius,
                 .scaleZ=scaleZ,
                 .scaleY=scaleY,
@@ -73,23 +74,13 @@ void Lathe::UpdateMesh() {
                 .wrapEnd=wrapEnd,
                 .graphYPtr=&(graphedPointsY),
                 .graphZPtr=&(graphedPointsZ),
-        }));
-    } else {
-        GLfloat vertices[] = {
-                -1.0f, -1.0f, 0.0f,
-                0.0f, -1.0f, 1.0f,
-                1.0f, -1.0f, 0.0f,
-                0.0f, 1.0f, 0.0f,
-        };
+        });
+    }
+    return {{}, {}};
+}
 
-        GLuint indices[] = {
-                0, 3, 1,
-                1, 3, 2,
-                2, 3, 0,
-                0, 1, 2
-        };
-        mesh.Set(vertices, indices, sizeof(vertices) / sizeof(GLfloat), sizeof(indices) / sizeof(GLuint));
-    };
+void Lathe::UpdateMesh() {
+    mesh.Set(GenMeshTuple());
 }
 
 void Lathe::RenderSelf2D(RenderInfo2D renderInfo) {
@@ -132,44 +123,18 @@ void Lathe::ClearAll() {
     graphedPointsY.clear();
     graphedPointsZ.clear();
     plottedPoints.clear();
-}
-
-void Lathe::ClearSingle(Enums::DrawMode drawMode) {
-    if (drawMode == Enums::DrawMode::MODE_GRAPH_Y) graphedPointsY.clear();
-    else if (drawMode == Enums::DrawMode::MODE_GRAPH_Z) graphedPointsZ.clear();
-    else if (drawMode == Enums::DrawMode::MODE_PLOT) plottedPoints.clear();
-}
-
-void Lathe::InputPoints(MouseInputInfo renderInfo) {
-
-    const auto& onScreen = renderInfo.onScreen;
-    switch (renderInfo.drawMode) {
-        case Enums::DrawMode::MODE_PLOT:
-            if (plottedPoints.empty() || plottedPoints[plottedPoints.size() - 1] != onScreen) {
-                plottedPoints.emplace_back(onScreen);
-                //printf("%f\n", onScreen.x);
-                UpdateMesh();
-
-
-//                glm::vec newCameraPos = renderInfo.camera.GetPos();
-//                newCameraPos.x = onScreen.x;
-//                renderInfo.camera.SetPos(newCameraPos);
-            }
-            break;
-        case Enums::DrawMode::MODE_GRAPH_Z:
-        case Enums::DrawMode::MODE_GRAPH_Y:
-            std::vector<glm::vec2>& vec = renderInfo.drawMode == Enums::DrawMode::MODE_GRAPH_Y ? graphedPointsY : graphedPointsZ;
-            if (vec.empty() || onScreen.x > vec.back().x) {
-                vec.emplace_back(onScreen);
-                UpdateMesh();
-            }
-            break;
-    }
-
+    DiffPoints(Enums::MODE_PLOT);
+    DiffPoints(Enums::MODE_GRAPH_Y);
+    DiffPoints(Enums::MODE_GRAPH_Z);
 }
 
 std::vector<glm::vec2>& Lathe::GetPointsRefByMode(Enums::DrawMode drawMode) {
     if (drawMode == Enums::MODE_GRAPH_Y) return graphedPointsY;
     if (drawMode == Enums::MODE_GRAPH_Z) return graphedPointsZ;
     return plottedPoints;
+}
+
+Enums::LineType Lathe::LineTypeByMode(Enums::DrawMode drawMode) {
+    if (drawMode == Enums::MODE_PLOT) return Enums::POLYLINE;
+    return Enums::PIECEWISE;
 }
