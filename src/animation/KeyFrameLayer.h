@@ -73,7 +73,7 @@ public:
                     if (frame.time == frame2.time) return (glm::vec4(1.0f, 0.5f, 0.0f, 1.0f) * t + glm::vec4(1.0f, 1.0f, 1.0f, 1.0f) * (1.0f - t));
                     return glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
                 }();
-                canvas.AddPolygonOutline({frame.time, RowToHeight(line)}, 0.03f, 5, color);
+                canvas.AddPolygonOutline({frame.time, RowToHeight(line)}, 0.03f, frame.blendMode == Enums::LINEAR ? 3 : 10, color);
                 if (i != frames.size() - 1) {
                     glm::vec2 p1 = glm::vec2(frame.time, RowToHeight(line) - 0.1f);
                     glm::vec2 p2 = glm::vec2(frames[i + 1].time, RowToHeight(line) + 0.1f);
@@ -81,8 +81,8 @@ public:
                     bool onLine = (frame.time == frame1.time && frame.time != frame2.time);
                     glm::vec4 lineColor = onLine ? glm::vec4(0.85f, 1.0f, 0.85f, 1.0f) : glm::vec4(0.7f, 0.7f, 0.7f, 1.0f);
 
-                    const auto GetGraphPosAtT = [&](float t) {
-                        return p1 + glm::vec2(t, Util::SinSmooth01(t)) * (p2 - p1);
+                    const auto GetGraphPosAtT = [&](float t, const KeyFrame<T>& frame1, const KeyFrame<T>& frame2) {
+                        return p1 + glm::vec2(t, KeyFrame<T>::RemapTime(t, frame1, frame2)) * (p2 - p1);
                     };
 
                     {
@@ -91,14 +91,14 @@ public:
                         vec.reserve(pCount);
 
                         for (int drawP = 0; drawP <= pCount; drawP++) {
-                            vec.push_back(GetGraphPosAtT((float) drawP / (float) pCount));
+                            vec.push_back(GetGraphPosAtT((float) drawP / (float) pCount, frame, frames[i + 1]));
                         }
 
                         canvas.AddLines(vec, lineColor, 0.003f);
                     }
 
                     if (onLine) {
-                        canvas.AddPolygonOutline(GetGraphPosAtT(t), 0.013f, 6, lineColor);
+                        canvas.AddPolygonOutline(GetGraphPosAtT(t, frame, frames[i + 1]), 0.013f, 6, lineColor);
                     }
                 }
             }
@@ -130,9 +130,11 @@ public:
 
         float t = (time - frame1.time) / (frame2.time - frame1.time); // Linear
 
-        if (frame1.time == frame2.time) t = -1.0f;
-
-        t = Util::SinSmooth01(t);
+        if (frame1.time == frame2.time) {
+            t = -1.0f;
+        } else {
+            t = KeyFrame<T>::RemapTime(t, frame1, frame2);
+        }
 
         return KeyFrame<T>::GetAnimatedValueAtT(frame1, frame2, t);
     }

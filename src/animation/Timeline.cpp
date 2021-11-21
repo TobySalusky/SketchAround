@@ -68,10 +68,12 @@ void Timeline::Update(const TimelineUpdateInfo& info) {
             // INPUT =======
             // add keyframe
             if (input.Pressed(GLFW_KEY_K)) {
-                const std::vector<glm::vec2> pointsRef = modelObject.GetPointsRefByMode(drawMode);
+                const Vec2List pointsRef = modelObject.GetPointsRefByMode(drawMode);
 
                 if (pointsRef.size() >= 2) {
-                    keyFrameLayers[drawMode].Insert({pointsRef, currentTime});
+                    KeyFrame<Vec2List> frame = {pointsRef, currentTime};
+                    frame.blendMode = Enums::SINE;
+                    keyFrameLayers[drawMode].Insert(frame);
                 }
             }
 

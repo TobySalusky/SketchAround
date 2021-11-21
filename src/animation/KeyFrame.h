@@ -13,6 +13,7 @@ template <typename T>
 struct KeyFrame {
     T val;
     float time;
+    Enums::KeyframeBlendMode blendMode = Enums::LINEAR;
 
     static T GetAnimatedValueAtT(const KeyFrame<T>& frame1, const KeyFrame<T>& frame2, float t) {
         if (t <= 0.0f) return frame1.val;
@@ -23,6 +24,32 @@ struct KeyFrame {
 
     static float Lerp(const KeyFrame<float>& frame1, const KeyFrame<float>& frame2, float t) {
         return frame1.val + (frame2.val - frame1.val) * t;
+    }
+
+    static float RemapTime(float t, const KeyFrame<T>& frame1, const KeyFrame<T>& frame2) { // TODO: allow t outside {0, 1} for recoil
+        switch (frame1.blendMode) {
+            case Enums::LINEAR:
+                switch (frame2.blendMode) {
+                    case Enums::LINEAR:
+                        return t;
+                        break;
+                    case Enums::SINE:
+                        //return t * (-cos(3 * (float) M_PI * t) + 1.0f) / 2.0f; TODO: bouncy type effect
+                        return sin((float) M_PI_2 * t);
+                        break;
+                }
+                break;
+            case Enums::SINE:
+                switch (frame2.blendMode) {
+                    case Enums::LINEAR:
+                        return sin((float) M_PI_2 * t - (float) M_PI_2) + 1.0f;
+                        break;
+                    case Enums::SINE:
+                        return Util::SinSmooth01(t);
+                        break;
+                }
+                break;
+        }
     }
 
 
