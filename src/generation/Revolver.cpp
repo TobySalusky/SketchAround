@@ -13,6 +13,7 @@
 #include "Revolver.h"
 #include "../graphing/Function.h"
 #include "../util/Util.h"
+#include "Sampler.h"
 
 
 // TODO: wrap end faces!!! (currently hollow)
@@ -23,6 +24,22 @@ std::tuple<std::vector<glm::vec3>, std::vector<unsigned int>> Revolver::Revolve(
     const bool hasGraphY = revolveData.graphYPtr != nullptr;
     const bool hasGraphZ = revolveData.graphZPtr != nullptr;
     const int countPerRing = revolveData.countPerRing;
+
+    bool hasCrossSection = revolveData.crossSectionPoints.size() >= 3;
+    Vec2List sampledCrossSection;
+    if (hasCrossSection) {
+        sampledCrossSection = Sampler::SampleTo(revolveData.crossSectionPoints, countPerRing);
+    }
+
+    const auto GenVec = [&](int i, const Vec2& point){
+        if (hasCrossSection) {
+            Vec2 vec2D = sampledCrossSection[i] * point.y * revolveData.scaleRadius;
+            return Vec4(0.0f, vec2D.y, vec2D.x, 1.0f);
+        }
+        float angle = (float) M_PI * 2 * ((float) ((float) i * 1 / (float) revolveData.countPerRing));
+        glm::mat4 rot = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(1.0f,0.0f,0.0f)); // TODO: split mat creation from loop (b/c constant angles)
+        return rot * glm::vec4(0.0f, point.y * revolveData.scaleRadius, 0.0f, 1.0f);
+    };
 
     for (const auto &point : points) {
         float translateY = !hasGraphY ? 0 : Function::GetY(*revolveData.graphYPtr, point.x);
@@ -35,9 +52,8 @@ std::tuple<std::vector<glm::vec3>, std::vector<unsigned int>> Revolver::Revolve(
         // todo: lean
 
         for (int i = 0; i < countPerRing; i++) {
-            float angle = (float) M_PI * 2 * ((float) ((float) i * 1 / (float) countPerRing));
-            glm::mat4 rot = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(1.0f,0.0f,0.0f)); // TODO: split mat creation from loop (b/c constant angles)
-            glm::vec4 vec = rot * glm::vec4(0.0f, point.y * revolveData.scaleRadius, 0.0f, 1.0f);
+            Vec4 vec = GenVec(i, point);
+
             if (hasGraphY) {
                 vec = glm::rotate(glm::mat4(1.0f), angleLeanY * revolveData.leanScalar, {0.0f, 0.0f, 1.0f}) * vec;
             }

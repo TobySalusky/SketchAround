@@ -21,11 +21,11 @@ public:
     void RenderSelf2D(RenderInfo2D renderInfo) final;
     void RenderGizmos2D(RenderInfo2D renderInfo) final;
 
-    std::vector<glm::vec2>& GetPointsRefByMode(Enums::DrawMode drawMode) final;
+    Vec2List& GetPointsRefByMode(Enums::DrawMode drawMode) final;
 
     Enums::LineType LineTypeByMode(Enums::DrawMode drawMode) final;
 
-    std::tuple<std::vector<glm::vec3>, std::vector<GLuint>> GenMeshTuple() final;
+    std::tuple<Vec3List, std::vector<GLuint>> GenMeshTuple() final;
 
 private:
     float scaleRadius = 1.0f, scaleZ = 1.0f, scaleY = 1.0f, leanScalar = 0.25f;
@@ -33,13 +33,14 @@ private:
 
     bool wrapStart = false, wrapEnd = false;
 
-    std::vector<glm::vec2> plottedPoints;
-    std::vector<glm::vec2> graphedPointsY;
-    std::vector<glm::vec2> graphedPointsZ;
+    Vec2List plottedPoints;
+    Vec2List graphedPointsY;
+    Vec2List graphedPointsZ;
+    Vec2List crossSectionPoints;
 
-    glm::vec4 plotColor = {0.0f, 0.0f, 0.0f, 1.0f};
-    glm::vec4 graphColorY = {0.0f, 0.0f, 1.0f, 1.0f};
-    glm::vec4 graphColorZ = {0.0f, 1.0f, 0.0f, 1.0f};
+    RGBA plotColor = {0.0f, 0.0f, 0.0f, 1.0f};
+    RGBA graphColorY = {0.0f, 0.0f, 1.0f, 1.0f};
+    RGBA graphColorZ = {0.0f, 1.0f, 0.0f, 1.0f};
 };
 
 

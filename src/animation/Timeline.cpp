@@ -54,7 +54,7 @@ void Timeline::Update(const TimelineUpdateInfo& info) {
     if (!playing) {
         // auto-keying points
         {
-            for (const auto mode : {Enums::MODE_PLOT, Enums::MODE_GRAPH_Y, Enums::MODE_GRAPH_Z}) {
+            for (const auto mode : {Enums::MODE_PLOT, Enums::MODE_GRAPH_Y, Enums::MODE_GRAPH_Z, Enums::MODE_CROSS_SECTION}) {
                 if (modelObject.HasDiff(mode)) {
                     if (!modelObject.GetPointsRefByMode(mode).empty()) {
                         keyFrameLayers[mode].Insert({modelObject.GetPointsRefByMode(mode), currentTime});

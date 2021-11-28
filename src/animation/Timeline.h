@@ -79,6 +79,7 @@ private:
         keyFrameLayers[Enums::MODE_PLOT] = KeyFrameLayer<std::vector<glm::vec2>>();
         keyFrameLayers[Enums::MODE_GRAPH_Y] = KeyFrameLayer<std::vector<glm::vec2>>();
         keyFrameLayers[Enums::MODE_GRAPH_Z] = KeyFrameLayer<std::vector<glm::vec2>>();
+        keyFrameLayers[Enums::MODE_CROSS_SECTION] = KeyFrameLayer<std::vector<glm::vec2>>();
     }
 
     void TopToBottomLineAt(float x, glm::vec4 color, float width = 0.001f);

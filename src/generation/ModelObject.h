@@ -104,6 +104,7 @@ public:
         UnDiffPoints(Enums::MODE_PLOT);
         UnDiffPoints(Enums::MODE_GRAPH_Y);
         UnDiffPoints(Enums::MODE_GRAPH_Z);
+        UnDiffPoints(Enums::MODE_CROSS_SECTION);
     }
 
     void UnDiffPoints(Enums::DrawMode drawMode) {

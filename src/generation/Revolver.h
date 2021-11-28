@@ -7,6 +7,7 @@
 
 
 #include "../vendor/glm/vec2.hpp"
+#include "../util/Includes.h"
 
 struct RevolveData {
     float scaleRadius{};
@@ -16,8 +17,9 @@ struct RevolveData {
     float leanScalar{};
     bool wrapStart{};
     bool wrapEnd{};
-    std::vector<glm::vec2> *graphYPtr{};
-    std::vector<glm::vec2> *graphZPtr{};
+    Vec2List *graphYPtr{};
+    Vec2List *graphZPtr{};
+    const Vec2List& crossSectionPoints;
 };
 
 class Revolver {

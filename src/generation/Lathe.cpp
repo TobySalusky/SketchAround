@@ -74,6 +74,7 @@ std::tuple<std::vector<glm::vec3>, std::vector<GLuint>> Lathe::GenMeshTuple() {
                 .wrapEnd=wrapEnd,
                 .graphYPtr=&(graphedPointsY),
                 .graphZPtr=&(graphedPointsZ),
+                .crossSectionPoints=crossSectionPoints,
         });
     }
     return {{}, {}};
@@ -87,6 +88,7 @@ void Lathe::RenderSelf2D(RenderInfo2D renderInfo) {
     renderInfo.plot.AddLines(graphedPointsY, graphColorY);
     renderInfo.plot.AddLines(graphedPointsZ, graphColorZ);
     renderInfo.plot.AddLines(plottedPoints, plotColor);
+    renderInfo.plot.AddLines(crossSectionPoints, {1.0f, 0.0f, 1.0f, 1.0f});
 }
 
 void Lathe::RenderGizmos2D(RenderInfo2D renderInfo) {
@@ -117,24 +119,28 @@ void Lathe::ModeSetUI(Enums::DrawMode& drawMode) {
     ModeSet("Plot", Enums::DrawMode::MODE_PLOT, plottedPoints, drawMode);
     ModeSet("Graph-Y", Enums::DrawMode::MODE_GRAPH_Y, graphedPointsY, drawMode);
     ModeSet("Graph-Z", Enums::DrawMode::MODE_GRAPH_Z, graphedPointsZ, drawMode);
+    ModeSet("Cross-Section", Enums::DrawMode::MODE_CROSS_SECTION, graphedPointsZ, drawMode);
 }
 
 void Lathe::ClearAll() {
     graphedPointsY.clear();
     graphedPointsZ.clear();
     plottedPoints.clear();
+    crossSectionPoints.clear();
     DiffPoints(Enums::MODE_PLOT);
     DiffPoints(Enums::MODE_GRAPH_Y);
     DiffPoints(Enums::MODE_GRAPH_Z);
+    DiffPoints(Enums::MODE_CROSS_SECTION);
 }
 
 std::vector<glm::vec2>& Lathe::GetPointsRefByMode(Enums::DrawMode drawMode) {
     if (drawMode == Enums::MODE_GRAPH_Y) return graphedPointsY;
     if (drawMode == Enums::MODE_GRAPH_Z) return graphedPointsZ;
+    if (drawMode == Enums::MODE_CROSS_SECTION) return crossSectionPoints;
     return plottedPoints;
 }
 
 Enums::LineType Lathe::LineTypeByMode(Enums::DrawMode drawMode) {
-    if (drawMode == Enums::MODE_PLOT) return Enums::POLYLINE;
+    if (drawMode == Enums::MODE_PLOT || drawMode == Enums::MODE_CROSS_SECTION) return Enums::POLYLINE;
     return Enums::PIECEWISE;
 }
