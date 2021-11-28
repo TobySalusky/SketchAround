@@ -93,6 +93,10 @@ public:
     static ImVec2 ToImVec(Vec2 vec) {
         return {vec.x, vec.y};
     }
+
+    static Vec2 ToVec(ImVec2 vec) {
+        return {vec.x, vec.y};
+    }
 };
 
 

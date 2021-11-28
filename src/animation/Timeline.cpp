@@ -145,7 +145,8 @@ void Timeline::Render(const Shader2D& shader2D, Enums::DrawMode drawMode) {
 void Timeline::GUI(unsigned int WIDTH, unsigned int HEIGHT) {
     ImGui::Begin("Timeline");
     {
-        ImGui::ImageButton((void *) (intptr_t) scene.GetTexture(), {WIDTH / 2.0f, HEIGHT / 2.0f}, {0.0f, 1.0f}, {1.0f, 0.0f});
+        const auto dimens = Util::ToImVec(Util::ToVec(ImGui::GetWindowContentRegionMax()) - Util::ToVec(ImGui::GetWindowContentRegionMin()) - Vec2(8.0f, 6.0f));
+        ImGui::ImageButton((void *) (intptr_t) scene.GetTexture(), dimens, {0.0f, 1.0f}, {1.0f, 0.0f});
         guiRect = ImGuiHelper::ItemRectRemovePadding(4.0f, 3.0f);
         focused = ImGui::IsItemFocused();
     }

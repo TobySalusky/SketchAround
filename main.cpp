@@ -155,7 +155,8 @@ int main() {
         // Clear Background
 
         //glClearColor(normMouse.x, 0.0f, normMouse.y, 1.0f);
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        const float backgroundLevel3D = 0.1f;
+        glClearColor(backgroundLevel3D, backgroundLevel3D, backgroundLevel3D, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // >> 3D RENDERING =================
@@ -259,7 +260,8 @@ int main() {
         ImGui::Begin("Model Scene");
         {
 
-            Vec2 displayDimens = Util::FitRatio({WIDTH / 2.0f, HEIGHT / 2.0f}, {ImGui::GetWindowWidth(), ImGui::GetWindowHeight()});
+            Vec2 displayDimens = Util::FitRatio({WIDTH / 2.0f, HEIGHT / 2.0f},
+                                                Util::ToVec(ImGui::GetWindowContentRegionMax()) - Util::ToVec(ImGui::GetWindowContentRegionMin()) - Vec2(8.0f, 6.0f));
             ImGui::SameLine((ImGui::GetWindowWidth()) / 2.0f - (displayDimens.x / 2.0f)); // TODO: remove padding, make no scroll!!
 
             ImGui::ImageButton((void*) (intptr_t) modelScene.GetTexture(),
@@ -339,7 +341,10 @@ int main() {
         // Graph window (must be last??)
         ImGui::Begin("Graph Scene");
         {
-            ImGui::ImageButton((void *) (intptr_t) graphScene.GetTexture(), {WIDTH / 2.0f, HEIGHT / 2.0f}, {0.0f, 1.0f},
+            Vec2 displayDimens = Util::FitRatio({WIDTH / 2.0f, HEIGHT / 2.0f},
+                                                Util::ToVec(ImGui::GetWindowContentRegionMax()) - Util::ToVec(ImGui::GetWindowContentRegionMin()) - Vec2(8.0f, 6.0f));
+            ImGui::SameLine((ImGui::GetWindowWidth()) / 2.0f - (displayDimens.x / 2.0f));
+            ImGui::ImageButton((void *) (intptr_t) graphScene.GetTexture(), Util::ToImVec(displayDimens), {0.0f, 1.0f},
                                {1.0f, 0.0f});
             plotRect = ImGuiHelper::ItemRectRemovePadding(4.0f, 3.0f);
             // TODO: IsItemActive works perfectly for mouse, but focus works better for keyboard :/
