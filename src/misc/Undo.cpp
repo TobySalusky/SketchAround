@@ -4,6 +4,6 @@
 
 #include "Undo.h"
 
-void Undo::Apply(Undo::State state) {
-    funcPtr(state);
+void Undo::Apply() {
+    func();
 }

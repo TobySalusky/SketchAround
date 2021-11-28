@@ -23,6 +23,8 @@ void Input::EndUpdate() {
 
     mouseDiffX = mouseX - lastMouseX;
     mouseDiffY = mouseY - lastMouseY;
+
+    mouseScroll = 0.0f;
 }
 
 void Input::SetKey(int key, bool val) {

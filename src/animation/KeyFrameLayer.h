@@ -73,7 +73,7 @@ public:
                     if (frame.time == frame2.time) return (glm::vec4(1.0f, 0.5f, 0.0f, 1.0f) * t + glm::vec4(1.0f, 1.0f, 1.0f, 1.0f) * (1.0f - t));
                     return glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
                 }();
-                canvas.AddPolygonOutline({frame.time, RowToHeight(line)}, 0.03f, frame.blendMode == Enums::LINEAR ? 3 : 10, color);
+                canvas.AddPolygonOutline({frame.time, RowToHeight(line)}, 0.03f, frame.blendModeID == 0 ? 3 : 10, color);
                 if (i != frames.size() - 1) {
                     glm::vec2 p1 = glm::vec2(frame.time, RowToHeight(line) - 0.1f);
                     glm::vec2 p2 = glm::vec2(frames[i + 1].time, RowToHeight(line) + 0.1f);
@@ -169,9 +169,9 @@ public:
 
     std::optional<KeyFrame<T>*> KeyFrameAbove(float time) {
         auto upper = std::upper_bound(frames.begin(), frames.end(), time,
-                                      [](float value, const KeyFrame<T>& frame) {
-                                          return frame.time > value;
-                                      }
+            [](float value, const KeyFrame<T>& frame) {
+              return frame.time > value;
+            }
         );
         if (upper == frames.end()) return std::nullopt;
 

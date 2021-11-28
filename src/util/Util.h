@@ -11,6 +11,7 @@
 #include <numeric>
 #include "../vendor/glm/glm.hpp"
 #include "Rectangle.h"
+#include "../vendor/imgui/imgui.h"
 
 typedef glm::vec2 Vec2;
 typedef glm::vec3 Vec3;
@@ -83,6 +84,14 @@ public:
         if (t < 0.0f) return 0.0f;
         if (t > 1.0f) return 1.0f;
         return (sin((t * (float) M_PI) - ((float) M_PI / 2.0f)) + 1.0f) / 2.0f;
+    }
+
+    static Vec2 FitRatio(Vec2 dimenRatio, Vec2 boundDimens) {
+        return dimenRatio * fmin(boundDimens.x / dimenRatio.x, boundDimens.y / dimenRatio.y);
+    }
+
+    static ImVec2 ToImVec(Vec2 vec) {
+        return {vec.x, vec.y};
     }
 };
 

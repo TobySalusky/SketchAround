@@ -37,8 +37,7 @@
 #include "src/animation/Timeline.h"
 #include "src/util/Rectangle.h"
 #include "src/gl/Display3DContext.h"
-
-#define UNDO(a) undos.emplace_back(Undo([](Undo::State state) { a }));
+#include "src/misc/Undos.h"
 
 // Window dimensions
 const GLuint WIDTH = 1000, HEIGHT = 700;
@@ -59,9 +58,6 @@ Vec2 MouseToScreenNorm01(Vec2 mouseVec) {
 
 // The MAIN function, from here we start the application and run the game loop
 int main() {
-
-    std::vector<Undo> undos;
-
     GraphView graphView {-1.0f, 1.0f, -1.0f, 0.0f};
 
     GLWindow window(WIDTH, HEIGHT);
@@ -85,7 +81,7 @@ int main() {
     Camera camera{glm::vec3(0.0f, 0.0f, 2.5f), glm::vec3(0.0f, 1.0f, 0.0f), -M_PI_2, 0};
 
     Light mainLight{{0.5f, 0.5f, 0.5f, 0.5f}, {-1.0f, -1.0f, -1.0f}, 0.8f};
-    Light line3DGizmoLight{{1.0f, 0.0f, 0.0f, 0.5f}, {-1.0f, -1.0f, -1.0f}, 1.0f};
+    Light line3DGizmoLight{{1.0f, 1.0f, 1.0f, 0.5f}, {-1.0f, -1.0f, -1.0f}, 1.0f};
 
     glm::mat4 projection = glm::perspective(45.0f, (GLfloat)window.GetBufferWidth()/(GLfloat)window.GetBufferHeight(), 0.1f, 100.0f);
 
@@ -118,8 +114,8 @@ int main() {
     const auto AddSetLathe = [&]() {
         modelObjects.emplace_back(new CrossSectional());
         SetLathe(modelObjects[modelObjects.size() - 1]);
-        // TODO: undo doesn't change current model index!!
-        UNDO(state.modelObjects.pop_back();); // FIXME: leaking memory? (b/c modelObjects are pointers)
+
+        //modelObjects.pop_back();
     };
 
     RenderTarget modelScene{window.GetBufferWidth(), window.GetBufferHeight(), true};
@@ -183,6 +179,11 @@ int main() {
 
         // 3D Gizmos
         {
+//            float axisLen = 1.0f;
+//            line3DGizmoLight.Apply(shader3D);
+//            planeGizmo.Set(MeshUtil::PolyLine({{0.0f, -axisLen, 0.0f}, {0.0f, axisLen, 0.0f}}));
+//            planeGizmo.Render();
+
             /*line3DGizmoLight.Apply(shader3D);
             planeGizmo.Set(MeshUtil::Square({onScreen.x, 0.0f, 0.0f}, {1.0f, 0.0f, 0.0f}, 2.0f));
             planeGizmo.Render3D();*/
@@ -257,7 +258,13 @@ int main() {
         // 3D-view Window
         ImGui::Begin("Model Scene");
         {
-            ImGui::ImageButton((void*) (intptr_t) modelScene.GetTexture(), {WIDTH / 2.0f, HEIGHT / 2.0f}, {0.0f, 1.0f},
+
+            Vec2 displayDimens = Util::FitRatio({WIDTH / 2.0f, HEIGHT / 2.0f}, {ImGui::GetWindowWidth(), ImGui::GetWindowHeight()});
+            ImGui::SameLine((ImGui::GetWindowWidth()) / 2.0f - (displayDimens.x / 2.0f)); // TODO: remove padding, make no scroll!!
+
+            ImGui::ImageButton((void*) (intptr_t) modelScene.GetTexture(),
+                               Util::ToImVec(displayDimens),
+                               {0.0f, 1.0f},
                          {1.0f, 0.0f});
             displayRect = ImGuiHelper::ItemRectRemovePadding(4.0f, 3.0f);
             displayFocused = ImGui::IsItemActive();
@@ -396,15 +403,13 @@ int main() {
         if (input->Pressed(GLFW_KEY_N)) {
             AddSetLathe();
         }
+
         if (input->Pressed(GLFW_KEY_P)) drawMode = Enums::MODE_PLOT;
         if (input->Pressed(GLFW_KEY_Y)) drawMode = Enums::MODE_GRAPH_Y;
         if (input->Pressed(GLFW_KEY_T)) drawMode = Enums::MODE_GRAPH_Z;
 
         if (input->Pressed(GLFW_KEY_Z) && input->Down(GLFW_KEY_LEFT_SHIFT)) {
-            if (!undos.empty()) {
-                undos.back().Apply({modelObjects});
-                undos.pop_back();
-            }
+            //Undos::UseLast();
         }
 
         // POST UPDATE EVENTS

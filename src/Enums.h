@@ -18,8 +18,8 @@ public:
     enum LineType {
         POLYLINE, PIECEWISE
     };
-    enum KeyframeBlendMode {
-        LINEAR, SINE
+    enum BlendType {
+        CUSTOM, LINEAR, SINE
     };
 };
 

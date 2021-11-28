@@ -5,6 +5,8 @@
 #include "Timeline.h"
 #include "../util/ImGuiHelper.h"
 #include "../util/Util.h"
+#include "blending/SineBlendMode.h"
+#include "blending/PiecewiseBlendMode.h"
 
 void Timeline::Update(const TimelineUpdateInfo& info) {
     const auto&[input, deltaTime, modelObject, drawMode] = info;
@@ -67,12 +69,16 @@ void Timeline::Update(const TimelineUpdateInfo& info) {
 
             // INPUT =======
             // add keyframe
+            if (input.Pressed(GLFW_KEY_M)) {
+                BlendModes::Add(new PiecewiseBlendMode(modelObject.GetPointsRefByMode(drawMode)));
+            }
+
             if (input.Pressed(GLFW_KEY_K)) {
                 const Vec2List pointsRef = modelObject.GetPointsRefByMode(drawMode);
 
                 if (pointsRef.size() >= 2) {
                     KeyFrame<Vec2List> frame = {pointsRef, currentTime};
-                    frame.blendMode = Enums::SINE;
+                    frame.blendModeID = 2;
                     keyFrameLayers[drawMode].Insert(frame);
                 }
             }

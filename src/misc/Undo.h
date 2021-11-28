@@ -5,23 +5,21 @@
 #ifndef SENIORRESEARCH_UNDO_H
 #define SENIORRESEARCH_UNDO_H
 
-#include <vector>
+#include <utility>
+
 #include "../generation/ModelObject.h"
 
 class Undo {
 public:
-    struct State {
-        std::vector<ModelObject*>& modelObjects;
-    };
 
-    explicit Undo(void (*funcPtr)(State)) {
-        this->funcPtr = funcPtr;
+    explicit Undo(std::function<void()> func) {
+        this->func = std::move(func);
     }
 
-    void Apply(State state);
+    void Apply();
 
 private:
-    void (*funcPtr)(State);
+    std::function<void()> func;
 };
 
 
