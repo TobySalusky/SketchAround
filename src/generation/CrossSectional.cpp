@@ -18,8 +18,6 @@ void CrossSectional::HyperParameterUI(const UIInfo& info) {
     ImGui::SliderFloat("sample-length", &sampleLength, 0.01f, 0.5f);
     BindUIMeshUpdate();
 
-
-
     if (ImGui::Checkbox("wrap-start", &wrapStart)) {
         UpdateMesh();
     }
@@ -32,14 +30,21 @@ void CrossSectional::HyperParameterUI(const UIInfo& info) {
 
 void CrossSectional::UpdateMesh() {
 
+    if (boundPoints.size() >= 10 && centralPoints.size() < 2) { // TODO: should I clear and insert???
+        centralAutoGenPoints = CrossSectionTracer::AutoGenChordalAxis(boundPoints, sampleLength);
+    } else {
+        centralAutoGenPoints.clear();
+    }
+
     segments.clear();
 
-    if (boundPoints.size() >=2 && centralPoints.size() >= 2) {
+    const Vec2List& usedChordalAxis = (centralPoints.size() < 2) ? centralAutoGenPoints : centralPoints;
+
+    if (boundPoints.size() >=2 && usedChordalAxis.size() >= 2) {
         const auto sampled = Sampler::DumbSample(boundPoints, sampleLength);
-        const auto sampled2 = Sampler::DumbSample(centralPoints, sampleLength);
 
         const CrossSectionTracer::CrossSectionTraceData traceData = GenTraceData();
-        const auto tempSegments = CrossSectionTracer::TraceSegments(sampled, sampled2, traceData);
+        const auto tempSegments = CrossSectionTracer::TraceSegments(sampled,(centralPoints.size() < 2) ? centralAutoGenPoints : Sampler::DumbSample(centralPoints, sampleLength), traceData);
         mesh.Set(CrossSectionTracer::Inflate(tempSegments, traceData));
         segments.insert(segments.end(), tempSegments.begin(), tempSegments.end());
     } else {
@@ -49,6 +54,7 @@ void CrossSectional::UpdateMesh() {
 
 void CrossSectional::RenderSelf2D(RenderInfo2D renderInfo) {
     renderInfo.plot.AddLines(centralPoints, centralColor);
+    renderInfo.plot.AddLines(centralAutoGenPoints, centralAutoGenColor);
     renderInfo.plot.AddLines(boundPoints, {0.0f, 0.0f, 0.0f, 1.0f});
 }
 

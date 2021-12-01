@@ -7,6 +7,7 @@
 #include "CrossSectionTracer.h"
 #include "Revolver.h"
 #include "../animation/Timeline.h" // FIXME? cyclical dependency sus
+#include "../util/Linq.h"
 
 void Lathe::HyperParameterUI(const UIInfo& info) {
 
@@ -102,6 +103,12 @@ void Lathe::RenderGizmos2D(RenderInfo2D renderInfo) {
     if (plottedPoints.size() >= 2) {
         if (wrapStart) WrapGizmo(plottedPoints.front());
         if (wrapEnd) WrapGizmo(plottedPoints.back());
+    }
+
+    if (plottedPoints.size() >= 2) {
+        renderInfo.plot.AddLines(Sampler::DumbSample(Linq::Select<Vec2, Vec2>(plottedPoints, [](Vec2 vec) {
+            return vec * Vec2(1.0f, -1.0f);
+        }), sampleLength), {0.0f, 0.0f, 0.0f, 0.2f}, 0.005f);
     }
 }
 

@@ -23,6 +23,7 @@
 #include "../gl/Mesh2D.h"
 #include "../gl/Camera.h"
 #include "../editing/EditingContext.h"
+#include "../animation/Animator.h"
 
 
 struct RenderInfo3D {
@@ -111,6 +112,8 @@ public:
         diffed[drawMode] = false;
     }
 
+    Animator* GetAnimatorPtr() { return &animator; }
+
 protected:
     bool visible = true;
     glm::vec3 color = {0.5f, 0.5f, 0.5f};
@@ -118,6 +121,8 @@ protected:
     float sampleLength = 0.1f;
 
     bool diffed[3] {};
+
+    Animator animator = {};
 
     Mesh mesh{nullptr, nullptr, 0, 0};
 

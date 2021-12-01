@@ -162,7 +162,11 @@ public:
                                           return frame.time >= value;
                                       }
         );
-        if (upper == frames.end() || upper[0].time == frames.front().time) return std::nullopt;
+        if (upper == frames.end()) {
+            if (!frames.empty()) return std::make_optional(&frames.back());
+            return std::nullopt;
+        }
+        if (upper[0].time == frames.front().time) return std::nullopt;
 
         return std::make_optional(&upper[-1]);
     }

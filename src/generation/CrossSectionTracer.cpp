@@ -9,7 +9,8 @@
 #include "../vendor/glm/ext/matrix_transform.hpp"
 #include "../util/Util.h"
 #include "../graphing/Function.h"
-
+#include "LineAnalyzer.h"
+#include "../animation/LineLerper.h"
 
 std::tuple<std::vector<glm::vec3>, std::vector<unsigned int>>
 CrossSectionTracer::Trace(const std::vector<glm::vec2> &points, const std::vector<glm::vec2> &pathTrace, const CrossSectionTraceData& data) {
@@ -122,4 +123,30 @@ CrossSectionTracer::TraceSegments(const std::vector<glm::vec2> &points, const st
     }
 
     return segments;
+}
+
+Vec2List CrossSectionTracer::AutoGenChordalAxis(const Vec2List &boundPoints, const float sampleLength) {
+    const float halfway = LineAnalyzer::FullLength(boundPoints) / 2.0f;
+
+    int midPointIndex = -1;
+    float sumLength = 0.0f;
+    for (int i = 0; i < boundPoints.size() - 1; i++) {
+        sumLength += glm::length(boundPoints[i + 1] - boundPoints[i]);
+        if (sumLength >= halfway) {
+            midPointIndex = i + 1;
+            break;
+        }
+    }
+
+    if (midPointIndex == -1 || midPointIndex == boundPoints.size() - 1) return {};
+
+    Vec2List secondHalf = {};
+    secondHalf.reserve(boundPoints.size() - midPointIndex - 1);
+    for (size_t i = boundPoints.size() - 1; i > midPointIndex; i--) {
+        secondHalf.emplace_back(boundPoints[i]);
+    }
+
+    return LineLerper::MorphPolyLine(std::vector(boundPoints.begin(), boundPoints.begin() + midPointIndex),
+                                     secondHalf,
+                                     0.5f, ceil(halfway * 2.0f / sampleLength));
 }

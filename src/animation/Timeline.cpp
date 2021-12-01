@@ -7,9 +7,14 @@
 #include "../util/Util.h"
 #include "blending/SineBlendMode.h"
 #include "blending/PiecewiseBlendMode.h"
+#include "Animator.h"
 
 void Timeline::Update(const TimelineUpdateInfo& info) {
     const auto&[input, deltaTime, modelObject, drawMode] = info;
+
+    const float currentTime = animator->currentTime;
+    auto& keyFrameLayers = animator->keyFrameLayers;
+    auto& floatKeyFrameLayers = animator->floatKeyFrameLayers;
 
     const auto SampleAtTime = [&](float time) {
         bool diffFlag = false;
@@ -17,17 +22,17 @@ void Timeline::Update(const TimelineUpdateInfo& info) {
         for (auto& [mode, keyFrameLayer] : keyFrameLayers) {
             if (keyFrameLayer.HasValue()) {
                 Vec2List& pointsRef = info.modelObject.GetPointsRefByMode(mode);
-                pointsRef.clear();
 
                 auto animatedPoints = keyFrameLayer.GetAnimatedVal(time);
+                pointsRef.clear();
                 pointsRef.insert(pointsRef.end(), animatedPoints.begin(), animatedPoints.end());
                 diffFlag = true;
             }
         }
 
-        for (auto& [valLabel, keyFrameLayer] : floatKeyFrameLayers) {
-            if (keyFrameLayer.HasValue()) {
-                *floatKeyFrameLayerPtrs[valLabel] = keyFrameLayer.GetAnimatedVal(time);
+        for (auto& [valLabel, settableKeyFrameLayer] : floatKeyFrameLayers) {
+            if (settableKeyFrameLayer.layer.HasValue()) {
+                *settableKeyFrameLayer.floatPtr = settableKeyFrameLayer.layer.GetAnimatedVal(time);
                 diffFlag = true;
             }
         }
@@ -43,7 +48,7 @@ void Timeline::Update(const TimelineUpdateInfo& info) {
 
     // Time-picker ===
     if (mouseOnGUI && input.mousePressed) {
-        currentTime = std::round(mousePos.x * 10.0f) / 10.0f;
+        animator->currentTime = std::round(mousePos.x * 10.0f) / 10.0f;
         SampleAtTime(currentTime);
     }
 
@@ -90,7 +95,7 @@ void Timeline::Update(const TimelineUpdateInfo& info) {
                     }
 
                     for (auto& [valLabel, keyFrameLayer] : floatKeyFrameLayers) {
-                        floatKeyFrameLayers[valLabel].RemoveAtTime(currentTime);
+                        floatKeyFrameLayers[valLabel].layer.RemoveAtTime(currentTime);
                     }
                 } else {
                     keyFrameLayers[drawMode].RemoveAtTime(currentTime);
@@ -99,9 +104,9 @@ void Timeline::Update(const TimelineUpdateInfo& info) {
         }
 
     } else {
-        currentTime += deltaTime * playbackSpeed;
-        if (currentTime > 1.0f) currentTime = -1.0f;
-        if (currentTime < -1.0f) currentTime = 1.0f;
+        animator->currentTime += deltaTime * playbackSpeed;
+        if (currentTime > 1.0f) animator->currentTime = -1.0f;
+        if (currentTime < -1.0f) animator->currentTime = 1.0f;
 
         SampleAtTime(currentTime);
     }
@@ -114,6 +119,11 @@ void Timeline::TopToBottomLineAt(float x, glm::vec4 color, float width) {
 }
 
 void Timeline::Render(const Shader2D& shader2D, Enums::DrawMode drawMode) {
+
+    const float currentTime = animator->currentTime;
+    auto& keyFrameLayers = animator->keyFrameLayers;
+    auto& floatKeyFrameLayers = animator->floatKeyFrameLayers;
+
     RenderTarget::Bind(scene);
     glClearColor(0.17f, 0.17f, 0.17f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -125,7 +135,7 @@ void Timeline::Render(const Shader2D& shader2D, Enums::DrawMode drawMode) {
     for (float i = -0.9f; i < 1.0f; i += 0.1f) { // NOLINT(cert-flp30-c)
         TopToBottomLineAt(i, {0.35f, 0.35f, 0.35f, 1.0f});
     }
-    TopToBottomLineAt(currentTime, focused ? glm::vec4(0.8f, 0.8f, 1.0f, 0.0f) : glm::vec4(0.55f, 0.55f, 0.7f, 0.0f), 0.004f);
+    TopToBottomLineAt(currentTime, focused ? glm::vec4(0.8f, 0.8f, 1.0f, 1.0f) : glm::vec4(0.55f, 0.55f, 0.7f, 1.0f), 0.004f);
 
     for (auto& [mode, keyFrameLayer] : keyFrameLayers) {
         keyFrameLayer.Render(canvas, (int) mode, currentTime);
@@ -133,7 +143,7 @@ void Timeline::Render(const Shader2D& shader2D, Enums::DrawMode drawMode) {
 
     int floatLayerInc = 0;
     for (auto& [label, keyFrameLayer] : floatKeyFrameLayers) {
-        keyFrameLayer.Render(canvas, 3 + floatLayerInc, currentTime);
+        keyFrameLayer.layer.Render(canvas, 3 + floatLayerInc, currentTime);
         floatLayerInc++;
     }
 
@@ -155,12 +165,14 @@ void Timeline::GUI(unsigned int WIDTH, unsigned int HEIGHT) {
 
 void Timeline::RenderOnionSkin(Mesh2D& plot) {
 
+    const float currentTime = animator->currentTime;
+    auto& keyFrameLayers = animator->keyFrameLayers;
+
     const auto back = keyFrameLayers[Enums::MODE_PLOT].KeyFrameBelow(currentTime);
     const auto forward = keyFrameLayers[Enums::MODE_PLOT].KeyFrameAbove(currentTime);
 
     if (back.has_value()) plot.AddLines(back.value()->val, Util::RGB(255, 185, 185));
     if (forward.has_value()) plot.AddLines(forward.value()->val, Util::RGB(197, 255, 175));
-
 }
 
 

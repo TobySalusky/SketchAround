@@ -43,6 +43,7 @@
 const GLuint WIDTH = 1000, HEIGHT = 700;
 Enums::DrawMode drawMode = Enums::MODE_PLOT;
 bool cameraMode = false;
+bool focusMode = true;
 float lastTime = 0.0f;
 
 bool graphFocused = false;
@@ -103,19 +104,25 @@ int main() {
     Rectangle plotRect;
     Rectangle displayRect;
 
+    Timeline timeline = Timeline::Create(window);
+
     auto UpdateMesh = [&]() {
         modelObject->UpdateMesh();
     };
-    const auto SetLathe = [&](ModelObject* lathePtr) {
+    const auto SetModelObject = [&](ModelObject* lathePtr) {
         modelObject = lathePtr;
         UpdateMesh();
+        timeline.OnActiveModelObjectChange();
     };
 
     const auto AddSetLathe = [&]() {
-        modelObjects.emplace_back(new CrossSectional());
-        SetLathe(modelObjects[modelObjects.size() - 1]);
+        modelObjects.emplace_back(new Lathe());
+        SetModelObject(modelObjects[modelObjects.size() - 1]);
+    };
 
-        //modelObjects.pop_back();
+    const auto AddSetCrossSectional = [&]() {
+        modelObjects.emplace_back(new CrossSectional());
+        SetModelObject(modelObjects[modelObjects.size() - 1]);
     };
 
     RenderTarget modelScene{window.GetBufferWidth(), window.GetBufferHeight(), true};
@@ -123,12 +130,11 @@ int main() {
 
     Material material {0.8f, 16};
 
-    SetLathe(modelObjects[0]);
+    SetModelObject(modelObjects[0]);
 
 
     EditingContext editContext;
 
-    Timeline timeline = Timeline::Create(window);
 
     while (!window.ShouldClose()) // >> UPDATE LOOP ======================================
     {
@@ -147,6 +153,8 @@ int main() {
 
         // Update Events Start
         camera.Update(deltaTime, input, cameraMode);
+
+        timeline.SetActiveAnimator(modelObject->GetAnimatorPtr());
 
         // >> OpenGL RENDER ========================
 
@@ -172,7 +180,7 @@ int main() {
 
         // Rendering models
         for (const auto renderModelObject : modelObjects) {
-            if (!renderModelObject->IsVisible()) continue;
+            if (!renderModelObject->IsVisible() || (focusMode && renderModelObject != modelObject)) continue;
 
             renderModelObject->Render3D({shader3D, mainLight});
             if (renderModelObject == modelObject) renderModelObject->RenderGizmos3D({shader3D, mainLight});
@@ -215,8 +223,8 @@ int main() {
         {
             std::vector<glm::vec2> gizmo{{onScreen.x, -1.0f},
                                          {onScreen.x, 1.0f}};
-            float col = 0.7f;
-            plot.AddLines(gizmo, {col, col, col, 1.0f}, 0.001f);
+            float col = 0.0f;
+            plot.AddLines(gizmo, {col, col, col, 0.15f}, 0.001f);
         }
 
         /*{
@@ -304,13 +312,15 @@ int main() {
         // Model Instantiation Window
         ImGui::Begin("Models");
         {
+            ImGui::Checkbox("Focus-mode", &focusMode);
+
             for (int i = 0; i < modelObjects.size(); i++) {
                 bool isCurrentLathe = modelObject == modelObjects[i];
                 if (isCurrentLathe) ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.4f, 0.5f, 0.6f, 1.0f});
                 else ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.2f, 0.3f, 0.4f, 1.0f});
 
                 if (ImGui::Button(std::to_string(i).c_str(), { ImGui::GetWindowContentRegionWidth() - 39.0f, 24.0f})) {
-                    SetLathe(modelObjects[i]);
+                    SetModelObject(modelObjects[i]);
                 }
 
                 ImGui::PopStyleColor(1);
@@ -322,15 +332,18 @@ int main() {
                 if (ImGui::Button((std::string("X##") + std::to_string(i)).c_str()) && modelObjects.size() > 1) {
                     modelObjects.erase(modelObjects.begin() + i);
                     if (isCurrentLathe) {
-                        SetLathe(modelObjects[i == modelObjects.size() ? i - 1 : i]);
+                        SetModelObject(modelObjects[i == modelObjects.size() ? i - 1 : i]);
                     }
                     else if (modelObjects[i] < modelObject) {
-                        SetLathe(modelObject - 1);
+                        SetModelObject(modelObject - 1);
                     }
                 }
             }
-            if (ImGui::Button("+", {ImGui::GetWindowContentRegionWidth(), 24.0f})) {
+            if (ImGui::Button("+##Lathe", {ImGui::GetWindowContentRegionWidth(), 24.0f})) {
                 AddSetLathe();
+            }
+            if (ImGui::Button("+##CrossSectional", {ImGui::GetWindowContentRegionWidth(), 24.0f})) {
+                AddSetCrossSectional();
             }
         }
         ImGui::End();
@@ -390,23 +403,27 @@ int main() {
         if (input->Down(GLFW_KEY_LEFT_SHIFT)) {
             if (input->Pressed(GLFW_KEY_UP)) {
                 if (modelObject == modelObjects[0]) {
-                    SetLathe(modelObjects[modelObjects.size() - 1]);
+                    SetModelObject(modelObjects[modelObjects.size() - 1]);
                 } else {
-                    SetLathe(modelObjects[GetLatheIndex() - 1]);
+                    SetModelObject(modelObjects[GetLatheIndex() - 1]);
                 }
             }
 
             if (input->Pressed(GLFW_KEY_DOWN)) {
                 if (modelObject == modelObjects[modelObjects.size() - 1]) {
-                    SetLathe(modelObjects[0]);
+                    SetModelObject(modelObjects[0]);
                 } else {
-                    SetLathe(modelObjects[GetLatheIndex() + 1]);
+                    SetModelObject(modelObjects[GetLatheIndex() + 1]);
                 }
             }
         }
 
         if (input->Pressed(GLFW_KEY_N)) {
-            AddSetLathe();
+            if (input->Down(GLFW_KEY_LEFT_SHIFT)) {
+                AddSetLathe();
+            } else {
+                AddSetCrossSectional();
+            }
         }
 
         if (input->Pressed(GLFW_KEY_P)) drawMode = Enums::MODE_PLOT;

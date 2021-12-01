@@ -20,6 +20,8 @@ struct KeyFrame {
     int blendModeID = 0;
 
     static T GetAnimatedValueAtT(const KeyFrame<T>& frame1, const KeyFrame<T>& frame2, float t) {
+        if (t == 0.0f) return frame1.val;
+        if (t == 1.0f) return frame2.val;
         return Lerp(frame1, frame2, t);
     }
 

@@ -39,11 +39,13 @@ private:
 
     std::vector<glm::vec2> boundPoints;
     std::vector<glm::vec2> centralPoints;
+    std::vector<glm::vec2> centralAutoGenPoints;
 
     std::vector<CrossSectionTracer::Segment> segments;
 
     glm::vec4 boundColor = {1.0f, 0.0f, 0.0f, 1.0f};
     glm::vec4 centralColor = {0.0f, 0.0f, 1.0f, 1.0f};
+    glm::vec4 centralAutoGenColor = {0.0f, 1.0f, 0.0f, 1.0f};
 
     Mesh centralAxisMesh = {};
     Light lineLight = {{1.0f, 0.0f, 0.0f, 0.5f}, {-1.0f, -1.0f, -1.0f}, 1.0f};

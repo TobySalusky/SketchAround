@@ -47,6 +47,7 @@ void Mesh::Init(GLfloat *vertices, GLuint *indices, GLuint numOfVertices, GLuint
 }
 
 void Mesh::Render() const {
+
     glBindVertexArray(VAO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
     glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);
