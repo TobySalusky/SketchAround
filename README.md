@@ -1,4 +1,9 @@
-# Senior Research
+<p align="center">
+  <img alt="Modrawl" src="docs/icon/NameLogo.png" width="50%">
+  <img alt="Modrawl Logo" src="docs/icon/icon.png" width="25%">
+</p>
+
+---
 
 **"Design and Implementation of Lathe-based and Cross-sectional Organic 3D-Modeling via Sketching and Graphing"**
 
