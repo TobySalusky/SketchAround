@@ -106,18 +106,18 @@ std::string Mesh::GenOBJ(const std::tuple<std::vector<glm::vec3>, std::vector<GL
 }
 
 std::string Mesh::GenOBJ(const std::vector<glm::vec3> &vertices, const std::vector<GLuint> &indices) {
-    std::string vertStr, normalStr, faceStr;
+    std::string vertStr, /*normalStr,*/ faceStr;
 
     const std::vector<GLfloat> data = Normals::Define(vertices, indices);
 
     for (int i = 0; i < data.size(); i += 6) {
         vertStr += "v " + std::to_string(data[i + 0]) + " " + std::to_string(data[i + 1]) + " " + std::to_string(data[i + 2]) + "\n";
-        normalStr += "vn " + std::to_string(data[i + 3]) + " " + std::to_string(data[i + 4]) + " " + std::to_string(data[i + 5]) + "\n";
+        //normalStr += "vn " + std::to_string(data[i + 3]) + " " + std::to_string(data[i + 4]) + " " + std::to_string(data[i + 5]) + "\n";
     }
 
     for (int i = 0; i < indices.size(); i += 3) {
         faceStr += "f " + std::to_string(indices[i + 0] + 1) + " " + std::to_string(indices[i + 1] + 1) + " " + std::to_string(indices[i + 2] + 1) + "\n";
     }
 
-    return vertStr + "\n" + normalStr + "\n" + faceStr;
+    return vertStr + /*"\n" + normalStr +*/ "\n" + faceStr;
 }

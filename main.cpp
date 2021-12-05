@@ -78,13 +78,15 @@ int main() {
     std::vector<ModelObject*> modelObjects {new Lathe()}; // TODO: release memory please (never deleted!)
     ModelObject* modelObject; // TODO: use unique_ptr?? -- sus...
 
+    const float zNear = 0.1f;
+    const float zFar = 100.0f;
 
     Camera camera{glm::vec3(0.0f, 0.0f, 2.5f), glm::vec3(0.0f, 1.0f, 0.0f), -M_PI_2, 0};
 
     Light mainLight{{0.5f, 0.5f, 0.5f, 0.5f}, {-1.0f, -1.0f, -1.0f}, 0.8f};
     Light line3DGizmoLight{{1.0f, 1.0f, 1.0f, 0.5f}, {-1.0f, -1.0f, -1.0f}, 1.0f};
 
-    glm::mat4 projection = glm::perspective(45.0f, (GLfloat)window.GetBufferWidth()/(GLfloat)window.GetBufferHeight(), 0.1f, 100.0f);
+    glm::mat4 projection = glm::perspective(45.0f, (GLfloat)window.GetBufferWidth()/(GLfloat)window.GetBufferHeight(), zNear, zFar);
 
     auto SetCameraMode = [&](bool val) {
         cameraMode = val;
@@ -201,6 +203,7 @@ int main() {
         shader.Disable();
 
         RenderTarget::Unbind();
+
         RenderTarget::Bind(graphScene);
 
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -286,8 +289,6 @@ int main() {
         {
             ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate,
                         ImGui::GetIO().Framerate);
-
-            ImGui::SliderFloat("playback-speed", &timeline.playbackSpeed, -5.0f,  5.0f);
 
             modelObject->AuxParameterUI({timeline});
 

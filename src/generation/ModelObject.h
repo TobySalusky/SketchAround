@@ -63,7 +63,12 @@ public:
     ModelObject() = default;
 
     virtual void HyperParameterUI(const UIInfo& info) {}
-    virtual void AuxParameterUI(const UIInfo& info) {}
+    void AuxParameterUI(const UIInfo& info) {
+        if (ImGui::CollapsingHeader("Aux")) {
+            ImGui::ColorEdit3("model-color", (float *) &color);
+            ImGui::SliderFloat3("translate", (float *) &modelTranslation, -5.f, 5.f);
+        }
+    }
     virtual void ModeSetUI(Enums::DrawMode& drawMode) {}
 
     virtual Enums::LineType LineTypeByMode(Enums::DrawMode drawMode) = 0;

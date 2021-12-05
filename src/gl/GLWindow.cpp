@@ -8,6 +8,7 @@
 #include <glfw3.h>
 
 #include "GLWindow.h"
+#include "../vendor/stb/stb_image.h"
 
 GLWindow::GLWindow(GLint windowWidth, GLint windowHeight) { // NOLINT(cppcoreguidelines-pro-type-member-init)
     width = windowWidth;

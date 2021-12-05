@@ -112,16 +112,6 @@ void Lathe::RenderGizmos2D(RenderInfo2D renderInfo) {
     }
 }
 
-void Lathe::AuxParameterUI(const UIInfo& info) {
-    if (ImGui::CollapsingHeader("Aux")) {
-        ImGui::ColorEdit3("model-color", (float *) &color);
-        ImGui::ColorEdit3("plot-color", (float *) &plotColor);
-        ImGui::ColorEdit3("graph-y-color", (float *) &graphColorY);
-        ImGui::ColorEdit3("graph-z-color", (float *) &graphColorZ);
-        ImGui::SliderFloat3("translate", (float *) &modelTranslation, -5.f, 5.f);
-    }
-}
-
 void Lathe::ModeSetUI(Enums::DrawMode& drawMode) {
     ModeSet("Plot", Enums::DrawMode::MODE_PLOT, plottedPoints, drawMode);
     ModeSet("Graph-Y", Enums::DrawMode::MODE_GRAPH_Y, graphedPointsY, drawMode);

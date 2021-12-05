@@ -28,6 +28,8 @@ void CrossSectional::HyperParameterUI(const UIInfo& info) {
     }
 }
 
+
+
 void CrossSectional::UpdateMesh() {
 
     if (boundPoints.size() >= 10 && centralPoints.size() < 2) { // TODO: should I clear and insert???
@@ -36,9 +38,9 @@ void CrossSectional::UpdateMesh() {
         centralAutoGenPoints.clear();
     }
 
-    segments.clear();
-
     const Vec2List& usedChordalAxis = (centralPoints.size() < 2) ? centralAutoGenPoints : centralPoints;
+
+    segments.clear();
 
     if (boundPoints.size() >=2 && usedChordalAxis.size() >= 2) {
         const auto sampled = Sampler::DumbSample(boundPoints, sampleLength);
@@ -66,15 +68,6 @@ void CrossSectional::RenderGizmos2D(RenderInfo2D renderInfo) {
     float col = 0.5f;
     for (const auto& segment : segments) {
         renderInfo.plot.AddLines({segment.p1, segment.p2}, {col, col, col, 1.0f}, 0.001f);
-    }
-}
-
-void CrossSectional::AuxParameterUI(const UIInfo& info) {
-    if (ImGui::CollapsingHeader("Aux")) {
-        ImGui::ColorEdit3("model-color", (float *) &color);
-        ImGui::ColorEdit3("bound-color", (float *) &boundColor);
-        ImGui::ColorEdit3("central-color", (float *) &centralColor);
-        ImGui::SliderFloat3("translate", (float *) &modelTranslation, -5.f, 5.f);
     }
 }
 
@@ -132,9 +125,13 @@ Enums::LineType CrossSectional::LineTypeByMode(Enums::DrawMode drawMode) {
 }
 
 std::tuple<std::vector<glm::vec3>, std::vector<GLuint>> CrossSectional::GenMeshTuple() {
-    if (boundPoints.size() >=2 && centralPoints.size() >= 2) {
+
+    const Vec2List& usedChordalAxis = (centralPoints.size() < 2) ? CrossSectionTracer::AutoGenChordalAxis(boundPoints, sampleLength) : centralPoints;
+
+
+    if (boundPoints.size() >=2 && usedChordalAxis.size() >= 2) {
         const auto sampled = Sampler::DumbSample(boundPoints, sampleLength);
-        const auto sampled2 = Sampler::DumbSample(centralPoints, sampleLength);
+        const auto sampled2 = Sampler::DumbSample(usedChordalAxis, sampleLength);
 
         const CrossSectionTracer::CrossSectionTraceData traceData = GenTraceData();
         return CrossSectionTracer::Trace(sampled, sampled2, traceData);

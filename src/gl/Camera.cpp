@@ -24,6 +24,12 @@ Camera::Camera(glm::vec3 pos, glm::vec3 worldUp, GLfloat yaw, GLfloat pitch) {
 
 void Camera::Update(float deltaTime, Input *input, bool cameraMode) {
 
+    if (input->Down(GLFW_KEY_LEFT_SHIFT) && input->Pressed(GLFW_KEY_R)) {
+        pitch = 0.0f;
+        yaw = -M_PI_2;
+        pos = {0.0f, 0.0f, 2.5f};
+    }
+
     if (cameraMode) {
         // mouse input
         yaw += turnSpeed * input->mouseDiffX;

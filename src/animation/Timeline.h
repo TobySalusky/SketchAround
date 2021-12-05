@@ -18,8 +18,6 @@
 
 class Timeline {
 public:
-    float playbackSpeed = 1.0f;
-
     struct TimelineUpdateInfo {
         const Input& input;
         float deltaTime;
@@ -67,8 +65,10 @@ public:
     }
 
 private:
+    float playbackSpeed = 1.0f;
     bool playing = false;
     bool focused = false, lastFocused = false;
+    bool pingPong = false;
     Mesh2D canvas;
     RenderTarget scene;
     Rectangle guiRect;
