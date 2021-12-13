@@ -46,12 +46,50 @@ void Timeline::Update(const TimelineUpdateInfo& info) {
     glm::vec2 mousePos = Util::NormalizeToRectNPFlipped(input.GetMouse(), guiRect);
     bool mouseOnGUI = Util::VecIsNormalizedNP(mousePos);
 
-    // Time-picker ===
-    if (mouseOnGUI && input.mouseDown) {
-        const float prevTime = animator->currentTime;
-        animator->currentTime = std::round(mousePos.x * 10.0f) / 10.0f;
-        if (animator->currentTime != prevTime) SampleAtTime(animator->currentTime);
+
+    if (input.Pressed(GLFW_KEY_V)) {
+        GenTimelineSelection().DeleteAll();
     }
+
+    const auto temp = Enumerate(std::vector<int>{
+        GLFW_KEY_1, GLFW_KEY_2, GLFW_KEY_3,
+        GLFW_KEY_4, GLFW_KEY_5, GLFW_KEY_6,
+        GLFW_KEY_7, GLFW_KEY_8, GLFW_KEY_9
+    });
+
+//    for (const auto& [i, key] : Enumerate(std::vector<int>{
+//        GLFW_KEY_1, GLFW_KEY_2, GLFW_KEY_3,
+//        GLFW_KEY_4, GLFW_KEY_5, GLFW_KEY_6,
+//        GLFW_KEY_7, GLFW_KEY_8, GLFW_KEY_9
+//    })) {
+//        if (input.Pressed(key)) GenTimelineSelection().SetBlendID((int) i);
+//    }
+
+    // MOUSE INPUT ==============
+    if (mouseOnGUI && input.mousePressed && mousePos.y < 1.0f - selectAreaSize) {
+        selecting = true;
+        selectDragStart = mousePos;
+    }
+
+    // selecting ===
+    if (input.mouseDown) {
+        if (selecting) {
+            selectDragEnd = mousePos;
+
+
+
+        } else {
+            // Time-picker ===
+            if (mouseOnGUI) {
+                const float prevTime = animator->currentTime;
+                animator->currentTime = std::round(mousePos.x * 10.0f) / 10.0f;
+                if (animator->currentTime != prevTime) SampleAtTime(animator->currentTime);
+            }
+        }
+    }
+
+    if (input.mouseUnpressed) selecting = false;
+    // =============================
 
     if (focused) {
         if (input.Pressed(GLFW_KEY_SPACE)) playing ^= true;
@@ -127,11 +165,13 @@ void Timeline::Update(const TimelineUpdateInfo& info) {
     lastFocused = focused;
 }
 
-void Timeline::TopToBottomLineAt(float x, glm::vec4 color, float width) {
-    canvas.AddLines({{x, -1.0f}, {x, 1.0f}}, color, width);
+void Timeline::TopToBottomLineAt(float x, glm::vec4 color, float width, bool trueTop) {
+    canvas.AddLines({{x, -1.0f}, {x, trueTop ? 1.0f : 1.0f - selectAreaSize}}, color, width);
 }
 
-void Timeline::Render(const Shader2D& shader2D, Enums::DrawMode drawMode) {
+void Timeline::Render(const TimelineRenderInfo& info) {
+
+    const auto& [shader2D, drawMode, input] = info;
 
     const float currentTime = animator->currentTime;
     auto& keyFrameLayers = animator->keyFrameLayers;
@@ -144,11 +184,12 @@ void Timeline::Render(const Shader2D& shader2D, Enums::DrawMode drawMode) {
 
     float height = RowToHeight(drawMode);
     canvas.AddQuad({-1.0f, height - 0.1f}, {1.0f, height + 0.1f}, {0.21f, 0.21f, 0.21f, 1.0f});
+    canvas.AddQuad({-1.0f, 1.0f}, {1.0f, 1.0f - selectAreaSize}, {0.15f, 0.15f, 0.15f, 1.0f});
 
     for (float i = -0.9f; i < 1.0f; i += 0.1f) { // NOLINT(cert-flp30-c)
         TopToBottomLineAt(i, {0.35f, 0.35f, 0.35f, 1.0f});
     }
-    TopToBottomLineAt(currentTime, focused ? glm::vec4(0.8f, 0.8f, 1.0f, 1.0f) : glm::vec4(0.55f, 0.55f, 0.7f, 1.0f), 0.004f);
+    TopToBottomLineAt(currentTime, focused ? glm::vec4(0.8f, 0.8f, 1.0f, 1.0f) : glm::vec4(0.55f, 0.55f, 0.7f, 1.0f), 0.004f, true);
 
     for (auto& [mode, keyFrameLayer] : keyFrameLayers) {
         keyFrameLayer.Render(canvas, (int) mode, currentTime);
@@ -156,8 +197,19 @@ void Timeline::Render(const Shader2D& shader2D, Enums::DrawMode drawMode) {
 
     int floatLayerInc = 0;
     for (auto& [label, keyFrameLayer] : floatKeyFrameLayers) {
-        keyFrameLayer.layer.Render(canvas, 3 + floatLayerInc, currentTime);
+        keyFrameLayer.layer.Render(canvas, 4 + floatLayerInc, currentTime);
         floatLayerInc++;
+    }
+
+    if (selecting) {
+        canvas.AddQuad(selectDragStart, selectDragEnd, Util::RGBA(200, 200, 255, 40));
+    }
+
+    glm::vec2 mousePos = Util::NormalizeToRectNPFlipped(input.GetMouse(), guiRect);
+    bool mouseOnGUI = Util::VecIsNormalizedNP(mousePos);
+
+    if (mouseOnGUI && (!input.mouseDown || selecting)) { // TODO:
+        canvas.AddLines({{mousePos.x, 1.0f - selectAreaSize}, {mousePos.x, 1.0f}}, RGBA(0.8f, 0.8f, 1.0f, 0.3f), 0.003f);
     }
 
     canvas.ImmediateClearingRender();
@@ -194,6 +246,51 @@ void Timeline::RenderOnionSkin(Mesh2D& plot) {
 
     if (back.has_value()) plot.AddLines(back.value()->val, Util::RGB(255, 185, 185));
     if (forward.has_value()) plot.AddLines(forward.value()->val, Util::RGB(197, 255, 175));
+}
+
+TimelineSelection Timeline::GenTimelineSelection() {
+    auto& keyFrameLayers = animator->keyFrameLayers;
+    auto& floatKeyFrameLayers = animator->floatKeyFrameLayers;
+
+    TimelineSelection selection;
+
+    const float minTime = std::min(selectDragStart.x, selectDragEnd.x);
+    const float maxTime = std::max(selectDragStart.x, selectDragEnd.x);
+
+    // TODO: check for y range, not just time
+
+    const auto InTimeRange = [&](const float time) {
+        return time >= minTime && time <= maxTime;
+    };
+
+    // TODO: generalize
+    for (auto& [mode, keyFrameLayer] : keyFrameLayers) {
+        std::vector<KeyFrame<Vec2List>*> keyFramePtrs;
+        for (KeyFrame<Vec2List>& val : keyFrameLayer.frames) {
+            if (InTimeRange(val.time)) {
+                keyFramePtrs.emplace_back(&val);
+            }
+        }
+
+        if (!keyFramePtrs.empty()) {
+            selection.rowSelections.emplace_back(KeyFrameRowSelection<Vec2List>{&keyFrameLayer, keyFramePtrs});
+        }
+    }
+
+    for (auto& [valLabel, keyFrameLayer] : floatKeyFrameLayers) {
+        std::vector<KeyFrame<float>*> keyFramePtrs;
+        for (KeyFrame<float>& val : keyFrameLayer.layer.frames) {
+            if (InTimeRange(val.time)) {
+                keyFramePtrs.emplace_back(&val);
+            }
+        }
+
+        if (!keyFramePtrs.empty()) {
+            selection.rowSelections.emplace_back(KeyFrameRowSelection<float>{&keyFrameLayer.layer, keyFramePtrs});
+        }
+    }
+
+    return selection;
 }
 
 

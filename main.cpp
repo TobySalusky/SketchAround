@@ -250,7 +250,7 @@ int main() {
 
         RenderTarget::Unbind();
 
-        timeline.Render(shader2D, drawMode);
+        timeline.Render({shader2D, drawMode, *input});
 
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);

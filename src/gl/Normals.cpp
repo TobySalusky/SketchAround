@@ -42,14 +42,14 @@ std::vector<GLfloat> Normals::Define(const GLfloat *vertices, const GLuint *indi
 
         const glm::vec3 normCross = glm::normalize(glm::cross((p2 - p1), (p3 - p1)));
 
-        const auto func = [&](GLuint i) {
+        const auto Func = [&](GLuint i) {
             arr[i + 3] += normCross.x;
             arr[i + 4] += normCross.y;
             arr[i + 5] += normCross.z;
         };
-        func(p1Idx);
-        func(p2Idx);
-        func(p3Idx);
+        Func(p1Idx);
+        Func(p2Idx);
+        Func(p3Idx);
     }
 
 //    for (size_t i = 0; i < count / 6; i++) {

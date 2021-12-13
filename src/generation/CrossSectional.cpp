@@ -32,7 +32,7 @@ void CrossSectional::HyperParameterUI(const UIInfo& info) {
 
 void CrossSectional::UpdateMesh() {
 
-    if (boundPoints.size() >= 10 && centralPoints.size() < 2) { // TODO: should I clear and insert???
+    if (boundPoints.size() >= 2 && centralPoints.size() < 2) { // TODO: should I clear and insert???
         centralAutoGenPoints = CrossSectionTracer::AutoGenChordalAxis(boundPoints, sampleLength);
     } else {
         centralAutoGenPoints.clear();

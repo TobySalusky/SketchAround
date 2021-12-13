@@ -24,6 +24,7 @@ typedef std::vector<glm::vec3> Vec3List;
 
 class Util {
 public:
+
     static RGBA RGB(int r, int g, int b) {
         return {(float) r / 255.0f, (float) g / 255.0f, (float) b / 255.0f, 1.0f};
     }
@@ -99,5 +100,44 @@ public:
     }
 };
 
+
+// Enumerate class from from: https://stackoverflow.com/questions/11328264/python-like-loop-enumeration-in-c
+template<typename Iterable>
+class Enumerate
+{
+private:
+    Iterable _iter;
+    std::size_t _size;
+    decltype(std::begin(_iter)) _begin;
+    const decltype(std::end(_iter)) _end;
+
+public:
+    explicit Enumerate(Iterable iter):
+            _iter(iter),
+            _size(0),
+            _begin(std::begin(iter)),
+            _end(std::end(iter))
+    {}
+
+    const Enumerate& begin() const { return *this; }
+    const Enumerate& end()   const { return *this; }
+
+    bool operator!=(const Enumerate&) const
+    {
+        return _begin != _end;
+    }
+
+    void operator++()
+    {
+        ++_begin;
+        ++_size;
+    }
+
+    auto operator*() const
+    -> std::pair<std::size_t, decltype(*_begin)>
+    {
+        return { _size, *_begin };
+    }
+};
 
 #endif //SENIORRESEARCH_UTIL_H

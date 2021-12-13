@@ -34,7 +34,7 @@ public:
     }
 
     static float RowToHeight(int row) {
-        return 0.9f - (float) row * 0.2f;
+        return 0.9f - (float) row * 0.2f - 0.4f;
     }
 
     void Render(Mesh2D& canvas, int line, float time) {
@@ -181,8 +181,6 @@ public:
 
         return std::make_optional(&upper[0]);
     }
-
-private:
 
     std::vector<KeyFrame<T>> frames;
 };
