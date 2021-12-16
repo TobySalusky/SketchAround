@@ -11,14 +11,14 @@ Enums::BlendType PiecewiseBlendMode::GetBlendType() const {
 }
 
 int PiecewiseBlendMode::GetCustomID() const {
-    return 0; // TODO: !!!!
+    return ID;
 }
 
 float PiecewiseBlendMode::ApplyCustomFunc(float t) const {
     return Function::GetY(funcPoints, t);
 }
 
-PiecewiseBlendMode::PiecewiseBlendMode(const Vec2List& funcPoints) {
+PiecewiseBlendMode::PiecewiseBlendMode(const Vec2List& funcPoints, int ID) {
     Vec2 initPoint = funcPoints.front();
     Vec2 lastPoint = funcPoints.back();
     Vec2 diff = lastPoint - initPoint;
@@ -26,4 +26,10 @@ PiecewiseBlendMode::PiecewiseBlendMode(const Vec2List& funcPoints) {
     this->funcPoints = Linq::Select<Vec2, Vec2>(funcPoints, [=](Vec2 vec) {
         return (vec - initPoint) / diff;
     });
+
+    this->ID = ID;
+}
+
+std::string PiecewiseBlendMode::GetName() const {
+    return "Custom";
 }

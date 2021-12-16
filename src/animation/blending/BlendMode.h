@@ -6,12 +6,14 @@
 #define SENIORRESEARCH_BLENDMODE_H
 
 #include "../../Enums.h"
+#include <string>
 
 class BlendMode {
 public:
     [[nodiscard]] virtual Enums::BlendType GetBlendType() const = 0;
 
     [[nodiscard]] virtual int GetCustomID() const { return -1; }
+    [[nodiscard]] virtual std::string GetName() const = 0;
     [[nodiscard]] virtual float ApplyCustomFunc(float t) const { return -1.0f; }
 
     static float Apply(BlendMode* mode1, BlendMode* mode2, float t);

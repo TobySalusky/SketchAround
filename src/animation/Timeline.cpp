@@ -9,6 +9,12 @@
 #include "blending/PiecewiseBlendMode.h"
 #include "Animator.h"
 
+std::vector<int> numKeys = {
+    GLFW_KEY_1, GLFW_KEY_2, GLFW_KEY_3,
+    GLFW_KEY_4, GLFW_KEY_5, GLFW_KEY_6,
+    GLFW_KEY_7, GLFW_KEY_8, GLFW_KEY_9
+};
+
 void Timeline::Update(const TimelineUpdateInfo& info) {
     const auto&[input, deltaTime, modelObject, drawMode] = info;
 
@@ -47,37 +53,38 @@ void Timeline::Update(const TimelineUpdateInfo& info) {
     bool mouseOnGUI = Util::VecIsNormalizedNP(mousePos);
 
 
-    if (input.Pressed(GLFW_KEY_V)) {
-        GenTimelineSelection().DeleteAll();
+    if (hasSelection && input.Pressed(GLFW_KEY_V)) {
+        selection.DeleteAll();
+        hasSelection = false;
     }
 
-    const auto temp = Enumerate(std::vector<int>{
-        GLFW_KEY_1, GLFW_KEY_2, GLFW_KEY_3,
-        GLFW_KEY_4, GLFW_KEY_5, GLFW_KEY_6,
-        GLFW_KEY_7, GLFW_KEY_8, GLFW_KEY_9
-    });
-
-//    for (const auto& [i, key] : Enumerate(std::vector<int>{
-//        GLFW_KEY_1, GLFW_KEY_2, GLFW_KEY_3,
-//        GLFW_KEY_4, GLFW_KEY_5, GLFW_KEY_6,
-//        GLFW_KEY_7, GLFW_KEY_8, GLFW_KEY_9
-//    })) {
-//        if (input.Pressed(key)) GenTimelineSelection().SetBlendID((int) i);
-//    }
+    if (hasSelection) {
+        for (int i = 0; i < numKeys.size(); i++) {
+            if (input.Pressed(numKeys[i])) selection.SetBlendID((int) i);
+        }
+    }
 
     // MOUSE INPUT ==============
-    if (mouseOnGUI && input.mousePressed && mousePos.y < 1.0f - selectAreaSize) {
-        selecting = true;
-        selectDragStart = mousePos;
+    if (mouseOnGUI && input.mousePressed) {
+        if (mousePos.y < 1.0f - selectAreaSize) {
+            if (focused) {
+                selecting = true;
+                hasSelection = false;
+                selectDragStart = mousePos;
+            }
+        } else {
+            if (focused) {
+                selecting = false;
+                hasSelection = false;
+            }
+        }
     }
 
     // selecting ===
-    if (input.mouseDown) {
+    if (input.mouseDown && focused) {
         if (selecting) {
             selectDragEnd = mousePos;
-
-
-
+            selection = GenTimelineSelection();
         } else {
             // Time-picker ===
             if (mouseOnGUI) {
@@ -88,7 +95,17 @@ void Timeline::Update(const TimelineUpdateInfo& info) {
         }
     }
 
-    if (input.mouseUnpressed) selecting = false;
+    if (selecting && input.mouseUnpressed) {
+        if (glm::length(selectDragEnd - selectDragStart) <= 0.001f) {
+            Vec2 midpoint = selectDragStart;
+            Vec2 diff = {0.05f, 0.02f};
+            selectDragStart = midpoint - diff;
+            selectDragEnd = midpoint + diff;
+        }
+        selecting = false;
+        selection = GenTimelineSelection();
+        hasSelection = selection.CountKeyframes() > 0;
+    }
     // =============================
 
     if (focused) {
@@ -114,7 +131,7 @@ void Timeline::Update(const TimelineUpdateInfo& info) {
             // INPUT =======
             // add keyframe
             if (input.Pressed(GLFW_KEY_M)) {
-                BlendModes::Add(new PiecewiseBlendMode(modelObject.GetPointsRefByMode(drawMode)));
+                BlendModes::Add(new PiecewiseBlendMode(modelObject.GetPointsRefByMode(drawMode), BlendModes::GetNextID()));
             }
 
             if (input.Pressed(GLFW_KEY_K)) {
@@ -191,13 +208,21 @@ void Timeline::Render(const TimelineRenderInfo& info) {
     }
     TopToBottomLineAt(currentTime, focused ? glm::vec4(0.8f, 0.8f, 1.0f, 1.0f) : glm::vec4(0.55f, 0.55f, 0.7f, 1.0f), 0.004f, true);
 
+    const auto ContainsFunc = [&](auto* ptr){
+        return selection.ContainsKeyframe(ptr);
+    };
+
+    const auto NoSelectContainsFunc = [](auto* ptr) { return false; };
+
     for (auto& [mode, keyFrameLayer] : keyFrameLayers) {
-        keyFrameLayer.Render(canvas, (int) mode, currentTime);
+        if (hasSelection || selecting) keyFrameLayer.Render(canvas, (int) mode, currentTime, ContainsFunc);
+        else keyFrameLayer.Render(canvas, (int) mode, currentTime, NoSelectContainsFunc);
     }
 
     int floatLayerInc = 0;
     for (auto& [label, keyFrameLayer] : floatKeyFrameLayers) {
-        keyFrameLayer.layer.Render(canvas, 4 + floatLayerInc, currentTime);
+        if (hasSelection || selecting) keyFrameLayer.layer.Render(canvas, 4 + floatLayerInc, currentTime, ContainsFunc);
+        else keyFrameLayer.layer.Render(canvas, 4 + floatLayerInc, currentTime, NoSelectContainsFunc);
         floatLayerInc++;
     }
 
@@ -217,7 +242,12 @@ void Timeline::Render(const TimelineRenderInfo& info) {
     RenderTarget::Unbind();
 }
 
-void Timeline::GUI(unsigned int WIDTH, unsigned int HEIGHT) {
+void Timeline::GUI(const TimelineGUIInfo& info) {
+    const auto& [_0, _1, input] = info;
+    ImGui::ShowDemoWindow();
+
+    bool mouseOnGUI = Util::VecIsNormalizedNP(Util::NormalizeToRectNPFlipped(input.GetMouse(), guiRect));
+
     ImGui::Begin("Timeline");
     {
         if (ImGui::Button(playing ? "||" : "|>")) {
@@ -226,12 +256,45 @@ void Timeline::GUI(unsigned int WIDTH, unsigned int HEIGHT) {
         ImGui::SameLine();
         ImGui::Checkbox("ping-pong", &pingPong);
         ImGui::SameLine();
-        ImGui::SliderFloat("playback-speed", &playbackSpeed, -5.0f,  5.0f);
+        ImGui::SliderFloat("playback-speed", &playbackSpeed, -5.0f, 5.0f);
+
 
         const auto dimens = Util::ToImVec(Util::ToVec(ImGui::GetContentRegionAvail()) - Vec2(8.0f, 6.0f));
         ImGui::ImageButton((void *) (intptr_t) scene.GetTexture(), dimens, {0.0f, 1.0f}, {1.0f, 0.0f});
         guiRect = ImGuiHelper::ItemRectRemovePadding(4.0f, 3.0f);
         focused = ImGui::IsItemFocused();
+
+        if (hasSelection && (input.Pressed(GLFW_KEY_J) || (input.mouseRightPressed && mouseOnGUI))) {
+            ImGui::OpenPopup("blendmode_dropdown");
+        }
+
+        if (ImGui::BeginPopup("blendmode_dropdown"))
+        {
+            ImGui::Text("Blend-mode");
+            ImGui::Separator();
+
+            const auto blendIDs = BlendModes::GenAllIDs();
+            int i = 0;
+            for (int blendID: blendIDs) {
+                if (ImGui::Button((std::to_string(blendID + 1) + " - " + BlendModes::Get(blendID)->GetName() + "##blend_mode").c_str())) {
+                    selection.SetBlendID(blendID);
+                    ImGui::CloseCurrentPopup();
+                }
+            }
+
+            if (ImGui::Button("New Custom")) {
+                // TODO:
+                ImGui::CloseCurrentPopup();
+            }
+
+            ImGui::Separator();
+            if (ImGui::Button("Delete")) {
+                hasSelection = false;
+                selection.DeleteAll();
+                ImGui::CloseCurrentPopup();
+            }
+            ImGui::EndPopup();
+        }
     }
     ImGui::End();
 }
@@ -252,45 +315,53 @@ TimelineSelection Timeline::GenTimelineSelection() {
     auto& keyFrameLayers = animator->keyFrameLayers;
     auto& floatKeyFrameLayers = animator->floatKeyFrameLayers;
 
-    TimelineSelection selection;
+    TimelineSelection newSelection;
 
     const float minTime = std::min(selectDragStart.x, selectDragEnd.x);
     const float maxTime = std::max(selectDragStart.x, selectDragEnd.x);
+    const float minPosY = 1.0f - std::max(selectDragStart.y, selectDragEnd.y) - selectAreaSize;
+    const float maxPosY = 1.0f - std::min(selectDragStart.y, selectDragEnd.y) - selectAreaSize;
+    const int minIndex = (int) ((minPosY + 0.05f) / 0.2f);
+    const int topIndex = (int) ((maxPosY - 0.05f) / 0.2f);
 
     // TODO: check for y range, not just time
 
-    const auto InTimeRange = [&](const float time) {
-        return time >= minTime && time <= maxTime;
+    const auto InRange = [=](const float time, const int index) {
+        return time >= minTime && time <= maxTime && index >= minIndex && index <= topIndex;
     };
+
+    int i = 0;
 
     // TODO: generalize
     for (auto& [mode, keyFrameLayer] : keyFrameLayers) {
         std::vector<KeyFrame<Vec2List>*> keyFramePtrs;
         for (KeyFrame<Vec2List>& val : keyFrameLayer.frames) {
-            if (InTimeRange(val.time)) {
+            if (InRange(val.time, 3 - i)) {
                 keyFramePtrs.emplace_back(&val);
             }
         }
 
         if (!keyFramePtrs.empty()) {
-            selection.rowSelections.emplace_back(KeyFrameRowSelection<Vec2List>{&keyFrameLayer, keyFramePtrs});
+            newSelection.rowSelections.emplace_back(KeyFrameRowSelection<Vec2List>{&keyFrameLayer, keyFramePtrs, i});
         }
+        i++;
     }
 
     for (auto& [valLabel, keyFrameLayer] : floatKeyFrameLayers) {
         std::vector<KeyFrame<float>*> keyFramePtrs;
         for (KeyFrame<float>& val : keyFrameLayer.layer.frames) {
-            if (InTimeRange(val.time)) {
+            if (InRange(val.time, i)) {
                 keyFramePtrs.emplace_back(&val);
             }
         }
 
         if (!keyFramePtrs.empty()) {
-            selection.rowSelections.emplace_back(KeyFrameRowSelection<float>{&keyFrameLayer.layer, keyFramePtrs});
+            newSelection.rowSelections.emplace_back(KeyFrameRowSelection<float>{&keyFrameLayer.layer, keyFramePtrs, i});
         }
+        i++;
     }
 
-    return selection;
+    return newSelection;
 }
 
 

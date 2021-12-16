@@ -7,3 +7,7 @@
 Enums::BlendType LinearBlendMode::GetBlendType() const {
     return Enums::LINEAR;
 }
+
+std::string LinearBlendMode::GetName() const {
+    return "Linear";
+}

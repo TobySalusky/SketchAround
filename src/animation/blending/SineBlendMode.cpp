@@ -7,3 +7,7 @@
 Enums::BlendType SineBlendMode::GetBlendType() const {
     return Enums::SINE;
 }
+
+std::string SineBlendMode::GetName() const {
+    return "Sine";
+}

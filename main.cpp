@@ -200,7 +200,39 @@ int main() {
             planeGizmo.Render3D();*/
         }
 
+//        glEnd();
+//        glFlush();
+//        //glFinish();
+//
+//        GLfloat* depths;
+//        depths = new GLfloat[4];
+//
+//        GLfloat * color;
+//        color = new GLfloat[4];
+//
+//        glReadPixels (0, 0, 2, 2, GL_DEPTH_COMPONENT, GL_FLOAT, depths);
+//        glReadPixels (0, 0, 2, 2, GL_BLUE, GL_FLOAT, color);
+//
+//        printf("%f %f %f %f\n", depths[0], depths[1], depths[2], depths[3]);
+//        printf("%f %f %f %f\n", color[0], color[1], color[2], color[3]);
+
+
+//        GLubyte pixels[4*4*3];
+//        glReadBuffer(GL_FRONT);
+//        glReadPixels(0, 0, 4, 4, GL_RGB, GL_UNSIGNED_BYTE, pixels);
+//        for (const auto& byte: pixels) {
+//            printf("%x ", byte);
+//        }
+//        printf("\n");
+
         shader.Disable();
+
+
+
+
+
+
+
 
         RenderTarget::Unbind();
 
@@ -350,7 +382,7 @@ int main() {
         ImGui::End();
 
         // Timeline window
-        timeline.GUI(WIDTH, HEIGHT);
+        timeline.GUI({WIDTH, HEIGHT, *input});
 
         // Graph window (must be last??)
         ImGui::Begin("Graph Scene");

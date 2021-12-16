@@ -9,3 +9,13 @@ BlendModeManager::BlendModeManager() {
     blendModes[GenNextID()] = new LinearBlendMode();
     blendModes[GenNextID()] = new SineBlendMode();
 }
+
+std::vector<int> BlendModeManager::GenAllIDs() {
+    std::vector<int> vec;
+
+    for (auto& [ID, _] : blendModes) {
+        vec.emplace_back(ID);
+    }
+
+    return vec;
+}

@@ -8,6 +8,7 @@
 #include <unordered_map>
 #include "BlendMode.h"
 #include "SineBlendMode.h"
+#include <vector>
 
 // FIXME: NEVER CLEANED UP (perhaps use unique_ptr?)
 class BlendModeManager {
@@ -17,6 +18,10 @@ public:
     BlendMode* Get(int ID) { return blendModes[ID]; }
 
     void Add(BlendMode* newBlendMode) { blendModes[GenNextID()] = newBlendMode; }
+
+    std::vector<int> GenAllIDs();
+
+    [[nodiscard]] int GetNextID() const { return nextID; }
 
 private:
     int GenNextID() { return nextID++; }

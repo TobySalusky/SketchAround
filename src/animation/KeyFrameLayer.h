@@ -9,7 +9,7 @@
 #include "KeyFrame.h"
 #include "../vendor/glm/vec2.hpp"
 #include "../gl/Mesh2D.h"
-
+#include <functional>
 
 template <class T>
 class KeyFrameLayer {
@@ -37,7 +37,7 @@ public:
         return 0.9f - (float) row * 0.2f - 0.4f;
     }
 
-    void Render(Mesh2D& canvas, int line, float time) {
+    void Render(Mesh2D& canvas, int line, float time, std::function<bool(KeyFrame<T>*)> containsFunc) {
         const auto SideToSideLine = [&](float height) {
             canvas.AddLines({{-1.0f, height}, {1.0f, height}}, {0.5f, 0.5f, 0.5f, 1.0f}, 0.003f);
             canvas.AddLines({{-1.0f, height}, {1.0f, height}}, {0.5f, 0.5f, 0.5f, 1.0f}, 0.003f);
@@ -60,14 +60,16 @@ public:
             }();
 
             float t = (time - frame1.time) / (frame2.time - frame1.time); // Linear
+            // TODO: calc using blendmodes!
 
             for (int i = 0; i < frames.size(); i++) {
-                const auto& frame = frames[i];
+                auto& frame = frames[i];
                 bool selected = (frame.time == frame1.time || frame.time == frame2.time);
 
                 canvas.AddLines({{frame.time, RowToHeight(line) - 0.1f}, {frame.time, RowToHeight(line) + 0.1f}}, {0.43f, 0.43f, 0.43f, 1.0f}, 0.003f);
 
-                glm::vec4 color = [&]{
+                glm::vec4 color = [&] {
+                    if (containsFunc(&frame)) return glm::vec4(0.0f, 1.0f, 1.0f, 1.0f);
                     if (frame.time == frame1.time && frame.time == frame2.time) return glm::vec4(1.0f, 0.5f, 0.0f, 1.0f);
                     if (frame.time == frame1.time) return (glm::vec4(1.0f, 0.5f, 0.0f, 1.0f) * (1.0f - t) + glm::vec4(1.0f, 1.0f, 1.0f, 1.0f) * t);
                     if (frame.time == frame2.time) return (glm::vec4(1.0f, 0.5f, 0.0f, 1.0f) * t + glm::vec4(1.0f, 1.0f, 1.0f, 1.0f) * (1.0f - t));
@@ -91,6 +93,10 @@ public:
                         vec.reserve(pCount);
 
                         for (int drawP = 0; drawP <= pCount; drawP++) {
+                            if (drawP == pCount) {
+                                vec.push_back({p2});
+                                continue;
+                            }
                             vec.push_back(GetGraphPosAtT((float) drawP / (float) pCount, frame, frames[i + 1]));
                         }
 

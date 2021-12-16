@@ -28,6 +28,7 @@ template <class T>
 struct KeyFrameRowSelection {
     KeyFrameLayer<T>* layer;
     std::vector<KeyFrame<T>*> frames;
+    int index;
 };
 
 struct TimelineSelection {
@@ -38,8 +39,8 @@ struct TimelineSelection {
 
     void DeleteAll() {
         const auto DeleteFunc = [](const auto& val) {
-            for (auto* keyFramePtr : val.frames) {
-                val.layer->RemoveAtTime((keyFramePtr->time));
+            for (int i = val.frames.size() - 1; i >= 0; i--) {
+                val.layer->RemoveAtTime((val.frames[i]->time));
             }
         };
 
@@ -47,6 +48,11 @@ struct TimelineSelection {
     }
 
     void SetBlendID(int num) {
+        if (num >= BlendModes::GetNextID()) {
+            printf("Error: can not set to blend mode that doesn't exist!\n");
+            return;
+        }
+
         const auto SetFunc = [=](const auto& val) {
             for (auto* keyFramePtr : val.frames) {
                 keyFramePtr->blendModeID = num;
@@ -55,7 +61,51 @@ struct TimelineSelection {
 
         TIMELINE_SELECTION_HANDLE_BOTH_CAPTURE(SetFunc);
     }
+
+    int CountKeyframes() {
+        int count = 0;
+        const auto CountFunc = [&](const auto& val) {
+            for (auto* keyFramePtr : val.frames) {
+                count++;
+            }
+        };
+
+        TIMELINE_SELECTION_HANDLE_BOTH_CAPTURE(CountFunc);
+        return count;
+    }
+
+    bool ContainsKeyframe(std::variant<KeyFrame<Vec2List>*, KeyFrame<float>*> frame) {
+        bool contains = false;
+
+        if (std::holds_alternative<KeyFrame<Vec2List>*>(frame)) {
+            KeyFrame<Vec2List>* framePtr = std::get<KeyFrame<Vec2List>*>(frame);
+            HandleTypeCapture<Vec2List>([&](const auto& val) {
+                if (contains) return;
+                for (auto* currFrame : val.frames) {
+                    if (currFrame == framePtr) contains = true;
+                }
+            });
+        } else {
+            KeyFrame<float>* framePtr = std::get<KeyFrame<float>*>(frame);
+            HandleTypeCapture<float>([&](const auto& val) {
+                if (contains) return;
+                for (auto* currFrame : val.frames) {
+                    if (currFrame == framePtr) contains = true;
+                }
+            });
+        }
+        return contains;
+    }
 private:
+    template <class T>
+    void HandleTypeCapture(const std::function<void(const KeyFrameRowSelection<T>&)>& func) {
+        for (const auto& selectionVariant : rowSelections) {
+            if (std::holds_alternative<KeyFrameRowSelection<T>>(selectionVariant)) {
+                func(std::get<KeyFrameRowSelection<T>>(selectionVariant));
+            }
+        }
+    }
+
     void HandleAllCapture(const std::function<void(const KeyFrameRowSelection<Vec2List>&)>& vec2ListFuncPtr, const std::function<void(const KeyFrameRowSelection<float>&)>& floatFuncPtr) {
         for (const auto& selectionVariant : rowSelections) {
             if (std::holds_alternative<KeyFrameRowSelection<Vec2List>>(selectionVariant)) {
@@ -93,7 +143,7 @@ public:
     void Update(const TimelineUpdateInfo& info);
     void Render(const TimelineRenderInfo& info);
 
-    void GUI(unsigned int WIDTH, unsigned int HEIGHT);
+    void GUI(const TimelineGUIInfo& info);
 
     [[nodiscard]] bool IsFocused() const { return focused; }
     [[nodiscard]] bool IsPlaying() const { return playing; }
@@ -140,6 +190,7 @@ private:
     Rectangle guiRect;
     Animator* animator;
     Vec2 selectDragStart, selectDragEnd;
+    TimelineSelection selection;
 
     explicit Timeline(RenderTarget timelineScene) : scene(timelineScene), animator(nullptr) {}
 

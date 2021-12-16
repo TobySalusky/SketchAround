@@ -11,6 +11,7 @@
 class SineBlendMode : public BlendMode {
 public:
     [[nodiscard]] Enums::BlendType GetBlendType() const override;
+    [[nodiscard]] std::string GetName() const override;
 };
 
 

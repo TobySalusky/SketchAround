@@ -26,6 +26,12 @@
 #include "../animation/Animator.h"
 
 
+struct TimelineGUIInfo {
+    unsigned int WIDTH;
+    unsigned int HEIGHT;
+    Input& input;
+};
+
 struct RenderInfo3D {
     Shader3D& shader3D;
     Light& mainLight;
@@ -67,6 +73,7 @@ public:
         if (ImGui::CollapsingHeader("Aux")) {
             ImGui::ColorEdit3("model-color", (float *) &color);
             ImGui::SliderFloat3("translate", (float *) &modelTranslation, -5.f, 5.f);
+            ImGui::SliderFloat3("rotation", (float *) &eulerAngles, 0, (float) M_PI * 2.0f);
         }
     }
     virtual void ModeSetUI(Enums::DrawMode& drawMode) {}
@@ -88,7 +95,9 @@ public:
     virtual void RenderGizmos2D(RenderInfo2D renderInfo) {}
 
     [[nodiscard]] glm::mat4 GenModelMat() const {
-        return glm::translate(glm::mat4(1.0f), modelTranslation);
+        glm::mat4 rot = glm::toMat4(glm::quat(eulerAngles));
+        glm::mat4 trans = glm::translate(glm::mat4(1.0f), modelTranslation);
+        return trans * rot;
     }
 
     [[nodiscard]] bool IsVisible() const { return visible; };
@@ -123,6 +132,7 @@ protected:
     bool visible = true;
     glm::vec3 color = {0.5f, 0.5f, 0.5f};
     glm::vec3 modelTranslation = {0.0f, 0.0f, 0.0f};
+    glm::vec3 eulerAngles = {0.0f, 0.0f, 0.0f};
     float sampleLength = 0.1f;
 
     bool diffed[3] {};

@@ -11,15 +11,18 @@
 
 class PiecewiseBlendMode : public BlendMode {
 public:
-    explicit PiecewiseBlendMode(const Vec2List& funcPoints);
+    explicit PiecewiseBlendMode(const Vec2List& funcPoints, int ID);
 
     [[nodiscard]] Enums::BlendType GetBlendType() const override;
 
     [[nodiscard]] int GetCustomID() const override;
 
     [[nodiscard]] float ApplyCustomFunc(float t) const override;
+    [[nodiscard]] std::string GetName() const override;
+
 private:
     Vec2List funcPoints;
+    int ID;
 };
 
 

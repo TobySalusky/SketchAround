@@ -22,6 +22,24 @@ public:
         }
         return newVec;
     }
+
+    template<class T, class K>
+    static std::vector<K> Select(const std::vector<T>& initVec, std::function<K(T, int)> func) {
+        std::vector<K> newVec {};
+        newVec.reserve(initVec.size());
+
+        for (int i = 0; i < initVec.size(); i++) {
+            newVec.push_back(func(initVec[i], i));
+        }
+        return newVec;
+    }
+
+//    template<class T>
+//    static std::vector<std::tuple<T, int>> Enumerate(std::vector<T> vec) {
+//        Select<T, std::tuple<T, int>>(vec, [](T val, int i) {
+//            return std::make_tuple(val, i);
+//        });
+//    }
 };
 
 
