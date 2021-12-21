@@ -25,6 +25,7 @@
 #include "../gl/Camera.h"
 #include "../editing/EditingContext.h"
 #include "../animation/Animator.h"
+#include <boost/serialization/access.hpp>
 
 class Timeline;
 
@@ -68,6 +69,18 @@ struct UIInfo {
 
 struct DraggableUIInfo;
 
+struct ReSerializeInfoModelObject {
+    std::vector<int> childIDs;
+
+private:
+    friend class boost::serialization::access;
+    template<class Archive>
+    void serialize(Archive & ar, const unsigned int version)
+    {
+        ar & childIDs;
+    }
+};
+
 class ModelObject {
 public:
     ModelObject() : ID(GenUniqueID()) {}
@@ -109,6 +122,8 @@ public:
         return GenOwnModelMat();
     }
 
+    [[nodiscard]] Vec3 GetColor() const { return color; };
+    [[nodiscard]] int GetID() const { return ID; };
     [[nodiscard]] bool IsVisible() const { return visible; };
     [[nodiscard]] bool* VisibilityPtr() { return &visible; };
 
@@ -139,6 +154,7 @@ public:
 
     void AppendChild(ModelObject* child);
     void UnParent();
+    void UnParentRaw() { parent = nullptr; }
     [[nodiscard]] bool HasParent() const { return parent != nullptr; }
     bool InParentChain(ModelObject* obj);
 
@@ -153,11 +169,42 @@ public:
 
     [[nodiscard]] const std::vector<ModelObject*>& GetChildren() const { return children; };
 
+    //ModelObject(const int& ID, const bool& visible, const Vec3& color) : ID(ID), visible(visible), color(color) {}
+
+    void PrepSerialization() {
+        reSerializeInfo = {Linq::Select<ModelObject*, int>(children, [](ModelObject* obj) { return obj->GetID(); })};
+    }
+
+    void ReSerialize(std::unordered_map<int, ModelObject*>& table) {
+        const auto serializedChildren = Linq::Select<int, ModelObject*>(reSerializeInfo.childIDs, [&](int thisID) { return table[thisID]; });
+
+        for (auto* child : serializedChildren) {
+            AppendChild(child);
+        }
+
+        reSerializeInfo = {};
+    }
+
+    virtual Enums::ModelObjectType GetType() = 0;
+
 protected:
+    friend class boost::serialization::access;
+    template<class Archive>
+    void serialize(Archive & ar, const unsigned int version)
+    {
+        ar & reSerializeInfo;
+        ar & ID;
+        ar & visible;
+        ar & color;
+        ar & modelTranslation;
+        ar & eulerAngles;
+    }
+
     void AnimatableSliderValUpdateBound(const std::string& label, float* ptr, float min, float max, Timeline& timeline);
 
     virtual ModelObject* CopyInternals() = 0;
 
+    ReSerializeInfoModelObject reSerializeInfo = {};
     int ID;
     bool visible = true;
     glm::vec3 color = {0.5f, 0.5f, 0.5f};
@@ -203,5 +250,32 @@ struct DraggableUIInfo {
     std::function<void(ModelObject*)> addObj;
     std::function<void(ModelObject*)> deleteObj;
 };
+
+namespace boost::serialization {
+
+    template<class Archive>
+    void serialize(Archive & ar, Vec2& vec, const unsigned int version)
+    {
+        ar & vec.x;
+        ar & vec.y;
+    }
+
+    template<class Archive>
+    void serialize(Archive & ar, Vec3& vec, const unsigned int version)
+    {
+        ar & vec.x;
+        ar & vec.y;
+        ar & vec.z;
+    }
+
+    template<class Archive>
+    void serialize(Archive & ar, Vec4& vec, const unsigned int version)
+    {
+        ar & vec.x;
+        ar & vec.y;
+        ar & vec.z;
+        ar & vec.w;
+    }
+}
 
 #endif //SENIORRESEARCH_MODELOBJECT_H

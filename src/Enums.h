@@ -21,6 +21,9 @@ public:
     enum BlendType {
         CUSTOM, LINEAR, SINE
     };
+    enum ModelObjectType {
+        LATHE, CROSS_SECTIONAL
+    };
 };
 
 

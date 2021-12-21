@@ -3,6 +3,7 @@
 #include <cmath>
 #include <iostream>
 #include <string>
+#include <fstream>
 
 #include "src/vendor/imgui/imgui.h"
 #include "src/vendor/glm/glm.hpp"
@@ -38,6 +39,10 @@
 #include "src/util/Rectangle.h"
 #include "src/gl/Display3DContext.h"
 #include "src/misc/Undos.h"
+#include "src/misc/Serialization.h"
+
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
 
 // Window dimensions
 const GLuint WIDTH = 1000, HEIGHT = 700;
@@ -178,6 +183,28 @@ int main() {
 
     EditingContext editContext;
 
+    /*
+     * TODO: Add animator + blend-modes to serialization
+     * TODO: make float* GetFloatSetter(std::string label) on ModelObject (relink after copy or serial)
+     */
+    const auto SerializeScene = [&]() {
+
+        std::ofstream ofs("../output/save.txt");
+        boost::archive::text_oarchive oa(ofs);
+        oa << Serialization(modelObjects);
+    };
+
+    const auto DeSerializeScene = [&]() {
+        Serialization serialization;
+
+        std::ifstream ifs("../output/save.txt");
+        boost::archive::text_iarchive ia(ifs);
+        ia >> serialization;
+
+        modelObjects = serialization.Deserialize();
+        SetModelObject(modelObjects[0]);
+    };
+
 
     while (!window.ShouldClose()) // >> UPDATE LOOP ======================================
     {
@@ -188,6 +215,9 @@ int main() {
         // hotkeys
         if (input->Down(GLFW_KEY_ESCAPE)) window.Close();
         if (input->Pressed(GLFW_KEY_L)) SetCameraMode(!cameraMode);
+
+        if (input->Pressed(GLFW_KEY_LEFT_BRACKET)) SerializeScene();
+        if (input->Pressed(GLFW_KEY_RIGHT_BRACKET)) DeSerializeScene();
 
         // Input Updating
         input->EndUpdate();
@@ -451,7 +481,6 @@ int main() {
         // ending stuff
         lastTime = time;
     }
-
 
     // Manual Resource Clears
     ImGuiHelper::Destroy();
