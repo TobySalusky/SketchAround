@@ -28,8 +28,6 @@ std::vector<GLfloat> Normals::Define(const GLfloat *vertices, const GLuint *indi
     // add normals
     for (GLuint row = 0; row < numOfIndices / 3; row++) {
 
-        //printf("%i, %i, %i\n", row, numOfIndices, numOfIndices / 3);
-
         const GLuint start = row * 3;
 
         const GLuint p1Idx = indices[start] * 6;
@@ -52,10 +50,6 @@ std::vector<GLfloat> Normals::Define(const GLfloat *vertices, const GLuint *indi
         Func(p3Idx);
     }
 
-//    for (size_t i = 0; i < count / 6; i++) {
-//        const GLuint s = i * 6;
-//        printf("%f, %f, %f :: %f, %f, %f\n", arr[s], arr[s + 1], arr[s + 2], arr[s + 3], arr[s + 4], arr[s + 5]);
-//    }
 
     return {arr, arr + sizeof(arr) / sizeof(GLfloat)};
 }

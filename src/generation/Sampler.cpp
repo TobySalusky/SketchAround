@@ -50,13 +50,13 @@ std::vector<glm::vec2> Sampler::DumbSampleLimited(const std::vector<glm::vec2>& 
         }
     }
 
-    sampled.emplace_back(inputPoints[inputPoints.size() - 1]);
+    if (sampled.size() == limit - 1) sampled.emplace_back(inputPoints[inputPoints.size() - 1]);
     return sampled;
 }
 
 std::vector<glm::vec2>
 Sampler::SampleTo(const std::vector<glm::vec2>& inputPoints, const int newPointCount) { // FIXME: DOES NOT WORK CORRECTLY!!! ALSO INEFFICIENT!!
     std::vector<glm::vec2> vec = DumbSampleLimited(inputPoints, LineAnalyzer::FullLength(inputPoints) / (float) (newPointCount - 1), newPointCount);
-    //printf("%i, %lu\n", newPointCount, vec.size());
+    if (vec.size() != newPointCount) printf("Error: - SampleTo %i %lu", newPointCount, vec.size());
     return vec;
 }

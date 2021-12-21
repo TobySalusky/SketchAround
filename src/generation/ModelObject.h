@@ -7,6 +7,7 @@
 
 #include <vector>
 #include <string>
+#include <functional>
 #include "../vendor/glm/vec2.hpp"
 #include "../vendor/glm/vec4.hpp"
 #include "../vendor/glm/vec3.hpp"
@@ -64,9 +65,11 @@ struct UIInfo {
     Timeline& timeline;
 };
 
+struct DraggableUIInfo;
+
 class ModelObject {
 public:
-    ModelObject() = default;
+    ModelObject() : ID(GenUniqueID()) {}
 
     virtual void HyperParameterUI(const UIInfo& info) {}
     void AuxParameterUI(const UIInfo& info) {
@@ -94,10 +97,10 @@ public:
     virtual void RenderSelf2D(RenderInfo2D renderInfo) {}
     virtual void RenderGizmos2D(RenderInfo2D renderInfo) {}
 
-    [[nodiscard]] glm::mat4 GenModelMat() const {
-        glm::mat4 rot = glm::toMat4(glm::quat(eulerAngles));
-        glm::mat4 trans = glm::translate(glm::mat4(1.0f), modelTranslation);
-        return trans * rot;
+    [[nodiscard]] glm::mat4 GenModelMat() {
+        glm::mat4 own = GenOwnModelMat();
+        if (HasParent()) return parent->GenModelMat() * GenOwnModelMat();
+        return GenOwnModelMat();
     }
 
     [[nodiscard]] bool IsVisible() const { return visible; };
@@ -128,7 +131,26 @@ public:
 
     Animator* GetAnimatorPtr() { return &animator; }
 
+    void AppendChild(ModelObject* child);
+    void UnParent();
+    [[nodiscard]] bool HasParent() const { return parent != nullptr; }
+    bool InParentChain(ModelObject* obj);
+
+    void DraggableGUI(const DraggableUIInfo& draggableUIInfo);
+
+    static int GenUniqueID() {
+        static int uniqueID = 0;
+        return uniqueID++;
+    }
+
+    ModelObject* CopyRecursive();
+
+    [[nodiscard]] const std::vector<ModelObject*>& GetChildren() const { return children; };
+
 protected:
+    virtual ModelObject* CopyInternals() = 0;
+
+    int ID;
     bool visible = true;
     glm::vec3 color = {0.5f, 0.5f, 0.5f};
     glm::vec3 modelTranslation = {0.0f, 0.0f, 0.0f};
@@ -140,6 +162,15 @@ protected:
     Animator animator = {};
 
     Mesh mesh{nullptr, nullptr, 0, 0};
+
+    ModelObject* parent = nullptr;
+    std::vector<ModelObject*> children;
+
+    [[nodiscard]] glm::mat4 GenOwnModelMat() const {
+        glm::mat4 rot = glm::toMat4(glm::quat(eulerAngles));
+        glm::mat4 trans = glm::translate(glm::mat4(1.0f), modelTranslation);
+        return trans * rot;
+    }
 
     void ModeSet (const char* title, Enums::DrawMode newDrawMode, std::vector<glm::vec2>& clearableVec, Enums::DrawMode& drawMode) {
         if (drawMode == newDrawMode) ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.4f, 0.5f, 0.6f, 1.0f});
@@ -158,5 +189,11 @@ protected:
     void EditCurrentLines(EditingInfo info);
 };
 
+struct DraggableUIInfo {
+    std::function<bool(ModelObject*)> isSelected;
+    std::function<void(ModelObject*)> select;
+    std::function<void(ModelObject*)> addObj;
+    std::function<void(ModelObject*)> deleteObj;
+};
 
 #endif //SENIORRESEARCH_MODELOBJECT_H

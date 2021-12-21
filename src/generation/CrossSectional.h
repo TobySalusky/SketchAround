@@ -10,6 +10,7 @@
 #include "CrossSectionTracer.h"
 
 class CrossSectional : public ModelObject {
+    using ModelObject::ModelObject;
 public:
     void HyperParameterUI(const UIInfo& info) final;
     void ModeSetUI(Enums::DrawMode& drawMode) final;
@@ -48,6 +49,8 @@ private:
 
     Mesh centralAxisMesh = {};
     Light lineLight = {{1.0f, 0.0f, 0.0f, 0.5f}, {-1.0f, -1.0f, -1.0f}, 1.0f};
+
+    ModelObject* CopyInternals() final;
 };
 
 

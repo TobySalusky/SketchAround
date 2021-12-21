@@ -73,8 +73,8 @@ std::tuple<std::vector<glm::vec3>, std::vector<GLuint>> Lathe::GenMeshTuple() {
                 .leanScalar=leanScalar,
                 .wrapStart=wrapStart,
                 .wrapEnd=wrapEnd,
-                .graphYPtr=&(graphedPointsY),
-                .graphZPtr=&(graphedPointsZ),
+                .graphY=graphedPointsY,
+                .graphZ=graphedPointsZ,
                 .crossSectionPoints=crossSectionPoints,
         });
     }
@@ -140,4 +140,21 @@ std::vector<glm::vec2>& Lathe::GetPointsRefByMode(Enums::DrawMode drawMode) {
 Enums::LineType Lathe::LineTypeByMode(Enums::DrawMode drawMode) {
     if (drawMode == Enums::MODE_PLOT || drawMode == Enums::MODE_CROSS_SECTION) return Enums::POLYLINE;
     return Enums::PIECEWISE;
+}
+
+ModelObject *Lathe::CopyInternals() { // FIXME: sus
+#define QUICK_COPY(a) copy->a = a
+    auto* copy = new Lathe();
+    QUICK_COPY(wrapStart);
+    QUICK_COPY(wrapEnd);
+    QUICK_COPY(plottedPoints);
+    QUICK_COPY(graphedPointsY);
+    QUICK_COPY(graphedPointsZ);
+    QUICK_COPY(crossSectionPoints);
+    QUICK_COPY(countPerRing);
+    QUICK_COPY(scaleRadius);
+    QUICK_COPY(scaleY);
+    QUICK_COPY(scaleZ);
+    QUICK_COPY(leanScalar);
+    return copy;
 }

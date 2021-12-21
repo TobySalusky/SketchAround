@@ -21,8 +21,8 @@ std::tuple<std::vector<glm::vec3>, std::vector<unsigned int>> Revolver::Revolve(
     std::vector<glm::vec3> vertices;
     std::vector<unsigned int> indices;
 
-    const bool hasGraphY = revolveData.graphYPtr != nullptr;
-    const bool hasGraphZ = revolveData.graphZPtr != nullptr;
+    const bool hasGraphY = !revolveData.graphY.empty();
+    const bool hasGraphZ = !revolveData.graphZ.empty();
     const int countPerRing = revolveData.countPerRing;
 
     bool hasCrossSection = revolveData.crossSectionPoints.size() >= 3;
@@ -30,6 +30,8 @@ std::tuple<std::vector<glm::vec3>, std::vector<unsigned int>> Revolver::Revolve(
     if (hasCrossSection) {
         sampledCrossSection = Sampler::SampleTo(revolveData.crossSectionPoints, countPerRing);
     }
+
+
 
     const auto GenVec = [&](int i, const Vec2& point){
         if (hasCrossSection) {
@@ -42,14 +44,11 @@ std::tuple<std::vector<glm::vec3>, std::vector<unsigned int>> Revolver::Revolve(
     };
 
     for (const auto &point : points) {
-        float translateY = !hasGraphY ? 0 : Function::GetY(*revolveData.graphYPtr, point.x);
-        //float angleLeanY = !hasGraphY ? 0 : Function::GetSlopeRadians(*revolveData.graphYPtr, point.x);
-        float angleLeanY = !hasGraphY ? 0 : Util::SlopeToRadians(Function::GetAverageSlope(*revolveData.graphYPtr, point.x, 5));
+        float translateY = !hasGraphY ? 0 : Function::GetY(revolveData.graphY, point.x);
+        float angleLeanY = !hasGraphY ? 0 : Function::GetAverageRadians(revolveData.graphY, point.x, 5);
 
-        float translateZ = !hasGraphZ ? 0 : Function::GetY(*revolveData.graphZPtr, point.x);
-        //float angleLeanZ = !hasGraphZ ? 0 : -Function::GetSlopeRadians(*revolveData.graphZPtr, point.x);
-        float angleLeanZ = !hasGraphZ ? 0 : -Util::SlopeToRadians(Function::GetAverageSlope(*revolveData.graphZPtr, point.x, 5));
-        // todo: lean
+        float translateZ = !hasGraphZ ? 0 : Function::GetY(revolveData.graphZ, point.x);
+        float angleLeanZ = !hasGraphZ ? 0 : -Function::GetAverageRadians(revolveData.graphZ, point.x, 5);
 
         for (int i = 0; i < countPerRing; i++) {
             Vec4 vec = GenVec(i, point);

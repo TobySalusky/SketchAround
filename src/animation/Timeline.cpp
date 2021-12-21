@@ -16,18 +16,21 @@ std::vector<int> numKeys = {
 };
 
 void Timeline::Update(const TimelineUpdateInfo& info) {
-    const auto&[input, deltaTime, modelObject, drawMode] = info;
+    const auto&[input, deltaTime, drawMode, modelObject, modelObjects, focusMode] = info;
 
     const float currentTime = animator->currentTime;
     auto& keyFrameLayers = animator->keyFrameLayers;
     auto& floatKeyFrameLayers = animator->floatKeyFrameLayers;
 
-    const auto SampleAtTime = [&](float time) {
+    const auto SampleAtTime = [](ModelObject& obj, float time) {
         bool diffFlag = false;
+
+        auto& keyFrameLayers = obj.GetAnimatorPtr()->keyFrameLayers;
+        auto& floatKeyFrameLayers = obj.GetAnimatorPtr()->floatKeyFrameLayers;
 
         for (auto& [mode, keyFrameLayer] : keyFrameLayers) {
             if (keyFrameLayer.HasValue()) {
-                Vec2List& pointsRef = info.modelObject.GetPointsRefByMode(mode);
+                Vec2List& pointsRef = obj.GetPointsRefByMode(mode);
 
                 auto animatedPoints = keyFrameLayer.GetAnimatedVal(time);
                 pointsRef.clear();
@@ -44,7 +47,18 @@ void Timeline::Update(const TimelineUpdateInfo& info) {
         }
 
         if (diffFlag) {
-            info.modelObject.UpdateMesh();
+            obj.UpdateMesh();
+        }
+    };
+
+    const auto SampleAllAtTime = [&](float time) {
+        if (info.focusMode) {
+            SampleAtTime(info.modelObject, time);
+            return;
+        }
+
+        for (ModelObject* obj : info.modelObjects) {
+            SampleAtTime(*obj, time);
         }
     };
 
@@ -90,7 +104,7 @@ void Timeline::Update(const TimelineUpdateInfo& info) {
             if (mouseOnGUI) {
                 const float prevTime = animator->currentTime;
                 animator->currentTime = std::round(mousePos.x * 10.0f) / 10.0f;
-                if (animator->currentTime != prevTime) SampleAtTime(animator->currentTime);
+                if (animator->currentTime != prevTime) SampleAllAtTime(animator->currentTime);
             }
         }
     }
@@ -176,7 +190,7 @@ void Timeline::Update(const TimelineUpdateInfo& info) {
             else animator->currentTime = 1.0f;
         }
 
-        SampleAtTime(currentTime);
+        SampleAllAtTime(currentTime);
     }
 
     lastFocused = focused;
@@ -244,7 +258,7 @@ void Timeline::Render(const TimelineRenderInfo& info) {
 
 void Timeline::GUI(const TimelineGUIInfo& info) {
     const auto& [_0, _1, input] = info;
-    ImGui::ShowDemoWindow();
+    //ImGui::ShowDemoWindow();
 
     bool mouseOnGUI = Util::VecIsNormalizedNP(Util::NormalizeToRectNPFlipped(input.GetMouse(), guiRect));
 

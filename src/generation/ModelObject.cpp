@@ -25,7 +25,7 @@ void ModelObject::Render2D(RenderInfo2D renderInfo) {
 
 void ModelObject::FunctionalAngleGizmo(RenderInfo2D renderInfo, const std::vector<glm::vec2>& points) {
     float pointY = Function::GetY(points, renderInfo.onScreen.x);
-    float pointAngle = Util::SlopeToRadians(Function::GetAverageSlope(points, renderInfo.onScreen.x, 5));
+    float pointAngle = Function::GetAverageRadians(points, renderInfo.onScreen.x, 5);
     if (pointY != 0) {
         std::vector<glm::vec2> gizmo {{renderInfo.onScreen.x, pointY}, glm::vec2(renderInfo.onScreen.x, pointY) + Util::Polar(0.1f, -pointAngle)};
         renderInfo.plot.AddLines(gizmo, {1.0f, 0.0f, 1.0f, 1.0f});
@@ -179,4 +179,118 @@ void ModelObject::InputPoints(MouseInputInfo renderInfo) {
 void ModelObject::ClearSingle(Enums::DrawMode drawMode) {
     GetPointsRefByMode(drawMode).clear();
     DiffPoints(drawMode);
+}
+
+void ModelObject::UnParent() {
+    if (!HasParent()) return;
+
+    for (int i = 0; i < parent->children.size(); i++) {
+        if (parent->children[i] == this) {
+            parent->children.erase(parent->children.begin() + i);
+            break;
+        }
+    }
+    parent = nullptr;
+}
+
+void ModelObject::AppendChild(ModelObject *child) {
+    child->UnParent();
+    child->parent = this;
+    children.push_back(child);
+}
+
+void ModelObject::DraggableGUI(const DraggableUIInfo& info) {
+    const auto&[isSelected, select, addObj, deleteObj] = info;
+
+    std::string nameID = "Elem - " + std::to_string(ID);
+
+    ImGui::PushID(this);
+    bool isOpen = ImGui::TreeNodeEx(nameID.c_str(), ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_DefaultOpen |
+                                            (isSelected(this) ? ImGuiTreeNodeFlags_Selected : 0));
+
+    std::string popupID = std::string("ModelObject-") + std::to_string(ID);
+
+    if (ImGui::IsItemHovered() && ImGui::GetIO().MouseClicked[1]) {
+        ImGui::OpenPopup(popupID.c_str());
+    }
+
+    if (ImGui::BeginPopup(popupID.c_str())) {
+
+        ImGui::Checkbox("Visible", &visible);
+
+        if (ImGui::Button("Copy")) {
+            addObj(this->CopyRecursive());
+            ImGui::CloseCurrentPopup();
+        }
+
+        if (ImGui::Button("Delete")) {
+            deleteObj(this);
+        }
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen()) {
+        if (!isSelected(this)) select(this);
+    }
+
+    if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+    {
+        ModelObject* ptr = this;
+        ModelObject** payload = &ptr;
+        ImGui::SetDragDropPayload("ModelObjectDrag", (void*)payload, sizeof(ModelObject*));
+
+        ImGui::Text("%s", nameID.c_str()); // drag-preview
+        ImGui::EndDragDropSource();
+    }
+
+    if (ImGui::BeginDragDropTarget())
+    {
+        if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ModelObjectDrag"))
+        {
+            IM_ASSERT(payload->DataSize == sizeof(ModelObject*));
+            ModelObject* draggedObj = *(ModelObject**)payload->Data;
+            if (!InParentChain(draggedObj)) {
+                AppendChild(draggedObj);
+            }
+        }
+        ImGui::EndDragDropTarget();
+    }
+
+    if (isOpen) {
+        for (ModelObject* child : children) {
+            child->DraggableGUI(info);
+        }
+        ImGui::TreePop();
+    }
+    ImGui::PopID();
+}
+
+bool ModelObject::InParentChain(ModelObject* obj) {
+    if (!HasParent()) return false;
+    if (parent == obj) return true;
+    return parent->InParentChain(obj);
+}
+
+ModelObject *ModelObject::CopyRecursive() {
+    ModelObject* copy = CopyInternals();
+
+#define QUICK_COPY(a) copy->a = a
+
+    QUICK_COPY(modelTranslation);
+    QUICK_COPY(color);
+    QUICK_COPY(eulerAngles);
+    QUICK_COPY(animator);
+    QUICK_COPY(sampleLength);
+    QUICK_COPY(visible);
+    copy->ID = GenUniqueID();
+
+    copy->parent = nullptr;
+    copy->children = {};
+
+    for (ModelObject* child : children) {
+        copy->AppendChild(child->CopyRecursive());
+    }
+
+    return copy;
 }

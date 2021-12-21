@@ -85,7 +85,7 @@ CrossSectionTracer::TraceSegments(const std::vector<glm::vec2> &points, const st
         glm::vec2 p1, p2;
         for (int i = 0; i < points.size() - 1; i++) {
 
-            const float angle = Util::SlopeToRadians(-Function::GetAverageSlope(pathTrace, pathPoint.x, 3));
+            const float angle = -Function::GetAverageRadians(pathTrace, pathPoint.x, 3);
             const auto dirVec = Util::Polar(angle);
 
             const auto intersectionPos = Intersector::RaySegment(pathPoint, dirVec, points[i], points[i + 1]);

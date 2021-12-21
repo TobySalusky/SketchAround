@@ -57,6 +57,20 @@ Vec2 MouseToScreenNorm01(Vec2 mouseVec) {
     return {mouseVec.x / WIDTH, mouseVec.y / HEIGHT};
 }
 
+void DragDropModelObject() {
+    ImGui::Dummy({ImGui::GetWindowContentRegionWidth(), fmax(40.0f, ImGui::GetContentRegionAvail().y)});
+    if (ImGui::BeginDragDropTarget())
+    {
+        if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ModelObjectDrag"))
+        {
+            IM_ASSERT(payload->DataSize == sizeof(ModelObject*));
+            ModelObject* draggedObj = *(ModelObject**)payload->Data;
+            draggedObj->UnParent();
+        }
+        ImGui::EndDragDropTarget();
+    }
+}
+
 // The MAIN function, from here we start the application and run the game loop
 int main() {
     GraphView graphView {-1.0f, 1.0f, -1.0f, 0.0f};
@@ -125,6 +139,33 @@ int main() {
     const auto AddSetCrossSectional = [&]() {
         modelObjects.emplace_back(new CrossSectional());
         SetModelObject(modelObjects[modelObjects.size() - 1]);
+    };
+
+
+    std::function<void(ModelObject* obj)> addModelObjRecursive;
+    addModelObjRecursive = [&](ModelObject* obj) {
+        modelObjects.emplace_back(obj);
+        obj->UpdateMesh();
+        for (ModelObject* child : obj->GetChildren()) {
+            addModelObjRecursive(child);
+        }
+    };
+
+    DraggableUIInfo draggableUIInfo = {
+        [&](ModelObject* obj) { return modelObject == obj; },
+        [&](ModelObject* obj) { SetModelObject(obj); },
+        addModelObjRecursive,
+        [&](ModelObject* obj) {
+            if (modelObjects.size() <= 1) return; // TODO: use count of base nodes only // FIXME !!! rewrite delete func!!!!
+            obj->UnParent();
+            for (int i = 0; i < modelObjects.size(); i++) {
+                if (modelObjects[i] == obj) {
+                    modelObjects.erase(modelObjects.begin() + i); // TODO: call delete on object! // FIXME: memory leak
+                    break;
+                }
+            }
+            if (obj == modelObject) SetModelObject(modelObjects[0]);
+        }
     };
 
     RenderTarget modelScene{window.GetBufferWidth(), window.GetBufferHeight(), true};
@@ -200,38 +241,7 @@ int main() {
             planeGizmo.Render3D();*/
         }
 
-//        glEnd();
-//        glFlush();
-//        //glFinish();
-//
-//        GLfloat* depths;
-//        depths = new GLfloat[4];
-//
-//        GLfloat * color;
-//        color = new GLfloat[4];
-//
-//        glReadPixels (0, 0, 2, 2, GL_DEPTH_COMPONENT, GL_FLOAT, depths);
-//        glReadPixels (0, 0, 2, 2, GL_BLUE, GL_FLOAT, color);
-//
-//        printf("%f %f %f %f\n", depths[0], depths[1], depths[2], depths[3]);
-//        printf("%f %f %f %f\n", color[0], color[1], color[2], color[3]);
-
-
-//        GLubyte pixels[4*4*3];
-//        glReadBuffer(GL_FRONT);
-//        glReadPixels(0, 0, 4, 4, GL_RGB, GL_UNSIGNED_BYTE, pixels);
-//        for (const auto& byte: pixels) {
-//            printf("%x ", byte);
-//        }
-//        printf("\n");
-
         shader.Disable();
-
-
-
-
-
-
 
 
         RenderTarget::Unbind();
@@ -261,20 +271,6 @@ int main() {
             float col = 0.0f;
             plot.AddLines(gizmo, {col, col, col, 0.15f}, 0.001f);
         }
-
-        /*{
-            // test animation!!
-            if (modelObject->plottedPoints.size() >= 2 && modelObject->graphedPointsY.size() >= 2 && modelObject == modelObjects[0]) {
-                const auto vecAnim = LineLerper::MorphPolyLine(modelObject->plottedPoints, modelObject->graphedPointsY, fmod(Util::sin01(time * 2.5f), 1.0f), 30);
-                plot.AddLines(vecAnim,{1.0f, 0.5f, 0.5f, 1.0f});
-
-                ModelObject* otherLathe = modelObjects[1];
-
-                otherLathe->plottedPoints.clear();
-                otherLathe->plottedPoints.insert(otherLathe->plottedPoints.end(), vecAnim.begin(), vecAnim.end());
-                otherLathe->UpdateMesh();
-            }
-        }*/
 
         plot.ImmediateClearingRender();
 
@@ -345,39 +341,20 @@ int main() {
         // Model Instantiation Window
         ImGui::Begin("Models");
         {
-            ImGui::Checkbox("Focus-mode", &focusMode);
-
-            for (int i = 0; i < modelObjects.size(); i++) {
-                bool isCurrentLathe = modelObject == modelObjects[i];
-                if (isCurrentLathe) ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.4f, 0.5f, 0.6f, 1.0f});
-                else ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.2f, 0.3f, 0.4f, 1.0f});
-
-                if (ImGui::Button(std::to_string(i).c_str(), { ImGui::GetWindowContentRegionWidth() - 39.0f, 24.0f})) {
-                    SetModelObject(modelObjects[i]);
-                }
-
-                ImGui::PopStyleColor(1);
-
-                ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - 29.0f);
-                ImGui::Checkbox((std::string("##") + std::to_string(i)).c_str(), modelObjects[i]->VisibilityPtr());
-
-                ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - 9.0f);
-                if (ImGui::Button((std::string("X##") + std::to_string(i)).c_str()) && modelObjects.size() > 1) {
-                    modelObjects.erase(modelObjects.begin() + i);
-                    if (isCurrentLathe) {
-                        SetModelObject(modelObjects[i == modelObjects.size() ? i - 1 : i]);
-                    }
-                    else if (modelObjects[i] < modelObject) {
-                        SetModelObject(modelObject - 1);
-                    }
-                }
-            }
-            if (ImGui::Button("+##Lathe", {ImGui::GetWindowContentRegionWidth(), 24.0f})) {
+            if (ImGui::Button("+##Lathe")) {
                 AddSetLathe();
             }
-            if (ImGui::Button("+##CrossSectional", {ImGui::GetWindowContentRegionWidth(), 24.0f})) {
+            ImGui::SameLine();
+            if (ImGui::Button("+##CrossSectional")) {
                 AddSetCrossSectional();
             }
+            ImGui::SameLine();
+            ImGui::Checkbox("Focus", &focusMode);
+
+            for (ModelObject* currModelObject : modelObjects) {
+                if (!currModelObject->HasParent()) currModelObject->DraggableGUI(draggableUIInfo);
+            }
+            DragDropModelObject();
         }
         ImGui::End();
 
@@ -468,7 +445,7 @@ int main() {
         }
 
         // POST UPDATE EVENTS
-        timeline.Update({*input, deltaTime, *modelObject, drawMode});
+        timeline.Update({*input, deltaTime, drawMode, *modelObject, modelObjects, focusMode});
         modelObject->UnDiffAll();
 
         // ending stuff

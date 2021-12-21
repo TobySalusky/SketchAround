@@ -17,8 +17,8 @@ struct RevolveData {
     float leanScalar{};
     bool wrapStart{};
     bool wrapEnd{};
-    Vec2List *graphYPtr{};
-    Vec2List *graphZPtr{};
+    const Vec2List& graphY;
+    const Vec2List& graphZ;
     const Vec2List& crossSectionPoints;
 };
 

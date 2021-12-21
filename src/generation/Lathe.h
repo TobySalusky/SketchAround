@@ -9,13 +9,13 @@
 #include "ModelObject.h"
 
 class Lathe : public ModelObject {
+    using ModelObject::ModelObject;
 public:
     void HyperParameterUI(const UIInfo& info) final;
     void UpdateMesh() final;
     void ModeSetUI(Enums::DrawMode& drawMode) final;
 
     void ClearAll() override;
-
 
     void RenderSelf2D(RenderInfo2D renderInfo) final;
     void RenderGizmos2D(RenderInfo2D renderInfo) final;
@@ -40,6 +40,8 @@ private:
     RGBA plotColor = {0.0f, 0.0f, 0.0f, 1.0f};
     RGBA graphColorY = {0.0f, 0.0f, 1.0f, 1.0f};
     RGBA graphColorZ = {0.0f, 1.0f, 0.0f, 1.0f};
+
+    ModelObject* CopyInternals() final;
 };
 
 

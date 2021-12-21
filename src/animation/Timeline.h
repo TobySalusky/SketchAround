@@ -14,6 +14,7 @@
 #include "../generation/ModelObject.h"
 #include "KeyFrameLayer.h"
 #include "Animator.h"
+#include <vector>
 #include <unordered_map>
 #include <variant>
 #include <functional>
@@ -135,8 +136,10 @@ public:
     struct TimelineUpdateInfo {
         const Input& input;
         float deltaTime;
-        ModelObject& modelObject;
         Enums::DrawMode drawMode;
+        ModelObject& modelObject;
+        const std::vector<ModelObject*>& modelObjects;
+        bool focusMode;
     };
 
     static Timeline Create(const GLWindow& window) { return Timeline({window.GetBufferWidth(), window.GetBufferHeight()}); }

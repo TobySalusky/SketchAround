@@ -50,10 +50,6 @@ public:
         return atan2(vec.y, vec.x);
     }
 
-    static float SlopeToRadians(float slope) {
-        return std::atan2(slope, 1.0f);
-    }
-
     static float Lerp(float f1, float f2, float t) {
         return f1 * (1 - t) + f2 * t;
     }

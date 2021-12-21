@@ -139,3 +139,17 @@ std::tuple<std::vector<glm::vec3>, std::vector<GLuint>> CrossSectional::GenMeshT
 
     return MeshUtil::Empty();
 }
+
+ModelObject *CrossSectional::CopyInternals() { // FIXME: sus
+#define QUICK_COPY(a) copy->a = a
+
+    auto* copy = new CrossSectional(*this);
+    QUICK_COPY(wrapStart);
+    QUICK_COPY(wrapEnd);
+    QUICK_COPY(centralPoints);
+    QUICK_COPY(boundPoints);
+    QUICK_COPY(countPerRing);
+    QUICK_COPY(centralAutoGenPoints);
+    QUICK_COPY(segments);
+    return copy;
+}
