@@ -26,6 +26,7 @@
 #include "../editing/EditingContext.h"
 #include "../animation/Animator.h"
 
+class Timeline;
 
 struct TimelineGUIInfo {
     unsigned int WIDTH;
@@ -73,10 +74,15 @@ public:
 
     virtual void HyperParameterUI(const UIInfo& info) {}
     void AuxParameterUI(const UIInfo& info) {
+
         if (ImGui::CollapsingHeader("Aux")) {
             ImGui::ColorEdit3("model-color", (float *) &color);
-            ImGui::SliderFloat3("translate", (float *) &modelTranslation, -5.f, 5.f);
-            ImGui::SliderFloat3("rotation", (float *) &eulerAngles, 0, (float) M_PI * 2.0f);
+            AnimatableSliderValUpdateBound("x", (float *) &modelTranslation.x, -5.f, 5.f, info.timeline);
+            AnimatableSliderValUpdateBound("y", (float *) &modelTranslation.y, -5.f, 5.f, info.timeline);
+            AnimatableSliderValUpdateBound("z", (float *) &modelTranslation.z, -5.f, 5.f, info.timeline);
+            AnimatableSliderValUpdateBound("rot-x", (float *) &eulerAngles.x, (float) -M_PI, (float) M_PI, info.timeline);
+            AnimatableSliderValUpdateBound("rot-y", (float *) &eulerAngles.y, (float) -M_PI, (float) M_PI, info.timeline);
+            AnimatableSliderValUpdateBound("rot-z", (float *) &eulerAngles.z, (float) -M_PI, (float) M_PI, info.timeline);
         }
     }
     virtual void ModeSetUI(Enums::DrawMode& drawMode) {}
@@ -148,6 +154,8 @@ public:
     [[nodiscard]] const std::vector<ModelObject*>& GetChildren() const { return children; };
 
 protected:
+    void AnimatableSliderValUpdateBound(const std::string& label, float* ptr, float min, float max, Timeline& timeline);
+
     virtual ModelObject* CopyInternals() = 0;
 
     int ID;

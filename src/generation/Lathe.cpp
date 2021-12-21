@@ -16,40 +16,19 @@ void Lathe::HyperParameterUI(const UIInfo& info) {
             UpdateMesh();
     };
 
-    const auto AnimatableSliderValUpdateBound = [&] (const std::string& label, float* ptr, float min, float max) {
-        bool animated = info.timeline.HasFloatLayer(label);
-        ImGui::Checkbox(("##" + label).c_str(), &animated);
-        if (ImGui::IsItemClicked()) {
-            if (!animated) {
-                info.timeline.AddFloatLayer(label, ptr);
-            } else {
-                info.timeline.RemoveFloatLayer(label);
-            }
-        }
+    AnimatableSliderValUpdateBound("scale-radius", &scaleRadius, 0.1f, 3.0f, info.timeline);
 
-        ImGui::SameLine();
-        ImGui::SliderFloat(label.c_str(), ptr, min, max);
-        if (ImGui::IsItemActive()) {
-            if (animated) {
-                info.timeline.UpdateFloat(label, *ptr);
-            }
-            UpdateMesh();
-        }
-    };
+    AnimatableSliderValUpdateBound("scale-z", &scaleZ, 0.1f, 3.0f, info.timeline);
 
-    AnimatableSliderValUpdateBound("scale-radius", &scaleRadius, 0.1f, 3.0f);
+    AnimatableSliderValUpdateBound("scale-y", &scaleY, 0.1f, 3.0f, info.timeline);
 
-    AnimatableSliderValUpdateBound("scale-z", &scaleZ, 0.1f, 3.0f);
-
-    AnimatableSliderValUpdateBound("scale-y", &scaleY, 0.1f, 3.0f);
-
-    AnimatableSliderValUpdateBound("lean-scalar", &leanScalar, 0.0f, 1.0f);
+    AnimatableSliderValUpdateBound("lean-scalar", &leanScalar, 0.0f, 1.0f, info.timeline);
 
     // TODO:
     ImGui::SliderInt("count-per-ring", &countPerRing, 3, 40);
     BindUIMeshUpdate();
 
-    AnimatableSliderValUpdateBound("sample-length", &sampleLength, 0.01f, 0.5f);
+    AnimatableSliderValUpdateBound("sample-length", &sampleLength, 0.01f, 0.5f, info.timeline);
 
     if (ImGui::Checkbox("wrap-start", &wrapStart)) {
         UpdateMesh();

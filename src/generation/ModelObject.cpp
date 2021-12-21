@@ -9,6 +9,7 @@
 
 #include <glfw3.h>
 #include <numeric>
+#include "../animation/Timeline.h"
 
 void ModelObject::Render3D(RenderInfo3D renderInfo) {
     renderInfo.shader3D.SetModel(GenModelMat());
@@ -293,4 +294,26 @@ ModelObject *ModelObject::CopyRecursive() {
     }
 
     return copy;
+}
+
+
+void ModelObject::AnimatableSliderValUpdateBound(const std::string& label, float* ptr, float min, float max, Timeline& timeline) {
+    bool animated = timeline.HasFloatLayer(label);
+    ImGui::Checkbox(("##" + label).c_str(), &animated);
+    if (ImGui::IsItemClicked()) {
+        if (!animated) {
+            timeline.AddFloatLayer(label, ptr);
+        } else {
+            timeline.RemoveFloatLayer(label);
+        }
+    }
+
+    ImGui::SameLine();
+    ImGui::SliderFloat(label.c_str(), ptr, min, max);
+    if (ImGui::IsItemActive()) {
+        if (animated) {
+            timeline.UpdateFloat(label, *ptr);
+        }
+        UpdateMesh();
+    }
 }
