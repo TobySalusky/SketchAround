@@ -31,9 +31,16 @@ public:
     Enums::LineType LineTypeByMode(Enums::DrawMode drawMode) final;
 
     std::tuple<Vec3List, std::vector<GLuint>> GenMeshTuple() final;
-    float scaleRadius = 1.0f, scaleZ = 1.0f, scaleY = 1.0f, leanScalar = 0.25f;
 
     Enums::ModelObjectType GetType() final { return Enums::LATHE; }
+
+    float* GetFloatValuePtrByLabel(const std::string& label) final {
+        if (label == "scale-radius") return &scaleRadius;
+        if (label == "scale-y") return &scaleY;
+        if (label == "scale-z") return &scaleZ;
+        if (label == "lean-scalar") return &leanScalar;
+        return ModelObject::GetFloatValuePtrByLabel(label);
+    }
 
 private:
     friend class boost::serialization::access;
@@ -53,6 +60,8 @@ private:
         ar & graphedPointsZ;
         ar & crossSectionPoints;
     }
+
+    float scaleRadius = 1.0f, scaleZ = 1.0f, scaleY = 1.0f, leanScalar = 0.25f;
 
     int countPerRing = 10;
 

@@ -157,9 +157,9 @@ public:
         return animator->floatKeyFrameLayers.contains(valLabel);
     }
 
-    void AddFloatLayer(const std::string& valLabel, float* valPtr) {
-        animator->floatKeyFrameLayers[valLabel] = {KeyFrameLayer<float>(), valPtr};
-        UpdateFloat(valLabel, *valPtr);
+    void AddFloatLayer(const std::string& valLabel, float initVal) {
+        animator->floatKeyFrameLayers[valLabel] = {KeyFrameLayer<float>()};
+        UpdateFloat(valLabel, initVal);
     }
 
     void RemoveFloatLayer(const std::string& valLabel) {

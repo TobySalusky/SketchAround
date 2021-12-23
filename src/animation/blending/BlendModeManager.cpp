@@ -5,11 +5,6 @@
 #include "BlendModeManager.h"
 #include "LinearBlendMode.h"
 
-BlendModeManager::BlendModeManager() {
-    blendModes[GenNextID()] = new LinearBlendMode();
-    blendModes[GenNextID()] = new SineBlendMode();
-}
-
 std::vector<int> BlendModeManager::GenAllIDs() {
     std::vector<int> vec;
 

@@ -20,6 +20,8 @@ Serialization::Serialization(const std::vector<ModelObject *>& modelObjects) {
         obj->PrepSerialization();
         return obj->GetID();
     });
+    blendModeManager = BlendModes::GetManager();
+    blendModeManager.PrepSerialize();
 }
 
 std::vector<ModelObject *> Serialization::Deserialize() {
@@ -34,6 +36,9 @@ std::vector<ModelObject *> Serialization::Deserialize() {
 
     for (auto* obj : res) {obj->UnParentRaw();}
     for (auto* obj : res) {obj->ReSerialize(table);}
+
+    BlendModes::SetManager(blendModeManager);
+    BlendModes::GetManager().ReSerialize();
 
     return res;
 }

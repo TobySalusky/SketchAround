@@ -6,6 +6,8 @@
 #define SENIORRESEARCH_PIECEWISEBLENDMODE_H
 
 
+#include <boost/serialization/access.hpp>
+#include <boost/serialization/vector.hpp>
 #include "BlendMode.h"
 #include "../../util/Includes.h"
 
@@ -20,7 +22,17 @@ public:
     [[nodiscard]] float ApplyCustomFunc(float t) const override;
     [[nodiscard]] std::string GetName() const override;
 
+    PiecewiseBlendMode() {}
+
 private:
+    friend class boost::serialization::access;
+    template<class Archive>
+    void serialize(Archive & ar, const unsigned int version)
+    {
+        ar & ID;
+        ar & funcPoints;
+    }
+
     Vec2List funcPoints;
     int ID;
 };

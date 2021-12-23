@@ -15,6 +15,8 @@ public:
     static void Add(BlendMode* newBlendMode) { manager.Add(newBlendMode); }
     static std::vector<int> GenAllIDs() { return manager.GenAllIDs(); }
     static int GetNextID() { return manager.GetNextID(); }
+    static BlendModeManager& GetManager() { return manager; }
+    static void SetManager(BlendModeManager manager) { BlendModes::manager = manager; }
 private:
     static BlendModeManager manager;
 };

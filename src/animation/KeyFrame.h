@@ -12,6 +12,7 @@
 #include "blending/BlendModeManager.h"
 #include "blending/BlendModes.h"
 #include <vector>
+#include <boost/serialization/access.hpp>
 
 template <typename T>
 struct KeyFrame {
@@ -37,6 +38,16 @@ struct KeyFrame {
     static std::vector<glm::vec2> Lerp(const KeyFrame<std::vector<glm::vec2>>& frame1, const KeyFrame<std::vector<glm::vec2>>& frame2, float t) {
         // TODO: better count??
         return LineLerper::MorphPolyLine(frame1.val, frame2.val, t, (int) std::max(frame1.val.size(), frame2.val.size()));
+    }
+
+private:
+    friend class boost::serialization::access;
+    template<class Archive>
+    void serialize(Archive & ar, const unsigned int version)
+    {
+        ar & val;
+        ar & time;
+        ar & blendModeID;
     }
 };
 

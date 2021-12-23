@@ -41,7 +41,7 @@ void Timeline::Update(const TimelineUpdateInfo& info) {
 
         for (auto& [valLabel, settableKeyFrameLayer] : floatKeyFrameLayers) {
             if (settableKeyFrameLayer.layer.HasValue()) {
-                *settableKeyFrameLayer.floatPtr = settableKeyFrameLayer.layer.GetAnimatedVal(time);
+                obj.SetValueByLabel(valLabel, settableKeyFrameLayer.layer.GetAnimatedVal(time));
                 diffFlag = true;
             }
         }

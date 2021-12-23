@@ -22,6 +22,7 @@ public:
     std::vector<int> order = {};
     std::vector<Lathe*> lathes = {};
     std::vector<CrossSectional*> crossSectionals = {};
+    BlendModeManager blendModeManager;
 
 private:
     friend class boost::serialization::access;
@@ -31,9 +32,8 @@ private:
         ar & order;
         ar & lathes;
         ar & crossSectionals;
+        ar & blendModeManager;
     }
-
-    //std::vector<CrossSectional> crossSectionals;
 };
 
 

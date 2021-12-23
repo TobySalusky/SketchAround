@@ -187,6 +187,19 @@ public:
 
     virtual Enums::ModelObjectType GetType() = 0;
 
+    void SetValueByLabel(const std::string& label, const float value) { *GetFloatValuePtrByLabel(label) = value; }
+
+    virtual float* GetFloatValuePtrByLabel(const std::string& label) {
+        if (label == "x") return &modelTranslation.x;
+        if (label == "y") return &modelTranslation.y;
+        if (label == "z") return &modelTranslation.z;
+        if (label == "rot-z") return &eulerAngles.x;
+        if (label == "rot-z") return &eulerAngles.y;
+        if (label == "rot-z") return &eulerAngles.z;
+        if (label == "sample-length") return &sampleLength;
+        return nullptr;
+    }
+
 protected:
     friend class boost::serialization::access;
     template<class Archive>
@@ -198,6 +211,7 @@ protected:
         ar & color;
         ar & modelTranslation;
         ar & eulerAngles;
+        ar & animator;
     }
 
     void AnimatableSliderValUpdateBound(const std::string& label, float* ptr, float min, float max, Timeline& timeline);

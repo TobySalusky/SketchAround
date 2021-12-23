@@ -302,7 +302,7 @@ void ModelObject::AnimatableSliderValUpdateBound(const std::string& label, float
     ImGui::Checkbox(("##" + label).c_str(), &animated);
     if (ImGui::IsItemClicked()) {
         if (!animated) {
-            timeline.AddFloatLayer(label, ptr);
+            timeline.AddFloatLayer(label, *ptr);
         } else {
             timeline.RemoveFloatLayer(label);
         }

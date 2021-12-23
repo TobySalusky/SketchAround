@@ -10,6 +10,7 @@
 #include "../vendor/glm/vec2.hpp"
 #include "../gl/Mesh2D.h"
 #include <functional>
+#include <boost/serialization/access.hpp>
 
 template <class T>
 class KeyFrameLayer {
@@ -189,6 +190,14 @@ public:
     }
 
     std::vector<KeyFrame<T>> frames;
+
+private:
+    friend class boost::serialization::access;
+    template<class Archive>
+    void serialize(Archive & ar, const unsigned int version)
+    {
+        ar & frames;
+    }
 };
 
 

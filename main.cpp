@@ -119,6 +119,8 @@ int main() {
 
     //Texture texture{"../assets/images/test.png"};
 
+    BlendModes::GetManager().Init();
+
     Mesh planeGizmo {};
 
     Mesh2D plot;
