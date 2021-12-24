@@ -11,6 +11,8 @@
 #include <numeric>
 #include "../animation/Timeline.h"
 
+int ModelObject::nextUniqueID = 0;
+
 void ModelObject::Render3D(RenderInfo3D renderInfo) {
     renderInfo.shader3D.SetModel(GenModelMat());
     renderInfo.mainLight.SetColor(color);
@@ -206,8 +208,9 @@ void ModelObject::DraggableGUI(const DraggableUIInfo& info) {
     std::string nameID = "Elem - " + std::to_string(ID);
 
     ImGui::PushID(this);
-    bool isOpen = ImGui::TreeNodeEx(nameID.c_str(), ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_DefaultOpen |
-                                            (isSelected(this) ? ImGuiTreeNodeFlags_Selected : 0));
+    bool isOpen = ImGui::TreeNodeEx(nameID.c_str(), ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanAvailWidth |
+            (children.empty() ? ImGuiTreeNodeFlags_Bullet : 0) |
+            (isSelected(this) ? ImGuiTreeNodeFlags_Selected : 0));
 
     std::string popupID = std::string("ModelObject-") + std::to_string(ID);
 

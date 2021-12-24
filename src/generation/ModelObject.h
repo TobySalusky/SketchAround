@@ -100,6 +100,7 @@ public:
     }
     virtual void ModeSetUI(Enums::DrawMode& drawMode) {}
 
+
     virtual Enums::LineType LineTypeByMode(Enums::DrawMode drawMode) = 0;
 
     virtual void InputPoints(MouseInputInfo renderInfo);
@@ -160,10 +161,13 @@ public:
 
     void DraggableGUI(const DraggableUIInfo& draggableUIInfo);
 
+    static int nextUniqueID;
+    static int GetCurrentNextUniqueID() { return nextUniqueID; }
     static int GenUniqueID() {
-        static int uniqueID = 0;
-        return uniqueID++;
+        return nextUniqueID++;
     }
+    static void SetNextUniqueID(int next) { nextUniqueID = next; }
+
 
     ModelObject* CopyRecursive();
 

@@ -22,6 +22,8 @@ Serialization::Serialization(const std::vector<ModelObject *>& modelObjects) {
     });
     blendModeManager = BlendModes::GetManager();
     blendModeManager.PrepSerialize();
+
+    nextModelObjectUniqueID = ModelObject::GetCurrentNextUniqueID();
 }
 
 std::vector<ModelObject *> Serialization::Deserialize() {
@@ -39,6 +41,8 @@ std::vector<ModelObject *> Serialization::Deserialize() {
 
     BlendModes::SetManager(blendModeManager);
     BlendModes::GetManager().ReSerialize();
+
+    ModelObject::SetNextUniqueID(nextModelObjectUniqueID);
 
     return res;
 }

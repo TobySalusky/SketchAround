@@ -22,6 +22,7 @@ public:
     std::vector<int> order = {};
     std::vector<Lathe*> lathes = {};
     std::vector<CrossSectional*> crossSectionals = {};
+    int nextModelObjectUniqueID{};
     BlendModeManager blendModeManager;
 
 private:
@@ -32,6 +33,7 @@ private:
         ar & order;
         ar & lathes;
         ar & crossSectionals;
+        ar & nextModelObjectUniqueID;
         ar & blendModeManager;
     }
 };
