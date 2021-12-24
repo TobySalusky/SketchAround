@@ -41,11 +41,36 @@ EditingContext::TransformStartInfo GenTransformStartInfo(EditingInfo info) {
     return {info.onScreen};
 }
 
-void ModelObject::EditCurrentLines(EditingInfo info) {
-    auto& points = GetPointsRefByMode(info.drawMode);
+void ModelObject::SetPoints(Enums::DrawMode drawMode, const Vec2List& newPoints) {
+    Vec2List& points = GetPointsRefByMode(drawMode);
+    points.clear();
+    points.insert(points.begin(), newPoints.begin(), newPoints.end());
+    DiffPoints(drawMode);
+    UpdateMesh();
+};
 
-    auto& editContext = info.editContext;
-    auto& input = info.input;
+void ModelObject::ReversePoints(Enums::DrawMode drawMode) {
+    Vec2List& points = GetPointsRefByMode(drawMode);
+    SetPoints(drawMode, Linq::Select<Vec2, Vec2>(points, [&](const Vec2& _, int i) {
+        return points[points.size() - i];
+    }));
+}
+
+void ModelObject::FlipPoints(Enums::DrawMode drawMode, Enums::Direction direction) {
+    Vec2List& points = GetPointsRefByMode(drawMode);
+    Vec2 avgPos = Util::AveragePos(points);
+    if (direction == Enums::HORIZONTAL) SetPoints(drawMode, Linq::Select<Vec2, Vec2>(points, [=](const Vec2& vec) {
+        return Vec2(avgPos.x - (vec.x - avgPos.x), vec.y);
+    }));
+    else SetPoints(drawMode, Linq::Select<Vec2, Vec2>(points, [=](const Vec2& vec) {
+        return Vec2(vec.x, avgPos.y - (vec.y - avgPos.y));
+    }));
+}
+
+void ModelObject::EditCurrentLines(EditingInfo info) {
+    const auto& [editContext, input, drawMode, onScreen, camera, graphFocused] = info;
+
+    auto& points = GetPointsRefByMode(info.drawMode);
 
     const auto Diff = [&](const std::function <glm::vec2(glm::vec2)>& vectorFunc) {
         for (auto& point : points) {
@@ -57,20 +82,39 @@ void ModelObject::EditCurrentLines(EditingInfo info) {
 
     const auto DiffBase = [&](const std::function <glm::vec2(glm::vec2)>& vectorFunc) {
         for (int i = 0; i < points.size(); i++) {
-            points[i] = vectorFunc(editContext.transformStoreInitPoints[i]);
+            points[i] = vectorFunc(info.editContext.transformStoreInitPoints[i]);
         }
         DiffPoints(info.drawMode);
         UpdateMesh();
     };
 
     const auto BindTransformTriggerKey = [&](int key, Enums::TransformationType mode) {
-        if (input.Pressed(key)) editContext.StartTransform(mode, GenTransformStartInfo(info), points);
+        if (info.input.Pressed(key)) info.editContext.StartTransform(mode, GenTransformStartInfo(info), points);
     };
 
     BindTransformTriggerKey(GLFW_KEY_G, Enums::TRANSFORM_DRAG);
     BindTransformTriggerKey(GLFW_KEY_R, Enums::TRANSFORM_ROTATE);
     BindTransformTriggerKey(GLFW_KEY_S, Enums::TRANSFORM_SCALE);
     BindTransformTriggerKey(GLFW_KEY_U, Enums::TRANSFORM_SMEAR);
+
+    if (input.Pressed(GLFW_KEY_F)) FlipPoints(info.drawMode, Enums::HORIZONTAL);
+    if (input.Pressed(GLFW_KEY_J)) FlipPoints(info.drawMode, Enums::VERTICAL);
+    if (input.Pressed(GLFW_KEY_B)) ReversePoints(info.drawMode);
+
+    // TODO: add eraser tool!
+    if (input.Down(GLFW_KEY_E)) {
+        bool diffFlag = false;
+        for (int i = (int) points.size() - 1; i >= 0; i--) {
+            if (glm::length(onScreen - points[i]) < 0.05f) {
+                points.erase(points.begin() + i);
+                diffFlag = true;
+            }
+        }
+        if (diffFlag) {
+            DiffPoints(drawMode);
+            UpdateMesh();
+        }
+    }
 
     if (editContext.IsTransformationActive()) {
         switch (editContext.GetTransformationType()) {

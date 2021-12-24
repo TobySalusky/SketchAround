@@ -313,13 +313,13 @@ void Timeline::GUI(const TimelineGUIInfo& info) {
     ImGui::End();
 }
 
-void Timeline::RenderOnionSkin(Mesh2D& plot) {
+void Timeline::RenderOnionSkin(Mesh2D& plot, Enums::DrawMode drawMode) {
 
     const float currentTime = animator->currentTime;
     auto& keyFrameLayers = animator->keyFrameLayers;
 
-    const auto back = keyFrameLayers[Enums::MODE_PLOT].KeyFrameBelow(currentTime);
-    const auto forward = keyFrameLayers[Enums::MODE_PLOT].KeyFrameAbove(currentTime);
+    const auto back = keyFrameLayers[drawMode].KeyFrameBelow(currentTime);
+    const auto forward = keyFrameLayers[drawMode].KeyFrameAbove(currentTime);
 
     if (back.has_value()) plot.AddLines(back.value()->val, Util::RGB(255, 185, 185));
     if (forward.has_value()) plot.AddLines(forward.value()->val, Util::RGB(197, 255, 175));

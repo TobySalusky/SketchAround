@@ -37,6 +37,6 @@ private:
         ar & blendModeManager;
     }
 };
-
+// [Future]: Use BOOST_CLASS_VERSION(Serialization, x) for versioning
 
 #endif //SENIORRESEARCH_SERIALIZATION_H

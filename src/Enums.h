@@ -9,6 +9,10 @@
 class Enums {
 public:
 // Enums
+
+    enum Direction {
+        HORIZONTAL, VERTICAL
+    };
     enum DrawMode {
         MODE_PLOT, MODE_GRAPH_Y, MODE_GRAPH_Z, MODE_CROSS_SECTION
     };

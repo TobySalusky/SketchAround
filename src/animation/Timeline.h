@@ -171,7 +171,7 @@ public:
         animator->floatKeyFrameLayers[valLabel].layer.Insert({val, animator->currentTime});
     }
 
-    void RenderOnionSkin(Mesh2D& plot);
+    void RenderOnionSkin(Mesh2D& plot, Enums::DrawMode drawMode);
 
     static float RowToHeight(int row) {
         return 0.9f - (float) row * 0.2f - selectAreaSize;

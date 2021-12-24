@@ -218,8 +218,16 @@ int main() {
         if (input->Down(GLFW_KEY_ESCAPE)) window.Close();
         if (input->Pressed(GLFW_KEY_L)) SetCameraMode(!cameraMode);
 
-        if (input->Pressed(GLFW_KEY_LEFT_BRACKET)) SerializeScene();
-        if (input->Pressed(GLFW_KEY_RIGHT_BRACKET)) DeSerializeScene();
+        if (input->Pressed(GLFW_KEY_LEFT_BRACKET)) {
+            printf("saving... ");
+            SerializeScene();
+            printf("save successful!\n");
+        }
+        if (input->Pressed(GLFW_KEY_RIGHT_BRACKET)) {
+            printf("loading... ");
+            DeSerializeScene();
+            printf("load successful!\n");
+        }
 
         // Input Updating
         input->EndUpdate();
@@ -292,7 +300,7 @@ int main() {
         plot.AddQuad({-1.0f, -0.003f}, {1.0f, 0.003f}, {0.2f, 0.2f, 0.2f, 1.0f});
         plot.AddQuad({-0.003f, 1.0f}, {0.003f, -1.0f}, {0.2f, 0.2f, 0.2f, 1.0f});
 
-        if (!timeline.IsPlaying()) timeline.RenderOnionSkin(plot);
+        if (!timeline.IsPlaying()) timeline.RenderOnionSkin(plot, drawMode);
 
         modelObject->Render2D({plot, drawMode, onScreen});
 

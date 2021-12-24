@@ -132,7 +132,11 @@ public:
 
     virtual std::vector<glm::vec2>& GetPointsRefByMode(Enums::DrawMode drawMode) = 0;
 
-    void DiffPoints(Enums::DrawMode drawMode) {
+    void SetPoints(Enums::DrawMode drawMode, const Vec2List& newPoints);
+    void FlipPoints(Enums::DrawMode drawMode, Enums::Direction direction);
+    void ReversePoints(Enums::DrawMode drawMode);
+
+        void DiffPoints(Enums::DrawMode drawMode) {
         diffed[drawMode] = true;
     }
 
