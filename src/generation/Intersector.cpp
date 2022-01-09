@@ -4,6 +4,7 @@
 
 #include "Intersector.h"
 #include "../vendor/glm/geometric.hpp"
+#include "../util/Util.h"
 
 // credit: https://www.geeksforgeeks.org/check-if-two-given-line-segments-intersect/
 bool Intersector::Segment(glm::vec2 p1, glm::vec2 q1, glm::vec2 p2, glm::vec2 q2) {
@@ -36,8 +37,42 @@ std::optional<glm::vec2> Intersector::RaySegment(glm::vec2 rayOrigin, glm::vec2 
     const float t2 = glm::dot(v1, v3) / glm::dot(v2, v3);
 
     if (t1 >= 0.0f && t2 >= 0.0f && t2 <= 1.0f) {
-        return std::optional<glm::vec2>(rayOrigin + t1 * rayDirVec);
+        return {rayOrigin + t1 * rayDirVec};
     }
 
     return std::nullopt;
+}
+
+// CREDIT: https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm
+bool Intersector::RayTriangleIntersection(Ray ray,
+                                    Vec3 v0, Vec3 v1, Vec3 v2,
+                                    MeshIntersection& outIntersection)
+{
+    const float EPSILON = 0.0000001;
+    Vec3 edge1, edge2, h, s, q;
+    float a,f,u,v;
+    edge1 = v1 - v0;
+    edge2 = v2 - v0;
+    h = glm::cross(ray.dir, edge2);
+    a = glm::dot(edge1, h);
+    if (a > -EPSILON && a < EPSILON)
+        return false;    // This ray is parallel to this triangle.
+    f = 1.0f / a;
+    s = ray.origin - v0;
+    u = f * glm::dot(s, h);
+    if (u < 0.0 || u > 1.0)
+        return false;
+    q = glm::cross(s, edge1);
+    v = f * glm::dot(ray.dir, q);
+    if (v < 0.0 || u + v > 1.0)
+        return false;
+    // At this stage we can compute t to find out where the intersection point is on the line.
+    float t = f * glm::dot(edge2, q);
+    if (t > EPSILON) // ray intersection
+    {
+        outIntersection = {ray.origin + ray.dir * t, glm::cross(edge1, edge2)};
+        return true;
+    }
+    else // This means that there is a line intersection but not a ray intersection.
+        return false;
 }

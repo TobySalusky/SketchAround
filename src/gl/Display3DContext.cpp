@@ -27,7 +27,7 @@ void Display3DContext::Update(Display3DContextUpdateInfo info) {
             camera.SetYaw(camera.GetYaw() - angleDiffX);
 
 
-            camera.SetPos(glm::rotate(glm::mat4(1.0f), angleDiffY, camera.GenRight()) * Vec4(camera.GetPos(), 1.0f));
+            camera.SetPos(glm::rotate(glm::mat4(1.0f), angleDiffY, camera.GetRight()) * Vec4(camera.GetPos(), 1.0f));
             camera.SetPitch(camera.GetPitch() + angleDiffY);
         }
 

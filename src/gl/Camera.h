@@ -28,13 +28,18 @@ public:
 
     [[nodiscard]] GLfloat GetPitch() const;
 
-    [[nodiscard]] Vec3 GenRight() const { return right; }
+    [[nodiscard]] Vec3 GetRight() const { return right; }
+    [[nodiscard]] Vec3 GetUp() const { return up; }
+
+    [[nodiscard]] Vec3 GetDir() const { return front; }
 
     void SetPitch(GLfloat pitch);
 
     static float ClampedPitch(float pitch) {
         return std::clamp(pitch, -(float)M_PI_2 * 0.999f, (float)M_PI_2 * 0.999f);
     }
+
+
 
 private:
     void CalculateDir();

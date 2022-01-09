@@ -201,8 +201,8 @@ public:
         if (label == "x") return &modelTranslation.x;
         if (label == "y") return &modelTranslation.y;
         if (label == "z") return &modelTranslation.z;
-        if (label == "rot-z") return &eulerAngles.x;
-        if (label == "rot-z") return &eulerAngles.y;
+        if (label == "rot-x") return &eulerAngles.x;
+        if (label == "rot-y") return &eulerAngles.y;
         if (label == "rot-z") return &eulerAngles.z;
         if (label == "sample-length") return &sampleLength;
         return nullptr;

@@ -4,6 +4,7 @@
 
 #include "Mesh.h"
 #include "Normals.h"
+#include "../generation/Intersector.h"
 #include <string>
 
 
@@ -120,4 +121,33 @@ std::string Mesh::GenOBJ(const std::vector<glm::vec3> &vertices, const std::vect
     }
 
     return vertStr + /*"\n" + normalStr +*/ "\n" + faceStr;
+}
+
+std::optional<MeshIntersection> Mesh::Intersect(const std::tuple<Vec3List, std::vector<GLuint>> &tuple, Ray ray) {
+
+    const auto &[vertices, indices] = tuple;
+
+    bool hasHit = false;
+
+    MeshIntersection nearestIntersection {};
+    MeshIntersection newIntersection {};
+
+    for (int i = 0; i < indices.size(); i += 3) {
+        const Vec3 p1 = vertices[indices[i]];
+        const Vec3 p2 = vertices[indices[i + 1]];
+        const Vec3 p3 = vertices[indices[i + 2]];
+
+        bool hit = Intersector::RayTriangleIntersection(ray, p1, p2, p3, newIntersection);
+
+        if (hit) {
+            if (!hasHit || glm::length(newIntersection.pos - ray.origin) < glm::length(nearestIntersection.pos - ray.origin)) {
+                nearestIntersection = newIntersection;
+            }
+
+            hasHit = true;
+        }
+    }
+
+    if (hasHit) return {nearestIntersection};
+    return std::nullopt;
 }

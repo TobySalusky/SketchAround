@@ -8,7 +8,8 @@
 #include <glew.h>
 #include <vector>
 #include "../vendor/glm/vec3.hpp"
-
+#include "../util/Util.h"
+#include "../generation/Intersector.h"
 
 class Mesh {
 public:
@@ -28,6 +29,8 @@ public:
 
     static std::string GenOBJ(const std::vector<glm::vec3> &vertices, const std::vector<GLuint> &indices);
     static std::string GenOBJ(const std::tuple<std::vector<glm::vec3>, std::vector<GLuint>> &tuple);
+
+    static std::optional<MeshIntersection> Intersect(const std::tuple<std::vector<glm::vec3>, std::vector<GLuint>> &tuple, Ray ray);
 
 private:
     GLuint VAO, VBO, IBO, indexCount;

@@ -239,6 +239,7 @@ int main() {
 
         timeline.SetActiveAnimator(modelObject->GetAnimatorPtr());
 
+
         // >> OpenGL RENDER ========================
 
         RenderTarget::Bind(modelScene);
@@ -276,9 +277,36 @@ int main() {
 //            planeGizmo.Set(MeshUtil::PolyLine({{0.0f, -axisLen, 0.0f}, {0.0f, axisLen, 0.0f}}));
 //            planeGizmo.Render();
 
-            /*line3DGizmoLight.Apply(shader3D);
-            planeGizmo.Set(MeshUtil::Square({onScreen.x, 0.0f, 0.0f}, {1.0f, 0.0f, 0.0f}, 2.0f));
-            planeGizmo.Render3D();*/
+
+            {
+                Vec2 mousePos = Util::NormalizeToRectNP(input->GetMouse(), displayRect);
+                Vec3 rayOrigin = camera.GetPos() + camera.GetRight() * mousePos.x - camera.GetUp() * mousePos.y;
+
+                // TODO: find offset for origin
+//                Vec4 ray_clip = {mousePos.x, mousePos.y, -1.0, 1.0};
+//                Vec4 ray_eye = glm::inverse(projection) * ray_clip;
+//                ray_eye = {ray_eye.x, ray_eye.y, -1.0, 0.0};
+//                Vec3 ray_wor = inverse(camera.CalculateViewMat()) * ray_eye;
+//                ray_wor = glm::normalize(ray_wor);
+//
+//
+//                rayOrigin += ray_wor;
+
+
+                const auto temp = Mesh::Intersect(modelObject->GenMeshTuple(), {rayOrigin, camera.GetDir()});
+//                printf("E"); Util::PrintVec(camera.GetPos());
+//                printf("E"); Util::PrintVec(camera.GetDir());
+                if (temp.has_value()) {
+                    Vec3 pos = temp.value().pos;
+                    Vec3 norm = temp.value().normal;
+//                    printf("P"); Util::PrintVec(pos);
+//                    printf("N"); Util::PrintVec(norm);
+
+                    line3DGizmoLight.Apply(shader3D);
+                    planeGizmo.Set(MeshUtil::PolyLine({pos, pos - glm::normalize(norm) * 0.2f}));
+                    planeGizmo.Render();
+                }
+            }
         }
 
         shader.Disable();

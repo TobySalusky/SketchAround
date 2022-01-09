@@ -26,6 +26,14 @@ typedef std::vector<glm::vec3> Vec3List;
 class Util {
 public:
 
+    static void PrintVec(Vec2 vec) {
+        printf("<%f, %f>\n", vec.x, vec.y);
+    }
+
+    static void PrintVec(Vec3 vec) {
+        printf("<%f, %f, %f>\n", vec.x, vec.y, vec.z);
+    }
+
     static RGBA RGB(int r, int g, int b) {
         return {(float) r / 255.0f, (float) g / 255.0f, (float) b / 255.0f, 1.0f};
     }
