@@ -207,6 +207,31 @@ int main() {
         SetModelObject(modelObjects[0]);
     };
 
+//    const auto MouseModelIntersection = [&] {
+//        Vec2 mousePos = Util::NormalizeToRectNP(input->GetMouse(), displayRect);
+//        Vec3 rayOrigin = camera.GetPos() + camera.GetRight() * mousePos.x - camera.GetUp() * mousePos.y; // FIXME
+//
+//        return Mesh::Intersect(modelObject->GenMeshTuple(), {rayOrigin, camera.GetDir()});
+//    };
+
+    const auto MouseModelsIntersection = [&] {
+        Vec2 mousePos = Util::NormalizeToRectNP(input->GetMouse(), displayRect);
+        Vec3 rayOrigin = camera.GetPos() + camera.GetRight() * mousePos.x - camera.GetUp() * mousePos.y; // FIXME
+
+        std::optional<MeshIntersection> meshIntersection = std::nullopt;
+
+        for (ModelObject* modelObj : modelObjects) {
+            if (!modelObj->IsVisible() || (focusMode && modelObj != modelObject)) continue;
+            // TODO: FIX MODEL MAT -- doesn't work right
+            const auto temp = Mesh::Intersect(modelObj->GenMeshTuple(), {rayOrigin, camera.GetDir()}, modelObj->GenModelMat());
+            if (temp && (!meshIntersection || glm::length(temp->pos - rayOrigin) < glm::length(meshIntersection->pos - rayOrigin))) {
+                meshIntersection = temp;
+            }
+        }
+
+        return meshIntersection;
+    };
+
 
     while (!window.ShouldClose()) // >> UPDATE LOOP ======================================
     {
@@ -279,28 +304,11 @@ int main() {
 
 
             {
-                Vec2 mousePos = Util::NormalizeToRectNP(input->GetMouse(), displayRect);
-                Vec3 rayOrigin = camera.GetPos() + camera.GetRight() * mousePos.x - camera.GetUp() * mousePos.y;
 
-                // TODO: find offset for origin
-//                Vec4 ray_clip = {mousePos.x, mousePos.y, -1.0, 1.0};
-//                Vec4 ray_eye = glm::inverse(projection) * ray_clip;
-//                ray_eye = {ray_eye.x, ray_eye.y, -1.0, 0.0};
-//                Vec3 ray_wor = inverse(camera.CalculateViewMat()) * ray_eye;
-//                ray_wor = glm::normalize(ray_wor);
-//
-//
-//                rayOrigin += ray_wor;
-
-
-                const auto temp = Mesh::Intersect(modelObject->GenMeshTuple(), {rayOrigin, camera.GetDir()});
-//                printf("E"); Util::PrintVec(camera.GetPos());
-//                printf("E"); Util::PrintVec(camera.GetDir());
-                if (temp.has_value()) {
-                    Vec3 pos = temp.value().pos;
-                    Vec3 norm = temp.value().normal;
-//                    printf("P"); Util::PrintVec(pos);
-//                    printf("N"); Util::PrintVec(norm);
+                const auto modelIntersection = MouseModelsIntersection();
+                if (modelIntersection) {
+                    Vec3 pos = modelIntersection->pos;
+                    Vec3 norm = modelIntersection->normal;
 
                     line3DGizmoLight.Apply(shader3D);
                     planeGizmo.Set(MeshUtil::PolyLine({pos, pos - glm::normalize(norm) * 0.2f}));
@@ -375,6 +383,24 @@ int main() {
                                Util::ToImVec(displayDimens),
                                {0.0f, 1.0f},
                          {1.0f, 0.0f});
+
+            if (ImGui::BeginDragDropTarget())
+            {
+                if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ModelObjectDrag"))
+                {
+                    IM_ASSERT(payload->DataSize == sizeof(ModelObject*));
+                    ModelObject* draggedObj = *(ModelObject**)payload->Data;
+
+                    const auto modelIntersection = MouseModelsIntersection();
+
+                    if (modelIntersection) {
+                        draggedObj->SetPos(modelIntersection->pos);
+                    }
+                    printf("e");
+                }
+                ImGui::EndDragDropTarget();
+            }
+
             displayRect = ImGuiHelper::ItemRectRemovePadding(4.0f, 3.0f);
             displayFocused = ImGui::IsItemActive();
         }
@@ -432,11 +458,13 @@ int main() {
         // Graph window (must be last??)
         ImGui::Begin("Graph Scene");
         {
+
             Vec2 displayDimens = Util::FitRatio({WIDTH / 2.0f, HEIGHT / 2.0f},
                                                 Util::ToVec(ImGui::GetWindowContentRegionMax()) - Util::ToVec(ImGui::GetWindowContentRegionMin()) - Vec2(8.0f, 6.0f));
             ImGui::SameLine((ImGui::GetWindowWidth()) / 2.0f - (displayDimens.x / 2.0f));
             ImGui::ImageButton((void *) (intptr_t) graphScene.GetTexture(), Util::ToImVec(displayDimens), {0.0f, 1.0f},
                                {1.0f, 0.0f});
+
             plotRect = ImGuiHelper::ItemRectRemovePadding(4.0f, 3.0f);
             // TODO: IsItemActive works perfectly for mouse, but focus works better for keyboard :/
             graphFocused = ImGui::IsItemFocused();

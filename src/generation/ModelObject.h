@@ -193,6 +193,14 @@ public:
         reSerializeInfo = {};
     }
 
+    void SetPos(Vec3 vec) {
+        modelTranslation =  vec;
+    }
+
+    void SetEulers(Vec3 vec) {
+        eulerAngles = vec;
+    }
+
     virtual Enums::ModelObjectType GetType() = 0;
 
     void SetValueByLabel(const std::string& label, const float value) { *GetFloatValuePtrByLabel(label) = value; }
