@@ -40,6 +40,7 @@
 #include "src/gl/Display3DContext.h"
 #include "src/misc/Undos.h"
 #include "src/misc/Serialization.h"
+#include "src/util/Controls.h"
 
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
@@ -53,6 +54,10 @@ float lastTime = 0.0f;
 
 bool graphFocused = false;
 bool displayFocused = false;
+bool enteringGuiScreen = false;
+bool inSaveFileGUI = false;
+bool inOpenFileGUI = false;
+bool inControlsGUI = false;
 
 Vec2 MouseToScreen(Vec2 mouseVec) {
     return {mouseVec.x / WIDTH * 2 - 1, (mouseVec.y / HEIGHT - 0.5f) * -2};
@@ -82,6 +87,8 @@ int main() {
 
     GLWindow window(WIDTH, HEIGHT);
     Input* input = window.GetInput();
+    Controls::Initialize(input);
+
     glfwSwapInterval(0); // NOTE: Removes limit from FPS!
 
     ImGuiHelper::Initialize(window);
@@ -103,7 +110,7 @@ int main() {
     Camera camera{glm::vec3(0.0f, 0.0f, 2.5f), glm::vec3(0.0f, 1.0f, 0.0f), -M_PI_2, 0};
 
     Light mainLight{{0.5f, 0.5f, 0.5f, 0.5f}, {-1.0f, -1.0f, -1.0f}, 0.8f};
-    Light line3DGizmoLight{{1.0f, 1.0f, 1.0f, 0.5f}, {-1.0f, -1.0f, -1.0f}, 1.0f};
+    Light line3DGizmoLight{{1.0f, 0.3f, 1.0f, 0.5f}, {-1.0f, -1.0f, -1.0f}, 1.0f};
 
     glm::mat4 projection = glm::perspective(45.0f, (GLfloat)window.GetBufferWidth()/(GLfloat)window.GetBufferHeight(), zNear, zFar);
 
@@ -189,17 +196,17 @@ int main() {
      * TODO: Add animator + blend-modes to serialization
      * TODO: make float* GetFloatSetter(std::string label) on ModelObject (relink after copy or serial)
      */
-    const auto SerializeScene = [&]() {
+    const auto SerializeScene = [&](const std::string& path) {
 
-        std::ofstream ofs("../output/save.txt");
+        std::ofstream ofs(path);
         boost::archive::text_oarchive oa(ofs);
         oa << Serialization(modelObjects);
     };
 
-    const auto DeSerializeScene = [&]() {
+    const auto DeSerializeScene = [&](const std::string& path) {
         Serialization serialization;
 
-        std::ifstream ifs("../output/save.txt");
+        std::ifstream ifs(path);
         boost::archive::text_iarchive ia(ifs);
         ia >> serialization;
 
@@ -232,6 +239,146 @@ int main() {
         return meshIntersection;
     };
 
+    // TODO: move file gui to new file!
+    const auto SaveFileGUI = [&] (float deltaTime) {
+        static TimedPopup popupWarning;
+
+        if (enteringGuiScreen) ImGui::SetNextWindowFocus();
+        ImGui::SetNextWindowPos(ImVec2(0.0f, 0.0f));
+        ImGui::SetNextWindowSize(ImVec2(WIDTH, HEIGHT));
+        ImGui::Begin("File", nullptr, ImGuiWindowFlags_NoResize |
+                                      ImGuiWindowFlags_NoMove |
+                                      ImGuiWindowFlags_NoCollapse |
+                                      ImGuiWindowFlags_NoTitleBar);
+        {
+            if (ImGui::Button("<-----")) {
+                inSaveFileGUI = false;
+            }
+
+            static char nameBuffer[256] = "";
+            if (enteringGuiScreen) memset(&nameBuffer[0], 0, sizeof(nameBuffer));
+
+            static char pathBuffer[256] = "../output";
+
+            if (enteringGuiScreen) ImGui::SetKeyboardFocusHere();
+
+            bool hasSaved = false;
+            const auto SaveIf = [&](bool condition) {
+                if (hasSaved || !condition) return;
+
+                if (std::string(nameBuffer).empty()) {
+                    popupWarning.Open("Must set file name!");
+                    return;
+                }
+                if (std::string(pathBuffer).empty()) {
+                    popupWarning.Open("Must set file path!");
+                    return;
+                }
+
+                SerializeScene(std::string(pathBuffer) + "/" + std::string(nameBuffer) + ".mdl");
+
+                inSaveFileGUI = false;
+                hasSaved = true;
+            };
+
+            ImGuiHelper::SpacedSep();
+            ImGui::InputTextWithHint("##Name", "name:", nameBuffer, IM_ARRAYSIZE(nameBuffer), ImGuiInputTextFlags_EnterReturnsTrue);
+            SaveIf(ImGui::IsItemFocused() && input->Pressed(GLFW_KEY_ENTER));
+            ImGui::InputTextWithHint("##Path", "path:", pathBuffer, IM_ARRAYSIZE(pathBuffer), ImGuiInputTextFlags_EnterReturnsTrue);
+            SaveIf(ImGui::IsItemFocused() && input->Pressed(GLFW_KEY_ENTER));
+            SaveIf(ImGui::Button("Save..."));
+
+            popupWarning.Update(deltaTime);
+            popupWarning.RenderGUI();
+        }
+        ImGui::End();
+
+        enteringGuiScreen = false;
+    };
+
+    const auto OpenFileGUI = [&] () {
+
+        static std::string lastPath;
+        static std::vector<std::string> subFolders;
+        static std::vector<std::string> paths;
+
+        if (enteringGuiScreen) ImGui::SetNextWindowFocus();
+        ImGui::SetNextWindowPos(ImVec2(0.0f, 0.0f));
+        ImGui::SetNextWindowSize(ImVec2(WIDTH, HEIGHT));
+        ImGui::Begin("Open File", nullptr, ImGuiWindowFlags_NoResize |
+                                      ImGuiWindowFlags_NoMove |
+                                      ImGuiWindowFlags_NoCollapse |
+                                      ImGuiWindowFlags_NoTitleBar);
+        {
+            if (ImGui::Button("<-----")) {
+                inOpenFileGUI = false;
+            }
+
+            static char pathBuffer[256] = "../output";
+
+            if (enteringGuiScreen) ImGui::SetKeyboardFocusHere();
+
+
+            ImGuiHelper::SpacedSep();
+            ImGui::InputTextWithHint("##Path", "path:", pathBuffer, IM_ARRAYSIZE(pathBuffer), ImGuiInputTextFlags_EnterReturnsTrue);
+            ImGuiHelper::SpacedSep();
+
+            auto path = std::string(pathBuffer);
+            bool pathExists = std::filesystem::exists(path) && std::filesystem::is_directory(path);
+
+            if (path != lastPath) { // FIXME: fix error on ["/users/[username]/Desktop/lessons"]
+                subFolders.clear();
+                paths.clear();
+                if (pathExists) {
+                    for(auto& p : std::filesystem::directory_iterator(path)){
+                        if (std::filesystem::is_directory(p.path())) subFolders.emplace_back(p.path());
+                        if (p.path().extension() == ".mdl") paths.emplace_back(p.path());
+                    }
+                }
+            }
+
+            for (auto& subFolder : subFolders) {
+                ImGui::BulletText("%s", subFolder.c_str());
+            }
+
+            for (auto& childPath : paths) {
+                if (ImGui::Button(childPath.c_str())) {
+                    DeSerializeScene(childPath);
+                    inOpenFileGUI = false;
+                }
+            }
+            if (!pathExists) ImGui::Text("Invalid path!");
+
+            lastPath = path;
+        }
+        ImGui::End();
+
+        enteringGuiScreen = false;
+    };
+
+    const auto ControlsGUI = [&] {
+
+        if (enteringGuiScreen) ImGui::SetNextWindowFocus();
+        ImGui::SetNextWindowPos(ImVec2(0.0f, 0.0f));
+        ImGui::SetNextWindowSize(ImVec2(WIDTH, HEIGHT));
+        ImGui::Begin("Controls", nullptr, ImGuiWindowFlags_NoResize |
+                                           ImGuiWindowFlags_NoMove |
+                                           ImGuiWindowFlags_NoCollapse |
+                                           ImGuiWindowFlags_NoTitleBar);
+        {
+            if (ImGui::Button("<-----")) {
+                inControlsGUI = false;
+            }
+
+            ImGuiHelper::SpacedSep();
+
+            Controls::GUI();
+        }
+        ImGui::End();
+
+        enteringGuiScreen = false;
+    };
+
 
     while (!window.ShouldClose()) // >> UPDATE LOOP ======================================
     {
@@ -245,13 +392,34 @@ int main() {
 
         if (input->Pressed(GLFW_KEY_LEFT_BRACKET)) {
             printf("saving... ");
-            SerializeScene();
+            SerializeScene("../output/save.mdl");
             printf("save successful!\n");
         }
         if (input->Pressed(GLFW_KEY_RIGHT_BRACKET)) {
             printf("loading... ");
-            DeSerializeScene();
+            DeSerializeScene("../output/save.mdl");
             printf("load successful!\n");
+        }
+
+        if (Controls::Check(CONTROLS_OpenFileSaveMenu)) {
+            inSaveFileGUI = true;
+            inOpenFileGUI = false;
+            inControlsGUI = false;
+            enteringGuiScreen = true;
+        }
+
+        if (Controls::Check(CONTROLS_OpenFileOpenMenu)) {
+            inOpenFileGUI = true;
+            inSaveFileGUI = false;
+            inControlsGUI = false;
+            enteringGuiScreen = true;
+        }
+
+        if (input->Pressed(GLFW_KEY_H) && input->Down(GLFW_KEY_LEFT_SHIFT)) {
+            inControlsGUI = true;
+            inOpenFileGUI = false;
+            inSaveFileGUI = false;
+            enteringGuiScreen = true;
         }
 
         // Input Updating
@@ -396,7 +564,6 @@ int main() {
                     if (modelIntersection) {
                         draggedObj->SetPos(modelIntersection->pos);
                     }
-                    printf("e");
                 }
                 ImGui::EndDragDropTarget();
             }
@@ -471,6 +638,10 @@ int main() {
         }
         ImGui::End();
 
+        if (inSaveFileGUI) SaveFileGUI(deltaTime);
+        if (inOpenFileGUI) OpenFileGUI();
+        if (inControlsGUI) ControlsGUI();
+
         ImGuiHelper::EndFrame();
         // ====================================
 
@@ -490,14 +661,16 @@ int main() {
             printf("%s", Mesh::GenOBJ(modelObject->GenMeshTuple()).c_str());
         }
 
-        if (input->Pressed(GLFW_KEY_X)) {
-            if (input->Down(GLFW_KEY_LEFT_SHIFT)) {
-                modelObject->ClearAll();
-            } else {
-                modelObject->ClearSingle(drawMode);
-            }
+        if (Controls::Check(CONTROLS_ClearAllLayers)) {
+            modelObject->ClearAll();
+            UpdateMesh();
+
+        }
+        else if (Controls::Check(CONTROLS_ClearCurrentLayer)) {
+            modelObject->ClearSingle(drawMode);
             UpdateMesh();
         }
+
 
         const auto GetLatheIndex = [&]() {
             for (int i = 0; i < modelObjects.size(); i++) {
@@ -506,35 +679,29 @@ int main() {
             return -1;
         };
 
-        if (input->Down(GLFW_KEY_LEFT_SHIFT)) {
-            if (input->Pressed(GLFW_KEY_UP)) {
-                if (modelObject == modelObjects[0]) {
-                    SetModelObject(modelObjects[modelObjects.size() - 1]);
-                } else {
-                    SetModelObject(modelObjects[GetLatheIndex() - 1]);
-                }
-            }
-
-            if (input->Pressed(GLFW_KEY_DOWN)) {
-                if (modelObject == modelObjects[modelObjects.size() - 1]) {
-                    SetModelObject(modelObjects[0]);
-                } else {
-                    SetModelObject(modelObjects[GetLatheIndex() + 1]);
-                }
-            }
-        }
-
-        if (input->Pressed(GLFW_KEY_N)) {
-            if (input->Down(GLFW_KEY_LEFT_SHIFT)) {
-                AddSetLathe();
+        if (Controls::Check(CONTROLS_SwitchModelUp)) {
+            if (modelObject == modelObjects[0]) {
+                SetModelObject(modelObjects[modelObjects.size() - 1]);
             } else {
-                AddSetCrossSectional();
+                SetModelObject(modelObjects[GetLatheIndex() - 1]);
+            }
+        } else if (Controls::Check(CONTROLS_SwitchModelDown)) {
+            if (modelObject == modelObjects[modelObjects.size() - 1]) {
+                SetModelObject(modelObjects[0]);
+            } else {
+                SetModelObject(modelObjects[GetLatheIndex() + 1]);
             }
         }
 
-        if (input->Pressed(GLFW_KEY_P)) drawMode = Enums::MODE_PLOT;
-        if (input->Pressed(GLFW_KEY_Y)) drawMode = Enums::MODE_GRAPH_Y;
-        if (input->Pressed(GLFW_KEY_T)) drawMode = Enums::MODE_GRAPH_Z;
+        if (Controls::Check(CONTROLS_AddLathe)) {
+            AddSetLathe();
+        } else if (Controls::Check(CONTROLS_AddCrossSectional)) {
+            AddSetCrossSectional();
+        }
+
+        if (Controls::Check(CONTROLS_SetLayerPrimary)) drawMode = Enums::MODE_PLOT;
+        if (Controls::Check(CONTROLS_SetLayerSecondary)) drawMode = Enums::MODE_GRAPH_Y;
+        if (Controls::Check(CONTROLS_SetLayerTertiary)) drawMode = Enums::MODE_GRAPH_Z;
 
         if (input->Pressed(GLFW_KEY_Z) && input->Down(GLFW_KEY_LEFT_SHIFT)) {
             //Undos::UseLast();

@@ -61,3 +61,9 @@ void ImGuiHelper::Destroy() {
 ImVec4 ImGuiHelper::RGB(int r, int g, int b) {
     return ImVec4((float) r / 255.0f, (float) g / 255.0f, (float) b / 255.0f, 1.0f);
 }
+
+void ImGuiHelper::SpacedSep() {
+    ImGui::Spacing();
+    ImGui::Separator();
+    ImGui::Spacing();
+}
