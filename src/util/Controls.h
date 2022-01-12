@@ -24,6 +24,13 @@ static int
     CONTROLS_AddCrossSectional = 8,
     CONTROLS_SwitchModelUp = 9,
     CONTROLS_SwitchModelDown = 10,
+    CONTROLS_Drag = 11,
+    CONTROLS_Scale = 12,
+    CONTROLS_Rotate = 13,
+    CONTROLS_Smear = 14,
+    CONTROLS_FlipHoriz = 15,
+    CONTROLS_FlipVert = 16,
+    CONTROLS_ReversePoints = 17,
     CONTROLS_ = 0,
     CONTROLS_FIN = -2
 ;
@@ -41,6 +48,8 @@ public:
     static bool Check(int CONTROL_CODE);
 
     static void GUI();
+
+    static std::unordered_map<int, KeyControl> GenDefaultControls();
 
 private:
     static Input* input;

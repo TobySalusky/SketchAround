@@ -35,3 +35,9 @@ void Input::SetKey(int key, bool val) {
     }
     keys[key] = val;
 }
+
+void Input::UsePressedCallback(const std::function<void(int)>& keyFunc) {
+    for (int i = 0; i < 1024; ++i) {
+        if (keysPressed[i]) keyFunc(i);
+    }
+}

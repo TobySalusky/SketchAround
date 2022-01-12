@@ -10,6 +10,7 @@
 #include <glfw3.h>
 #include <numeric>
 #include "../animation/Timeline.h"
+#include "../util/Controls.h"
 
 int ModelObject::nextUniqueID = 0;
 
@@ -88,18 +89,18 @@ void ModelObject::EditCurrentLines(EditingInfo info) {
         UpdateMesh();
     };
 
-    const auto BindTransformTriggerKey = [&](int key, Enums::TransformationType mode) {
-        if (info.input.Pressed(key)) info.editContext.StartTransform(mode, GenTransformStartInfo(info), points);
+    const auto BindTransformTriggerKey = [&](int controlCode, Enums::TransformationType mode) {
+        if (Controls::Check(controlCode)) info.editContext.StartTransform(mode, GenTransformStartInfo(info), points);
     };
 
-    BindTransformTriggerKey(GLFW_KEY_G, Enums::TRANSFORM_DRAG);
-    BindTransformTriggerKey(GLFW_KEY_R, Enums::TRANSFORM_ROTATE);
-    BindTransformTriggerKey(GLFW_KEY_S, Enums::TRANSFORM_SCALE);
-    BindTransformTriggerKey(GLFW_KEY_U, Enums::TRANSFORM_SMEAR);
+    BindTransformTriggerKey(CONTROLS_Drag, Enums::TRANSFORM_DRAG);
+    BindTransformTriggerKey(CONTROLS_Rotate, Enums::TRANSFORM_ROTATE);
+    BindTransformTriggerKey(CONTROLS_Scale, Enums::TRANSFORM_SCALE);
+    BindTransformTriggerKey(CONTROLS_Smear, Enums::TRANSFORM_SMEAR);
 
-    if (input.Pressed(GLFW_KEY_F)) FlipPoints(info.drawMode, Enums::HORIZONTAL);
-    if (input.Pressed(GLFW_KEY_J)) FlipPoints(info.drawMode, Enums::VERTICAL);
-    if (input.Pressed(GLFW_KEY_B)) ReversePoints(info.drawMode);
+    if (Controls::Check(CONTROLS_FlipHoriz)) FlipPoints(info.drawMode, Enums::HORIZONTAL);
+    if (Controls::Check(CONTROLS_FlipVert)) FlipPoints(info.drawMode, Enums::VERTICAL);
+    if (Controls::Check(CONTROLS_ReversePoints)) ReversePoints(info.drawMode);
 
     // TODO: add eraser tool!
     if (input.Down(GLFW_KEY_E)) {

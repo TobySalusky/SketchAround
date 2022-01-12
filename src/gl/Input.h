@@ -8,6 +8,7 @@
 #include <glew.h>
 #include "../vendor/glm/detail/type_vec1.hpp"
 #include "../vendor/glm/vec2.hpp"
+#include <functional>
 
 class Input {
 public:
@@ -31,6 +32,9 @@ public:
     [[nodiscard]] glm::vec2 GetMouse() const { return glm::vec2(mouseX, mouseY); };
     [[nodiscard]] glm::vec2 GetLastMouse() const { return glm::vec2(lastMouseX, lastMouseY); };
     [[nodiscard]] glm::vec2 GetMouseDiff() const { return glm::vec2(mouseDiffX, mouseDiffY); };
+
+    void UsePressedCallback(const std::function<void(int)>& keyFunc);
+
 private:
     bool keys[1024]{};
     bool keysPressed[1024]{};
