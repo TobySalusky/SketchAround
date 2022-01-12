@@ -227,6 +227,7 @@ int main() {
 
         std::optional<MeshIntersection> meshIntersection = std::nullopt;
 
+
         for (ModelObject* modelObj : modelObjects) {
             if (!modelObj->IsVisible() || (focusMode && modelObj != modelObject)) continue;
             // TODO: FIX MODEL MAT -- doesn't work right

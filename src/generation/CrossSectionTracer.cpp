@@ -126,6 +126,8 @@ CrossSectionTracer::TraceSegments(const std::vector<glm::vec2> &points, const st
 }
 
 Vec2List CrossSectionTracer::AutoGenChordalAxis(const Vec2List &boundPoints, const float sampleLength) {
+
+    if (boundPoints.size() < 2) return {};
     const float halfway = LineAnalyzer::FullLength(boundPoints) / 2.0f;
 
     int midPointIndex = -1;

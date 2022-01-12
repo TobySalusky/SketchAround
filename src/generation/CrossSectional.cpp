@@ -127,7 +127,6 @@ std::tuple<std::vector<glm::vec3>, std::vector<GLuint>> CrossSectional::GenMeshT
 
     const Vec2List& usedChordalAxis = (centralPoints.size() < 2) ? CrossSectionTracer::AutoGenChordalAxis(boundPoints, sampleLength) : centralPoints;
 
-
     if (boundPoints.size() >=2 && usedChordalAxis.size() >= 2) {
         const auto sampled = Sampler::DumbSample(boundPoints, sampleLength);
         const auto sampled2 = Sampler::DumbSample(usedChordalAxis, sampleLength);
