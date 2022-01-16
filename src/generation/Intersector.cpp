@@ -70,7 +70,7 @@ bool Intersector::RayTriangleIntersection(Ray ray,
     float t = f * glm::dot(edge2, q);
     if (t > EPSILON) // ray intersection
     {
-        outIntersection = {ray.origin + ray.dir * t, glm::cross(edge1, edge2)};
+        outIntersection = {ray.origin + ray.dir * t, -glm::normalize(glm::cross(edge1, edge2))};
         return true;
     }
     else // This means that there is a line intersection but not a ray intersection.

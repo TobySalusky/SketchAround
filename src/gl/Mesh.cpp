@@ -123,7 +123,7 @@ std::string Mesh::GenOBJ(const std::vector<glm::vec3> &vertices, const std::vect
     return vertStr + /*"\n" + normalStr +*/ "\n" + faceStr;
 }
 
-std::optional<MeshIntersection> Mesh::Intersect(const std::tuple<Vec3List, std::vector<GLuint>> &tuple, Ray ray, glm::mat4 modelMat) {
+std::optional<MeshIntersection> Mesh::Intersect(const std::tuple<Vec3List, std::vector<GLuint>> &tuple, glm::mat4 modelMat, Ray ray) {
 
     const auto &[vertices, indices] = tuple;
 
@@ -132,7 +132,16 @@ std::optional<MeshIntersection> Mesh::Intersect(const std::tuple<Vec3List, std::
     MeshIntersection nearestIntersection {};
     MeshIntersection newIntersection {};
 
+//    {
+//        glm::mat4 inverseModelMat = glm::inverse(modelMat);
+//        ray.origin = inverseModelMat * Vec4(ray.origin, 1.0f);
+//        ray.dir = inverseModelMat * Vec4(ray.dir, 0.0f);
+//    }
+
     for (int i = 0; i < indices.size(); i += 3) {
+//        const Vec3 p1 = vertices[indices[i]];
+//        const Vec3 p2 = vertices[indices[i + 1]];
+//        const Vec3 p3 = vertices[indices[i + 2]];
         const Vec3 p1 = modelMat * Vec4(vertices[indices[i]], 1.0f);
         const Vec3 p2 = modelMat * Vec4(vertices[indices[i + 1]], 1.0f);
         const Vec3 p3 = modelMat * Vec4(vertices[indices[i + 2]], 1.0f);

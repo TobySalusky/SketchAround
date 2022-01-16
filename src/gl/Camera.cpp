@@ -69,6 +69,7 @@ void Camera::CalculateDir() {
     front.z = sin(yaw) * cos(pitch);
     front = glm::normalize(front);
 
+
     right = glm::normalize(glm::cross(front, worldUp));
     up = glm::normalize(glm::cross(right, front));
 }

@@ -49,7 +49,7 @@
 const GLuint WIDTH = 1000, HEIGHT = 700;
 Enums::DrawMode drawMode = Enums::MODE_PLOT;
 bool cameraMode = false;
-bool focusMode = true;
+bool focusMode = false;
 float lastTime = 0.0f;
 
 bool graphFocused = false;
@@ -107,7 +107,7 @@ int main() {
     const float zNear = 0.1f;
     const float zFar = 100.0f;
 
-    Camera camera{glm::vec3(0.0f, 0.0f, 2.5f), glm::vec3(0.0f, 1.0f, 0.0f), -M_PI_2, 0};
+    Camera camera{{0.0f, 0.0f, 2.5f}, {0.0f, 1.0f, 0.0f}, -M_PI_2, 0};
 
     Light mainLight{{0.5f, 0.5f, 0.5f, 0.5f}, {-1.0f, -1.0f, -1.0f}, 0.8f};
     Light line3DGizmoLight{{1.0f, 0.3f, 1.0f, 0.5f}, {-1.0f, -1.0f, -1.0f}, 1.0f};
@@ -211,29 +211,34 @@ int main() {
         ia >> serialization;
 
         modelObjects = serialization.Deserialize();
+
+        for (ModelObject* modelObj : modelObjects) { // Load initial meshes
+            modelObj->UpdateMesh();
+        }
         SetModelObject(modelObjects[0]);
     };
 
-//    const auto MouseModelIntersection = [&] {
-//        Vec2 mousePos = Util::NormalizeToRectNP(input->GetMouse(), displayRect);
-//        Vec3 rayOrigin = camera.GetPos() + camera.GetRight() * mousePos.x - camera.GetUp() * mousePos.y; // FIXME
-//
-//        return Mesh::Intersect(modelObject->GenMeshTuple(), {rayOrigin, camera.GetDir()});
-//    };
-
     const auto MouseModelsIntersection = [&] {
         Vec2 mousePos = Util::NormalizeToRectNP(input->GetMouse(), displayRect);
-        Vec3 rayOrigin = camera.GetPos() + camera.GetRight() * mousePos.x - camera.GetUp() * mousePos.y; // FIXME
+        Vec3 rayOrigin = camera.GetPos(); //+ camera.GetRight() * mousePos.x - camera.GetUp() * mousePos.y; // FIXME
+        Vec3 rayDir = camera.GetDir();
+        constexpr float constX = 0.73f, constY = 0.5f;
+        glm::mat4 rotX = glm::rotate(glm::mat4(1.0f), -mousePos.x * constX, camera.GetUp());
+        glm::mat4 rotY = glm::rotate(glm::mat4(1.0f), -mousePos.y * constY, camera.GetRight());
+
+        rayDir = rotX * Vec4(rayDir, 0.0f);
+        rayDir = rotY * Vec4(rayDir, 0.0f);
+        rayDir = glm::normalize(rayDir);
+
 
         std::optional<MeshIntersection> meshIntersection = std::nullopt;
 
-
         for (ModelObject* modelObj : modelObjects) {
             if (!modelObj->IsVisible() || (focusMode && modelObj != modelObject)) continue;
-            // TODO: FIX MODEL MAT -- doesn't work right
-            const auto temp = Mesh::Intersect(modelObj->GenMeshTuple(), {rayOrigin, camera.GetDir()}, modelObj->GenModelMat());
-            if (temp && (!meshIntersection || glm::length(temp->pos - rayOrigin) < glm::length(meshIntersection->pos - rayOrigin))) {
-                meshIntersection = temp;
+            const auto thisIntersect = Mesh::Intersect(modelObj->GenMeshTuple(), modelObj->GenModelMat(), {rayOrigin, rayDir});
+
+            if (thisIntersect && (!meshIntersection || glm::length(thisIntersect->pos - rayOrigin) < glm::length(meshIntersection->pos - rayOrigin))) {
+                meshIntersection = thisIntersect;
             }
         }
 
@@ -463,6 +468,7 @@ int main() {
             renderModelObject->Render3D({shader3D, mainLight});
             if (renderModelObject == modelObject) renderModelObject->RenderGizmos3D({shader3D, mainLight});
         }
+        shader3D.SetModel(glm::mat4(1.0f)); // Reset Model Mat
 
         // 3D Gizmos
         {
@@ -472,15 +478,13 @@ int main() {
 //            planeGizmo.Render();
 
 
-            {
-
+            if (Util::VecIsNormalizedNP(Util::NormalizeToRectNP(input->GetMouse(), displayRect))) {
                 const auto modelIntersection = MouseModelsIntersection();
                 if (modelIntersection) {
-                    Vec3 pos = modelIntersection->pos;
-                    Vec3 norm = modelIntersection->normal;
+                    auto &[pos, norm] = *modelIntersection;
 
                     line3DGizmoLight.Apply(shader3D);
-                    planeGizmo.Set(MeshUtil::PolyLine({pos, pos - glm::normalize(norm) * 0.2f}));
+                    planeGizmo.Set(MeshUtil::PolyLine({pos, pos + glm::normalize(norm) * 0.2f}));
                     planeGizmo.Render();
                 }
             }
@@ -563,7 +567,31 @@ int main() {
                     const auto modelIntersection = MouseModelsIntersection();
 
                     if (modelIntersection) {
+
+
+
+//                        const auto Temp = [] (Vec3 direction) {
+//                            float dot = glm::dot(glm::vec3(0, 0, 1), direction);
+//                            if (fabs(dot - (-1.0f)) < 0.000001f) {
+//                                return glm::eulerAngles(glm::angleAxis((float) glm::degrees(M_PI), glm::vec3(0, 1, 0)));
+//                            }
+//                            else if (fabs(dot - (1.0f)) < 0.000001f) {
+//                                return glm::eulerAngles(glm::quat());
+//                            }
+//
+//                            float angle = -glm::degrees(acosf(dot));
+//
+//                            glm::vec3 cross = glm::normalize(glm::cross(glm::vec3(0, 0, 1), direction));
+//                            glm::quat rotation = glm::normalize(glm::angleAxis(angle, cross));
+//                            return glm::eulerAngles(rotation);
+//                        };
+
                         draggedObj->SetPos(modelIntersection->pos);
+                        const auto normal = glm::normalize(modelIntersection->normal);
+                        const auto temp = glm::normalize(glm::cross(normal, glm::cross(normal, {0.0f, 1.0f, 0.0f})));
+                        const auto quaDir = glm::quatLookAt(normal, {0.0f, 1.0f, 0.0f});
+                        const auto eulers = glm::eulerAngles(quaDir);
+                        draggedObj->SetEulers(Util::DirToEuler(normal));
                     }
                 }
                 ImGui::EndDragDropTarget();

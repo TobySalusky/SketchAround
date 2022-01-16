@@ -26,6 +26,10 @@ typedef std::vector<glm::vec3> Vec3List;
 class Util {
 public:
 
+    static Vec3 DirToEuler(Vec3 dir) {
+        return {0.0f, -atan2(dir.z, glm::length(Vec2(dir.x, dir.y))), atan2(dir.y, dir.x)};
+    }
+
     static void PrintVec(Vec2 vec) {
         printf("<%f, %f>\n", vec.x, vec.y);
     }
