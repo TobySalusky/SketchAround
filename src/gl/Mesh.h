@@ -30,7 +30,7 @@ public:
     static std::string GenOBJ(const std::vector<glm::vec3> &vertices, const std::vector<GLuint> &indices);
     static std::string GenOBJ(const std::tuple<std::vector<glm::vec3>, std::vector<GLuint>> &tuple);
 
-    static std::optional<MeshIntersection> Intersect(const std::tuple<std::vector<glm::vec3>, std::vector<GLuint>> &tuple, glm::mat4 modelMat, Ray ray);
+    static std::optional<MeshIntersection> Intersect(const std::tuple<std::vector<glm::vec3>, std::vector<GLuint>> &tuple, glm::mat4 modelMat, void* obj, Ray ray);
 
 private:
     GLuint VAO, VBO, IBO, indexCount;

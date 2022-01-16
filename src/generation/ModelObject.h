@@ -171,6 +171,7 @@ public:
         return nextUniqueID++;
     }
     static void SetNextUniqueID(int next) { nextUniqueID = next; }
+    void SetColor(Vec3 vec) { color = vec; }
 
 
     ModelObject* CopyRecursive();

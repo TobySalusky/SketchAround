@@ -123,7 +123,7 @@ std::string Mesh::GenOBJ(const std::vector<glm::vec3> &vertices, const std::vect
     return vertStr + /*"\n" + normalStr +*/ "\n" + faceStr;
 }
 
-std::optional<MeshIntersection> Mesh::Intersect(const std::tuple<Vec3List, std::vector<GLuint>> &tuple, glm::mat4 modelMat, Ray ray) {
+std::optional<MeshIntersection> Mesh::Intersect(const std::tuple<Vec3List, std::vector<GLuint>> &tuple, glm::mat4 modelMat, void* obj, Ray ray) {
 
     const auto &[vertices, indices] = tuple;
 
@@ -157,6 +157,9 @@ std::optional<MeshIntersection> Mesh::Intersect(const std::tuple<Vec3List, std::
         }
     }
 
-    if (hasHit) return {nearestIntersection};
+    if (hasHit) {
+        nearestIntersection.obj = obj;
+        return {nearestIntersection};
+    }
     return std::nullopt;
 }

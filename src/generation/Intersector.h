@@ -14,6 +14,7 @@
 struct MeshIntersection {
     Vec3 pos;
     Vec3 normal;
+    void* obj;
 };
 
 struct Ray {

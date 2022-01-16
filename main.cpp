@@ -235,7 +235,7 @@ int main() {
 
         for (ModelObject* modelObj : modelObjects) {
             if (!modelObj->IsVisible() || (focusMode && modelObj != modelObject)) continue;
-            const auto thisIntersect = Mesh::Intersect(modelObj->GenMeshTuple(), modelObj->GenModelMat(), {rayOrigin, rayDir});
+            const auto thisIntersect = Mesh::Intersect(modelObj->GenMeshTuple(), modelObj->GenModelMat(), modelObj, {rayOrigin, rayDir});
 
             if (thisIntersect && (!meshIntersection || glm::length(thisIntersect->pos - rayOrigin) < glm::length(meshIntersection->pos - rayOrigin))) {
                 meshIntersection = thisIntersect;
@@ -481,7 +481,7 @@ int main() {
             if (Util::VecIsNormalizedNP(Util::NormalizeToRectNP(input->GetMouse(), displayRect))) {
                 const auto modelIntersection = MouseModelsIntersection();
                 if (modelIntersection) {
-                    auto &[pos, norm] = *modelIntersection;
+                    auto &[pos, norm, _] = *modelIntersection;
 
                     line3DGizmoLight.Apply(shader3D);
                     planeGizmo.Set(MeshUtil::PolyLine({pos, pos + glm::normalize(norm) * 0.2f}));
@@ -559,33 +559,24 @@ int main() {
 
             if (ImGui::BeginDragDropTarget())
             {
-                if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ModelObjectDrag"))
-                {
+                const auto modelIntersection = MouseModelsIntersection();
+
+                Vec4 color = {0.0f, 0.0f, 0.0f, 1.0f};
+                if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(IMGUI_PAYLOAD_TYPE_COLOR_3F)) {
+                    memcpy((float*)&color, payload->Data, sizeof(float) * 3);
+                    if (modelIntersection) {
+                        ((ModelObject*)(modelIntersection->obj))->SetColor(color);
+                    }
+                } else if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(IMGUI_PAYLOAD_TYPE_COLOR_4F)) {
+                    memcpy((float*)&color, payload->Data, sizeof(float) * 4);
+                    if (modelIntersection) {
+                        ((ModelObject*)(modelIntersection->obj))->SetColor(color);
+                    }
+                } else if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ModelObjectDrag")) {
                     IM_ASSERT(payload->DataSize == sizeof(ModelObject*));
                     ModelObject* draggedObj = *(ModelObject**)payload->Data;
 
-                    const auto modelIntersection = MouseModelsIntersection();
-
                     if (modelIntersection) {
-
-
-
-//                        const auto Temp = [] (Vec3 direction) {
-//                            float dot = glm::dot(glm::vec3(0, 0, 1), direction);
-//                            if (fabs(dot - (-1.0f)) < 0.000001f) {
-//                                return glm::eulerAngles(glm::angleAxis((float) glm::degrees(M_PI), glm::vec3(0, 1, 0)));
-//                            }
-//                            else if (fabs(dot - (1.0f)) < 0.000001f) {
-//                                return glm::eulerAngles(glm::quat());
-//                            }
-//
-//                            float angle = -glm::degrees(acosf(dot));
-//
-//                            glm::vec3 cross = glm::normalize(glm::cross(glm::vec3(0, 0, 1), direction));
-//                            glm::quat rotation = glm::normalize(glm::angleAxis(angle, cross));
-//                            return glm::eulerAngles(rotation);
-//                        };
-
                         draggedObj->SetPos(modelIntersection->pos);
                         const auto normal = glm::normalize(modelIntersection->normal);
                         const auto temp = glm::normalize(glm::cross(normal, glm::cross(normal, {0.0f, 1.0f, 0.0f})));
