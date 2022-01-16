@@ -222,12 +222,15 @@ protected:
     template<class Archive>
     void serialize(Archive & ar, const unsigned int version)
     {
+        const unsigned int VERSION_SAMPLE_LENGTH = 1;
+
         ar & reSerializeInfo;
         ar & ID;
         ar & visible;
         ar & color;
         ar & modelTranslation;
         ar & eulerAngles;
+        if (version >= VERSION_SAMPLE_LENGTH) ar & sampleLength;
         ar & animator;
     }
 
@@ -308,5 +311,7 @@ namespace boost::serialization {
         ar & vec.w;
     }
 }
+
+BOOST_CLASS_VERSION(ModelObject, 1)
 
 #endif //SENIORRESEARCH_MODELOBJECT_H

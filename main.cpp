@@ -198,12 +198,16 @@ int main() {
      */
     const auto SerializeScene = [&](const std::string& path) {
 
+        printf("saving to `%s` -- ", path.c_str());
         std::ofstream ofs(path);
         boost::archive::text_oarchive oa(ofs);
         oa << Serialization(modelObjects);
+        printf("save successful!\n");
     };
 
     const auto DeSerializeScene = [&](const std::string& path) {
+
+        printf("loading from `%s` -- ", path.c_str());
         Serialization serialization;
 
         std::ifstream ifs(path);
@@ -216,6 +220,8 @@ int main() {
             modelObj->UpdateMesh();
         }
         SetModelObject(modelObjects[0]);
+
+        printf("load successful!\n");
     };
 
     const auto MouseModelsIntersection = [&] {
@@ -470,22 +476,30 @@ int main() {
         }
         shader3D.SetModel(glm::mat4(1.0f)); // Reset Model Mat
 
-        // 3D Gizmos
+        // 3D Interactivity / Gizmos
         {
-//            float axisLen = 1.0f;
-//            line3DGizmoLight.Apply(shader3D);
-//            planeGizmo.Set(MeshUtil::PolyLine({{0.0f, -axisLen, 0.0f}, {0.0f, axisLen, 0.0f}}));
-//            planeGizmo.Render();
-
-
-            if (Util::VecIsNormalizedNP(Util::NormalizeToRectNP(input->GetMouse(), displayRect))) {
+            const Vec2 displayMousePos = Util::NormalizeToRectNPFlipped(input->GetMouse(), displayRect);
+            if (Util::VecIsNormalizedNP(displayMousePos)) {
                 const auto modelIntersection = MouseModelsIntersection();
                 if (modelIntersection) {
-                    auto &[pos, norm, _] = *modelIntersection;
+                    // 3D normal highlighter
+                    auto &[pos, norm, obj] = *modelIntersection;
 
                     line3DGizmoLight.Apply(shader3D);
                     planeGizmo.Set(MeshUtil::PolyLine({pos, pos + glm::normalize(norm) * 0.2f}));
                     planeGizmo.Render();
+
+                    // 3D selection
+                    static float netDrag = 0.0f;
+                    if (input->mousePressed) {
+                        netDrag = 0.0f;
+                    } else if (input->mouseDown) {
+                        netDrag += glm::length(displayMousePos - Util::NormalizeToRectNPFlipped(input->GetLastMouse(), displayRect));
+                    }
+
+                    if (input->mouseUnpressed && netDrag < 0.0001f) { // only select if user did not drag mouse
+                        SetModelObject((ModelObject*)obj);
+                    }
                 }
             }
         }
