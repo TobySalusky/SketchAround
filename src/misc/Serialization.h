@@ -17,26 +17,36 @@ public:
 
     Serialization() = default;
 
-    explicit Serialization(const std::vector<ModelObject*>& modelObjects);
+    explicit Serialization(const std::vector<ModelObject*>& modelObjects, const std::vector<unsigned char>& snapshotImg);
 
+    std::vector<unsigned char> img = {};
     std::vector<int> order = {};
     std::vector<Lathe*> lathes = {};
     std::vector<CrossSectional*> crossSectionals = {};
     int nextModelObjectUniqueID{};
     BlendModeManager blendModeManager;
 
+    static void SetReadMetaOnly(bool _readMetaOnly) { readMetaOnly = _readMetaOnly; }
+
 private:
+    static bool readMetaOnly;
+
     friend class boost::serialization::access;
     template<class Archive>
     void serialize(Archive & ar, const unsigned int version)
     {
-        ar & order;
-        ar & lathes;
-        ar & crossSectionals;
-        ar & nextModelObjectUniqueID;
-        ar & blendModeManager;
+        const unsigned int imgVersion = 1;
+        if (version >= imgVersion) ar & img;
+
+        if (!readMetaOnly) {
+            ar & order;
+            ar & lathes;
+            ar & crossSectionals;
+            ar & nextModelObjectUniqueID;
+            ar & blendModeManager;
+        }
     }
 };
-// [Future]: Use BOOST_CLASS_VERSION(Serialization, x) for versioning
+BOOST_CLASS_VERSION(Serialization, 1)
 
 #endif //SENIORRESEARCH_SERIALIZATION_H

@@ -6,7 +6,7 @@
 #include <unordered_map>
 
 
-Serialization::Serialization(const std::vector<ModelObject *>& modelObjects) {
+Serialization::Serialization(const std::vector<ModelObject*>& modelObjects, const std::vector<unsigned char>& snapshotImg) {
     for (ModelObject* obj : modelObjects) {
         if (obj->GetType() == Enums::LATHE) {
             lathes.emplace_back((Lathe*) obj);
@@ -24,6 +24,8 @@ Serialization::Serialization(const std::vector<ModelObject *>& modelObjects) {
     blendModeManager.PrepSerialize();
 
     nextModelObjectUniqueID = ModelObject::GetCurrentNextUniqueID();
+
+    img = snapshotImg;
 }
 
 std::vector<ModelObject *> Serialization::Deserialize() {
@@ -46,3 +48,5 @@ std::vector<ModelObject *> Serialization::Deserialize() {
 
     return res;
 }
+
+bool Serialization::readMetaOnly = false;

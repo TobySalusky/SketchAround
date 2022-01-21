@@ -3,9 +3,11 @@
 //
 
 #include <cstdio>
+#include <vector>
+#include <algorithm>
 #include "RenderTarget.h"
 
-RenderTarget::RenderTarget(GLint width, GLint height, bool hasDepth) : hasDepth(hasDepth) { // NOLINT(cppcoreguidelines-pro-type-member-init)
+RenderTarget::RenderTarget(GLint width, GLint height, bool hasDepth) : hasDepth(hasDepth), width(width), height(height) { // NOLINT(cppcoreguidelines-pro-type-member-init)
 
     glGenFramebuffers(1, &fboID);
 
@@ -40,4 +42,30 @@ void RenderTarget::Bind(const RenderTarget &renderTarget) {
     } else {
         glDisable(GL_DEPTH_TEST);
     }
+}
+
+std::vector<unsigned char> RenderTarget::SampleCentralSquare(const RenderTarget& renderTarget, int sampleCount) {
+    glBindFramebuffer(GL_READ_FRAMEBUFFER, renderTarget.fboID);
+
+    const int dimens = std::min(renderTarget.width, renderTarget.height);
+    unsigned char pixelBuff[dimens * dimens * 3];
+    glReadPixels(std::max(renderTarget.width - renderTarget.height, 0) / 2, std::max(renderTarget.height - renderTarget.width, 0) / 2,
+                 dimens, dimens, GL_RGB, GL_UNSIGNED_BYTE, pixelBuff);
+
+    std::vector<unsigned char> sampled;
+
+    const float step = (float) dimens / (float) sampleCount;
+    for (int j = 0; j < sampleCount; j++) {
+        for (int i = 0; i < sampleCount; i++) {
+            const int xPixel = (int) ((float) i * step), yPixel = (int) ((float) j * step);
+            const int index = (xPixel + yPixel * dimens) * 3;
+            sampled.emplace_back(pixelBuff[index]);
+            sampled.emplace_back(pixelBuff[index + 1]);
+            sampled.emplace_back(pixelBuff[index + 2]);
+        }
+    }
+
+    glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
+
+    return sampled;
 }

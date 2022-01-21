@@ -13,6 +13,17 @@
 class Linq {
 public:
     template<class T, class K>
+    static std::vector<K> Select(std::vector<T>& initVec, std::function<K(T&)> func) {
+        std::vector<K> newVec {};
+        newVec.reserve(initVec.size());
+
+        for (T& val : initVec) {
+            newVec.push_back(func(val));
+        }
+        return newVec;
+    }
+
+    template<class T, class K>
     static std::vector<K> Select(const std::vector<T>& initVec, std::function<K(T)> func) {
         std::vector<K> newVec {};
         newVec.reserve(initVec.size());

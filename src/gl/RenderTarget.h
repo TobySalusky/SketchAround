@@ -14,9 +14,12 @@ public:
     static void Bind(const RenderTarget& renderTarget);
     static void Unbind();
 
+    static std::vector<unsigned char> SampleCentralSquare(const RenderTarget& renderTarget, int sampleCount);
+
     [[nodiscard]] GLuint GetTexture() const { return textureID; }
 private:
     GLuint fboID, rboID, textureID;
+    GLint width, height;
     bool hasDepth;
 };
 

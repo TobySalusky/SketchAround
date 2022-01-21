@@ -7,16 +7,21 @@
 
 
 #include <string>
+#include <vector>
 
 class Texture {
 public:
     unsigned int ID;
 
-    Texture(const char *path);
+    explicit Texture(const char *path);
+    Texture(int width, int height, std::vector<unsigned char> rgbData); // three unsigned bytes per pixel
     ~Texture();
 
     void Bind(unsigned int slot = 0);
     void Unbind();
+
+    void Set(int width, int height, std::vector<unsigned char> rgbData);
+    void Set(int width, int height, unsigned char* rgbDataPtr);
 
 private:
     unsigned char* localBuffer;

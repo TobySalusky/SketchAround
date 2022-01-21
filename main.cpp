@@ -41,6 +41,7 @@
 #include "src/misc/Undos.h"
 #include "src/misc/Serialization.h"
 #include "src/util/Controls.h"
+#include "src/gl/TiledTextureAtlas.h"
 
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
@@ -124,7 +125,6 @@ int main() {
 
     SetCameraMode(false);
 
-    //Texture texture{"../assets/images/test.png"};
 
     BlendModes::GetManager().Init();
 
@@ -201,8 +201,21 @@ int main() {
         printf("saving to `%s` -- ", path.c_str());
         std::ofstream ofs(path);
         boost::archive::text_oarchive oa(ofs);
-        oa << Serialization(modelObjects);
+        oa << Serialization(modelObjects, RenderTarget::SampleCentralSquare(modelScene, 64));
         printf("save successful!\n");
+    };
+
+    const auto DeserializeMeta = [&](const std::string& path) {
+
+        Serialization::SetReadMetaOnly(true);
+        Serialization serialization;
+
+        std::ifstream ifs(path);
+        boost::archive::text_iarchive ia(ifs);
+        ia >> serialization;
+        Serialization::SetReadMetaOnly(false);
+
+        return serialization;
     };
 
     const auto DeSerializeScene = [&](const std::string& path) {
@@ -224,8 +237,9 @@ int main() {
         printf("load successful!\n");
     };
 
-    const auto MouseModelsIntersection = [&] {
-        Vec2 mousePos = Util::NormalizeToRectNP(input->GetMouse(), displayRect);
+
+
+    const auto MouseModelsIntersectionAt = [&] (Vec2 mousePos) {
         Vec3 rayOrigin = camera.GetPos(); //+ camera.GetRight() * mousePos.x - camera.GetUp() * mousePos.y; // FIXME
         Vec3 rayDir = camera.GetDir();
         constexpr float constX = 0.73f, constY = 0.5f;
@@ -249,6 +263,10 @@ int main() {
         }
 
         return meshIntersection;
+    };
+
+    const auto MouseModelsIntersection = [&] {
+        return MouseModelsIntersectionAt(Util::NormalizeToRectNP(input->GetMouse(), displayRect));
     };
 
     // TODO: move file gui to new file!
@@ -308,6 +326,8 @@ int main() {
         enteringGuiScreen = false;
     };
 
+    Texture texture{2, 2, {0,255, 0, 0, 0, 0, 255,0,0 , 0, 0, 0}};
+    TiledTextureAtlas openFileTextureAtlas;
     const auto OpenFileGUI = [&] () {
 
         static std::string lastPath;
@@ -325,10 +345,16 @@ int main() {
             if (ImGui::Button("<-----")) {
                 inOpenFileGUI = false;
             }
+            if (ImGuiHelper::HoverDelayTooltip()) {
+                ImGui::SetTooltip("Escape [esc]");
+            }
 
             static char pathBuffer[256] = "../output";
 
-            if (enteringGuiScreen) ImGui::SetKeyboardFocusHere();
+            if (enteringGuiScreen) {
+                lastPath = "";
+                ImGui::SetKeyboardFocusHere();
+            }
 
 
             ImGuiHelper::SpacedSep();
@@ -347,17 +373,42 @@ int main() {
                         if (p.path().extension() == ".mdl") paths.emplace_back(p.path());
                     }
                 }
+                std::vector<Serialization> metaReads;
+                metaReads.reserve(paths.size());
+                for (const std::string& pathStr : paths) {
+                    auto& ref = metaReads.emplace_back(DeserializeMeta(pathStr));
+                    const int desiredSize = 64 * 64 * 3;
+                    if (ref.img.size() != desiredSize) {
+                        printf("\n[Warning]: Incorrect size!\n");
+                        ref.img.clear();
+                        ref.img.reserve(desiredSize);
+                        for (int i = 0; i < desiredSize; i++) {ref.img.emplace_back(0);}
+                    }
+                }
+
+                openFileTextureAtlas.Generate(64, Linq::Select<Serialization, std::vector<unsigned char>*>(metaReads, [](Serialization& refVal){
+                    return &(refVal.img);
+                }));
             }
 
             for (auto& subFolder : subFolders) {
                 ImGui::BulletText("%s", subFolder.c_str());
             }
 
+            int childPathIndex = 0;
             for (auto& childPath : paths) {
-                if (ImGui::Button(childPath.c_str())) {
+                const auto OnPress = [&] {
                     DeSerializeScene(childPath);
                     inOpenFileGUI = false;
-                }
+                };
+                if (ImGui::Button(childPath.c_str())) OnPress();
+                if (ImGuiHelper::HoverDelayTooltip()) ImGui::SetTooltip("%s", childPath.c_str());
+
+                const auto& [uv1, uv2] = openFileTextureAtlas.GetCoords(childPathIndex);
+                ImGui::ImageButton((void*)(intptr_t)openFileTextureAtlas.ID, {100.0f, 100.0f}, Util::ToImVec(uv1), Util::ToImVec(uv2));
+                if (ImGui::IsItemClicked()) OnPress();
+                if (ImGuiHelper::HoverDelayTooltip()) ImGui::SetTooltip("%s", childPath.c_str());
+                childPathIndex++;
             }
             if (!pathExists) ImGui::Text("Invalid path!");
 
@@ -391,6 +442,33 @@ int main() {
         enteringGuiScreen = false;
     };
 
+    const auto SampleSceneToTextureBytesRayTraceFlat = [&] (const int pixelSize = 32) {
+        std::vector<unsigned char> textureData;
+
+        const auto PushFloatAsByte = [&] (float f) {
+            auto c = (unsigned char) (f * 255.0f);
+            textureData.emplace_back(c);
+        };
+        const auto PushVecAsColor = [&] (Vec3 vec) {
+            PushFloatAsByte(vec.x);
+            PushFloatAsByte(vec.y);
+            PushFloatAsByte(vec.z);
+        };
+        printf("s\n");
+
+        const auto div = (float) pixelSize;
+        for (int j = 0; j < pixelSize; j++) {
+            for (int i = 0; i < pixelSize; i++) {
+                Vec2 samplePos = {((float) i / div) * 2.0f - 1.0f, ((float) j / div) * 2.0f - 1.0f};
+                if (const auto modelIntersection = MouseModelsIntersectionAt(samplePos)) {
+                    PushVecAsColor(((ModelObject*)modelIntersection->obj)->GetColor());
+                } else {
+                    PushVecAsColor({0.0f, 0.0f, 0.0f});
+                }
+            }
+        }
+        return textureData;
+    };
 
     while (!window.ShouldClose()) // >> UPDATE LOOP ======================================
     {
@@ -558,6 +636,13 @@ int main() {
         // >> ImGui Render3D ====================
         ImGuiHelper::BeginFrame();
 
+        ImGui::Begin("Test");
+        {
+            ImGui::ImageButton((void *) (intptr_t) texture.ID, {100.0f, 100.0f}, {0.0f, 1.0f},{1.0f, 0.0f});
+            //ImGui::ImageButton((void *) (intptr_t) texture2.ID, {100.0f, 100.0f});
+        }
+        ImGui::End();
+
         // 3D-view Window
         ImGui::Begin("Model Scene");
         {
@@ -705,6 +790,18 @@ int main() {
             UpdateMesh();
         }
 
+        if (input->Pressed(GLFW_KEY_Y)) {
+            GLuint test = -1;
+            glGenTextures(1, &test);
+            printf(":::::::: %ui\n", test);
+        }
+        if (input->Pressed(GLFW_KEY_I)) {
+            int pixelSize = 64;
+//            texture.Set(pixelSize, pixelSize, SampleSceneToTextureBytesRayTraceFlat(pixelSize));
+            texture.Set(pixelSize, pixelSize, RenderTarget::SampleCentralSquare(modelScene, pixelSize));
+//            texture = {pixelSize, pixelSize, RenderTarget::SampleCentralSquare(modelScene, pixelSize)};
+//            printf("e");
+        }
 
         const auto GetLatheIndex = [&]() {
             for (int i = 0; i < modelObjects.size(); i++) {

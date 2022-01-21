@@ -12,6 +12,7 @@
 
 #include "../gl/GLWindow.h"
 #include "Rectangle.h"
+#include "../vendor/imgui/imgui_internal.h"
 #include <string>
 
 
@@ -64,6 +65,10 @@ public:
     }
 
     static void SpacedSep();
+
+    static bool HoverDelayTooltip(float delay = 0.65f) {
+        return ImGui::IsItemHovered() && GImGui->HoveredIdTimer > delay;
+    }
 
 private:
     static ImVec4 RGB(int r, int g, int b);
