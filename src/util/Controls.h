@@ -31,6 +31,7 @@ static int
     CONTROLS_FlipHoriz = 15,
     CONTROLS_FlipVert = 16,
     CONTROLS_ReversePoints = 17,
+    CONTROLS_ExitMenu = 18,
     CONTROLS_ = 0,
     CONTROLS_FIN = -2
 ;
@@ -51,9 +52,13 @@ public:
 
     static std::unordered_map<int, KeyControl> GenDefaultControls();
 
+    static std::string Describe(int CONTROL_CODE);
+
 private:
     static Input* input;
     static std::unordered_map<int, KeyControl> controls;
+
+    static const char* KeyCodeToName(int keyCode);
 };
 
 

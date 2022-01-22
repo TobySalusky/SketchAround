@@ -70,6 +70,8 @@ public:
         return ImGui::IsItemHovered() && GImGui->HoveredIdTimer > delay;
     }
 
+    static void DelayControlTooltip(int CONTROL_CODE);
+
 private:
     static ImVec4 RGB(int r, int g, int b);
 };

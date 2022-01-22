@@ -8,6 +8,7 @@
 
 
 #include "ImGuiHelper.h"
+#include "Controls.h"
 
 void ImGuiHelper::Initialize(GLWindow& window) {
     IMGUI_CHECKVERSION();
@@ -66,4 +67,10 @@ void ImGuiHelper::SpacedSep() {
     ImGui::Spacing();
     ImGui::Separator();
     ImGui::Spacing();
+}
+
+void ImGuiHelper::DelayControlTooltip(int CONTROL_CODE) {
+    if (HoverDelayTooltip()) {
+        ImGui::SetTooltip("%s", Controls::Describe(CONTROL_CODE).c_str());
+    }
 }

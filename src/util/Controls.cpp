@@ -34,6 +34,7 @@ std::unordered_map<int, KeyControl> Controls::GenDefaultControls() {
             {CONTROLS_FlipHoriz, {"Flip Horizontal", GLFW_KEY_F}},
             {CONTROLS_FlipVert, {"Flip Vertical", GLFW_KEY_J}},
             {CONTROLS_ReversePoints, {"Reverse Points", GLFW_KEY_B}},
+            {CONTROLS_ExitMenu, {"Exit Menu", GLFW_KEY_ESCAPE}},
     };
 }
 
@@ -57,31 +58,7 @@ void Controls::GUI() { // TODO: fix crash with [Space] on "Add CrossSectional"
     static KeyControl* editingControl = nullptr;
 
     static const char* modifiers[] = {"--", "Shift", "Command", "Control"};
-    const auto KeyCodeToName = [](int keyCode) {
-        switch (keyCode) {
-            case GLFW_KEY_LEFT_SHIFT:
-                return "[Shift]";
-            case GLFW_KEY_LEFT_CONTROL:
-                return "[Ctrl]";
-            case GLFW_KEY_LEFT_SUPER:
-                return "[Command]";
-            case GLFW_KEY_LEFT_ALT:
-                return "[Alt]";
-            case GLFW_KEY_UP:
-                return "[Up]";
-            case GLFW_KEY_DOWN:
-                return "[Down]";
-            case GLFW_KEY_LEFT:
-                return "[Left]";
-            case GLFW_KEY_RIGHT:
-                return "[Right]";
-            case GLFW_KEY_SPACE:
-                return "[Space]";
-            case GLFW_KEY_ENTER:
-                return "[Enter]";
-        }
-        return glfwGetKeyName(keyCode, 0);
-    };
+
     const auto KeyCodeToIndex = [](int keyCode) {
         switch (keyCode) {
             case GLFW_KEY_LEFT_SHIFT:
@@ -156,6 +133,54 @@ void Controls::GUI() { // TODO: fix crash with [Space] on "Add CrossSectional"
     }
 }
 
-void Test() {
+const char *Controls::KeyCodeToName(int keyCode) {
+    switch (keyCode) {
+        case GLFW_KEY_LEFT_SHIFT:
+            return "[Shift]";
+        case GLFW_KEY_LEFT_CONTROL:
+            return "[Ctrl]";
+        case GLFW_KEY_LEFT_SUPER:
+            return "[Command]";
+        case GLFW_KEY_LEFT_ALT:
+            return "[Alt]";
+        case GLFW_KEY_UP:
+            return "[Up]";
+        case GLFW_KEY_DOWN:
+            return "[Down]";
+        case GLFW_KEY_LEFT:
+            return "[Left]";
+        case GLFW_KEY_RIGHT:
+            return "[Right]";
+        case GLFW_KEY_SPACE:
+            return "[Space]";
+        case GLFW_KEY_ENTER:
+            return "[Enter]";
+        case GLFW_KEY_ESCAPE:
+            return "[Escape]";
+        default:
+            return glfwGetKeyName(keyCode, 0);
+    }
+}
 
+std::string Controls::Describe(int CONTROL_CODE) {
+    const KeyControl& control = controls[CONTROL_CODE];
+
+
+    const char* keyNameChar = KeyCodeToName(control.keyCode);
+    if (keyNameChar == nullptr) keyNameChar = "[???]";
+    bool nonChar = keyNameChar[0] == '[';
+    std::string keyName = keyNameChar;
+    if (!nonChar) {
+        std::transform(keyName.begin(), keyName.end(), keyName.begin(), ::toupper);
+        keyName = "[" + keyName + "]";
+    }
+
+
+    if (control.modifier == -1) return keyName;
+
+    return std::string([&]{
+        if (control.modifier == GLFW_KEY_LEFT_SUPER) return "Command";
+        if (control.modifier == GLFW_KEY_LEFT_CONTROL) return "Ctrl";
+        return "Shift";
+    }()) + " " + keyName;
 }
