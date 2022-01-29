@@ -68,3 +68,40 @@ float Function::GetAverageRadians(const std::vector<glm::vec2> &funcPoints, floa
 
     return Util::Angle(tangentSum);
 }
+
+Vec2 Function::GetTangentAvgAtIndex(const std::vector<glm::vec2> &funcPoints, int segmentIndex, int count) {
+    Vec2 tangentSum = {0.0f, 0.0f};
+    int realCount = 0;
+
+    const auto addSlope = [&](glm::vec2 p1, glm::vec2 p2) {
+        tangentSum += (p2 - p1);
+        realCount++;
+    };
+
+    addSlope(funcPoints[segmentIndex], funcPoints[segmentIndex + 1]);
+
+    for (int i = -1; i >= -count; i--) {
+        if (segmentIndex + i < 0) break;
+        addSlope(funcPoints[segmentIndex + i], funcPoints[i]);
+    }
+
+    for (int i = 1; i <= count; i++) { // FIXME: sus point stuff
+        if (segmentIndex + i >= funcPoints.size()) break;
+        addSlope(funcPoints[segmentIndex], funcPoints[segmentIndex + i]);
+    }
+
+    return tangentSum / (float) realCount;
+}
+
+Vec2List Function::GetAvgTangentsAlongLength(const std::vector<glm::vec2> &funcPoints, float lengthPer, int count) {
+
+    Vec2List avgTangents;
+    float runningLength = 0.0f;
+    for (int i = 0; i < funcPoints.size() - 1; i++) {
+        runningLength += glm::length(funcPoints[i + 1] - funcPoints[i]);
+
+
+    }
+
+    return avgTangents;
+}

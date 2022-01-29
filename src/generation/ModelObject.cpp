@@ -229,8 +229,10 @@ void ModelObject::ClearSingle(Enums::DrawMode drawMode) {
     DiffPoints(drawMode);
 }
 
-void ModelObject::UnParent() {
+void ModelObject::UnParent(bool maintainAbsoluteTransform) {
     if (!HasParent()) return;
+
+    const auto initModelMatDescription = Util::DecomposeMatrix(GenModelMat());
 
     for (int i = 0; i < parent->children.size(); i++) {
         if (parent->children[i] == this) {
@@ -238,12 +240,24 @@ void ModelObject::UnParent() {
             break;
         }
     }
+
     parent = nullptr;
+
+    if (maintainAbsoluteTransform) {
+        PersistModelMat(initModelMatDescription, {{0.0f, 0.0f, 0.0f}, {1.0f, 0.0f, 0.0f}});
+    }
 }
 
-void ModelObject::AppendChild(ModelObject *child) {
+void ModelObject::AppendChild(ModelObject *child, bool maintainAbsoluteTransform) {
+    const auto initChildModelMatDescription = Util::DecomposeMatrix(child->GenModelMat());
+
     child->UnParent();
     child->parent = this;
+
+    if (maintainAbsoluteTransform) {
+        child->PersistModelMat(initChildModelMatDescription, Util::DecomposeMatrix(GenModelMat()));
+    }
+
     children.push_back(child);
 }
 
@@ -364,4 +378,20 @@ void ModelObject::AnimatableSliderValUpdateBound(const std::string& label, float
         }
         UpdateMesh();
     }
+}
+
+void ModelObject::PersistModelMat(MatrixComponents initFull, MatrixComponents parentMat) {
+    const auto&[childTranslate, childDir] = initFull;
+    const auto&[translate, dir] = parentMat;
+    const Vec3 diff = childTranslate - translate;
+    const Vec3 parentEulers = Util::DirToEuler(dir);
+    const glm::mat4 rot = glm::toMat4(glm::quat(parentEulers));
+    const Vec3 rotatedDiff = glm::inverse(rot) * Vec4(diff, 0.0f);
+    SetPos(rotatedDiff);
+
+    Util::PrintVec(diff);
+    Util::PrintVec(rotatedDiff);
+    Util::PrintVec(parentEulers);
+
+    SetEulers(Util::DirToEuler(glm::inverse(rot) * Vec4(childDir, 0.0f)));
 }

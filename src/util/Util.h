@@ -22,6 +22,9 @@ typedef std::vector<glm::vec2> Vec2List;
 typedef std::vector<glm::vec3> Vec3List;
 
 
+struct MatrixComponents {
+    Vec3 pos, dir;
+};
 
 class Util {
 public:
@@ -106,6 +109,13 @@ public:
 
     static Vec2 ToVec(ImVec2 vec) {
         return {vec.x, vec.y};
+    }
+
+    static MatrixComponents DecomposeMatrix(glm::mat4 mat) {
+        const auto pos = Vec3(mat * Vec4(0.0f, 0.0f, 0.0f, 1.0f));
+        const auto dir = glm::normalize(Vec3(mat * Vec4(1.0f, 0.0f, 0.0f, 0.0f)));
+
+        return {pos, dir};
     }
 };
 

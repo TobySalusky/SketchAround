@@ -157,8 +157,8 @@ public:
 
     Animator* GetAnimatorPtr() { return &animator; }
 
-    void AppendChild(ModelObject* child);
-    void UnParent();
+    void AppendChild(ModelObject* child, bool maintainAbsoluteTransform = true);
+    void UnParent(bool maintainAbsoluteTransform = true);
     void UnParentRaw() { parent = nullptr; }
     [[nodiscard]] bool HasParent() const { return parent != nullptr; }
     bool InParentChain(ModelObject* obj);
@@ -276,6 +276,8 @@ protected:
 
     static void FunctionalAngleGizmo(RenderInfo2D renderInfo, const std::vector<glm::vec2>& points);
     void EditCurrentLines(EditingInfo info);
+
+    void PersistModelMat(MatrixComponents initFull, MatrixComponents parentMat);
 };
 
 struct DraggableUIInfo {

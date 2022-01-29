@@ -196,7 +196,7 @@ int main() {
 
     const auto SerializeScene = [&](const std::string& path) {
 
-        printf("saving to `%s` -- ", path.c_str());
+        printf("saving to \"%s\" -- ", path.c_str());
         std::ofstream ofs(path);
         boost::archive::text_oarchive oa(ofs);
         oa << Serialization(modelObjects, RenderTarget::SampleCentralSquare(modelScene, 64));
@@ -218,7 +218,7 @@ int main() {
 
     const auto DeSerializeScene = [&](const std::string& path) {
 
-        printf("loading from `%s` -- ", path.c_str());
+        printf("loading from \"%s\" -- ", path.c_str());
         Serialization serialization;
 
         std::ifstream ifs(path);
@@ -691,12 +691,19 @@ int main() {
                         ModelObject* draggedObj = *(ModelObject**)payload->Data;
 
                         if (modelIntersection) {
+                            draggedObj->UnParent();
                             draggedObj->SetPos(modelIntersection->pos);
                             const auto normal = glm::normalize(modelIntersection->normal);
                             const auto temp = glm::normalize(glm::cross(normal, glm::cross(normal, {0.0f, 1.0f, 0.0f})));
                             const auto quaDir = glm::quatLookAt(normal, {0.0f, 1.0f, 0.0f});
                             const auto eulers = glm::eulerAngles(quaDir);
                             draggedObj->SetEulers(Util::DirToEuler(normal));
+                            auto* hitObj = (ModelObject*)(modelIntersection->obj);
+
+                            // no recursive parenting!
+                            if (hitObj != draggedObj && !hitObj->InParentChain(draggedObj)) {
+                                hitObj->AppendChild(draggedObj);
+                            }
                         }
                     }
                     ImGui::EndDragDropTarget();
