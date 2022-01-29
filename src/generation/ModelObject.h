@@ -188,7 +188,7 @@ public:
         const auto serializedChildren = Linq::Select<int, ModelObject*>(reSerializeInfo.childIDs, [&](int thisID) { return table[thisID]; });
 
         for (auto* child : serializedChildren) {
-            AppendChild(child);
+            AppendChild(child, false);
         }
 
         reSerializeInfo = {};
