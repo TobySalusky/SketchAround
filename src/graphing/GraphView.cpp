@@ -20,7 +20,15 @@ void GraphView::Update(GraphViewUpdateInfo info) {
 
     guiRect = newGuiRect;
 
-    if (input.mouseMiddleDown) {
+    if (input.mouseMiddlePressed && Util::VecIsNormalizedNP(Util::NormalizeToRectNPFlipped(input.GetMouse(), guiRect))) {
+        enablePanOrDrag = true;
+    }
+
+    if (input.mouseMiddleUnpressed) {
+        enablePanOrDrag = false;
+    }
+
+    if (enablePanOrDrag && input.mouseMiddleDown) {
         if (input.Down(GLFW_KEY_LEFT_SHIFT)) {
             const auto lastPosNP = Util::NormalizeToRectNPFlipped(input.GetLastMouse(), guiRect) * GenAspectRatio();
             const auto posNP = Util::NormalizeToRectNPFlipped(input.GetMouse(), guiRect) * GenAspectRatio();

@@ -27,6 +27,7 @@ struct GraphView {
     Vec2 MousePosNPToCoords(Vec2 mousePosNP);
 private:
     Rectangle guiRect;
+    bool enablePanOrDrag = false;
 
     [[nodiscard]] Vec2 GenScaleVector() const;
     [[nodiscard]] Vec2 GenScaleVectorMat() const;

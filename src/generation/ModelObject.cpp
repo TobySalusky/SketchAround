@@ -28,6 +28,8 @@ void ModelObject::Render2D(RenderInfo2D renderInfo) {
 }
 
 void ModelObject::FunctionalAngleGizmo(RenderInfo2D renderInfo, const std::vector<glm::vec2>& points) {
+//    Vec2 onCanvas = graphView.MousePosNPToCoords(onScreen); TODO: !!!!!
+
     float pointY = Function::GetY(points, renderInfo.onScreen.x);
     float pointAngle = Function::GetAverageRadians(points, renderInfo.onScreen.x, 5);
     if (pointY != 0) {
@@ -39,7 +41,7 @@ void ModelObject::FunctionalAngleGizmo(RenderInfo2D renderInfo, const std::vecto
 void ModelObject::RenderGizmos3D(RenderInfo3D renderInfo) {}
 
 EditingContext::TransformStartInfo GenTransformStartInfo(EditingInfo info) {
-    return {info.onScreen};
+    return {info.graphView.MousePosNPToCoords(info.onScreen)};
 }
 
 void ModelObject::SetPoints(Enums::DrawMode drawMode, const Vec2List& newPoints) {
@@ -122,7 +124,7 @@ void ModelObject::EditCurrentLines(EditingInfo info) {
     if (editContext.IsTransformationActive()) {
         switch (editContext.GetTransformationType()) {
             case Enums::TRANSFORM_DRAG: {
-                glm::vec2 delta = info.onScreen - editContext.GetLastMousePos();
+                glm::vec2 delta = onCanvas - editContext.GetLastMousePos();
                 Diff([=](glm::vec2 vec) {
                     return vec + delta;
                 });
@@ -132,7 +134,7 @@ void ModelObject::EditCurrentLines(EditingInfo info) {
                 const Vec2 avgPos = Util::AveragePos(points);
 
                 float lastAngle = Util::Angle(editContext.GetLastMousePos() - avgPos);
-                float newAngle = Util::Angle(info.onScreen - avgPos);
+                float newAngle = Util::Angle(onCanvas - avgPos);
                 float angleDiff = newAngle - lastAngle;
 
                 Diff([=](Vec2 vec) {
@@ -146,7 +148,7 @@ void ModelObject::EditCurrentLines(EditingInfo info) {
                 const Vec2 avgPos = Util::AveragePos(points);
 
                 float lastMag = glm::length(editContext.GetLastMousePos() - avgPos);
-                float newMag = glm::length(info.onScreen - avgPos);
+                float newMag = glm::length(onCanvas - avgPos);
 
                 Diff([=](glm::vec2 vec) {
                     float angle = Util::Angle(vec - avgPos);
@@ -161,7 +163,7 @@ void ModelObject::EditCurrentLines(EditingInfo info) {
                 };
 
                 glm::vec2 initPos = editContext.GetTransformStartPos();
-                glm::vec2 delta = info.onScreen - initPos;
+                glm::vec2 delta = onCanvas - initPos;
 
                 DiffBase([=](glm::vec2 vec) {
                     float initMag = glm::length(vec - initPos);
@@ -196,7 +198,7 @@ void ModelObject::EditCurrentLines(EditingInfo info) {
         editContext.OnMouseUp();
     }
 
-    editContext.SetLastMousePos(info.onScreen);
+    editContext.SetLastMousePos(onCanvas);
 }
 
 void ModelObject::EditMakeup(EditingInfo info) {

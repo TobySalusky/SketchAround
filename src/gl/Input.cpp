@@ -15,8 +15,12 @@ void Input::EndUpdate() {
     mousePressed = false;
     mouseUnpressed = false;
 
+    mouseMiddlePressed = false;
+    mouseMiddleUnpressed = false;
+
     mouseRightPressed = false;
     mouseRightUnpressed = false;
+
 
     lastMouseX = mouseX;
     lastMouseY = mouseY;
