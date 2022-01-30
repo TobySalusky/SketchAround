@@ -69,7 +69,9 @@ void ModelObject::FlipPoints(Enums::DrawMode drawMode, Enums::Direction directio
 }
 
 void ModelObject::EditCurrentLines(EditingInfo info) {
-    const auto& [editContext, input, drawMode, onScreen, camera, graphFocused] = info;
+    const auto& [editContext, input, drawMode, onScreen, camera, graphFocused, graphView] = info;
+
+    Vec2 onCanvas = graphView.MousePosNPToCoords(onScreen);
 
     auto& points = GetPointsRefByMode(info.drawMode);
 
@@ -106,7 +108,7 @@ void ModelObject::EditCurrentLines(EditingInfo info) {
     if (input.Down(GLFW_KEY_E)) {
         bool diffFlag = false;
         for (int i = (int) points.size() - 1; i >= 0; i--) {
-            if (glm::length(onScreen - points[i]) < 0.05f) {
+            if (glm::length(onCanvas - points[i]) < 0.05f) {
                 points.erase(points.begin() + i);
                 diffFlag = true;
             }
@@ -183,7 +185,7 @@ void ModelObject::EditCurrentLines(EditingInfo info) {
         if (input.mouseDown && editContext.IsDrawingEnabledForClick() && info.graphFocused) {
             bool mouseOnGUI = Util::VecIsNormalizedNP(info.onScreen);
             if (mouseOnGUI) {
-                InputPoints({info.drawMode, info.onScreen, info.camera});
+                InputPoints({info.drawMode, info.onScreen, graphView, info.camera});
             }
         }
     }
@@ -201,22 +203,24 @@ void ModelObject::EditMakeup(EditingInfo info) {
     EditCurrentLines(info);
 }
 
-void ModelObject::InputPoints(MouseInputInfo renderInfo) {
-    const auto& onScreen = renderInfo.onScreen;
-    auto& vec = GetPointsRefByMode(renderInfo.drawMode);
+void ModelObject::InputPoints(MouseInputInfo info) {
+    const auto& onScreen = info.onScreen;
+    auto& vec = GetPointsRefByMode(info.drawMode);
 
-    switch (LineTypeByMode(renderInfo.drawMode)) {
+    Vec2 canvasPoint = info.graphView.MousePosNPToCoords(onScreen);
+
+    switch (LineTypeByMode(info.drawMode)) {
         case Enums::POLYLINE:
-            if (vec.empty() || vec.back() != onScreen) {
-                vec.emplace_back(onScreen);
-                DiffPoints(renderInfo.drawMode);
+            if (vec.empty() || vec.back() != canvasPoint) {
+                vec.emplace_back(canvasPoint);
+                DiffPoints(info.drawMode);
                 UpdateMesh();
             }
             break;
         case Enums::PIECEWISE:
-            if (vec.empty() || onScreen.x > vec.back().x) {
-                vec.emplace_back(onScreen);
-                DiffPoints(renderInfo.drawMode);
+            if (vec.empty() || canvasPoint.x > vec.back().x) {
+                vec.emplace_back(canvasPoint);
+                DiffPoints(info.drawMode);
                 UpdateMesh();
             }
             break;

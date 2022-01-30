@@ -34,10 +34,14 @@ public:
     void ImmediateClearingRender();
     void ImmediateRender();
 
+    void SetLineScale(float scale) { scaleLines = scale; }
+
 private:
     GLuint VAO, VBO, IBO, indexCount;
     std::vector<float> vertexData;
     std::vector<GLuint> indices;
+
+    float scaleLines = 1.0f;
 
     void AddVertex(glm::vec2 pos, glm::vec4 color) {
         vertexData.insert(vertexData.end(), {

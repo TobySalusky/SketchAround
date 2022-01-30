@@ -25,6 +25,7 @@
 #include "../gl/Camera.h"
 #include "../editing/EditingContext.h"
 #include "../animation/Animator.h"
+#include "../graphing/GraphView.h"
 #include <boost/serialization/access.hpp>
 
 class Timeline;
@@ -49,6 +50,7 @@ struct RenderInfo2D {
 struct MouseInputInfo {
     Enums::DrawMode drawMode;
     glm::vec2 onScreen;
+    GraphView& graphView;
     Camera& camera;
 };
 
@@ -59,6 +61,7 @@ struct EditingInfo {
     glm::vec2 onScreen;
     Camera& camera;
     bool graphFocused;
+    GraphView& graphView;
 };
 
 class Timeline;
@@ -103,7 +106,7 @@ public:
 
     virtual Enums::LineType LineTypeByMode(Enums::DrawMode drawMode) = 0;
 
-    virtual void InputPoints(MouseInputInfo renderInfo);
+    virtual void InputPoints(MouseInputInfo info);
     virtual void UpdateMesh() {}
     virtual std::tuple<std::vector<glm::vec3>, std::vector<GLuint>> GenMeshTuple() = 0;
 

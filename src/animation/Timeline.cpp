@@ -212,6 +212,7 @@ void Timeline::Render(const TimelineRenderInfo& info) {
     glClearColor(0.17f, 0.17f, 0.17f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     shader2D.Enable();
+    shader2D.SetModel(Util::Identity());
 
     float height = RowToHeight(drawMode);
     canvas.AddQuad({-1.0f, height - 0.1f}, {1.0f, height + 0.1f}, {0.21f, 0.21f, 0.21f, 1.0f});

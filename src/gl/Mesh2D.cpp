@@ -109,6 +109,8 @@ void Mesh2D::Set(GLfloat *vertexDataArr, GLuint *indices, GLuint vertexDataCount
 
 void Mesh2D::AddLines(const std::vector<glm::vec2> &points, glm::vec4 color, float width) {
 
+    width /= scaleLines;
+
     const GLuint startIndex = vertexData.size() / 6;
 
     for (int i = 0; i < points.size(); i++) {

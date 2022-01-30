@@ -117,6 +117,8 @@ public:
 
         return {pos, dir};
     }
+
+    static glm::mat4 Identity() { return glm::mat4(1.0f); }
 };
 
 #endif //SENIORRESEARCH_UTIL_H

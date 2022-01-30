@@ -101,6 +101,15 @@ void GLWindow::CreateInput() {
                 self->input.mouseDown = false;
                 self->input.mouseUnpressed = true;
             }
+        } else if (button == GLFW_MOUSE_BUTTON_MIDDLE) {
+            if (action == GLFW_PRESS) {
+                self->input.mouseMiddleDown = true;
+                self->input.mouseMiddlePressed = true;
+            }
+            else if (action == GLFW_RELEASE) {
+                self->input.mouseMiddleDown = false;
+                self->input.mouseMiddleUnpressed = true;
+            }
         } else if (button == GLFW_MOUSE_BUTTON_RIGHT) {
             if (action == GLFW_PRESS) {
                 self->input.mouseRightDown = true;

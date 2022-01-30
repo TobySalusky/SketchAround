@@ -85,7 +85,7 @@ void DragDropModelObject() {
 
 // The MAIN function, from here we start the application and run the game loop
 int main() {
-    GraphView graphView {-1.0f, 1.0f, -1.0f, 0.0f};
+    GraphView graphView;
 
     GLWindow window(WIDTH, HEIGHT);
     Input* input = window.GetInput();
@@ -568,7 +568,7 @@ int main() {
             shader3D.SetCameraPos(camera.GetPos());
 
             // Rendering models
-            for (const auto renderModelObject : modelObjects) {
+            for (const auto renderModelObject: modelObjects) {
                 if (!renderModelObject->IsVisible() || (focusMode && renderModelObject != modelObject)) continue;
 
                 renderModelObject->Render3D({shader3D, mainLight});
@@ -594,11 +594,12 @@ int main() {
                         if (input->mousePressed) {
                             netDrag = 0.0f;
                         } else if (input->mouseDown) {
-                            netDrag += glm::length(displayMousePos - Util::NormalizeToRectNPFlipped(input->GetLastMouse(), displayRect));
+                            netDrag += glm::length(displayMousePos -
+                                                   Util::NormalizeToRectNPFlipped(input->GetLastMouse(), displayRect));
                         }
 
                         if (input->mouseUnpressed && netDrag < 0.0001f) { // only select if user did not drag mouse
-                            SetModelObject((ModelObject*)obj);
+                            SetModelObject((ModelObject *) obj);
                         }
                     }
                 }
@@ -609,50 +610,47 @@ int main() {
 
             RenderTarget::Unbind();
 
-            RenderTarget::Bind(graphScene);
+            { // >> 2D PLOT RENDER ==============================
+                RenderTarget::Bind(graphScene);
 
-            glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+                glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+                glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-            // >> MODEL 2D ==========================
-            shader2D.Enable();
+                shader2D.Enable();
 
-            shader2D.SetModel(graphView.GenProjection());
+                shader2D.SetModel(graphView.GenProjection());
+                plot.SetLineScale(graphView.scale);
 
-            plot.AddQuad({-1.0f, 0.0f}, {1.0f, -1.0f}, {1.0f, 1.0f, 1.0f, 1.0f});
-            plot.AddQuad({-1.0f, -0.003f}, {1.0f, 0.003f}, {0.2f, 0.2f, 0.2f, 1.0f});
-            plot.AddQuad({-0.003f, 1.0f}, {0.003f, -1.0f}, {0.2f, 0.2f, 0.2f, 1.0f});
+                plot.AddQuad({-1.0f, 0.0f}, {1.0f, -1.0f}, {1.0f, 1.0f, 1.0f, 1.0f});
+                plot.AddLines({{-1.0f, 0.0f}, {1.0f, 0.0f}}, {0.2f, 0.2f, 0.2f, 1.0f}, 0.003f);
+                plot.AddLines({{0.0f, -1.0f}, {0.0f, 1.0f}}, {0.2f, 0.2f, 0.2f, 1.0f}, 0.003f);
 
-            if (!timeline.IsPlaying()) timeline.RenderOnionSkin(plot, drawMode);
+                if (!timeline.IsPlaying()) timeline.RenderOnionSkin(plot, drawMode);
 
-            modelObject->Render2D({plot, drawMode, onScreen});
+                modelObject->Render2D({plot, drawMode, onScreen});
 
-            // line gizmo
-            {
-                std::vector<glm::vec2> gizmo{{onScreen.x, -1.0f},
-                                             {onScreen.x, 1.0f}};
-                float col = 0.0f;
-                plot.AddLines(gizmo, {col, col, col, 0.15f}, 0.001f);
-            }
+                // line gizmo
+                {
+                    std::vector<glm::vec2> gizmo{{onScreen.x, -1.0f},
+                                                 {onScreen.x, 1.0f}};
+                    float col = 0.0f;
+                    plot.AddLines(gizmo, {col, col, col, 0.15f}, 0.001f);
+                }
 
-            plot.ImmediateClearingRender();
+                plot.ImmediateClearingRender();
 
-            shader2D.Disable();
+                shader2D.Disable();
+                RenderTarget::Unbind();
+            } // >> ==============================================
 
-            RenderTarget::Unbind();
-
+            // timeline
             timeline.Render({shader2D, drawMode, *input});
 
             glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
 
-            // >> ===================================
 
-            // >> TIMELINE ==========================
-
-
-
-            // >> ===================================
+            // >> END 2D ============================
 
 
             // >> ImGui Render3D ====================
@@ -723,10 +721,9 @@ int main() {
                 modelObject->AuxParameterUI({timeline});
 
                 if (ImGui::CollapsingHeader("Graph View")) {
-                    ImGui::SliderFloat("minX", &graphView.minX, -10.0f, 0.0f);
-                    ImGui::SliderFloat("maxX", &graphView.maxX, 0.0f, 10.0f);
-                    ImGui::SliderFloat("minY", &graphView.minY, -10.0f, 0.0f);
-                    ImGui::SliderFloat("maxY", &graphView.maxY, 0.0f, 10.0f);
+                    ImGui::SliderFloat("centerX", &graphView.centerAt.x, -10.0f, 10.0f);
+                    ImGui::SliderFloat("centerY", &graphView.centerAt.y, -10.0f, 10.0f);
+                    ImGui::SliderFloat("scale", &graphView.scale, 0.1f, 10.0f);
                 }
 
                 modelObject->HyperParameterUI({timeline});
@@ -788,10 +785,11 @@ int main() {
 
             // >> UPDATE MESH
             if (!cameraMode) {
-                modelObject->EditMakeup({editContext, *input, drawMode, onScreen, camera, graphFocused});
+                modelObject->EditMakeup({editContext, *input, drawMode, onScreen, camera, graphFocused, graphView});
             }
 
 
+            graphView.Update({*input, plotRect});
 
             Display3DContext::Update({*input, camera, displayRect, displayFocused});
 

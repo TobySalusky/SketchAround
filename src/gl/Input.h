@@ -18,6 +18,7 @@ public:
 
     bool mouseDown = false, mousePressed = false, mouseUnpressed = false;
     bool mouseRightDown = false, mouseRightPressed = false, mouseRightUnpressed = false;
+    bool mouseMiddleDown = false, mouseMiddlePressed = false, mouseMiddleUnpressed = false;
 
     void SetKey(int key, bool val);
 

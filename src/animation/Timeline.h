@@ -20,7 +20,7 @@
 #include <functional>
 
 struct TimelineRenderInfo {
-    const Shader2D& shader2D;
+    Shader2D& shader2D;
     Enums::DrawMode drawMode;
     const Input& input;
 };
