@@ -9,6 +9,7 @@
 #include <glfw3.h>
 #include <unordered_map>
 #include "../gl/Input.h"
+#include <vector>
 
 // TODO: find overlapping keycode controls -- optimize by reversing their modifiers (if one has shift, then one with -1 won't fire for shift)
 
@@ -54,11 +55,17 @@ public:
 
     static std::string Describe(int CONTROL_CODE);
 
+    static void PrepUse();
+
 private:
+    static bool OverlappingCheck(int CONTROL_CODE);
+
     static Input* input;
     static std::unordered_map<int, KeyControl> controls;
+    static std::unordered_map<int, std::vector<int>> primaryMap;
 
     static const char* KeyCodeToName(int keyCode);
+    static int Precedence(const KeyControl& control);
 };
 
 

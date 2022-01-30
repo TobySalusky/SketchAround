@@ -830,11 +830,8 @@ int main() {
                 }
             }
 
-            if (Controls::Check(CONTROLS_AddLathe)) {
-                AddSetLathe();
-            } else if (Controls::Check(CONTROLS_AddCrossSectional)) {
-                AddSetCrossSectional();
-            }
+            if (Controls::Check(CONTROLS_AddCrossSectional)) AddSetCrossSectional();
+            if (Controls::Check(CONTROLS_AddLathe)) AddSetLathe();
 
             if (Controls::Check(CONTROLS_SetLayerPrimary)) drawMode = Enums::MODE_PLOT;
             if (Controls::Check(CONTROLS_SetLayerSecondary)) drawMode = Enums::MODE_GRAPH_Y;

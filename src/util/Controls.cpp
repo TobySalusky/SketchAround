@@ -23,8 +23,8 @@ std::unordered_map<int, KeyControl> Controls::GenDefaultControls() {
             {CONTROLS_OpenFileOpenMenu, {"Enter File-Open Menu", GLFW_KEY_O, COMMAND}},
             {CONTROLS_ClearCurrentLayer, {"Clear Current Layer", GLFW_KEY_X}},
             {CONTROLS_ClearAllLayers, {"Clear All Layers", GLFW_KEY_X, SHIFT}},
-            {CONTROLS_AddLathe, {"Add Lathe", GLFW_KEY_N, SHIFT}},
-            {CONTROLS_AddCrossSectional, {"Add CrossSectional", GLFW_KEY_N}},
+            {CONTROLS_AddLathe, {"Add Lathe", GLFW_KEY_N}},
+            {CONTROLS_AddCrossSectional, {"Add CrossSectional", GLFW_KEY_N, SHIFT}},
             {CONTROLS_SwitchModelUp, {"Switch to Model Above", GLFW_KEY_UP, SHIFT}},
             {CONTROLS_SwitchModelDown, {"Switch to Model Below", GLFW_KEY_DOWN, SHIFT}},
             {CONTROLS_Drag, {"Drag", GLFW_KEY_G}},
@@ -39,16 +39,11 @@ std::unordered_map<int, KeyControl> Controls::GenDefaultControls() {
 }
 
 std::unordered_map<int, KeyControl> Controls::controls = GenDefaultControls();
-
-bool Controls::Check(int CONTROL_CODE) {
-    const KeyControl& control = controls[CONTROL_CODE];
-    if (control.modifier != -1 && !input->Down(control.modifier)) return false;
-
-    return control.press ? input->Pressed(control.keyCode) : input->Down(control.keyCode);
-}
+std::unordered_map<int, std::vector<int>> Controls::primaryMap = {};
 
 void Controls::Initialize(Input *inputPtr) {
     input = inputPtr;
+    PrepUse();
 }
 
 void Controls::GUI() { // TODO: fix crash with [Space] on "Add CrossSectional"
@@ -84,6 +79,8 @@ void Controls::GUI() { // TODO: fix crash with [Space] on "Add CrossSectional"
         }
     };
 
+    bool diffFlag = false;
+
     for (auto& [controlCode, control] : controls) {
         ImGui::Text("%25s", control.name);
 
@@ -108,15 +105,22 @@ void Controls::GUI() { // TODO: fix crash with [Space] on "Add CrossSectional"
         ImGui::PushItemWidth(100.0f);
         ImGui::Combo(("##"s + control.name).c_str(), &modIndex, modifiers, IM_ARRAYSIZE(modifiers));
         ImGui::PopItemWidth();
-        if (modIndex != initModIndex) control.modifier = IndexToKeyCode(modIndex);
+        if (modIndex != initModIndex) {
+            control.modifier = IndexToKeyCode(modIndex);
+            diffFlag = true;
+        }
 
         ImGui::SameLine();
         ImGui::Checkbox(("Press##"s + control.name).c_str(), &control.press);
+        if (ImGui::IsItemEdited()) {
+            diffFlag = true;
+        }
 
         ImGui::SameLine();
         if (ImGui::Button(("[Reset]##"s + control.name).c_str())) {
             auto defControls = GenDefaultControls();
             control = defControls[controlCode];
+            diffFlag = true;
         }
 
         if (ImGui::BeginPopup(popupKey.c_str())) {
@@ -125,11 +129,16 @@ void Controls::GUI() { // TODO: fix crash with [Space] on "Add CrossSectional"
             auto& controlRef = control;
             input->UsePressedCallback([&](int keyCode) {
                 controlRef.keyCode = keyCode;
+                diffFlag = true;
                 ImGui::CloseCurrentPopup();
             });
 
             ImGui::EndPopup();
         }
+    }
+
+    if (diffFlag) {
+        PrepUse();
     }
 }
 
@@ -183,4 +192,55 @@ std::string Controls::Describe(int CONTROL_CODE) {
         if (control.modifier == GLFW_KEY_LEFT_CONTROL) return "Ctrl";
         return "Shift";
     }()) + " " + keyName;
+}
+
+void Controls::PrepUse() {
+    primaryMap.clear();
+    for (auto& [controlCode, control] : controls) {
+        int primaryKey = control.keyCode;
+        if (!primaryMap.contains(primaryKey)) {
+            primaryMap[primaryKey] = {controlCode};
+        } else {
+            primaryMap[primaryKey].emplace_back(controlCode);
+        }
+    }
+}
+
+int Controls::Precedence(const KeyControl &control) {
+    if (control.modifier != -1) {
+        return (control.press) ? 3 : 2;
+    }
+    return (control.press) ? 1 : 0;
+}
+
+bool Controls::Check(int CONTROL_CODE) {
+    bool triggered = OverlappingCheck(CONTROL_CODE);
+    const auto& thisControl = controls[CONTROL_CODE];
+
+    if (triggered) {
+        int primaryKey = thisControl.keyCode;
+        assert(primaryMap.contains(primaryKey));
+
+        const auto& primarySharers = primaryMap[primaryKey];
+        if (primarySharers.size() >= 2) {
+            int selfPrecedence = Precedence(thisControl);
+            for (int controlCode : primarySharers) {
+                if (controlCode == CONTROL_CODE || !OverlappingCheck(controlCode)) continue;
+                int otherPrecedence = Precedence(controls[controlCode]);
+                if (selfPrecedence < otherPrecedence) return false;
+                if (selfPrecedence == otherPrecedence) printf("[Warning]: Same level of control precedence! (between codes: %i and %i)", CONTROL_CODE, controlCode);
+            }
+        }
+
+        return true;
+    }
+
+    return false;
+}
+
+bool Controls::OverlappingCheck(int CONTROL_CODE) {
+    const KeyControl& control = controls[CONTROL_CODE];
+    if (control.modifier != -1 && !input->Down(control.modifier)) return false;
+
+    return control.press ? input->Pressed(control.keyCode) : input->Down(control.keyCode);
 }

@@ -371,7 +371,8 @@ void ModelObject::AnimatableSliderValUpdateBound(const std::string& label, float
     }
 
     ImGui::SameLine();
-    ImGui::SliderFloat(label.c_str(), ptr, min, max);
+    ImGui::DragFloat(label.c_str(), ptr, 0.05f);
+    //ImGui::SliderFloat(label.c_str(), ptr, min, max);
     if (ImGui::IsItemActive()) {
         if (animated) {
             timeline.UpdateFloat(label, *ptr);
