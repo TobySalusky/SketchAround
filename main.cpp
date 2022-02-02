@@ -277,8 +277,14 @@ int main() {
         ImGuiHelper::DelayControlTooltip(CONTROLS_ExitMenu);
     };
 
+    const auto MenuUpdate = [&] {
+        editContext.DisableDrawingForClick();
+    };
+
     // TODO: move file gui to new file!
     const auto SaveFileGUI = [&] (float deltaTime) {
+        MenuUpdate();
+
         static TimedPopup popupWarning;
 
         if (enteringGuiScreen) ImGui::SetNextWindowFocus();
@@ -334,6 +340,7 @@ int main() {
 
     TiledTextureAtlas openFileTextureAtlas;
     const auto OpenFileGUI = [&] () {
+        MenuUpdate();
 
         static std::string lastPath;
         static std::vector<std::string> subFolders;
@@ -466,6 +473,7 @@ int main() {
     };
 
     const auto ControlsGUI = [&] {
+        MenuUpdate();
 
         if (enteringGuiScreen) ImGui::SetNextWindowFocus();
         ImGui::SetNextWindowPos(ImVec2(0.0f, 0.0f));
@@ -508,7 +516,7 @@ int main() {
             enteringGuiScreen = true;
         }
 
-        if (input->Pressed(GLFW_KEY_H) && input->Down(GLFW_KEY_LEFT_SHIFT)) {
+        if (Controls::Check(CONTROLS_OpenControlsMenu)) {
             inControlsGUI = true;
             inOpenFileGUI = false;
             inSaveFileGUI = false;
@@ -622,20 +630,11 @@ int main() {
                 plot.SetLineScale(graphView.scale);
 
                 plot.AddQuad({-1.0f, 0.0f}, {1.0f, -1.0f}, {1.0f, 1.0f, 1.0f, 1.0f});
-                plot.AddLines({{-1.0f, 0.0f}, {1.0f, 0.0f}}, {0.2f, 0.2f, 0.2f, 1.0f}, 0.003f);
-                plot.AddLines({{0.0f, -1.0f}, {0.0f, 1.0f}}, {0.2f, 0.2f, 0.2f, 1.0f}, 0.003f);
+                graphView.Render({plot, *input});
 
                 if (!timeline.IsPlaying()) timeline.RenderOnionSkin(plot, drawMode);
 
-                modelObject->Render2D({plot, drawMode, onScreen});
-
-                // line gizmo
-                {
-                    std::vector<glm::vec2> gizmo{{onScreen.x, -1.0f},
-                                                 {onScreen.x, 1.0f}};
-                    float col = 0.0f;
-                    plot.AddLines(gizmo, {col, col, col, 0.15f}, 0.001f);
-                }
+                modelObject->Render2D({plot, drawMode, onScreen, graphView});
 
                 plot.ImmediateClearingRender();
 

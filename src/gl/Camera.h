@@ -39,6 +39,7 @@ public:
         return std::clamp(pitch, -(float)M_PI_2 * 0.999f, (float)M_PI_2 * 0.999f);
     }
 
+    void ReCenter();
 
 
 private:

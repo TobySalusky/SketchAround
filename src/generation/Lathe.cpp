@@ -16,19 +16,21 @@ void Lathe::HyperParameterUI(const UIInfo& info) {
             UpdateMesh();
     };
 
-    AnimatableSliderValUpdateBound("scale-radius", &scaleRadius, 0.1f, 3.0f, info.timeline);
+    const auto&[timeline] = info;
 
-    AnimatableSliderValUpdateBound("scale-z", &scaleZ, 0.1f, 3.0f, info.timeline);
+    AnimatableSliderValUpdateBound("scale-radius", &scaleRadius, timeline, 0.1f);
 
-    AnimatableSliderValUpdateBound("scale-y", &scaleY, 0.1f, 3.0f, info.timeline);
+    AnimatableSliderValUpdateBound("scale-z", &scaleZ, timeline, 0.1f);
 
-    AnimatableSliderValUpdateBound("lean-scalar", &leanScalar, 0.0f, 1.0f, info.timeline);
+    AnimatableSliderValUpdateBound("scale-y", &scaleY, timeline, 0.1f);
+
+    AnimatableSliderValUpdateBound("lean-scalar", &leanScalar, timeline, 0.0f, 1.0f);
 
     // TODO:
     ImGui::SliderInt("count-per-ring", &countPerRing, 3, 40);
     BindUIMeshUpdate();
 
-    AnimatableSliderValUpdateBound("sample-length", &sampleLength, 0.01f, 0.5f, info.timeline);
+    AnimatableSliderValUpdateBound("sample-length", &sampleLength, timeline, 0.01f, 0.5f);
 
     if (ImGui::Checkbox("wrap-start", &wrapStart)) {
         UpdateMesh();
@@ -92,10 +94,10 @@ void Lathe::RenderGizmos2D(RenderInfo2D renderInfo) {
 }
 
 void Lathe::ModeSetUI(Enums::DrawMode& drawMode) {
-    ModeSet("Plot", Enums::DrawMode::MODE_PLOT, plottedPoints, drawMode);
-    ModeSet("Graph-Y", Enums::DrawMode::MODE_GRAPH_Y, graphedPointsY, drawMode);
-    ModeSet("Graph-Z", Enums::DrawMode::MODE_GRAPH_Z, graphedPointsZ, drawMode);
-    ModeSet("Cross-Section", Enums::DrawMode::MODE_CROSS_SECTION, graphedPointsZ, drawMode);
+    ModeSet("Plot", Enums::DrawMode::MODE_PLOT, drawMode);
+    ModeSet("Graph-Y", Enums::DrawMode::MODE_GRAPH_Y, drawMode);
+    ModeSet("Graph-Z", Enums::DrawMode::MODE_GRAPH_Z, drawMode);
+    ModeSet("Cross-Section", Enums::DrawMode::MODE_CROSS_SECTION, drawMode);
 }
 
 void Lathe::ClearAll() {

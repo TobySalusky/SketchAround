@@ -9,10 +9,16 @@
 #include "../vendor/glm/ext/matrix_float4x4.hpp"
 #include "../util/Util.h"
 #include "../gl/Input.h"
+#include "../gl/Mesh2D.h"
 
 struct GraphViewUpdateInfo {
     Input& input;
     Rectangle guiRect;
+};
+
+struct GraphViewRenderInfo {
+    Mesh2D& plot;
+    Input& input;
 };
 
 struct GraphView {
@@ -22,12 +28,16 @@ struct GraphView {
     [[nodiscard]] glm::mat4 GenProjection() const;
 
     void Update(GraphViewUpdateInfo info);
+    void Render(GraphViewRenderInfo info);
 
     Vec2 MousePosToCoords(Vec2 mousePos);
     Vec2 MousePosNPToCoords(Vec2 mousePosNP);
+
+    void ReCenter();
 private:
     Rectangle guiRect;
     bool enablePanOrDrag = false;
+    Vec2 panStart;
 
     [[nodiscard]] Vec2 GenScaleVector() const;
     [[nodiscard]] Vec2 GenScaleVectorMat() const;

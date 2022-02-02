@@ -33,6 +33,7 @@ static int
     CONTROLS_FlipVert = 16,
     CONTROLS_ReversePoints = 17,
     CONTROLS_ExitMenu = 18,
+    CONTROLS_OpenControlsMenu = 19,
     CONTROLS_ = 0,
     CONTROLS_FIN = -2
 ;

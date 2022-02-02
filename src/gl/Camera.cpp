@@ -89,3 +89,9 @@ GLfloat Camera::GetPitch() const {
 void Camera::SetPitch(GLfloat pitch) {
     Camera::pitch = pitch;
 }
+
+void Camera::ReCenter() {
+    pos = {0.0f, 0.0f, 2.5f};
+    yaw = -M_PI_2;
+    pitch = 0.0f;
+}

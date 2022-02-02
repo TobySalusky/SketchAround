@@ -35,6 +35,7 @@ std::unordered_map<int, KeyControl> Controls::GenDefaultControls() {
             {CONTROLS_FlipVert, {"Flip Vertical", GLFW_KEY_J}},
             {CONTROLS_ReversePoints, {"Reverse Points", GLFW_KEY_B}},
             {CONTROLS_ExitMenu, {"Exit Menu", GLFW_KEY_ESCAPE}},
+            {CONTROLS_OpenControlsMenu, {"Enter Controls Menu", GLFW_KEY_H, SHIFT}},
     };
 }
 

@@ -30,10 +30,14 @@ void ModelObject::Render2D(RenderInfo2D renderInfo) {
 void ModelObject::FunctionalAngleGizmo(RenderInfo2D renderInfo, const std::vector<glm::vec2>& points) {
 //    Vec2 onCanvas = graphView.MousePosNPToCoords(onScreen); TODO: !!!!!
 
-    float pointY = Function::GetY(points, renderInfo.onScreen.x);
-    float pointAngle = Function::GetAverageRadians(points, renderInfo.onScreen.x, 5);
+    const Vec2 onCanvas = renderInfo.graphView.MousePosNPToCoords(renderInfo.onScreen);
+    Util::PrintVec(onCanvas);
+    printf("eeeee");
+
+    float pointY = Function::GetY(points, onCanvas.x);
+    float pointAngle = Function::GetAverageRadians(points, onCanvas.x, 5);
     if (pointY != 0) {
-        std::vector<glm::vec2> gizmo {{renderInfo.onScreen.x, pointY}, glm::vec2(renderInfo.onScreen.x, pointY) + Util::Polar(0.1f, -pointAngle)};
+        std::vector<glm::vec2> gizmo {{onCanvas.x, pointY}, glm::vec2(onCanvas.x, pointY) + Util::Polar(0.1f, -pointAngle)};
         renderInfo.plot.AddLines(gizmo, {1.0f, 0.0f, 1.0f, 1.0f});
     }
 }
@@ -358,14 +362,14 @@ ModelObject *ModelObject::CopyRecursive() {
     copy->children = {};
 
     for (ModelObject* child : children) {
-        copy->AppendChild(child->CopyRecursive());
+        copy->AppendChild(child->CopyRecursive(), false);
     }
 
     return copy;
 }
 
 
-void ModelObject::AnimatableSliderValUpdateBound(const std::string& label, float* ptr, float min, float max, Timeline& timeline) {
+void ModelObject::AnimatableSliderValUpdateBound(const std::string& label, float* ptr, Timeline& timeline, float min, float max) {
     bool animated = timeline.HasFloatLayer(label);
     ImGui::Checkbox(("##" + label).c_str(), &animated);
     if (ImGui::IsItemClicked()) {
@@ -376,10 +380,19 @@ void ModelObject::AnimatableSliderValUpdateBound(const std::string& label, float
         }
     }
 
+    bool hasMin = !std::isnan(min), hasMax = !std::isnan(max);
+
     ImGui::SameLine();
-    ImGui::DragFloat(label.c_str(), ptr, 0.05f);
-    //ImGui::SliderFloat(label.c_str(), ptr, min, max);
+    if (hasMin && hasMax) {
+        ImGui::SliderFloat(label.c_str(), ptr, min, max);
+    } else {
+        ImGui::DragFloat(label.c_str(), ptr, 0.025f);
+    }
+
     if (ImGui::IsItemActive()) {
+        if (hasMin) *ptr = std::max(min, *ptr);
+        if (hasMax) *ptr = std::min(max, *ptr);
+
         if (animated) {
             timeline.UpdateFloat(label, *ptr);
         }
@@ -395,10 +408,6 @@ void ModelObject::PersistModelMat(MatrixComponents initFull, MatrixComponents pa
     const glm::mat4 rot = glm::toMat4(glm::quat(parentEulers));
     const Vec3 rotatedDiff = glm::inverse(rot) * Vec4(diff, 0.0f);
     SetPos(rotatedDiff);
-
-    Util::PrintVec(diff);
-    Util::PrintVec(rotatedDiff);
-    Util::PrintVec(parentEulers);
 
     SetEulers(Util::DirToEuler(glm::inverse(rot) * Vec4(childDir, 0.0f)));
 }

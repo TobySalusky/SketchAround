@@ -45,6 +45,7 @@ struct RenderInfo2D {
     Mesh2D& plot;
     Enums::DrawMode drawMode;
     glm::vec2 onScreen;
+    GraphView& graphView;
 };
 
 struct MouseInputInfo {
@@ -91,14 +92,16 @@ public:
     virtual void HyperParameterUI(const UIInfo& info) {}
     void AuxParameterUI(const UIInfo& info) {
 
+        const auto&[timeline] = info;
+
         if (ImGui::CollapsingHeader("Aux")) {
             ImGui::ColorEdit3("model-color", (float *) &color);
-            AnimatableSliderValUpdateBound("x", (float *) &modelTranslation.x, -5.f, 5.f, info.timeline);
-            AnimatableSliderValUpdateBound("y", (float *) &modelTranslation.y, -5.f, 5.f, info.timeline);
-            AnimatableSliderValUpdateBound("z", (float *) &modelTranslation.z, -5.f, 5.f, info.timeline);
-            AnimatableSliderValUpdateBound("rot-x", (float *) &eulerAngles.x, (float) -M_PI, (float) M_PI, info.timeline);
-            AnimatableSliderValUpdateBound("rot-y", (float *) &eulerAngles.y, (float) -M_PI, (float) M_PI, info.timeline);
-            AnimatableSliderValUpdateBound("rot-z", (float *) &eulerAngles.z, (float) -M_PI, (float) M_PI, info.timeline);
+            AnimatableSliderValUpdateBound("x", (float *) &modelTranslation.x, timeline);
+            AnimatableSliderValUpdateBound("y", (float *) &modelTranslation.y, timeline);
+            AnimatableSliderValUpdateBound("z", (float *) &modelTranslation.z, timeline);
+            AnimatableSliderValUpdateBound("rot-x", (float *) &eulerAngles.x, timeline);
+            AnimatableSliderValUpdateBound("rot-y", (float *) &eulerAngles.y, timeline);
+            AnimatableSliderValUpdateBound("rot-z", (float *) &eulerAngles.z, timeline);
         }
     }
     virtual void ModeSetUI(Enums::DrawMode& drawMode) {}
@@ -237,7 +240,7 @@ protected:
         ar & animator;
     }
 
-    void AnimatableSliderValUpdateBound(const std::string& label, float* ptr, float min, float max, Timeline& timeline);
+    void AnimatableSliderValUpdateBound(const std::string& label, float* ptr, Timeline& timeline, float min = NAN, float max = NAN);
 
     virtual ModelObject* CopyInternals() = 0;
 
@@ -264,7 +267,7 @@ protected:
         return trans * rot;
     }
 
-    void ModeSet (const char* title, Enums::DrawMode newDrawMode, std::vector<glm::vec2>& clearableVec, Enums::DrawMode& drawMode) {
+    void ModeSet (const char* title, Enums::DrawMode newDrawMode, Enums::DrawMode& drawMode) {
         if (drawMode == newDrawMode) ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.4f, 0.5f, 0.6f, 1.0f});
         else ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.2f, 0.3f, 0.4f, 1.0f});
         if (ImGui::Button(title)) drawMode = newDrawMode;
@@ -272,7 +275,8 @@ protected:
 
         ImGui::SameLine();
         if (ImGui::Button((std::string("X##") + title).c_str())) {
-            clearableVec.clear();
+            GetPointsRefByMode(newDrawMode).clear();
+            DiffPoints(newDrawMode);
             UpdateMesh();
         }
     };

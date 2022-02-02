@@ -15,7 +15,7 @@ void CrossSectional::HyperParameterUI(const UIInfo& info) {
     ImGui::SliderInt("count-per-ring", &countPerRing, 3, 40);
     BindUIMeshUpdate();
 
-    AnimatableSliderValUpdateBound("sample-length", &sampleLength, 0.01f, 0.5f, info.timeline);
+    AnimatableSliderValUpdateBound("sample-length", &sampleLength, info.timeline, 0.01f, 0.5f);
 
     if (ImGui::Checkbox("wrap-start", &wrapStart)) {
         UpdateMesh();
@@ -71,8 +71,8 @@ void CrossSectional::RenderGizmos2D(RenderInfo2D renderInfo) {
 }
 
 void CrossSectional::ModeSetUI(Enums::DrawMode& drawMode) {
-    ModeSet("Bounds", Enums::DrawMode::MODE_PLOT, boundPoints, drawMode);
-    ModeSet("Central-Trace", Enums::DrawMode::MODE_GRAPH_Y, centralPoints, drawMode);
+    ModeSet("Bounds", Enums::DrawMode::MODE_PLOT, drawMode);
+    ModeSet("Central-Trace", Enums::DrawMode::MODE_GRAPH_Y, drawMode);
 }
 
 void CrossSectional::ClearAll() {
