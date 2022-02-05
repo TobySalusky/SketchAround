@@ -31,7 +31,7 @@ public:
 
     Enums::LineType LineTypeByMode(Enums::DrawMode drawMode) final;
 
-    std::tuple<std::vector<glm::vec3>, std::vector<GLuint>> GenMeshTuple() final;
+    std::tuple<std::vector<glm::vec3>, std::vector<GLuint>> GenMeshTuple(TopologyCorrector* outTopologyData = nullptr) final;
 
     Enums::ModelObjectType GetType() final { return Enums::CROSS_SECTIONAL; }
 

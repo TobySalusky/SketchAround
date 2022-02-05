@@ -30,7 +30,7 @@ public:
 
     Enums::LineType LineTypeByMode(Enums::DrawMode drawMode) final;
 
-    std::tuple<Vec3List, std::vector<GLuint>> GenMeshTuple() final;
+    std::tuple<Vec3List, std::vector<GLuint>> GenMeshTuple(TopologyCorrector* outTopologyData = nullptr) final;
 
     Enums::ModelObjectType GetType() final { return Enums::LATHE; }
 

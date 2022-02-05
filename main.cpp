@@ -42,6 +42,7 @@
 #include "src/misc/Serialization.h"
 #include "src/util/Controls.h"
 #include "src/gl/TiledTextureAtlas.h"
+#include "src/exporting/ObjExporter.h"
 
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
@@ -58,6 +59,7 @@ bool displayFocused = false;
 bool enteringGuiScreen = false;
 bool inSaveFileGUI = false;
 bool inOpenFileGUI = false;
+bool inExportGUI = false;
 bool inControlsGUI = false;
 bool developerMode = true;
 
@@ -273,6 +275,7 @@ int main() {
             inOpenFileGUI = false;
             inSaveFileGUI = false;
             inControlsGUI = false;
+            inExportGUI = false;
         }
         ImGuiHelper::DelayControlTooltip(CONTROLS_ExitMenu);
     };
@@ -329,6 +332,73 @@ int main() {
             ImGui::InputTextWithHint("##Path", "path:", pathBuffer, IM_ARRAYSIZE(pathBuffer), ImGuiInputTextFlags_EnterReturnsTrue);
             SaveIf(ImGui::IsItemFocused() && input->Pressed(GLFW_KEY_ENTER));
             SaveIf(ImGui::Button("Save..."));
+
+            popupWarning.Update(deltaTime);
+            popupWarning.RenderGUI();
+        }
+        ImGui::End();
+
+        enteringGuiScreen = false;
+    };
+
+    const auto ExportGUI = [&] (float deltaTime) {
+        MenuUpdate();
+
+        static TimedPopup popupWarning;
+
+        if (enteringGuiScreen) ImGui::SetNextWindowFocus();
+        ImGui::SetNextWindowPos(ImVec2(0.0f, 0.0f));
+        ImGui::SetNextWindowSize(ImVec2(WIDTH, HEIGHT));
+        ImGui::Begin("File", nullptr, ImGuiWindowFlags_NoResize |
+                                      ImGuiWindowFlags_NoMove |
+                                      ImGuiWindowFlags_NoCollapse |
+                                      ImGuiWindowFlags_NoTitleBar);
+        {
+            SubGuiExitOptions();
+
+            static char nameBuffer[256] = "";
+            if (enteringGuiScreen) memset(&nameBuffer[0], 0, sizeof(nameBuffer));
+
+            static char pathBuffer[256] = "../output/obj";
+
+            if (enteringGuiScreen) ImGui::SetKeyboardFocusHere();
+
+            bool hasExported = false;
+            const auto ExportIf = [&](bool condition) {
+                if (hasExported || !condition) return;
+
+                if (std::string(nameBuffer).empty()) {
+                    popupWarning.Open("Must set file name!");
+                    return;
+                }
+                if (std::string(pathBuffer).empty()) {
+                    popupWarning.Open("Must set file path!");
+                    return;
+                }
+
+                const auto ExportTo = [](const std::string& path, const std::string& content) {
+                    std::ofstream f(path);
+                    printf("Exporting to \"%s\" -- ", path.c_str());
+                    if (!f.fail()) {
+                        f << content.c_str();
+                        printf("export successful!\n");
+                    } else {
+                        printf("export failed!\n");
+                    }
+                };
+
+                ExportTo(std::string(pathBuffer) + "/" + std::string(nameBuffer) + ".obj", ObjExporter::GenerateFileContents(modelObjects));
+
+                inExportGUI = false;
+                hasExported = true;
+            };
+
+            ImGuiHelper::SpacedSep();
+            ImGui::InputTextWithHint("##Name", "name:", nameBuffer, IM_ARRAYSIZE(nameBuffer), ImGuiInputTextFlags_EnterReturnsTrue);
+            ExportIf(ImGui::IsItemFocused() && input->Pressed(GLFW_KEY_ENTER));
+            ImGui::InputTextWithHint("##Path", "path:", pathBuffer, IM_ARRAYSIZE(pathBuffer), ImGuiInputTextFlags_EnterReturnsTrue);
+            ExportIf(ImGui::IsItemFocused() && input->Pressed(GLFW_KEY_ENTER));
+            ExportIf(ImGui::Button("Export As .OBJ"));
 
             popupWarning.Update(deltaTime);
             popupWarning.RenderGUI();
@@ -506,6 +576,7 @@ int main() {
             inSaveFileGUI = true;
             inOpenFileGUI = false;
             inControlsGUI = false;
+            inExportGUI = false;
             enteringGuiScreen = true;
         }
 
@@ -513,6 +584,7 @@ int main() {
             inOpenFileGUI = true;
             inSaveFileGUI = false;
             inControlsGUI = false;
+            inExportGUI = false;
             enteringGuiScreen = true;
         }
 
@@ -520,6 +592,15 @@ int main() {
             inControlsGUI = true;
             inOpenFileGUI = false;
             inSaveFileGUI = false;
+            inExportGUI = false;
+            enteringGuiScreen = true;
+        }
+
+        if (Controls::Check(CONTROLS_OpenExportMenu)) {
+            inControlsGUI = false;
+            inOpenFileGUI = false;
+            inSaveFileGUI = false;
+            inExportGUI = true;
             enteringGuiScreen = true;
         }
 
@@ -530,7 +611,7 @@ int main() {
 
 
         // Check whether to defer program flow
-        bool executionPaused = inControlsGUI || inOpenFileGUI || inSaveFileGUI;
+        bool executionPaused = inControlsGUI || inOpenFileGUI || inSaveFileGUI || inExportGUI;
 
         if (executionPaused) {
             ImGuiHelper::BeginFrame();
@@ -538,6 +619,7 @@ int main() {
                 if (inSaveFileGUI) SaveFileGUI(deltaTime);
                 if (inOpenFileGUI) OpenFileGUI();
                 if (inControlsGUI) ControlsGUI();
+                if (inExportGUI) ExportGUI(deltaTime);
             }
             ImGuiHelper::EndFrame();
         } else {
@@ -791,10 +873,6 @@ int main() {
             graphView.Update({*input, plotRect});
 
             Display3DContext::Update({*input, camera, displayRect, displayFocused});
-
-            if (input->Down(GLFW_KEY_LEFT_SHIFT) && input->Pressed(GLFW_KEY_E)) {
-                printf("%s", Mesh::GenOBJ(modelObject->GenMeshTuple()).c_str());
-            }
 
             if (Controls::Check(CONTROLS_ClearAllLayers)) {
                 modelObject->ClearAll();

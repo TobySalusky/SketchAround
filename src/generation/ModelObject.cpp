@@ -28,11 +28,8 @@ void ModelObject::Render2D(RenderInfo2D renderInfo) {
 }
 
 void ModelObject::FunctionalAngleGizmo(RenderInfo2D renderInfo, const std::vector<glm::vec2>& points) {
-//    Vec2 onCanvas = graphView.MousePosNPToCoords(onScreen); TODO: !!!!!
 
     const Vec2 onCanvas = renderInfo.graphView.MousePosNPToCoords(renderInfo.onScreen);
-    Util::PrintVec(onCanvas);
-    printf("eeeee");
 
     float pointY = Function::GetY(points, onCanvas.x);
     float pointAngle = Function::GetAverageRadians(points, onCanvas.x, 5);

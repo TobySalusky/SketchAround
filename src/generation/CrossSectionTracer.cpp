@@ -13,12 +13,12 @@
 #include "../animation/LineLerper.h"
 
 std::tuple<std::vector<glm::vec3>, std::vector<unsigned int>>
-CrossSectionTracer::Trace(const std::vector<glm::vec2> &points, const std::vector<glm::vec2> &pathTrace, const CrossSectionTraceData& data) {
-    return Inflate(TraceSegments(points, pathTrace, data), data);
+CrossSectionTracer::Trace(const std::vector<glm::vec2> &points, const std::vector<glm::vec2> &pathTrace, const CrossSectionTraceData& data, TopologyCorrector* outTopologyData) {
+    return Inflate(TraceSegments(points, pathTrace, data), data, outTopologyData);
 }
 
 std::tuple<std::vector<glm::vec3>, std::vector<unsigned int>>
-CrossSectionTracer::Inflate(const std::vector<Segment> &segments, const CrossSectionTraceData& data) {
+CrossSectionTracer::Inflate(const std::vector<Segment> &segments, const CrossSectionTraceData& data, TopologyCorrector* outTopologyData) {
     const int countPerRing = data.countPerRing;
 
     std::vector<glm::vec3> vertices;
@@ -59,6 +59,8 @@ CrossSectionTracer::Inflate(const std::vector<Segment> &segments, const CrossSec
         }
     }
 
+    const int sideQuadCount = (int) (segments.size() - 1) * countPerRing;
+
     const auto WrapEnd = [&](unsigned int startIndex) {
         for (int i = 0; i < countPerRing - 2; i++) {
             indices.insert(indices.end(), {
@@ -67,11 +69,19 @@ CrossSectionTracer::Inflate(const std::vector<Segment> &segments, const CrossSec
         }
     };
 
+    int wrapStartPoints = 0, wrapEndPoints = 0;
     if (!segments.empty()) {
-        if (data.wrapStart) WrapEnd(0);
-        if (data.wrapEnd) WrapEnd((segments.size() - 1) * countPerRing);
+        if (data.wrapStart) {
+            WrapEnd(0);
+            wrapStartPoints = countPerRing;
+        }
+        if (data.wrapEnd) {
+            WrapEnd((segments.size() - 1) * countPerRing);
+            wrapEndPoints = countPerRing;
+        }
     }
 
+    if (outTopologyData != nullptr) *outTopologyData = {sideQuadCount, wrapStartPoints, wrapEndPoints};
     return {vertices, indices};
 }
 

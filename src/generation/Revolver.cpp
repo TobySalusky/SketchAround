@@ -17,7 +17,7 @@
 
 
 // TODO: wrap end faces!!! (currently hollow)
-std::tuple<std::vector<glm::vec3>, std::vector<unsigned int>> Revolver::Revolve(const std::vector<glm::vec2>& points, const RevolveData& revolveData) {
+std::tuple<std::vector<glm::vec3>, std::vector<unsigned int>> Revolver::Revolve(const std::vector<glm::vec2>& points, const RevolveData& revolveData, TopologyCorrector* outTopologyData) {
     std::vector<glm::vec3> vertices;
     std::vector<unsigned int> indices;
 
@@ -92,7 +92,10 @@ std::tuple<std::vector<glm::vec3>, std::vector<unsigned int>> Revolver::Revolve(
                 });
             }*/
         }
+
     }
+
+    const int sideQuadCount = (int) (points.size() - 1) * countPerRing;
 
     const auto WrapEnd = [&](unsigned int startIndex, bool reverse = false) {
         for (int i = 0; i < countPerRing - 2; i++) {
@@ -108,8 +111,18 @@ std::tuple<std::vector<glm::vec3>, std::vector<unsigned int>> Revolver::Revolve(
         }
     };
 
-    if (revolveData.wrapStart) WrapEnd(0);
-    if (revolveData.wrapEnd) WrapEnd((points.size() - 1) * countPerRing, true);
+    int wrapStartPoints = 0, wrapEndPoints = 0;
+
+    if (revolveData.wrapStart) {
+        WrapEnd(0);
+        wrapStartPoints = countPerRing;
+    }
+    if (revolveData.wrapEnd) {
+        WrapEnd((points.size() - 1) * countPerRing, true);
+        wrapEndPoints = countPerRing;
+    }
+
+    if (outTopologyData != nullptr) *outTopologyData = {sideQuadCount, wrapStartPoints, wrapEndPoints};
 
     return {vertices, indices};
 }

@@ -8,6 +8,7 @@
 
 #include "../vendor/glm/vec2.hpp"
 #include "../util/Includes.h"
+#include "TopologyCorrector.h"
 
 struct RevolveData {
     float scaleRadius{};
@@ -25,7 +26,7 @@ struct RevolveData {
 class Revolver {
 public:
     static std::tuple<std::vector<glm::vec3>, std::vector<unsigned int>>
-    Revolve(const std::vector<glm::vec2> &points, const RevolveData& revolveData);
+    Revolve(const std::vector<glm::vec2> &points, const RevolveData& revolveData, TopologyCorrector* outTopologyData = nullptr);
 };
 
 

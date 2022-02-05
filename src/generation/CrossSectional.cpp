@@ -123,7 +123,7 @@ Enums::LineType CrossSectional::LineTypeByMode(Enums::DrawMode drawMode) {
     return Enums::PIECEWISE;
 }
 
-std::tuple<std::vector<glm::vec3>, std::vector<GLuint>> CrossSectional::GenMeshTuple() {
+std::tuple<std::vector<glm::vec3>, std::vector<GLuint>> CrossSectional::GenMeshTuple(TopologyCorrector* outTopologyData) {
 
     const Vec2List& usedChordalAxis = (centralPoints.size() < 2) ? CrossSectionTracer::AutoGenChordalAxis(boundPoints, sampleLength) : centralPoints;
 
@@ -132,7 +132,7 @@ std::tuple<std::vector<glm::vec3>, std::vector<GLuint>> CrossSectional::GenMeshT
         const auto sampled2 = Sampler::DumbSample(usedChordalAxis, sampleLength);
 
         const CrossSectionTracer::CrossSectionTraceData traceData = GenTraceData();
-        return CrossSectionTracer::Trace(sampled, sampled2, traceData);
+        return CrossSectionTracer::Trace(sampled, sampled2, traceData, outTopologyData);
     }
 
     return MeshUtil::Empty();

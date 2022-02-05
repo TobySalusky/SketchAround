@@ -5,23 +5,26 @@
 #include "Sampler.h"
 #include "../vendor/glm/geometric.hpp"
 #include "LineAnalyzer.h"
+#include "../util/Util.h"
 
 // FIXME: bug here! doesn't sample linear segments!
 std::vector<glm::vec2> Sampler::DumbSample(const std::vector<glm::vec2>& inputPoints, const float diff) {
     std::vector<glm::vec2> sampled{inputPoints[0]};
 
-    float currDiff = diff;
+    float currDiff = 0.0f;
     for (size_t i = 1; i < inputPoints.size(); i++) {
-        glm::vec p1 = inputPoints[i - 1];
-        glm::vec vec = inputPoints[i] - p1;
-        float mag = glm::length(vec);
-        float magUsed = 0;
-        while (currDiff <= mag) {
-            sampled.emplace_back(p1 + glm::normalize(vec) * (currDiff + magUsed));
-            mag -= currDiff;
-            currDiff = diff;
+        const Vec2 p1 = inputPoints[i - 1];
+        const Vec2 vec = inputPoints[i] - p1;
+        const Vec2 norm = glm::normalize(vec);
+        const float mag = glm::length(vec);
+        const float startingDiff = currDiff;
+        currDiff += mag;
+
+        const int iter = (int) (currDiff / diff);
+        for (int j = 0; j < iter; j++) {
+            sampled.emplace_back(p1 + norm * ((diff * (float) (j + 1)) - startingDiff));
+            currDiff -= diff;
         }
-        currDiff -= mag;
     }
 
     sampled.emplace_back(inputPoints[inputPoints.size() - 1]);
@@ -30,23 +33,25 @@ std::vector<glm::vec2> Sampler::DumbSample(const std::vector<glm::vec2>& inputPo
 
 // FIXME: bug here! doesn't sample linear segments!
 std::vector<glm::vec2> Sampler::DumbSampleLimited(const std::vector<glm::vec2>& inputPoints, const float diff, const int limit) {
+
     std::vector<glm::vec2> sampled{inputPoints[0]};
 
-    float currDiff = diff;
-
     if (sampled.size() < limit - 1) {
+        float currDiff = 0.0f;
         for (size_t i = 1; i < inputPoints.size(); i++) {
-            glm::vec p1 = inputPoints[i - 1];
-            glm::vec vec = inputPoints[i] - p1;
-            float mag = glm::length(vec);
-            float magUsed = 0;
-            while (currDiff <= mag) {
-                sampled.emplace_back(p1 + glm::normalize(vec) * (currDiff + magUsed));
-                mag -= currDiff;
-                currDiff = diff;
+            const Vec2 p1 = inputPoints[i - 1];
+            const Vec2 vec = inputPoints[i] - p1;
+            const Vec2 norm = glm::normalize(vec);
+            const float mag = glm::length(vec);
+            const float startingDiff = currDiff;
+            currDiff += mag;
+
+            const int iter = (int) (currDiff / diff);
+            for (int j = 0; j < iter; j++) {
+                sampled.emplace_back(p1 + norm * ((diff * (float) (j + 1)) - startingDiff));
+                currDiff -= diff;
             }
             if (sampled.size() == limit - 1) break;
-            currDiff -= mag;
         }
     }
 
@@ -54,9 +59,20 @@ std::vector<glm::vec2> Sampler::DumbSampleLimited(const std::vector<glm::vec2>& 
     return sampled;
 }
 
-std::vector<glm::vec2>
-Sampler::SampleTo(const std::vector<glm::vec2>& inputPoints, const int newPointCount) { // FIXME: DOES NOT WORK CORRECTLY!!! ALSO INEFFICIENT!!
-    std::vector<glm::vec2> vec = DumbSampleLimited(inputPoints, LineAnalyzer::FullLength(inputPoints) / (float) (newPointCount - 1), newPointCount);
-    if (vec.size() != newPointCount) printf("Error: - SampleTo %i %lu", newPointCount, vec.size());
+Vec2List
+Sampler::SampleTo(const Vec2List& inputPoints, const int newPointCount, bool skipIfAlreadyCorrect) { // FIXME: DOES NOT WORK CORRECTLY!!! ALSO INEFFICIENT!!
+    if (skipIfAlreadyCorrect && newPointCount == inputPoints.size()) return inputPoints;
+
+    Vec2List vec = (inputPoints.size() == 1) ? RepeatPoint(inputPoints[0], newPointCount) : DumbSampleLimited(inputPoints, LineAnalyzer::FullLength(inputPoints) / (float) (newPointCount - 1), newPointCount);
+    if (vec.size() != newPointCount) printf("Error: SampleTo %i %lu\n", newPointCount, vec.size());
+    return vec;
+}
+
+Vec2List Sampler::RepeatPoint(Vec2 point, const int count) {
+    Vec2List vec = {};
+    vec.reserve(count);
+    for (int i = 0; i < count; i++) {
+        vec.emplace_back(point);
+    }
     return vec;
 }

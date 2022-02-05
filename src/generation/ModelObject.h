@@ -26,6 +26,7 @@
 #include "../editing/EditingContext.h"
 #include "../animation/Animator.h"
 #include "../graphing/GraphView.h"
+#include "TopologyCorrector.h"
 #include <boost/serialization/access.hpp>
 
 class Timeline;
@@ -111,7 +112,7 @@ public:
 
     virtual void InputPoints(MouseInputInfo info);
     virtual void UpdateMesh() {}
-    virtual std::tuple<std::vector<glm::vec3>, std::vector<GLuint>> GenMeshTuple() = 0;
+    virtual std::tuple<std::vector<glm::vec3>, std::vector<GLuint>> GenMeshTuple(TopologyCorrector* outTopologyData = nullptr) = 0;
 
     virtual void ClearAll() {}
     void ClearSingle(Enums::DrawMode drawMode);

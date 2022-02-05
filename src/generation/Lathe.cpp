@@ -42,7 +42,7 @@ void Lathe::HyperParameterUI(const UIInfo& info) {
     }
 }
 
-std::tuple<std::vector<glm::vec3>, std::vector<GLuint>> Lathe::GenMeshTuple() {
+std::tuple<std::vector<glm::vec3>, std::vector<GLuint>> Lathe::GenMeshTuple(TopologyCorrector* outTopologyData) {
 
     if (!plottedPoints.empty()) {
         const auto sampled = Sampler::DumbSample(plottedPoints, sampleLength);
@@ -57,7 +57,7 @@ std::tuple<std::vector<glm::vec3>, std::vector<GLuint>> Lathe::GenMeshTuple() {
                 .graphY=graphedPointsY,
                 .graphZ=graphedPointsZ,
                 .crossSectionPoints=crossSectionPoints,
-        });
+        }, outTopologyData);
     }
     return {{}, {}};
 }

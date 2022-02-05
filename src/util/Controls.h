@@ -34,6 +34,7 @@ static int
     CONTROLS_ReversePoints = 17,
     CONTROLS_ExitMenu = 18,
     CONTROLS_OpenControlsMenu = 19,
+    CONTROLS_OpenExportMenu = 20,
     CONTROLS_ = 0,
     CONTROLS_FIN = -2
 ;
