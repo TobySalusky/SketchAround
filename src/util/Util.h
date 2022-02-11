@@ -119,6 +119,10 @@ public:
     }
 
     static glm::mat4 Identity() { return glm::mat4(1.0f); }
+
+    static Vec2 Perpendicular(Vec2 vec) {
+        return {-vec.y, vec.x};
+    }
 };
 
 #endif //SENIORRESEARCH_UTIL_H

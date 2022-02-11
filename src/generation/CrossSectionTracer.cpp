@@ -11,6 +11,7 @@
 #include "../graphing/Function.h"
 #include "LineAnalyzer.h"
 #include "../animation/LineLerper.h"
+#include "Sampler.h"
 
 std::tuple<std::vector<glm::vec3>, std::vector<unsigned int>>
 CrossSectionTracer::Trace(const std::vector<glm::vec2> &points, const std::vector<glm::vec2> &pathTrace, const CrossSectionTraceData& data, TopologyCorrector* outTopologyData) {
@@ -24,6 +25,16 @@ CrossSectionTracer::Inflate(const std::vector<Segment> &segments, const CrossSec
     std::vector<glm::vec3> vertices;
     std::vector<unsigned int> indices;
 
+    bool hasCrossSection = data.crossSectionPoints.size() >= 3;
+    Vec2List sampledCrossSection;
+    if (hasCrossSection) {
+        sampledCrossSection = Sampler::SampleTo(data.crossSectionPoints, data.countPerRing);
+    }
+
+    const auto CrossSectionPointToVec4 = [] (Vec2 vec) {
+        return Vec4(0.0f, vec.y, vec.x, 1.0f);
+    };
+
     for (const auto &segment : segments) {
         const auto midpoint = (segment.p1 + segment.p2) / 2.0f;
         const float radius = glm::length(midpoint - segment.p1);
@@ -31,7 +42,7 @@ CrossSectionTracer::Inflate(const std::vector<Segment> &segments, const CrossSec
         for (int i = 0; i < countPerRing; i++) {
             float angle = (float) M_PI * 2 * ((float) ((float) i * 1 / (float) countPerRing));
             glm::mat4 rot = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(1.0f,0.0f,0.0f)); // TODO: split mat creation from loop (b/c constant angles)
-            glm::vec4 vec = rot * glm::vec4(0, radius, 0.0f, 1.0f);
+            glm::vec4 vec = (hasCrossSection) ? CrossSectionPointToVec4(sampledCrossSection[i] * radius) : rot * Vec4(0, radius, 0.0f, 1.0f);
 
             const float leanAngle = Util::Angle(segment.p2 - segment.p1) + (float) M_PI_2;
 
@@ -90,13 +101,19 @@ CrossSectionTracer::TraceSegments(const std::vector<glm::vec2> &points, const st
     std::vector<Segment> segments;
 
     // TODO: optimize!!!
-    for (const auto &pathPoint : pathTrace) {
+
+    const float arcLen = LineAnalyzer::FullLength(pathTrace);
+    const float sampleLen = data.sampleLength;
+
+    for (int step = 0; step < (int) (arcLen / sampleLen); step++) {
         bool hasP1 = false, hasP2 = false;
         glm::vec2 p1, p2;
-        for (int i = 0; i < points.size() - 1; i++) {
 
-            const float angle = -Function::GetAverageRadians(pathTrace, pathPoint.x, 3);
-            const auto dirVec = Util::Polar(angle);
+        const Ray2D tangentRay = Function::GetRayAtLength(pathTrace, (float) step * sampleLen);
+        const Vec2 dirVec = Util::Perpendicular(tangentRay.dir);
+        const Vec2 pathPoint = tangentRay.origin;
+
+        for (int i = 0; i < points.size() - 1; i++) {
 
             const auto intersectionPos = Intersector::RaySegment(pathPoint, dirVec, points[i], points[i + 1]);
             const auto intersectionNeg = Intersector::RaySegment(pathPoint, -dirVec, points[i], points[i + 1]);
@@ -131,6 +148,50 @@ CrossSectionTracer::TraceSegments(const std::vector<glm::vec2> &points, const st
             }
         }
     }
+
+
+//    for (const auto &pathPoint : pathTrace) {
+//        bool hasP1 = false, hasP2 = false;
+//        glm::vec2 p1, p2;
+//
+//        const float angle = -Function::GetAverageRadians(pathTrace, pathPoint.x, 3);
+//        const auto dirVec = Util::Polar(angle);
+//
+//        for (int i = 0; i < points.size() - 1; i++) {
+//
+//            const auto intersectionPos = Intersector::RaySegment(pathPoint, dirVec, points[i], points[i + 1]);
+//            const auto intersectionNeg = Intersector::RaySegment(pathPoint, -dirVec, points[i], points[i + 1]);
+//
+//            if (intersectionPos.has_value()) {
+//                if (!hasP1) {
+//                    p1 = intersectionPos.value();
+//                    hasP1 = true;
+//                } else {
+//                    if (glm::length(intersectionPos.value() - pathPoint) < glm::length(p1 - pathPoint)) {
+//                        p1 = intersectionPos.value();
+//                    }
+//                }
+//            }
+//
+//            if (intersectionNeg.has_value()) {
+//                if (!hasP2) {
+//                    p2 = intersectionNeg.value();
+//                    hasP2 = true;
+//                } else {
+//                    if (glm::length(intersectionNeg.value() - pathPoint) < glm::length(p2 - pathPoint)) {
+//                        p2 = intersectionNeg.value();
+//                    }
+//                }
+//            }
+//        }
+//
+//        if (hasP1 && hasP2) {
+//            // may not intersect with previous segment
+//            if (segments.empty() || !Intersector::Segment(p1, p2, segments.back().p1, segments.back().p2)) {
+//                segments.push_back({p1, p2});
+//            }
+//        }
+//    }
 
     return segments;
 }

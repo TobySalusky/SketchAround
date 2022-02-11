@@ -54,6 +54,7 @@ void CrossSectional::UpdateMesh() {
 }
 
 void CrossSectional::RenderSelf2D(RenderInfo2D renderInfo) {
+    renderInfo.plot.AddLines(crossSectionPoints, {1.0f, 0.0f, 1.0f, 1.0f});
     renderInfo.plot.AddLines(centralPoints, centralColor);
     renderInfo.plot.AddLines(centralAutoGenPoints, centralAutoGenColor);
     renderInfo.plot.AddLines(boundPoints, {0.0f, 0.0f, 0.0f, 1.0f});
@@ -73,13 +74,16 @@ void CrossSectional::RenderGizmos2D(RenderInfo2D renderInfo) {
 void CrossSectional::ModeSetUI(Enums::DrawMode& drawMode) {
     ModeSet("Bounds", Enums::DrawMode::MODE_PLOT, drawMode);
     ModeSet("Central-Trace", Enums::DrawMode::MODE_GRAPH_Y, drawMode);
+    ModeSet("Cross-Section", Enums::DrawMode::MODE_CROSS_SECTION, drawMode);
 }
 
 void CrossSectional::ClearAll() {
     boundPoints.clear();
     centralPoints.clear();
+    crossSectionPoints.clear();
     DiffPoints(Enums::MODE_PLOT);
     DiffPoints(Enums::MODE_GRAPH_Y);
+    DiffPoints(Enums::MODE_CROSS_SECTION);
 }
 
 std::vector<glm::vec3> Convert (const std::vector<glm::vec2>& vec) {
@@ -110,17 +114,17 @@ void CrossSectional::RenderGizmos3D(RenderInfo3D renderInfo) {
 }
 
 CrossSectionTracer::CrossSectionTraceData CrossSectional::GenTraceData() {
-    return {countPerRing, wrapStart, wrapEnd};
+    return {countPerRing, wrapStart, wrapEnd, sampleLength, crossSectionPoints};
 }
 
 std::vector<glm::vec2>& CrossSectional::GetPointsRefByMode(Enums::DrawMode drawMode) {
     if (drawMode == Enums::MODE_GRAPH_Y) return centralPoints;
+    if (drawMode == Enums::MODE_CROSS_SECTION) return crossSectionPoints;
     return boundPoints;
 }
 
 Enums::LineType CrossSectional::LineTypeByMode(Enums::DrawMode drawMode) {
-    if (drawMode == Enums::MODE_PLOT) return Enums::POLYLINE;
-    return Enums::PIECEWISE;
+    return Enums::POLYLINE;
 }
 
 std::tuple<std::vector<glm::vec3>, std::vector<GLuint>> CrossSectional::GenMeshTuple(TopologyCorrector* outTopologyData) {

@@ -327,9 +327,9 @@ int main() {
             };
 
             ImGuiHelper::SpacedSep();
-            ImGui::InputTextWithHint("##Name", "name:", nameBuffer, IM_ARRAYSIZE(nameBuffer), ImGuiInputTextFlags_EnterReturnsTrue);
+            ImGui::InputTextWithHint("##Name-Save", "name:", nameBuffer, IM_ARRAYSIZE(nameBuffer), ImGuiInputTextFlags_EnterReturnsTrue);
             SaveIf(ImGui::IsItemFocused() && input->Pressed(GLFW_KEY_ENTER));
-            ImGui::InputTextWithHint("##Path", "path:", pathBuffer, IM_ARRAYSIZE(pathBuffer), ImGuiInputTextFlags_EnterReturnsTrue);
+            ImGui::InputTextWithHint("##Path-Save", "path:", pathBuffer, IM_ARRAYSIZE(pathBuffer), ImGuiInputTextFlags_EnterReturnsTrue);
             SaveIf(ImGui::IsItemFocused() && input->Pressed(GLFW_KEY_ENTER));
             SaveIf(ImGui::Button("Save..."));
 
@@ -356,8 +356,8 @@ int main() {
         {
             SubGuiExitOptions();
 
-            static char nameBuffer[256] = "";
-            if (enteringGuiScreen) memset(&nameBuffer[0], 0, sizeof(nameBuffer));
+            static char exportNameBuffer[256] = "";
+            if (enteringGuiScreen) memset(&exportNameBuffer[0], 0, sizeof(exportNameBuffer));
 
             static char pathBuffer[256] = "../output/obj";
 
@@ -367,7 +367,7 @@ int main() {
             const auto ExportIf = [&](bool condition) {
                 if (hasExported || !condition) return;
 
-                if (std::string(nameBuffer).empty()) {
+                if (std::string(exportNameBuffer).empty()) {
                     popupWarning.Open("Must set file name!");
                     return;
                 }
@@ -387,16 +387,16 @@ int main() {
                     }
                 };
 
-                ExportTo(std::string(pathBuffer) + "/" + std::string(nameBuffer) + ".obj", ObjExporter::GenerateFileContents(modelObjects));
+                ExportTo(std::string(pathBuffer) + "/" + std::string(exportNameBuffer) + ".obj", ObjExporter::GenerateFileContents(modelObjects));
 
                 inExportGUI = false;
                 hasExported = true;
             };
 
             ImGuiHelper::SpacedSep();
-            ImGui::InputTextWithHint("##Name", "name:", nameBuffer, IM_ARRAYSIZE(nameBuffer), ImGuiInputTextFlags_EnterReturnsTrue);
+            ImGui::InputTextWithHint("##Name-Export", "name:", exportNameBuffer, IM_ARRAYSIZE(exportNameBuffer), ImGuiInputTextFlags_EnterReturnsTrue);
             ExportIf(ImGui::IsItemFocused() && input->Pressed(GLFW_KEY_ENTER));
-            ImGui::InputTextWithHint("##Path", "path:", pathBuffer, IM_ARRAYSIZE(pathBuffer), ImGuiInputTextFlags_EnterReturnsTrue);
+            ImGui::InputTextWithHint("##Path-Export", "path:", pathBuffer, IM_ARRAYSIZE(pathBuffer), ImGuiInputTextFlags_EnterReturnsTrue);
             ExportIf(ImGui::IsItemFocused() && input->Pressed(GLFW_KEY_ENTER));
             ExportIf(ImGui::Button("Export As .OBJ"));
 
@@ -433,7 +433,7 @@ int main() {
             }
 
             ImGuiHelper::SpacedSep();
-            ImGui::InputTextWithHint("##Path", "path:", pathBuffer, IM_ARRAYSIZE(pathBuffer), ImGuiInputTextFlags_EnterReturnsTrue);
+            ImGui::InputTextWithHint("##Path-Open", "path:", pathBuffer, IM_ARRAYSIZE(pathBuffer), ImGuiInputTextFlags_EnterReturnsTrue);
             ImGuiHelper::SpacedSep();
 
             auto path = std::string(pathBuffer);
@@ -466,15 +466,11 @@ int main() {
                 }));
             }
 
-            for (auto& subFolder : subFolders) {
-                ImGui::BulletText("%s", subFolder.c_str());
-            }
-
-
-
             bool reloadFolder = false;
             if (!pathExists) {
                 ImGui::Text("Invalid path!");
+            } else if (paths.empty() && subFolders.empty()) {
+                ImGui::Text("Nothing here... ¯\\_(*_*)_/¯");
             } else {
 
                 static float previewSize = 128.0f;
@@ -532,6 +528,10 @@ int main() {
                 }
 
                 ImGui::Columns(1);
+            }
+
+            for (auto& subFolder : subFolders) {
+                ImGui::BulletText("%s", subFolder.c_str());
             }
 
             lastPath = path;

@@ -105,3 +105,39 @@ Vec2List Function::GetAvgTangentsAlongLength(const std::vector<glm::vec2> &funcP
 
     return avgTangents;
 }
+
+Vec2 Function::GetTangentAtLength(const std::vector<glm::vec2> &funcPoints, float arcLength) {
+    float currMag = 0.0f;
+    for (int i = 0; i < funcPoints.size() - 1; i++) {
+        const Vec2 diff = funcPoints[i + 1] - funcPoints[i];
+
+        const float mag = glm::length(diff);
+        currMag += mag;
+
+        if (currMag >= arcLength) {
+            return diff; // when averaging, proportionalize distance along this segment
+        }
+    }
+
+    printf("[Warning]: trying to find tangent outside of allowed length\n");
+    return {-999.0f, -999.0f};
+}
+
+Ray2D Function::GetRayAtLength(const std::vector<glm::vec2> &funcPoints, float arcLength) {
+    float currMag = 0.0f;
+    for (int i = 0; i < funcPoints.size() - 1; i++) {
+        const Vec2 diff = funcPoints[i + 1] - funcPoints[i];
+
+        const float mag = glm::length(diff);
+        currMag += mag;
+
+        if (currMag >= arcLength) {
+            const Vec2 pos = funcPoints[i] + glm::normalize(diff) * (mag - (currMag - arcLength));
+            return {pos, diff}; // when averaging, proportionalize distance along this segment
+        }
+    }
+
+    printf("[Warning]: trying to find tangent outside of allowed length\n");
+    return {{-100.0f, -100.0f}, {-999.0f, -999.0f}};
+}
+

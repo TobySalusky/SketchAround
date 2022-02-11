@@ -17,6 +17,8 @@ public:
         int countPerRing{};
         bool wrapStart{};
         bool wrapEnd{};
+        float sampleLength{};
+        Vec2List& crossSectionPoints;
     };
 
     struct Segment {

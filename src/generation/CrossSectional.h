@@ -40,6 +40,7 @@ private:
     template<class Archive>
     void serialize(Archive & ar, const unsigned int version)
     {
+        const int VERSION_CROSS_SECTION = 1;
         ar & boost::serialization::base_object<ModelObject>(*this);
         ar & countPerRing;
         ar & wrapStart;
@@ -47,6 +48,7 @@ private:
         ar & boundPoints;
         ar & centralPoints;
         ar & centralAutoGenPoints;
+        if (version >= VERSION_CROSS_SECTION) ar & crossSectionPoints;
         //ar & segments;
     }
 
@@ -55,9 +57,10 @@ private:
 
     CrossSectionTracer::CrossSectionTraceData GenTraceData();
 
-    std::vector<glm::vec2> boundPoints;
-    std::vector<glm::vec2> centralPoints;
-    std::vector<glm::vec2> centralAutoGenPoints;
+    Vec2List boundPoints;
+    Vec2List centralPoints;
+    Vec2List centralAutoGenPoints;
+    Vec2List crossSectionPoints;
 
     std::vector<CrossSectionTracer::Segment> segments;
 
@@ -70,6 +73,9 @@ private:
 
     ModelObject* CopyInternals() final;
 };
+
+BOOST_CLASS_VERSION(CrossSectional, 1)
+
 
 
 #endif //SENIORRESEARCH_CROSSSECTIONAL_H

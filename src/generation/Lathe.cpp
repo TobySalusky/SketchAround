@@ -8,6 +8,8 @@
 #include "Revolver.h"
 #include "../animation/Timeline.h" // FIXME? cyclical dependency sus
 #include "../util/Linq.h"
+#include "LineAnalyzer.h"
+#include "../graphing/Function.h"
 
 void Lathe::HyperParameterUI(const UIInfo& info) {
 
@@ -76,6 +78,17 @@ void Lathe::RenderSelf2D(RenderInfo2D renderInfo) {
 void Lathe::RenderGizmos2D(RenderInfo2D renderInfo) {
     if (renderInfo.drawMode == Enums::MODE_GRAPH_Y) FunctionalAngleGizmo(renderInfo, graphedPointsY);
     else if (renderInfo.drawMode == Enums::MODE_GRAPH_Z) FunctionalAngleGizmo(renderInfo, graphedPointsZ);
+
+    if (plottedPoints.size() >= 2) { // tangent TEST gizmos
+        const float step = 0.01f;
+        const float arcLen = LineAnalyzer::FullLength(plottedPoints);
+        for (int i = 0; i < (int) (arcLen / step); i++) {
+            const Ray2D tangentRay = Function::GetRayAtLength(plottedPoints, (float) i * step);
+            const Vec2 p = tangentRay.origin;
+            const Vec2 perpendicular = Util::Perpendicular(tangentRay.dir);
+            renderInfo.plot.AddLines({p, p + glm::normalize(perpendicular) * 0.1f}, {0.7f, 0.3f, 0.7f, 1.0f}, 0.002f);
+        }
+    }
 
     const auto WrapGizmo = [&](glm::vec2 startPos) {
         // TODO: make dotted-line

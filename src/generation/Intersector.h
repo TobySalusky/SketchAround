@@ -22,6 +22,11 @@ struct Ray {
     Vec3 dir;
 };
 
+struct Ray2D {
+    Vec2 origin;
+    Vec2 dir;
+};
+
 class Intersector {
 public:
     static bool Segment(glm::vec2 p1, glm::vec2 q1, glm::vec2 p2, glm::vec2 q2);
