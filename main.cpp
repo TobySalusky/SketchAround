@@ -48,7 +48,7 @@
 #include <boost/archive/text_iarchive.hpp>
 
 // Window dimensions
-const GLuint WIDTH = 1000, HEIGHT = 700;
+const GLuint INIT_WIDTH = 1000, INIT_HEIGHT = 700;
 Enums::DrawMode drawMode = Enums::MODE_PLOT;
 bool cameraMode = false;
 bool focusMode = false;
@@ -62,14 +62,6 @@ bool inOpenFileGUI = false;
 bool inExportGUI = false;
 bool inControlsGUI = false;
 bool developerMode = true;
-
-Vec2 MouseToScreen(Vec2 mouseVec) {
-    return {mouseVec.x / WIDTH * 2 - 1, (mouseVec.y / HEIGHT - 0.5f) * -2};
-}
-
-Vec2 MouseToScreenNorm01(Vec2 mouseVec) {
-    return {mouseVec.x / WIDTH, mouseVec.y / HEIGHT};
-}
 
 void DragDropModelObject() {
     ImGui::Dummy({ImGui::GetWindowContentRegionWidth(), fmax(40.0f, ImGui::GetContentRegionAvail().y)});
@@ -89,9 +81,12 @@ void DragDropModelObject() {
 int main() {
     GraphView graphView;
 
-    GLWindow window(WIDTH, HEIGHT);
+    GLWindow window(INIT_WIDTH, INIT_HEIGHT);
     Input* input = window.GetInput();
     Controls::Initialize(input);
+
+    GLuint WIDTH  = INIT_WIDTH;
+    GLuint HEIGHT = INIT_HEIGHT;
 
     glfwSwapInterval(0); // NOTE: Removes limit from FPS!
 
@@ -566,6 +561,9 @@ int main() {
 
     while (!window.ShouldClose()) // >> UPDATE LOOP ======================================
     {
+        WIDTH  = window.GetWidth();
+        HEIGHT = window.GetHeight();
+
         // setup time
         auto time = (float) glfwGetTime();
         float deltaTime = time - lastTime;

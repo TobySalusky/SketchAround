@@ -15,6 +15,8 @@ public:
     GLWindow(GLint windowWidth, GLint windowHeight);
     ~GLWindow();
 
+    [[nodiscard]] GLint GetWidth() const { return width; }
+    [[nodiscard]] GLint GetHeight() const { return height; }
     [[nodiscard]] GLint GetBufferWidth() const { return bufferWidth; }
     [[nodiscard]] GLint GetBufferHeight() const { return bufferHeight; }
     [[nodiscard]] GLFWwindow* GetWindowPtr() const { return window; }

@@ -53,7 +53,7 @@ private:
     }
 
     int countPerRing = 10;
-    bool wrapStart = false, wrapEnd = false;
+    bool wrapStart = false, wrapEnd = true;
 
     CrossSectionTracer::CrossSectionTraceData GenTraceData();
 

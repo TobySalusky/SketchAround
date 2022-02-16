@@ -95,8 +95,8 @@ public:
 
         const auto&[timeline] = info;
 
+        ImGui::ColorEdit3("Model color", (float *) &color, ImGuiColorEditFlags_NoInputs);
         if (ImGui::CollapsingHeader("Aux")) {
-            ImGui::ColorEdit3("model-color", (float *) &color);
             AnimatableSliderValUpdateBound("x", (float *) &modelTranslation.x, timeline);
             AnimatableSliderValUpdateBound("y", (float *) &modelTranslation.y, timeline);
             AnimatableSliderValUpdateBound("z", (float *) &modelTranslation.z, timeline);

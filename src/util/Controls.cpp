@@ -37,6 +37,7 @@ std::unordered_map<int, KeyControl> Controls::GenDefaultControls() {
             {CONTROLS_ExitMenu, {"Exit Menu", GLFW_KEY_ESCAPE}},
             {CONTROLS_OpenControlsMenu, {"Enter Controls Menu", GLFW_KEY_H, SHIFT}},
             {CONTROLS_OpenExportMenu, {"Enter Export Menu", GLFW_KEY_E, COMMAND}},
+            {CONTROLS_ResetCamera, {"Reset Camera", GLFW_KEY_R, SHIFT}},
     };
 }
 

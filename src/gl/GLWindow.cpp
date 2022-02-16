@@ -25,7 +25,7 @@ GLWindow::GLWindow(GLint windowWidth, GLint windowHeight) { // NOLINT(cppcoregui
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
-    glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+    glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
 
     // Create a GLFWwindow object that we can use for GLFW's functions
     window = glfwCreateWindow(width, height, "Senior Research Project", nullptr, nullptr);
@@ -120,6 +120,14 @@ void GLWindow::CreateInput() {
                 self->input.mouseRightUnpressed = true;
             }
         }
+    });
+
+    glfwSetWindowSizeCallback(window, [](GLFWwindow* rawSelf, int width, int height){
+        auto* self = static_cast<GLWindow*>(glfwGetWindowUserPointer(rawSelf));
+
+        self->width = width;
+        self->height = height;
+        glfwGetFramebufferSize(self->window, &self->bufferWidth, &self->bufferHeight); // TODO: change height/width too & WIDTH / HEIGHT
     });
 }
 

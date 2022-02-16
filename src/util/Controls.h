@@ -35,6 +35,7 @@ static int
     CONTROLS_ExitMenu = 18,
     CONTROLS_OpenControlsMenu = 19,
     CONTROLS_OpenExportMenu = 20,
+    CONTROLS_ResetCamera = 21,
     CONTROLS_ = 0,
     CONTROLS_FIN = -2
 ;
