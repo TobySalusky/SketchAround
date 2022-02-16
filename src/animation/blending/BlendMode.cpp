@@ -5,11 +5,18 @@
 #include <cmath>
 #include "BlendMode.h"
 #include "../../util/Util.h"
+#include "../../util/EasingFunctions.h"
 
 // TODO: extract functionality to subclasses
 float BlendMode::Apply(BlendMode *mode1, BlendMode *mode2, float t) {
     const auto type1 = mode1->GetBlendType();
     const auto type2 = mode2->GetBlendType();
+
+    if (type1 == type2) { // TODO: REFACTOR!!!
+        if (type1 == Enums::ELASTIC_IN) return EasingFunctions::EaseInElastic(t);
+        if (type1 == Enums::ELASTIC_OUT) return EasingFunctions::EaseOutElastic(t);
+        if (type1 == Enums::ELASTIC_INOUT) return EasingFunctions::EaseInOutElastic(t);
+    }
 
     switch (type1) {
         case Enums::LINEAR:
@@ -46,4 +53,6 @@ float BlendMode::Apply(BlendMode *mode1, BlendMode *mode2, float t) {
             return mode1->ApplyCustomFunc(t);
             break;
     }
+
+    return t;
 }

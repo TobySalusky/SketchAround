@@ -10,6 +10,7 @@
 #include "PiecewiseBlendMode.h"
 #include "SineBlendMode.h"
 #include "LinearBlendMode.h"
+#include "EaseBlendModes.h"
 #include <vector>
 #include <boost/serialization/access.hpp>
 #include <boost/serialization/unordered_map.hpp>
@@ -38,6 +39,9 @@ public:
         blendModes = {};
         blendModes[0] = new LinearBlendMode();
         blendModes[1] = new SineBlendMode();
+        blendModes[2] = new ElasticInBlendMode();
+        blendModes[3] = new ElasticOutBlendMode();
+        blendModes[4] = new ElasticInOutBlendMode();
         nextID = 2;
         for (auto& [ID, blendMode] : serializeCustomBlendModes) {
             blendModes[ID] = blendMode;
@@ -49,6 +53,10 @@ public:
     void Init() {
         blendModes[GenNextID()] = new LinearBlendMode();
         blendModes[GenNextID()] = new SineBlendMode();
+        blendModes[GenNextID()] = new ElasticInBlendMode();
+        blendModes[GenNextID()] = new ElasticOutBlendMode();
+        blendModes[GenNextID()] = new ElasticInOutBlendMode();
+
     }
 
 private:

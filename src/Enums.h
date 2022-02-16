@@ -23,7 +23,7 @@ public:
         POLYLINE, PIECEWISE
     };
     enum BlendType {
-        CUSTOM, LINEAR, SINE
+        CUSTOM, LINEAR, SINE, ELASTIC_IN, ELASTIC_OUT, ELASTIC_INOUT
     };
     enum ModelObjectType {
         LATHE, CROSS_SECTIONAL
