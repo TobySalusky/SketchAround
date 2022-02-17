@@ -168,6 +168,8 @@ void Mesh2D::AddQuad(glm::vec2 corner1, glm::vec2 corner2, glm::vec4 color) {
 }
 
 void Mesh2D::AddPolygonOutline(glm::vec2 center, float rad, int pointCount, glm::vec4 color, float width) {
+    rad /= scaleLines;
+
     std::vector<glm::vec2> points;
 
     for (int i = 0; i <= pointCount; i++) {

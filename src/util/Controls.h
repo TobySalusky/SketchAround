@@ -36,6 +36,10 @@ static int
     CONTROLS_OpenControlsMenu = 19,
     CONTROLS_OpenExportMenu = 20,
     CONTROLS_ResetCamera = 21,
+    CONTROLS_LockX = 22,
+    CONTROLS_LockY = 23,
+    CONTROLS_Erase = 24,
+    CONTROLS_ScaleLocal = 25,
     CONTROLS_ = 0,
     CONTROLS_FIN = -2
 ;

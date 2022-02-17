@@ -54,13 +54,15 @@ void CrossSectional::UpdateMesh() {
 }
 
 void CrossSectional::RenderSelf2D(RenderInfo2D renderInfo) {
-    renderInfo.plot.AddLines(crossSectionPoints, {1.0f, 0.0f, 1.0f, 1.0f});
-    renderInfo.plot.AddLines(centralPoints, centralColor);
-    renderInfo.plot.AddLines(centralAutoGenPoints, centralAutoGenColor);
-    renderInfo.plot.AddLines(boundPoints, {0.0f, 0.0f, 0.0f, 1.0f});
+    RenderCanvasLines(crossSectionPoints, {1.0f, 0.0f, 1.0f, 1.0f}, renderInfo.plot);
+    RenderCanvasLines(centralPoints, centralColor, renderInfo.plot);
+    RenderCanvasLines(centralAutoGenPoints, centralAutoGenColor, renderInfo.plot);
+    RenderCanvasLines(boundPoints, {0.0f, 0.0f, 0.0f, 1.0f}, renderInfo.plot);
 }
 
 void CrossSectional::RenderGizmos2D(RenderInfo2D renderInfo) {
+    ModelObject::RenderGizmos2D(renderInfo);
+
     if (renderInfo.drawMode == Enums::MODE_GRAPH_Y) FunctionalAngleGizmo(renderInfo, centralPoints);
 
     if (segments.empty()) return;

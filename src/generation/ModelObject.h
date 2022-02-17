@@ -47,6 +47,7 @@ struct RenderInfo2D {
     Enums::DrawMode drawMode;
     glm::vec2 onScreen;
     GraphView& graphView;
+    EditingContext& editContext;
 };
 
 struct MouseInputInfo {
@@ -122,7 +123,9 @@ public:
     void Render2D(RenderInfo2D renderInfo);
 
     virtual void RenderSelf2D(RenderInfo2D renderInfo) {}
-    virtual void RenderGizmos2D(RenderInfo2D renderInfo) {}
+    virtual void RenderGizmos2D(RenderInfo2D renderInfo) {
+        RenderTransformationGizmos(renderInfo);
+    }
 
     [[nodiscard]] glm::mat4 GenModelMat() {
         glm::mat4 own = GenOwnModelMat();
@@ -143,7 +146,7 @@ public:
     void FlipPoints(Enums::DrawMode drawMode, Enums::Direction direction);
     void ReversePoints(Enums::DrawMode drawMode);
 
-        void DiffPoints(Enums::DrawMode drawMode) {
+    void DiffPoints(Enums::DrawMode drawMode) {
         diffed[drawMode] = true;
     }
 
@@ -241,6 +244,8 @@ protected:
         ar & animator;
     }
 
+    void RenderTransformationGizmos(RenderInfo2D info);
+
     void AnimatableSliderValUpdateBound(const std::string& label, float* ptr, Timeline& timeline, float min = NAN, float max = NAN);
 
     virtual ModelObject* CopyInternals() = 0;
@@ -266,6 +271,14 @@ protected:
         glm::mat4 rot = glm::toMat4(glm::quat(eulerAngles));
         glm::mat4 trans = glm::translate(glm::mat4(1.0f), modelTranslation);
         return trans * rot;
+    }
+
+    static void RenderCanvasLines(const Vec2List& points, Vec4 color, Mesh2D& plot) {
+        if (points.size() == 1) {
+            plot.AddPolygonOutline(points[0], 0.0075f, 10, color, 0.01f);
+        } else if (points.size() > 1) {
+            plot.AddLines(points, color);
+        }
     }
 
     void ModeSet (const char* title, Enums::DrawMode newDrawMode, Enums::DrawMode& drawMode) {

@@ -36,6 +36,8 @@ public:
 
     void SetLineScale(float scale) { scaleLines = scale; }
 
+    float GenScaleLineMult() { return 1.0f / scaleLines; }
+
 private:
     GLuint VAO, VBO, IBO, indexCount;
     std::vector<float> vertexData;

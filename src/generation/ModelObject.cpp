@@ -56,7 +56,7 @@ void ModelObject::SetPoints(Enums::DrawMode drawMode, const Vec2List& newPoints)
 void ModelObject::ReversePoints(Enums::DrawMode drawMode) {
     Vec2List& points = GetPointsRefByMode(drawMode);
     SetPoints(drawMode, Linq::Select<Vec2, Vec2>(points, [&](const Vec2& _, int i) {
-        return points[points.size() - i];
+        return points[points.size() - 1 - i];
     }));
 }
 
@@ -101,14 +101,22 @@ void ModelObject::EditCurrentLines(EditingInfo info) {
     BindTransformTriggerKey(CONTROLS_Drag, Enums::TRANSFORM_DRAG);
     BindTransformTriggerKey(CONTROLS_Rotate, Enums::TRANSFORM_ROTATE);
     BindTransformTriggerKey(CONTROLS_Scale, Enums::TRANSFORM_SCALE);
+    BindTransformTriggerKey(CONTROLS_ScaleLocal, Enums::TRANSFORM_SCALE);
+    {
+        if (Controls::Check(CONTROLS_ScaleLocal)) editContext.MakeLocal();
+    }
+
     BindTransformTriggerKey(CONTROLS_Smear, Enums::TRANSFORM_SMEAR);
+
+    if (Controls::Check(CONTROLS_LockX)) editContext.LockAxis(Enums::LOCK_X);
+    if (Controls::Check(CONTROLS_LockY)) editContext.LockAxis(Enums::LOCK_Y);
 
     if (Controls::Check(CONTROLS_FlipHoriz)) FlipPoints(info.drawMode, Enums::HORIZONTAL);
     if (Controls::Check(CONTROLS_FlipVert)) FlipPoints(info.drawMode, Enums::VERTICAL);
     if (Controls::Check(CONTROLS_ReversePoints)) ReversePoints(info.drawMode);
 
     // TODO: add eraser tool!
-    if (input.Down(GLFW_KEY_E)) {
+    if (Controls::Check(CONTROLS_Erase)) {
         bool diffFlag = false;
         for (int i = (int) points.size() - 1; i >= 0; i--) {
             if (glm::length(onCanvas - points[i]) < 0.05f) {
@@ -125,20 +133,30 @@ void ModelObject::EditCurrentLines(EditingInfo info) {
     if (editContext.IsTransformationActive()) {
         switch (editContext.GetTransformationType()) {
             case Enums::TRANSFORM_DRAG: {
-                glm::vec2 delta = onCanvas - editContext.GetLastMousePos();
-                Diff([=](glm::vec2 vec) {
+                const Vec2 initPoint = editContext.GetTransformStartPos();
+                editContext.SetPrimaryGizmoPoint(initPoint);
+
+                const Vec2 lockMult = editContext.GenLockMult();
+
+                const Vec2 delta = (onCanvas - initPoint) * lockMult;
+                editContext.SetSecondaryGizmoPoint(initPoint + delta);
+
+                DiffBase([=](glm::vec2 vec) {
                     return vec + delta;
                 });
                 break;
             }
             case Enums::TRANSFORM_ROTATE: {
-                const Vec2 avgPos = Util::AveragePos(points);
 
-                float lastAngle = Util::Angle(editContext.GetLastMousePos() - avgPos);
+                const Vec2 avgPos = Util::AveragePos(editContext.transformStoreInitPoints);
+                editContext.SetPrimaryGizmoPoint(avgPos);
+
+                float initAngle = Util::Angle(editContext.GetTransformStartPos() - avgPos);
                 float newAngle = Util::Angle(onCanvas - avgPos);
-                float angleDiff = newAngle - lastAngle;
+                float angleDiff = newAngle - initAngle;
+                editContext.SetSecondaryGizmoPoint(onCanvas);
 
-                Diff([=](Vec2 vec) {
+                DiffBase([=](Vec2 vec) {
                     float angle = Util::Angle(vec - avgPos);
                     float mag = glm::length(vec - avgPos);
                     return avgPos + Util::Polar(mag, -(angle - (float) M_PI_2 + angleDiff));
@@ -146,15 +164,21 @@ void ModelObject::EditCurrentLines(EditingInfo info) {
                 break;
             }
             case Enums::TRANSFORM_SCALE: {
-                const Vec2 avgPos = Util::AveragePos(points);
+                Vec2 avgPos = Util::AveragePos(editContext.transformStoreInitPoints);
+                if (GetType() == Enums::LATHE && !editContext.IsLocalTransform()) avgPos.y = 0;
 
-                float lastMag = glm::length(editContext.GetLastMousePos() - avgPos);
-                float newMag = glm::length(onCanvas - avgPos);
+                editContext.SetPrimaryGizmoPoint(avgPos);
+                const Vec2 usePoint = avgPos + (onCanvas - avgPos) * editContext.GenLockMult();
+                editContext.SetSecondaryGizmoPoint(usePoint);
 
-                Diff([=](glm::vec2 vec) {
+                float initMag = glm::length((editContext.GetTransformStartPos() - avgPos) * editContext.GenLockMult());
+                float newMag = glm::length(usePoint - avgPos);
+
+                DiffBase([=](Vec2 vec) {
                     float angle = Util::Angle(vec - avgPos);
                     float mag = glm::length(vec - avgPos);
-                    return avgPos + Util::Polar(mag / lastMag * newMag, -(angle - (float) M_PI_2));
+                    const Vec2 delta = (avgPos + Util::Polar(mag / initMag * newMag, -(angle - (float) M_PI_2)) - vec) * info.editContext.GenLockMult();
+                    return vec + delta;
                 });
                 break;
             }
@@ -164,7 +188,7 @@ void ModelObject::EditCurrentLines(EditingInfo info) {
                 };
 
                 glm::vec2 initPos = editContext.GetTransformStartPos();
-                glm::vec2 delta = onCanvas - initPos;
+                glm::vec2 delta = (onCanvas - initPos) * editContext.GenLockMult();
 
                 DiffBase([=](glm::vec2 vec) {
                     float initMag = glm::length(vec - initPos);
@@ -407,4 +431,8 @@ void ModelObject::PersistModelMat(MatrixComponents initFull, MatrixComponents pa
     SetPos(rotatedDiff);
 
     SetEulers(Util::DirToEuler(glm::inverse(rot) * Vec4(childDir, 0.0f)));
+}
+
+void ModelObject::RenderTransformationGizmos(RenderInfo2D info) {
+    info.editContext.RenderTransformGizmos(info.plot);
 }

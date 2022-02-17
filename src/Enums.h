@@ -28,6 +28,9 @@ public:
     enum ModelObjectType {
         LATHE, CROSS_SECTIONAL
     };
+    enum TransformAxisLock {
+        LOCK_NONE, LOCK_X, LOCK_Y
+    };
 };
 
 

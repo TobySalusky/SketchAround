@@ -69,13 +69,15 @@ void Lathe::UpdateMesh() {
 }
 
 void Lathe::RenderSelf2D(RenderInfo2D renderInfo) {
-    renderInfo.plot.AddLines(graphedPointsY, graphColorY);
-    renderInfo.plot.AddLines(graphedPointsZ, graphColorZ);
-    renderInfo.plot.AddLines(plottedPoints, plotColor);
-    renderInfo.plot.AddLines(crossSectionPoints, {1.0f, 0.0f, 1.0f, 1.0f});
+    RenderCanvasLines(graphedPointsY, graphColorY, renderInfo.plot);
+    RenderCanvasLines(graphedPointsZ, graphColorZ, renderInfo.plot);
+    RenderCanvasLines(plottedPoints, plotColor, renderInfo.plot);
+    RenderCanvasLines(crossSectionPoints, {1.0f, 0.0f, 1.0f, 1.0f}, renderInfo.plot);
 }
 
 void Lathe::RenderGizmos2D(RenderInfo2D renderInfo) {
+    ModelObject::RenderGizmos2D(renderInfo);
+
     if (renderInfo.drawMode == Enums::MODE_GRAPH_Y) FunctionalAngleGizmo(renderInfo, graphedPointsY);
     else if (renderInfo.drawMode == Enums::MODE_GRAPH_Z) FunctionalAngleGizmo(renderInfo, graphedPointsZ);
 

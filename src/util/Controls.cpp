@@ -16,13 +16,14 @@ int COMMAND = GLFW_KEY_LEFT_SUPER;
 
 std::unordered_map<int, KeyControl> Controls::GenDefaultControls() {
     return {
-            {CONTROLS_SetLayerPrimary, {"Set Layer to Primary", GLFW_KEY_P}},
-            {CONTROLS_SetLayerSecondary, {"Set Layer to Secondary", GLFW_KEY_Y}},
-            {CONTROLS_SetLayerTertiary, {"Set Layer to Tertiary", GLFW_KEY_T}},
+            {CONTROLS_SetLayerPrimary, {"Set Layer to Primary", GLFW_KEY_1}},
+            {CONTROLS_SetLayerSecondary, {"Set Layer to Secondary", GLFW_KEY_2}},
+            {CONTROLS_SetLayerTertiary, {"Set Layer to Tertiary", GLFW_KEY_3}},
+            {CONTROLS_SetLayerTertiary, {"Set Layer to Quaternary", GLFW_KEY_4}},
             {CONTROLS_OpenFileSaveMenu, {"Enter File-Save Menu", GLFW_KEY_S, COMMAND}},
             {CONTROLS_OpenFileOpenMenu, {"Enter File-Open Menu", GLFW_KEY_O, COMMAND}},
-            {CONTROLS_ClearCurrentLayer, {"Clear Current Layer", GLFW_KEY_X}},
-            {CONTROLS_ClearAllLayers, {"Clear All Layers", GLFW_KEY_X, SHIFT}},
+            {CONTROLS_ClearCurrentLayer, {"Clear Current Layer", GLFW_KEY_X, SHIFT}},
+            {CONTROLS_ClearAllLayers, {"Clear All Layers", GLFW_KEY_X, COMMAND}},
             {CONTROLS_AddLathe, {"Add Lathe", GLFW_KEY_N}},
             {CONTROLS_AddCrossSectional, {"Add CrossSectional", GLFW_KEY_N, SHIFT}},
             {CONTROLS_SwitchModelUp, {"Switch to Model Above", GLFW_KEY_UP, SHIFT}},
@@ -38,6 +39,10 @@ std::unordered_map<int, KeyControl> Controls::GenDefaultControls() {
             {CONTROLS_OpenControlsMenu, {"Enter Controls Menu", GLFW_KEY_H, SHIFT}},
             {CONTROLS_OpenExportMenu, {"Enter Export Menu", GLFW_KEY_E, COMMAND}},
             {CONTROLS_ResetCamera, {"Reset Camera", GLFW_KEY_R, SHIFT}},
+            {CONTROLS_LockX, {"Lock Transforms to X", GLFW_KEY_X}},
+            {CONTROLS_LockY, {"Lock Transforms to Y", GLFW_KEY_Y}},
+            {CONTROLS_Erase, {"Erase", GLFW_KEY_E, -1, false}},
+            {CONTROLS_ScaleLocal, {"Scale", GLFW_KEY_S, SHIFT}},
     };
 }
 

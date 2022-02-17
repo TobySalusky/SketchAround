@@ -111,7 +111,7 @@ void GraphView::Render(GraphViewRenderInfo info) {
 
     // mouse scroll gizmo
     if (enablePanOrDrag) {
-        const RGBA panDragColor = {1.0f, 0.7f, 0.0f, 0.8f};
+        const RGBA panDragColor = {0.3f, 1.0f, 0.3f, 0.8f};
         if (input.Down(GLFW_KEY_LEFT_SHIFT)) {
             plot.AddLines({centerAt, onCanvas}, panDragColor, 0.0025f);
         } else {

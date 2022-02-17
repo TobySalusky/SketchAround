@@ -714,7 +714,7 @@ int main() {
 
                 if (!timeline.IsPlaying()) timeline.RenderOnionSkin(plot, drawMode);
 
-                modelObject->Render2D({plot, drawMode, onScreen, graphView});
+                modelObject->Render2D({plot, drawMode, onScreen, graphView, editContext});
 
                 plot.ImmediateClearingRender();
 
