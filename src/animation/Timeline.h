@@ -162,6 +162,10 @@ public:
         UpdateFloat(valLabel, initVal);
     }
 
+    void TryUpdateFloat(const std::string& valLabel, float val) {
+        if (HasFloatLayer(valLabel)) UpdateFloat(valLabel, val);
+    }
+
     void RemoveFloatLayer(const std::string& valLabel) {
         animator->floatKeyFrameLayers.erase(valLabel);
     }

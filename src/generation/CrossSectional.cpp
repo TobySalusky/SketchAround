@@ -8,6 +8,8 @@
 #include "../gl/MeshUtil.h"
 
 void CrossSectional::HyperParameterUI(const UIInfo& info) {
+    ImGui::Text("1: %lu; 2: %lu; 4: %lu", boundPoints.size(), centralPoints.size(), crossSectionPoints.size());
+
     const auto BindUIMeshUpdate = [&]() {
         if (ImGui::IsItemActive())
             UpdateMesh();

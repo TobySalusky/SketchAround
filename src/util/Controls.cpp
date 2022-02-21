@@ -19,7 +19,7 @@ std::unordered_map<int, KeyControl> Controls::GenDefaultControls() {
             {CONTROLS_SetLayerPrimary, {"Set Layer to Primary", GLFW_KEY_1}},
             {CONTROLS_SetLayerSecondary, {"Set Layer to Secondary", GLFW_KEY_2}},
             {CONTROLS_SetLayerTertiary, {"Set Layer to Tertiary", GLFW_KEY_3}},
-            {CONTROLS_SetLayerTertiary, {"Set Layer to Quaternary", GLFW_KEY_4}},
+            {CONTROLS_SetLayerQuaternary, {"Set Layer to Quaternary", GLFW_KEY_4}},
             {CONTROLS_OpenFileSaveMenu, {"Enter File-Save Menu", GLFW_KEY_S, COMMAND}},
             {CONTROLS_OpenFileOpenMenu, {"Enter File-Open Menu", GLFW_KEY_O, COMMAND}},
             {CONTROLS_ClearCurrentLayer, {"Clear Current Layer", GLFW_KEY_X, SHIFT}},

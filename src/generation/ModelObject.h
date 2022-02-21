@@ -227,6 +227,9 @@ public:
         return nullptr;
     }
 
+    void TimelineDiffPos(Timeline& timeline);
+    void TimelineDiffEulers(Timeline& timeline);
+
 protected:
     friend class boost::serialization::access;
     template<class Archive>
@@ -275,7 +278,7 @@ protected:
 
     static void RenderCanvasLines(const Vec2List& points, Vec4 color, Mesh2D& plot) {
         if (points.size() == 1) {
-            plot.AddPolygonOutline(points[0], 0.0075f, 10, color, 0.01f);
+            plot.AddPolygonOutline(points[0], 0.0001f, 10, color, 0.01f);
         } else if (points.size() > 1) {
             plot.AddLines(points, color);
         }

@@ -63,6 +63,9 @@ bool inExportGUI = false;
 bool inControlsGUI = false;
 bool developerMode = true;
 
+
+Enums::EditingTool selectedTool;
+
 void DragDropModelObject() {
     ImGui::Dummy({ImGui::GetWindowContentRegionWidth(), fmax(40.0f, ImGui::GetContentRegionAvail().y)});
     if (ImGui::BeginDragDropTarget())
@@ -775,12 +778,16 @@ int main() {
                             const auto quaDir = glm::quatLookAt(normal, {0.0f, 1.0f, 0.0f});
                             const auto eulers = glm::eulerAngles(quaDir);
                             draggedObj->SetEulers(Util::DirToEuler(normal));
+
                             auto* hitObj = (ModelObject*)(modelIntersection->obj);
 
                             // no recursive parenting!
                             if (hitObj != draggedObj && !hitObj->InParentChain(draggedObj)) {
                                 hitObj->AppendChild(draggedObj);
                             }
+
+                            draggedObj->TimelineDiffPos(timeline);
+                            draggedObj->TimelineDiffEulers(timeline);
                         }
                     }
                     ImGui::EndDragDropTarget();
@@ -813,6 +820,13 @@ int main() {
             ImGui::Begin("Mode");
             {
                 modelObject->ModeSetUI(drawMode);
+            }
+            ImGui::End();
+
+            // Toolbar
+            ImGui::Begin("Toolbar");
+            {
+
             }
             ImGui::End();
 
@@ -909,6 +923,7 @@ int main() {
             if (Controls::Check(CONTROLS_SetLayerPrimary)) drawMode = Enums::MODE_PLOT;
             if (Controls::Check(CONTROLS_SetLayerSecondary)) drawMode = Enums::MODE_GRAPH_Y;
             if (Controls::Check(CONTROLS_SetLayerTertiary)) drawMode = Enums::MODE_GRAPH_Z;
+            if (Controls::Check(CONTROLS_SetLayerQuaternary)) drawMode = Enums::MODE_CROSS_SECTION;
 
             if (input->Pressed(GLFW_KEY_Z) && input->Down(GLFW_KEY_LEFT_SHIFT)) {
                 //Undos::UseLast();

@@ -390,6 +390,7 @@ ModelObject *ModelObject::CopyRecursive() {
 }
 
 
+
 void ModelObject::AnimatableSliderValUpdateBound(const std::string& label, float* ptr, Timeline& timeline, float min, float max) {
     bool animated = timeline.HasFloatLayer(label);
     ImGui::Checkbox(("##" + label).c_str(), &animated);
@@ -435,4 +436,16 @@ void ModelObject::PersistModelMat(MatrixComponents initFull, MatrixComponents pa
 
 void ModelObject::RenderTransformationGizmos(RenderInfo2D info) {
     info.editContext.RenderTransformGizmos(info.plot);
+}
+
+void ModelObject::TimelineDiffPos(Timeline& timeline) {
+    timeline.TryUpdateFloat("x", modelTranslation.x);
+    timeline.TryUpdateFloat("y", modelTranslation.y);
+    timeline.TryUpdateFloat("z", modelTranslation.z);
+}
+
+void ModelObject::TimelineDiffEulers(Timeline& timeline) {
+    timeline.TryUpdateFloat("rot-x", eulerAngles.x);
+    timeline.TryUpdateFloat("rot-y", eulerAngles.y);
+    timeline.TryUpdateFloat("rot-z", eulerAngles.z);
 }

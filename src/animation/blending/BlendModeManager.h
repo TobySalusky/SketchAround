@@ -42,7 +42,7 @@ public:
         blendModes[2] = new ElasticInBlendMode();
         blendModes[3] = new ElasticOutBlendMode();
         blendModes[4] = new ElasticInOutBlendMode();
-        nextID = 2;
+        nextID = 5;
         for (auto& [ID, blendMode] : serializeCustomBlendModes) {
             blendModes[ID] = blendMode;
             nextID = ID + 1;

@@ -5,6 +5,7 @@
 #ifndef SENIORRESEARCH_ENUMS_H
 #define SENIORRESEARCH_ENUMS_H
 
+#include <vector>
 
 class Enums {
 public:
@@ -31,6 +32,15 @@ public:
     enum TransformAxisLock {
         LOCK_NONE, LOCK_X, LOCK_Y
     };
+    enum EditingTool {
+        TOOL_BRUSH,
+        TOOL_ERASE,
+        TOOL_SMUDGE,
+        TOOL_RECTANGLE,
+        TOOL_ELLIPSE,
+    };
+
+    static std::vector<EditingTool> editingTools;
 };
 
 

@@ -12,6 +12,7 @@
 #include "../graphing/Function.h"
 
 void Lathe::HyperParameterUI(const UIInfo& info) {
+    ImGui::Text("1: %lu; 2: %lu; 3: %lu; 4: %lu", plottedPoints.size(), graphedPointsY.size(), graphedPointsZ.size(), crossSectionPoints.size());
 
     const auto BindUIMeshUpdate = [&] { // TODO: extract as ModelObject class funcs
         if (ImGui::IsItemActive())

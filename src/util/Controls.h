@@ -40,6 +40,7 @@ static int
     CONTROLS_LockY = 23,
     CONTROLS_Erase = 24,
     CONTROLS_ScaleLocal = 25,
+    CONTROLS_SetLayerQuaternary = 26,
     CONTROLS_ = 0,
     CONTROLS_FIN = -2
 ;
