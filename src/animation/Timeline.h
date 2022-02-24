@@ -142,7 +142,6 @@ public:
         bool focusMode;
     };
 
-    static Timeline Create(const GLWindow& window) { return Timeline({window.GetBufferWidth(), window.GetBufferHeight()}); }
     void Update(const TimelineUpdateInfo& info);
     void Render(const TimelineRenderInfo& info);
 
@@ -187,6 +186,8 @@ public:
         playing = false;
     }
 
+    explicit Timeline(const GLWindow& window) : scene({window.GetBufferWidth(), window.GetBufferHeight()}), animator(nullptr) {}
+
 private:
     float playbackSpeed = 1.0f;
     bool playing = false;
@@ -198,8 +199,6 @@ private:
     Animator* animator;
     Vec2 selectDragStart, selectDragEnd;
     TimelineSelection selection;
-
-    explicit Timeline(RenderTarget timelineScene) : scene(timelineScene), animator(nullptr) {}
 
     void TopToBottomLineAt(float x, glm::vec4 color, float width = 0.001f, bool trueTop = false);
 };

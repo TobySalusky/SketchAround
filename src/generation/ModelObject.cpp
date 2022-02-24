@@ -11,6 +11,7 @@
 #include <numeric>
 #include "../animation/Timeline.h"
 #include "../util/Controls.h"
+#include "../misc/Undos.h"
 
 int ModelObject::nextUniqueID = 0;
 
@@ -72,8 +73,10 @@ void ModelObject::FlipPoints(Enums::DrawMode drawMode, Enums::Direction directio
 }
 
 void ModelObject::EditCurrentLines(EditingInfo info) {
-    const auto& [editContext, input, drawMode, onScreen, camera, graphFocused, graphView] = info;
+    const auto& [editContext, input, drawMode, onScreen, camera, graphFocused, graphView, guiRect] = info;
 
+    Vec2 normOnRect = Util::NormalizeToRectNPFlipped(input.GetMouse(), guiRect);
+    bool mouseIsOnRect = Util::VecIsNormalizedNP(normOnRect);
     Vec2 onCanvas = graphView.MousePosNPToCoords(onScreen);
 
     auto& points = GetPointsRefByMode(info.drawMode);
@@ -128,6 +131,19 @@ void ModelObject::EditCurrentLines(EditingInfo info) {
             DiffPoints(drawMode);
             UpdateMesh();
         }
+    }
+
+    if (input.mousePressed) {
+        if (mouseIsOnRect) {
+            Undos::Add(GenLineStateUndo(drawMode));
+            editContext.SetIsDrawing(true);
+        } else {
+            editContext.DisableDrawingForClick();
+        }
+    }
+
+    if (input.mouseUnpressed) {
+        editContext.SetIsDrawing(false);
     }
 
     if (editContext.IsTransformationActive()) {

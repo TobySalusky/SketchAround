@@ -69,3 +69,35 @@ std::vector<unsigned char> RenderTarget::SampleCentralSquare(const RenderTarget&
 
     return sampled;
 }
+
+RenderTarget::~RenderTarget() {
+    printf("Disposing render target\n");
+    glDeleteTextures(1, &textureID);
+    glDeleteFramebuffers(1, &fboID);
+    glDeleteRenderbuffers(1, &rboID);
+}
+
+void RenderTarget::ChangeDimensions(GLint width, GLint height) {
+    this->width = width;
+    this->height = height;
+
+    glBindTexture(GL_TEXTURE_2D, textureID);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    glBindRenderbuffer(GL_RENDERBUFFER, rboID);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
+
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fboID);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureID, 0);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rboID);
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glBindRenderbuffer(GL_TEXTURE_2D, 0);
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+        printf("problem resizing framebuffer");
+    }
+}

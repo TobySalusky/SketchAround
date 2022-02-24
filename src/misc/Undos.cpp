@@ -3,3 +3,4 @@
 //
 
 #include "Undos.h"
+std::vector<UndoPtr> Undos::undos = {};

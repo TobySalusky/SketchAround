@@ -127,7 +127,9 @@ void GLWindow::CreateInput() {
 
         self->width = width;
         self->height = height;
-        glfwGetFramebufferSize(self->window, &self->bufferWidth, &self->bufferHeight); // TODO: change height/width too & WIDTH / HEIGHT
+        glfwGetFramebufferSize(self->window, &self->bufferWidth, &self->bufferHeight);
+
+        self->resizeDiff = true;
     });
 }
 

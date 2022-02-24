@@ -43,6 +43,7 @@
 #include "src/util/Controls.h"
 #include "src/gl/TiledTextureAtlas.h"
 #include "src/exporting/ObjExporter.h"
+#include "src/misc/LineStateUndo.h"
 
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
@@ -63,6 +64,9 @@ bool inExportGUI = false;
 bool inControlsGUI = false;
 bool developerMode = true;
 
+
+bool requirePlotResize = true;
+Vec2 newPlotDimens;
 
 Enums::EditingTool selectedTool;
 
@@ -87,6 +91,7 @@ int main() {
     GLWindow window(INIT_WIDTH, INIT_HEIGHT);
     Input* input = window.GetInput();
     Controls::Initialize(input);
+    Undo::InitializeUndoers({&drawMode});
 
     GLuint WIDTH  = INIT_WIDTH;
     GLuint HEIGHT = INIT_HEIGHT;
@@ -114,7 +119,13 @@ int main() {
     Light mainLight{{0.5f, 0.5f, 0.5f, 0.5f}, {-1.0f, -1.0f, -1.0f}, 0.8f};
     Light line3DGizmoLight{{1.0f, 0.3f, 1.0f, 0.5f}, {-1.0f, -1.0f, -1.0f}, 1.0f};
 
-    glm::mat4 projection = glm::perspective(45.0f, (GLfloat)window.GetBufferWidth()/(GLfloat)window.GetBufferHeight(), zNear, zFar);
+
+    glm::mat4 projection;
+
+    const auto SetupProjection = [&]() {
+        projection = glm::perspective(45.0f, (GLfloat)window.GetBufferWidth()/(GLfloat)window.GetBufferHeight(), zNear, zFar);
+    };
+    SetupProjection();
 
     auto SetCameraMode = [&](bool val) {
         cameraMode = val;
@@ -135,7 +146,7 @@ int main() {
     Rectangle plotRect;
     Rectangle displayRect;
 
-    Timeline timeline = Timeline::Create(window);
+    Timeline timeline {window};
 
     auto UpdateMesh = [&]() {
         modelObject->UpdateMesh();
@@ -567,6 +578,22 @@ int main() {
         WIDTH  = window.GetWidth();
         HEIGHT = window.GetHeight();
 
+        if (window.HasResizeDiff()) { // reconfigure anything dependent on window size (textures / projection)
+            SetupProjection();
+            modelScene.ChangeDimensions(window.GetBufferWidth(), window.GetBufferHeight());
+            graphScene.ChangeDimensions(window.GetBufferWidth(), window.GetBufferHeight());
+            window.UnDiffResize();
+        }
+
+        if (requirePlotResize) { // TODO: use proper buffer to actual rate!!!
+            Util::PrintVec(newPlotDimens);
+            Util::PrintVec({window.GetBufferWidth(), window.GetBufferHeight()});
+//            graphScene.ChangeDimensions(newPlotDimens * 2.5f); // FIXME!!!!!!!!!
+//            graphScene.ChangeDimensions(window.GetBufferWidth(), window.GetBufferHeight());
+//            graphScene.ChangeDimensions(window.GetBufferWidth(), window.GetBufferHeight());
+            requirePlotResize = false;
+        }
+
         // setup time
         auto time = (float) glfwGetTime();
         float deltaTime = time - lastTime;
@@ -860,9 +887,15 @@ int main() {
             // Graph window (must be last??)
             ImGui::Begin("Graph Scene");
             {
-
-                Vec2 displayDimens = Util::FitRatio({WIDTH / 2.0f, HEIGHT / 2.0f},
-                                                    Util::ToVec(ImGui::GetWindowContentRegionMax()) - Util::ToVec(ImGui::GetWindowContentRegionMin()) - Vec2(8.0f, 6.0f));
+                Vec2 displayDimens = Util::ToVec(ImGui::GetWindowContentRegionMax()) - Util::ToVec(ImGui::GetWindowContentRegionMin()) - Vec2(8.0f, 6.0f);
+                static Vec2 lastDisplayDimens;
+                if (displayDimens != lastDisplayDimens) {
+                    requirePlotResize = true;
+                    newPlotDimens = displayDimens;
+                }
+                lastDisplayDimens = displayDimens;
+//                Vec2 displayDimens = Util::FitRatio({WIDTH / 2.0f, HEIGHT / 2.0f},
+//                                                    Util::ToVec(ImGui::GetWindowContentRegionMax()) - Util::ToVec(ImGui::GetWindowContentRegionMin()) - Vec2(8.0f, 6.0f));
                 ImGui::SameLine((ImGui::GetWindowWidth()) / 2.0f - (displayDimens.x / 2.0f));
                 ImGui::ImageButton((void *) (intptr_t) graphScene.GetTexture(), Util::ToImVec(displayDimens), {0.0f, 1.0f},
                                    {1.0f, 0.0f});
@@ -878,7 +911,7 @@ int main() {
 
             // >> UPDATE MESH
             if (!cameraMode) {
-                modelObject->EditMakeup({editContext, *input, drawMode, onScreen, camera, graphFocused, graphView});
+                modelObject->EditMakeup({editContext, *input, drawMode, onScreen, camera, graphFocused, graphView, plotRect});
             }
 
 
@@ -887,11 +920,12 @@ int main() {
             Display3DContext::Update({*input, camera, displayRect, displayFocused});
 
             if (Controls::Check(CONTROLS_ClearAllLayers)) {
+                Undos::Add(modelObject->GenAllLineStateUndo());
                 modelObject->ClearAll();
                 UpdateMesh();
-
             }
             else if (Controls::Check(CONTROLS_ClearCurrentLayer)) {
+                Undos::Add(modelObject->GenLineStateUndo(drawMode));
                 modelObject->ClearSingle(drawMode);
                 UpdateMesh();
             }
@@ -925,8 +959,8 @@ int main() {
             if (Controls::Check(CONTROLS_SetLayerTertiary)) drawMode = Enums::MODE_GRAPH_Z;
             if (Controls::Check(CONTROLS_SetLayerQuaternary)) drawMode = Enums::MODE_CROSS_SECTION;
 
-            if (input->Pressed(GLFW_KEY_Z) && input->Down(GLFW_KEY_LEFT_SHIFT)) {
-                //Undos::UseLast();
+            if (Controls::Check(CONTROLS_Undo)) {
+                Undos::UseLast();
             }
 
             // POST UPDATE EVENTS

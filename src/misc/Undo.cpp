@@ -3,7 +3,8 @@
 //
 
 #include "Undo.h"
+#include "LineStateUndo.h"
 
-void Undo::Apply() {
-    func();
+void Undo::InitializeUndoers(const UndoersInfo& info) {
+    LineStateUndo::Initialize(info);
 }

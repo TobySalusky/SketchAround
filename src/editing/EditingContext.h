@@ -144,7 +144,12 @@ public:
 
     void MakeLocal() { localTransform = true; }
 
+    [[nodiscard]] bool IsDrawing() const { return isDrawing; }
+
+    void SetIsDrawing(bool isDrawing) { EditingContext::isDrawing = isDrawing; }
+
 private:
+    bool isDrawing;
     bool localTransform;
     Enums::TransformAxisLock axisLock;
     bool drawingDisabledForClick = false;

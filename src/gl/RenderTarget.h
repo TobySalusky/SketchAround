@@ -6,10 +6,12 @@
 #define SENIORRESEARCH_RENDERTARGET_H
 
 #include <glew.h>
+#include "../util/Util.h"
 
 class RenderTarget {
 public:
     RenderTarget(GLint width, GLint height, bool hasDepth = false);
+    ~RenderTarget();
 
     static void Bind(const RenderTarget& renderTarget);
     static void Unbind();
@@ -17,6 +19,9 @@ public:
     static std::vector<unsigned char> SampleCentralSquare(const RenderTarget& renderTarget, int sampleCount);
 
     [[nodiscard]] GLuint GetTexture() const { return textureID; }
+
+    void ChangeDimensions(GLint width, GLint height);
+    void ChangeDimensions(Vec2 vec) { ChangeDimensions((GLint) vec.x, (GLint) vec.y); }
 private:
     GLuint fboID, rboID, textureID;
     GLint width, height;

@@ -27,6 +27,9 @@
 #include "../animation/Animator.h"
 #include "../graphing/GraphView.h"
 #include "TopologyCorrector.h"
+#include "../misc/Undo.h"
+#include "../misc/LineStateUndo.h"
+#include "../misc/MultiUndo.h"
 #include <boost/serialization/access.hpp>
 
 class Timeline;
@@ -65,6 +68,7 @@ struct EditingInfo {
     Camera& camera;
     bool graphFocused;
     GraphView& graphView;
+    Rectangle guiRect;
 };
 
 class Timeline;
@@ -90,6 +94,7 @@ private:
 class ModelObject {
 public:
     ModelObject() : ID(GenUniqueID()) {}
+    virtual ~ModelObject() = default; // silences boost::serialization issue
 
     virtual void HyperParameterUI(const UIInfo& info) {}
     void AuxParameterUI(const UIInfo& info) {
@@ -229,6 +234,19 @@ public:
 
     void TimelineDiffPos(Timeline& timeline);
     void TimelineDiffEulers(Timeline& timeline);
+
+    Undo* GenLineStateUndo(Enums::DrawMode drawMode) {
+        return new LineStateUndo(this, drawMode, GetPointsRefByMode(drawMode));
+    }
+
+    Undo* GenAllLineStateUndo() {
+        return new MultiUndo({
+            GenLineStateUndo(Enums::MODE_PLOT),
+            GenLineStateUndo(Enums::MODE_GRAPH_Y),
+            GenLineStateUndo(Enums::MODE_GRAPH_Z),
+            GenLineStateUndo(Enums::MODE_CROSS_SECTION),
+        });
+    }
 
 protected:
     friend class boost::serialization::access;

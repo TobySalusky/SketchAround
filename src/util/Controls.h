@@ -41,6 +41,7 @@ static int
     CONTROLS_Erase = 24,
     CONTROLS_ScaleLocal = 25,
     CONTROLS_SetLayerQuaternary = 26,
+    CONTROLS_Undo = 27,
     CONTROLS_ = 0,
     CONTROLS_FIN = -2
 ;

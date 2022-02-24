@@ -8,19 +8,20 @@
 #include <vector>
 #include "Undo.h"
 
-//class Undos {
-//public:
-//    static void Add(void (*funcPtr)()) {
-//        undos.emplace_back(Undo(funcPtr));
-//    }
-//
-//    static void UseLast() {
-//        if (undos.empty()) return;
-//        undos.back().Apply();
-//        undos.pop_back();
-//    }
-//private:
-//    static std::vector<Undo> undos;
-//};
+class Undos {
+public:
+    static void Add(Undo* undo) {
+        undos.emplace_back(undo);
+    }
+
+    static void UseLast() {
+        if (undos.empty()) return;
+        printf("using undo...\n");
+        undos.back()->Apply();
+        undos.pop_back();
+    }
+private:
+    static std::vector<UndoPtr> undos;
+};
 
 #endif //SENIORRESEARCH_UNDOS_H

@@ -34,6 +34,10 @@ public:
 
     void SetImGuiIO(ImGuiIO* ioPtr) { io = ioPtr; }
 
+    [[nodiscard]] bool HasResizeDiff() const { return resizeDiff; }
+
+    void UnDiffResize() { resizeDiff = false; }
+
 private:
     GLFWwindow* window;
     GLint width, height;
@@ -42,6 +46,8 @@ private:
     Input input;
 
     ImGuiIO* io;
+
+    bool resizeDiff;
 
     void CreateInput();
 };

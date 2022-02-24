@@ -43,6 +43,7 @@ std::unordered_map<int, KeyControl> Controls::GenDefaultControls() {
             {CONTROLS_LockY, {"Lock Transforms to Y", GLFW_KEY_Y}},
             {CONTROLS_Erase, {"Erase", GLFW_KEY_E, -1, false}},
             {CONTROLS_ScaleLocal, {"Scale", GLFW_KEY_S, SHIFT}},
+            {CONTROLS_Undo, {"Undo", GLFW_KEY_Z, COMMAND}},
     };
 }
 

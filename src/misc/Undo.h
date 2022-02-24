@@ -6,21 +6,20 @@
 #define SENIORRESEARCH_UNDO_H
 
 #include <utility>
+#include <vector>
+#include "UndoersInfo.h"
 
-#include "../generation/ModelObject.h"
+
 
 class Undo {
 public:
+    virtual void Apply() = 0;
 
-    explicit Undo(std::function<void()> func) {
-        this->func = std::move(func);
-    }
+    virtual ~Undo() = default;
 
-    void Apply();
-
-private:
-    std::function<void()> func;
+    static void InitializeUndoers(const UndoersInfo& info);
 };
 
+typedef std::unique_ptr<Undo> UndoPtr;
 
 #endif //SENIORRESEARCH_UNDO_H
