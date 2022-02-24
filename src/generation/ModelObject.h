@@ -28,8 +28,8 @@
 #include "../graphing/GraphView.h"
 #include "TopologyCorrector.h"
 #include "../misc/Undo.h"
-#include "../misc/LineStateUndo.h"
-#include "../misc/MultiUndo.h"
+#include "../misc/UndoTypes/LineStateUndo.h"
+#include "../misc/UndoTypes/MultiUndo.h"
 #include <boost/serialization/access.hpp>
 
 class Timeline;
@@ -111,7 +111,6 @@ public:
             AnimatableSliderValUpdateBound("rot-z", (float *) &eulerAngles.z, timeline);
         }
     }
-    virtual void ModeSetUI(Enums::DrawMode& drawMode) {}
 
 
     virtual Enums::LineType LineTypeByMode(Enums::DrawMode drawMode) = 0;
@@ -236,7 +235,7 @@ public:
     void TimelineDiffEulers(Timeline& timeline);
 
     Undo* GenLineStateUndo(Enums::DrawMode drawMode) {
-        return new LineStateUndo(this, drawMode, GetPointsRefByMode(drawMode));
+        return new LineStateUndo(this, drawMode, GetPointsRefByMode(drawMode), GetAnimatorPtr()->GetTime());
     }
 
     Undo* GenAllLineStateUndo() {
@@ -246,6 +245,20 @@ public:
             GenLineStateUndo(Enums::MODE_GRAPH_Z),
             GenLineStateUndo(Enums::MODE_CROSS_SECTION),
         });
+    }
+
+    void ModeSet (const char* title, Enums::DrawMode newDrawMode, Enums::DrawMode& drawMode) {
+        if (drawMode == newDrawMode) ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.4f, 0.5f, 0.6f, 1.0f});
+        else ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.2f, 0.3f, 0.4f, 1.0f});
+        if (ImGui::Button(title)) drawMode = newDrawMode;
+        ImGui::PopStyleColor(1);
+
+        ImGui::SameLine();
+        if (ImGui::Button((std::string("X##") + title).c_str())) {
+            GetPointsRefByMode(newDrawMode).clear();
+            DiffPoints(newDrawMode);
+            UpdateMesh();
+        }
     }
 
 protected:
@@ -299,20 +312,6 @@ protected:
             plot.AddPolygonOutline(points[0], 0.0001f, 10, color, 0.01f);
         } else if (points.size() > 1) {
             plot.AddLines(points, color);
-        }
-    }
-
-    void ModeSet (const char* title, Enums::DrawMode newDrawMode, Enums::DrawMode& drawMode) {
-        if (drawMode == newDrawMode) ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.4f, 0.5f, 0.6f, 1.0f});
-        else ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.2f, 0.3f, 0.4f, 1.0f});
-        if (ImGui::Button(title)) drawMode = newDrawMode;
-        ImGui::PopStyleColor(1);
-
-        ImGui::SameLine();
-        if (ImGui::Button((std::string("X##") + title).c_str())) {
-            GetPointsRefByMode(newDrawMode).clear();
-            DiffPoints(newDrawMode);
-            UpdateMesh();
         }
     };
 

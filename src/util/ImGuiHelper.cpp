@@ -9,6 +9,7 @@
 
 #include "ImGuiHelper.h"
 #include "Controls.h"
+#include "Util.h"
 
 void ImGuiHelper::Initialize(GLWindow& window) {
     IMGUI_CHECKVERSION();
@@ -33,8 +34,40 @@ void ImGuiHelper::Initialize(GLWindow& window) {
 
     ImGuiStyle& style = ImGui::GetStyle();
     //style.Colors[ImGuiCol_Button] = {255/255.0f, 188/255.0f, 111/255.0f, 1.0f};
+
+
+
+
+//    style.WindowMenuButtonPosition = ImGuiDir_None;
     float back = 0.1f;
+    style.FrameRounding = 3.0f;
+    style.GrabRounding = 3.0f;
+    style.PopupRounding = 3.0f;
+    style.PopupBorderSize = 2.0f;
     style.Colors[ImGuiCol_WindowBg] = {back, back, back, 1.0f};
+    style.Colors[ImGuiCol_Separator] = COLOR_SEPARATOR;
+    style.Colors[ImGuiCol_SeparatorActive] = COLOR_SEPARATOR;
+    style.Colors[ImGuiCol_SeparatorHovered] = COLOR_SEPARATOR;
+    style.Colors[ImGuiCol_WindowBg] = COLOR_WINDOW_BG;
+    style.Colors[ImGuiCol_MenuBarBg] = COLOR_RED;
+    style.Colors[ImGuiCol_TitleBg] = COLOR_RED;
+    style.Colors[ImGuiCol_MenuBarBg] = COLOR_RED;
+    style.Colors[ImGuiCol_TitleBgActive] = COLOR_RED;
+    style.Colors[ImGuiCol_TitleBgCollapsed] = COLOR_RED;
+    style.Colors[ImGuiCol_Button] = COLOR_BUTTON;
+    style.Colors[ImGuiCol_ButtonActive] = COLOR_BUTTON_ACTIVE;
+    style.Colors[ImGuiCol_ButtonHovered] = COLOR_BUTTON_HOVER;
+    style.Colors[ImGuiCol_CheckMark] = COLOR_WINDOW_FOCUS_HIGHLIGHT;
+    style.Colors[ImGuiCol_PopupBg] = COLOR_WINDOW_BG;
+    style.Colors[ImGuiCol_Border] = COLOR_SEPARATOR;
+    style.Colors[ImGuiCol_FrameBg] = COLOR_CHECKBOX;
+    style.Colors[ImGuiCol_FrameBgActive] = COLOR_CHECKBOX_ACTIVE;
+    style.Colors[ImGuiCol_FrameBgHovered] = COLOR_CHECKBOX_HOVER;
+//    style.Colors[ImGuiCol_NavWindowingHighlight] = {1.0f, 0.0f, 0.0f, 1.0f};
+//    style.Colors[ImGuiCol_NavHighlight] = {1.0f, 0.0f, 0.0f, 1.0f};
+//    style.Colors[ImGuiCol_NavWindowingDimBg] = {1.0f, 0.0f, 0.0f, 1.0f};
+//    style.
+//    style.WindowPadding = {4.0f, 4.0f};
     /*style.Colors[ImGuiCol_WindowBg] = RGB(24, 35, 24);
     style.Colors[ImGuiCol_Button] = RGB(161, 119, 77);
     style.Colors[ImGuiCol_SliderGrab] = RGB(161, 119, 77);
@@ -73,4 +106,23 @@ void ImGuiHelper::DelayControlTooltip(int CONTROL_CODE) {
     if (HoverDelayTooltip()) {
         ImGui::SetTooltip("%s", Controls::Describe(CONTROL_CODE).c_str());
     }
+}
+
+void ImGuiHelper::InnerWindowBorders() {
+    bool highlight = ImGui::IsWindowFocused();
+
+    const auto Add = [](ImVec2 v1, ImVec2 v2) {
+        return ImVec2(v1.x + v2.x, v1.y + v2.y);
+    };
+
+    auto pos = ImGui::GetWindowPos();
+    auto dimens = ImGui::GetWindowSize();
+
+    ImDrawList& g = *ImGui::GetWindowDrawList();
+    g.PushClipRect(pos, Add(pos, dimens), false);
+    if (highlight) {
+        g.AddRect(Add(pos, {1.0f, 1.0f}), Add(Add(pos, dimens), {-1.0f, -1.0f}), COLOR_WINDOW_FOCUS_HIGHLIGHT, 0.0f, 0, 1.0f);
+    }
+    g.AddRect(pos, Add(pos, dimens), COLOR_SEPARATOR, 0.0f, 0, 1.0f);
+    g.PopClipRect();
 }

@@ -42,6 +42,9 @@ static int
     CONTROLS_ScaleLocal = 25,
     CONTROLS_SetLayerQuaternary = 26,
     CONTROLS_Undo = 27,
+    CONTROLS_UndoHold = 28,
+    CONTROLS_Redo = 29,
+    CONTROLS_RedoHold = 30,
     CONTROLS_ = 0,
     CONTROLS_FIN = -2
 ;

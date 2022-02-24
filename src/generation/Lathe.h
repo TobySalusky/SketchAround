@@ -19,7 +19,6 @@ public:
 
     void HyperParameterUI(const UIInfo& info) final;
     void UpdateMesh() final;
-    void ModeSetUI(Enums::DrawMode& drawMode) final;
 
     void ClearAll() override;
 

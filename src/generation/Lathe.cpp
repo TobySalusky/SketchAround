@@ -109,13 +109,6 @@ void Lathe::RenderGizmos2D(RenderInfo2D renderInfo) {
     }
 }
 
-void Lathe::ModeSetUI(Enums::DrawMode& drawMode) {
-    ModeSet("Plot", Enums::DrawMode::MODE_PLOT, drawMode);
-    ModeSet("Graph-Y", Enums::DrawMode::MODE_GRAPH_Y, drawMode);
-    ModeSet("Graph-Z", Enums::DrawMode::MODE_GRAPH_Z, drawMode);
-    ModeSet("Cross-Section", Enums::DrawMode::MODE_CROSS_SECTION, drawMode);
-}
-
 void Lathe::ClearAll() {
     graphedPointsY.clear();
     graphedPointsZ.clear();

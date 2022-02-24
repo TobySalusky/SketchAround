@@ -8,6 +8,7 @@
 
 #include "../util/Includes.h"
 #include "../gl/Mesh2D.h"
+#include "../misc/Undos.h"
 
 class EditingContext {
 public:
@@ -39,6 +40,7 @@ public:
 
 
     void CancelTransform(std::vector<glm::vec2>& points) {
+        Undos::PopLast();
         points.clear();
         points.insert(points.end(), transformStoreInitPoints.begin(),  transformStoreInitPoints.end());
         EndTransform();
@@ -145,10 +147,23 @@ public:
     void MakeLocal() { localTransform = true; }
 
     [[nodiscard]] bool IsDrawing() const { return isDrawing; }
-
     void SetIsDrawing(bool isDrawing) { EditingContext::isDrawing = isDrawing; }
 
+    [[nodiscard]] bool CanUndo() const {
+        return !IsDrawing() && !IsTransformationActive() && undoTimer <= 0.0f;
+    }
+
+    void UseUndo(bool initUndo) {
+        undoTimer = initUndo ? undoTimerInitMax : undoTimerRegMax;
+    }
+
+    void Update(float deltaTime) {
+        undoTimer -= deltaTime;
+    }
+
 private:
+    static constexpr float undoTimerInitMax = 0.3f, undoTimerRegMax = 0.09f;
+    float undoTimer = 0.0f;
     bool isDrawing;
     bool localTransform;
     Enums::TransformAxisLock axisLock;

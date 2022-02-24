@@ -44,6 +44,9 @@ std::unordered_map<int, KeyControl> Controls::GenDefaultControls() {
             {CONTROLS_Erase, {"Erase", GLFW_KEY_E, -1, false}},
             {CONTROLS_ScaleLocal, {"Scale", GLFW_KEY_S, SHIFT}},
             {CONTROLS_Undo, {"Undo", GLFW_KEY_Z, COMMAND}},
+            {CONTROLS_UndoHold, {"Undo Hold", GLFW_KEY_Z, COMMAND, false}},
+            {CONTROLS_Redo, {"Redo", GLFW_KEY_Z, SHIFT}},
+            {CONTROLS_RedoHold, {"Redo Hold", GLFW_KEY_Z, SHIFT, false}},
     };
 }
 

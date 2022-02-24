@@ -43,13 +43,13 @@
 #include "src/util/Controls.h"
 #include "src/gl/TiledTextureAtlas.h"
 #include "src/exporting/ObjExporter.h"
-#include "src/misc/LineStateUndo.h"
 
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
 
 // Window dimensions
-const GLuint INIT_WIDTH = 1000, INIT_HEIGHT = 700;
+//const GLuint INIT_WIDTH = 1000, INIT_HEIGHT = 700;
+const GLuint INIT_WIDTH = 1200, INIT_HEIGHT = 700;
 Enums::DrawMode drawMode = Enums::MODE_PLOT;
 bool cameraMode = false;
 bool focusMode = false;
@@ -586,8 +586,8 @@ int main() {
         }
 
         if (requirePlotResize) { // TODO: use proper buffer to actual rate!!!
-            Util::PrintVec(newPlotDimens);
-            Util::PrintVec({window.GetBufferWidth(), window.GetBufferHeight()});
+//            Util::PrintVec(newPlotDimens);
+//            Util::PrintVec({window.GetBufferWidth(), window.GetBufferHeight()});
 //            graphScene.ChangeDimensions(newPlotDimens * 2.5f); // FIXME!!!!!!!!!
 //            graphScene.ChangeDimensions(window.GetBufferWidth(), window.GetBufferHeight());
 //            graphScene.ChangeDimensions(window.GetBufferWidth(), window.GetBufferHeight());
@@ -776,7 +776,7 @@ int main() {
                 ImGui::ImageButton((void*) (intptr_t) modelScene.GetTexture(),
                                    Util::ToImVec(displayDimens),
                                    {0.0f, 1.0f},
-                                   {1.0f, 0.0f});
+                                   {1.0f, 0.0f}, 0);
 
                 if (ImGui::BeginDragDropTarget())
                 {
@@ -820,8 +820,10 @@ int main() {
                     ImGui::EndDragDropTarget();
                 }
 
-                displayRect = ImGuiHelper::ItemRectRemovePadding(4.0f, 3.0f);
+                displayRect = ImGuiHelper::ItemRectRemovePadding(0.0f, 0.0f);
                 displayFocused = ImGui::IsItemActive();
+
+                ImGuiHelper::InnerWindowBorders();
             }
             ImGui::End();
 
@@ -840,13 +842,8 @@ int main() {
                 }
 
                 modelObject->HyperParameterUI({timeline});
-            }
-            ImGui::End();
 
-            // MODE window
-            ImGui::Begin("Mode");
-            {
-                modelObject->ModeSetUI(drawMode);
+                ImGuiHelper::InnerWindowBorders();
             }
             ImGui::End();
 
@@ -854,6 +851,12 @@ int main() {
             ImGui::Begin("Toolbar");
             {
 
+                modelObject->ModeSet("L1", Enums::DrawMode::MODE_PLOT, drawMode);
+                modelObject->ModeSet("L2", Enums::DrawMode::MODE_GRAPH_Y, drawMode);
+                modelObject->ModeSet("L3", Enums::DrawMode::MODE_GRAPH_Z, drawMode);
+                modelObject->ModeSet("L4", Enums::DrawMode::MODE_CROSS_SECTION, drawMode);
+
+                ImGuiHelper::InnerWindowBorders();
             }
             ImGui::End();
 
@@ -878,6 +881,8 @@ int main() {
                     if (!currModelObject->HasParent()) currModelObject->DraggableGUI(draggableUIInfo);
                 }
                 DragDropModelObject();
+
+                ImGuiHelper::InnerWindowBorders();
             }
             ImGui::End();
 
@@ -887,7 +892,7 @@ int main() {
             // Graph window (must be last??)
             ImGui::Begin("Graph Scene");
             {
-                Vec2 displayDimens = Util::ToVec(ImGui::GetWindowContentRegionMax()) - Util::ToVec(ImGui::GetWindowContentRegionMin()) - Vec2(8.0f, 6.0f);
+                Vec2 displayDimens = Util::ToVec(ImGui::GetWindowContentRegionMax()) - Util::ToVec(ImGui::GetWindowContentRegionMin());
                 static Vec2 lastDisplayDimens;
                 if (displayDimens != lastDisplayDimens) {
                     requirePlotResize = true;
@@ -896,13 +901,15 @@ int main() {
                 lastDisplayDimens = displayDimens;
 //                Vec2 displayDimens = Util::FitRatio({WIDTH / 2.0f, HEIGHT / 2.0f},
 //                                                    Util::ToVec(ImGui::GetWindowContentRegionMax()) - Util::ToVec(ImGui::GetWindowContentRegionMin()) - Vec2(8.0f, 6.0f));
-                ImGui::SameLine((ImGui::GetWindowWidth()) / 2.0f - (displayDimens.x / 2.0f));
+//                ImGui::SameLine((ImGui::GetWindowWidth()) / 2.0f - (displayDimens.x / 2.0f));
                 ImGui::ImageButton((void *) (intptr_t) graphScene.GetTexture(), Util::ToImVec(displayDimens), {0.0f, 1.0f},
-                                   {1.0f, 0.0f});
+                                   {1.0f, 0.0f}, 0);
 
-                plotRect = ImGuiHelper::ItemRectRemovePadding(4.0f, 3.0f);
+                plotRect = ImGuiHelper::ItemRectRemovePadding(0.0f, 0.0f);
                 // TODO: IsItemActive works perfectly for mouse, but focus works better for keyboard :/
                 graphFocused = ImGui::IsItemFocused();
+
+                ImGuiHelper::InnerWindowBorders();
             }
             ImGui::End();
 
@@ -959,13 +966,19 @@ int main() {
             if (Controls::Check(CONTROLS_SetLayerTertiary)) drawMode = Enums::MODE_GRAPH_Z;
             if (Controls::Check(CONTROLS_SetLayerQuaternary)) drawMode = Enums::MODE_CROSS_SECTION;
 
-            if (Controls::Check(CONTROLS_Undo)) {
-                Undos::UseLast();
+            if (editContext.CanUndo()) { // Undo-ing
+                bool initUndo = Controls::Check(CONTROLS_Undo);
+                bool holdUndo = Controls::Check(CONTROLS_UndoHold);
+                if (initUndo || holdUndo) {
+                    editContext.UseUndo(initUndo);
+                    Undos::UseLast();
+                }
             }
 
             // POST UPDATE EVENTS
             timeline.Update({*input, deltaTime, drawMode, *modelObject, modelObjects, focusMode});
             modelObject->UnDiffAll();
+            editContext.Update(deltaTime);
         }
 
         // Global Post Events

@@ -26,6 +26,9 @@ public:
 
     Animator();
 
+    void SetTime(float time) { currentTime = time; }
+    [[nodiscard]] float GetTime() const { return currentTime; }
+
 private:
     friend class boost::serialization::access;
     template<class Archive>

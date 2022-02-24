@@ -11,13 +11,18 @@
 class Undos {
 public:
     static void Add(Undo* undo) {
+        printf("Adding undo...\n");
         undos.emplace_back(undo);
     }
 
     static void UseLast() {
         if (undos.empty()) return;
-        printf("using undo...\n");
+        printf("Using undo...\n");
         undos.back()->Apply();
+        undos.pop_back();
+    }
+
+    static void PopLast() {
         undos.pop_back();
     }
 private:

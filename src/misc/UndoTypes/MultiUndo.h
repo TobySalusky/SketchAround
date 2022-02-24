@@ -5,7 +5,7 @@
 #ifndef SENIORRESEARCH_MULTIUNDO_H
 #define SENIORRESEARCH_MULTIUNDO_H
 
-#include "Undo.h"
+#include "../Undo.h"
 
 class MultiUndo : public Undo {
 public:

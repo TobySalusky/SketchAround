@@ -15,6 +15,16 @@
 #include "../vendor/imgui/imgui_internal.h"
 #include <string>
 
+#define COLOR_SEPARATOR ImColor(0.05f, 0.05f, 0.05f)
+#define COLOR_WINDOW_FOCUS_HIGHLIGHT ImColor(255, 122, 0)
+#define COLOR_WINDOW_BG ImColor(0.15f, 0.15f, 0.15f)
+#define COLOR_RED ImColor(1.0f, 0.0f, 0.0f)
+#define COLOR_BUTTON ImColor(0.3f, 0.3f, 0.3f)
+#define COLOR_BUTTON_HOVER ImColor(0.4f, 0.4f, 0.4f)
+#define COLOR_BUTTON_ACTIVE ImColor(0.5f, 0.5f, 0.5f)
+#define COLOR_CHECKBOX ImColor(0.5f, 0.5f, 0.5f)
+#define COLOR_CHECKBOX_HOVER ImColor(0.6f, 0.6f, 0.6f)
+#define COLOR_CHECKBOX_ACTIVE ImColor(0.7f, 0.7f, 0.7f)
 
 struct TimedPopup {
 
@@ -41,6 +51,7 @@ struct TimedPopup {
             ImGui::OpenPopup((text + "-popup").c_str());
         }
     }
+
 private:
     std::string text;
     float timeLeft;
@@ -71,6 +82,12 @@ public:
     }
 
     static void DelayControlTooltip(int CONTROL_CODE);
+
+    static void InnerWindowBorders();
+
+    static void BeginComponentWindow(const char* label) {
+        ImGui::Begin(label, nullptr, ImGuiWindowFlags_NoTitleBar);
+    }
 
 private:
     static ImVec4 RGB(int r, int g, int b);

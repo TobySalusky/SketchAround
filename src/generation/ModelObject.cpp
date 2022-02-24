@@ -55,6 +55,8 @@ void ModelObject::SetPoints(Enums::DrawMode drawMode, const Vec2List& newPoints)
 };
 
 void ModelObject::ReversePoints(Enums::DrawMode drawMode) {
+    Undos::Add(GenLineStateUndo(drawMode));
+
     Vec2List& points = GetPointsRefByMode(drawMode);
     SetPoints(drawMode, Linq::Select<Vec2, Vec2>(points, [&](const Vec2& _, int i) {
         return points[points.size() - 1 - i];
@@ -62,6 +64,8 @@ void ModelObject::ReversePoints(Enums::DrawMode drawMode) {
 }
 
 void ModelObject::FlipPoints(Enums::DrawMode drawMode, Enums::Direction direction) {
+    Undos::Add(GenLineStateUndo(drawMode));
+
     Vec2List& points = GetPointsRefByMode(drawMode);
     Vec2 avgPos = Util::AveragePos(points);
     if (direction == Enums::HORIZONTAL) SetPoints(drawMode, Linq::Select<Vec2, Vec2>(points, [=](const Vec2& vec) {
@@ -98,7 +102,10 @@ void ModelObject::EditCurrentLines(EditingInfo info) {
     };
 
     const auto BindTransformTriggerKey = [&](int controlCode, Enums::TransformationType mode) {
-        if (Controls::Check(controlCode)) info.editContext.StartTransform(mode, GenTransformStartInfo(info), points);
+        if (Controls::Check(controlCode)) {
+            Undos::Add(GenLineStateUndo(info.drawMode));
+            info.editContext.StartTransform(mode, GenTransformStartInfo(info), points);
+        }
     };
 
     BindTransformTriggerKey(CONTROLS_Drag, Enums::TRANSFORM_DRAG);
@@ -131,19 +138,6 @@ void ModelObject::EditCurrentLines(EditingInfo info) {
             DiffPoints(drawMode);
             UpdateMesh();
         }
-    }
-
-    if (input.mousePressed) {
-        if (mouseIsOnRect) {
-            Undos::Add(GenLineStateUndo(drawMode));
-            editContext.SetIsDrawing(true);
-        } else {
-            editContext.DisableDrawingForClick();
-        }
-    }
-
-    if (input.mouseUnpressed) {
-        editContext.SetIsDrawing(false);
     }
 
     if (editContext.IsTransformationActive()) {
@@ -224,7 +218,23 @@ void ModelObject::EditCurrentLines(EditingInfo info) {
             UpdateMesh();
         }
 
-    } else {
+    }
+
+    if (input.mousePressed) { // draw start undos
+        if (mouseIsOnRect) {
+            if (editContext.IsDrawingEnabledForClick()) {
+                Undos::Add(GenLineStateUndo(drawMode));
+                editContext.SetIsDrawing(true);
+            }
+        } else {
+            editContext.DisableDrawingForClick();
+        }
+    } else if (input.mouseUnpressed) {
+        editContext.SetIsDrawing(false);
+    }
+
+    if (!editContext.IsTransformationActive()) {
+
         if (input.mouseDown && editContext.IsDrawingEnabledForClick() && info.graphFocused) {
             bool mouseOnGUI = Util::VecIsNormalizedNP(info.onScreen);
             if (mouseOnGUI) {

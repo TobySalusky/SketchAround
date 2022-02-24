@@ -75,12 +75,6 @@ void CrossSectional::RenderGizmos2D(RenderInfo2D renderInfo) {
     }
 }
 
-void CrossSectional::ModeSetUI(Enums::DrawMode& drawMode) {
-    ModeSet("Bounds", Enums::DrawMode::MODE_PLOT, drawMode);
-    ModeSet("Central-Trace", Enums::DrawMode::MODE_GRAPH_Y, drawMode);
-    ModeSet("Cross-Section", Enums::DrawMode::MODE_CROSS_SECTION, drawMode);
-}
-
 void CrossSectional::ClearAll() {
     boundPoints.clear();
     centralPoints.clear();

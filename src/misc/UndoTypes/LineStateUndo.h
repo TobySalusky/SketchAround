@@ -6,18 +6,19 @@
 #define SENIORRESEARCH_LINESTATEUNDO_H
 
 
-#include "Undo.h"
-#include "../util/Util.h"
+#include "../Undo.h"
+#include "../../util/Util.h"
 
 class ModelObject;
 
 class LineStateUndo : public Undo {
 public:
-    LineStateUndo(ModelObject* modelObject, Enums::DrawMode drawMode, const Vec2List& lineState);
+    LineStateUndo(ModelObject* modelObject, Enums::DrawMode drawMode, const Vec2List& lineState, float time);
 
     ModelObject* modelObject;
     Enums::DrawMode drawMode;
     Vec2List lineState;
+    float time;
 
     void Apply() override;
     static void Initialize(const UndoersInfo& info);

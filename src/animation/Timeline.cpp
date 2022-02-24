@@ -275,8 +275,8 @@ void Timeline::GUI(const TimelineGUIInfo& info) {
 
 
         const auto dimens = Util::ToImVec(Util::ToVec(ImGui::GetContentRegionAvail()) - Vec2(8.0f, 6.0f));
-        ImGui::ImageButton((void *) (intptr_t) scene.GetTexture(), dimens, {0.0f, 1.0f}, {1.0f, 0.0f});
-        guiRect = ImGuiHelper::ItemRectRemovePadding(4.0f, 3.0f);
+        ImGui::ImageButton((void *) (intptr_t) scene.GetTexture(), dimens, {0.0f, 1.0f}, {1.0f, 0.0f}, 0);
+        guiRect = ImGuiHelper::ItemRectRemovePadding(0.0f, 0.0f);
         focused = ImGui::IsItemFocused();
 
         if (hasSelection && (input.Pressed(GLFW_KEY_J) || (input.mouseRightPressed && mouseOnGUI))) {
@@ -310,6 +310,7 @@ void Timeline::GUI(const TimelineGUIInfo& info) {
             }
             ImGui::EndPopup();
         }
+        ImGuiHelper::InnerWindowBorders();
     }
     ImGui::End();
 }

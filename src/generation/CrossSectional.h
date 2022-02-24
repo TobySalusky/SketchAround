@@ -17,7 +17,6 @@ class CrossSectional : public ModelObject {
     using ModelObject::ModelObject;
 public:
     void HyperParameterUI(const UIInfo& info) final;
-    void ModeSetUI(Enums::DrawMode& drawMode) final;
     void UpdateMesh() final;
 
     void ClearAll() override;
