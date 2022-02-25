@@ -50,15 +50,30 @@ void ImGuiHelper::Initialize(GLWindow& window) {
     style.Colors[ImGuiCol_SeparatorHovered] = COLOR_SEPARATOR;
     style.Colors[ImGuiCol_WindowBg] = COLOR_WINDOW_BG;
     style.Colors[ImGuiCol_MenuBarBg] = COLOR_RED;
-    style.Colors[ImGuiCol_TitleBg] = COLOR_RED;
-    style.Colors[ImGuiCol_MenuBarBg] = COLOR_RED;
-    style.Colors[ImGuiCol_TitleBgActive] = COLOR_RED;
-    style.Colors[ImGuiCol_TitleBgCollapsed] = COLOR_RED;
+
+    style.Colors[ImGuiCol_TitleBg] = COLOR_SEPARATOR;
+    style.Colors[ImGuiCol_TitleBgActive] = COLOR_SEPARATOR;
+    style.Colors[ImGuiCol_TitleBgCollapsed] = COLOR_SEPARATOR;
+
+//    style.Colors[ImGuiCol_NavHighlight] = COLOR_RED;
+//    style.Colors[ImGuiCol_NavWindowingDimBg] = COLOR_RED;
+//    style.Colors[ImGuiCol_NavWindowingHighlight] = COLOR_RED;
+
+    style.Colors[ImGuiCol_Tab] = COLOR_BUTTON;
+    style.Colors[ImGuiCol_TabActive] = COLOR_BUTTON_ACTIVE;
+    style.Colors[ImGuiCol_TabHovered] = COLOR_BUTTON_HOVER;
+    style.Colors[ImGuiCol_TabUnfocused] = COLOR_TAB_UNFOCUSED;
+    style.Colors[ImGuiCol_TabUnfocusedActive] = COLOR_TAB_UNFOCUSED_ACTIVE;
+
+    // >> collapsable headers
+//    style.Colors[ImGuiCol_Header] = COLOR_RED;
+//    style.Colors[ImGuiCol_HeaderActive] = COLOR_RED;
+//    style.Colors[ImGuiCol_HeaderHovered] = COLOR_RED;
     style.Colors[ImGuiCol_Button] = COLOR_BUTTON;
     style.Colors[ImGuiCol_ButtonActive] = COLOR_BUTTON_ACTIVE;
     style.Colors[ImGuiCol_ButtonHovered] = COLOR_BUTTON_HOVER;
-    style.Colors[ImGuiCol_CheckMark] = COLOR_WINDOW_FOCUS_HIGHLIGHT;
-    style.Colors[ImGuiCol_PopupBg] = COLOR_WINDOW_BG;
+    style.Colors[ImGuiCol_CheckMark] = COLOR_CHECKMARK;
+    style.Colors[ImGuiCol_PopupBg] = COLOR_POPUP_BG;
     style.Colors[ImGuiCol_Border] = COLOR_SEPARATOR;
     style.Colors[ImGuiCol_FrameBg] = COLOR_CHECKBOX;
     style.Colors[ImGuiCol_FrameBgActive] = COLOR_CHECKBOX_ACTIVE;
@@ -121,8 +136,9 @@ void ImGuiHelper::InnerWindowBorders() {
     ImDrawList& g = *ImGui::GetWindowDrawList();
     g.PushClipRect(pos, Add(pos, dimens), false);
     if (highlight) {
-        g.AddRect(Add(pos, {1.0f, 1.0f}), Add(Add(pos, dimens), {-1.0f, -1.0f}), COLOR_WINDOW_FOCUS_HIGHLIGHT, 0.0f, 0, 1.0f);
+        g.AddRect(Add(pos, {1.0f, 1.0f}), Add(Add(pos, dimens), {-1.0f, -1.0f}), COLOR_WINDOW_FOCUS_HIGHLIGHT, 3.0f, 0, 1.0f);
     }
     g.AddRect(pos, Add(pos, dimens), COLOR_SEPARATOR, 0.0f, 0, 1.0f);
+    g.AddRect(pos, Add(pos, dimens), COLOR_SEPARATOR, 3.0f, 0, 1.0f);
     g.PopClipRect();
 }

@@ -338,6 +338,8 @@ void ModelObject::DraggableGUI(const DraggableUIInfo& info) {
 
         ImGui::Checkbox("Visible", &visible);
 
+        ImGui::Separator();
+
         if (ImGui::Button("Copy")) {
             addObj(this->CopyRecursive());
             ImGui::CloseCurrentPopup();

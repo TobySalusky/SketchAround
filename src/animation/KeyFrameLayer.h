@@ -163,6 +163,14 @@ public:
         frames.push_back(frame);
     }
 
+    bool HasKeyFrameAtTime(float time) {
+        for (KeyFrame<T>& keyFrame : frames) {
+            if (keyFrame.time == time) return true;
+            if (keyFrame.time > time) return false;
+        }
+        return false;
+    }
+
     std::optional<KeyFrame<T>*> KeyFrameBelow(float time) {
         auto upper = std::upper_bound(frames.begin(), frames.end(), time,
                                       [](float value, const KeyFrame<T>& frame) {

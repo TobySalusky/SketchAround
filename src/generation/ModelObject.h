@@ -235,7 +235,8 @@ public:
     void TimelineDiffEulers(Timeline& timeline);
 
     Undo* GenLineStateUndo(Enums::DrawMode drawMode) {
-        return new LineStateUndo(this, drawMode, GetPointsRefByMode(drawMode), GetAnimatorPtr()->GetTime());
+        float currentTime = GetAnimatorPtr()->GetTime();
+        return new LineStateUndo(this, drawMode, GetAnimatorPtr()->HasKeyFrameAtTimeOnLayer(currentTime, drawMode) ? GetPointsRefByMode(drawMode) : Vec2List(), currentTime);
     }
 
     Undo* GenAllLineStateUndo() {

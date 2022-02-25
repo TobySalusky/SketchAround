@@ -22,9 +22,13 @@
 #define COLOR_BUTTON ImColor(0.3f, 0.3f, 0.3f)
 #define COLOR_BUTTON_HOVER ImColor(0.4f, 0.4f, 0.4f)
 #define COLOR_BUTTON_ACTIVE ImColor(0.5f, 0.5f, 0.5f)
+#define COLOR_CHECKMARK ImColor(0.1f, 0.1f, 0.1f)
 #define COLOR_CHECKBOX ImColor(0.5f, 0.5f, 0.5f)
 #define COLOR_CHECKBOX_HOVER ImColor(0.6f, 0.6f, 0.6f)
 #define COLOR_CHECKBOX_ACTIVE ImColor(0.7f, 0.7f, 0.7f)
+#define COLOR_TAB_UNFOCUSED ImColor(0.1f, 0.1f, 0.1f)
+#define COLOR_TAB_UNFOCUSED_ACTIVE ImColor(0.25f, 0.25f, 0.25f)
+#define COLOR_POPUP_BG ImColor(0.1f, 0.1f, 0.1f, 0.95f)
 
 struct TimedPopup {
 

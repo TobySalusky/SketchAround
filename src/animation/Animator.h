@@ -29,6 +29,10 @@ public:
     void SetTime(float time) { currentTime = time; }
     [[nodiscard]] float GetTime() const { return currentTime; }
 
+    bool HasKeyFrameAtTimeOnLayer(float time, Enums::DrawMode drawMode) {
+        return keyFrameLayers[drawMode].HasKeyFrameAtTime(time);
+    }
+
 private:
     friend class boost::serialization::access;
     template<class Archive>
