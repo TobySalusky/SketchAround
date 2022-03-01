@@ -141,3 +141,7 @@ Ray2D Function::GetRayAtLength(const std::vector<glm::vec2> &funcPoints, float a
     return {{-100.0f, -100.0f}, {-999.0f, -999.0f}};
 }
 
+Vec2 Function::GetPointAtLengthInefficiently(const std::vector<glm::vec2> &funcPoints, float arcLength) {
+    return GetRayAtLength(funcPoints, arcLength).origin;
+}
+

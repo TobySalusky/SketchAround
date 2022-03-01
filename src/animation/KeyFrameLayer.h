@@ -24,6 +24,19 @@ public:
         }
     };
 
+    void MoveFromTimeToTime(float initTime, float newTime) {
+        if (initTime == newTime) return;
+
+        if (HasKeyFrameAtTime(newTime)) {
+            printf("[Error]: overlapping keyframe during move -- ABORTING OPERATION\n");
+            return;
+        }
+
+        KeyFrame<T> frameCopy = ProcureKeyFrameAtTime(initTime);
+        RemoveAtTime(initTime);
+        frameCopy.time = newTime;
+        Insert(frameCopy);
+    }
 
     void RemoveAtTime(float time) {
         for (int i = 0; i < frames.size(); i++) {
@@ -205,6 +218,14 @@ private:
     void serialize(Archive & ar, const unsigned int version)
     {
         ar & frames;
+    }
+
+    KeyFrame<T> ProcureKeyFrameAtTime(float time) {
+        for (int i = 0; i < frames.size(); i++) {
+            if (frames[i].time == time) {
+                return frames[i];
+            }
+        }
     }
 };
 

@@ -48,6 +48,29 @@ struct TimelineSelection {
         TIMELINE_SELECTION_HANDLE_BOTH(DeleteFunc);
     }
 
+    void MoveAll(float amount) {
+        const auto MoveFunc = [=](const auto& val) {
+            for (int i = 0; i < val.frames.size(); i++) {
+                val.layer->MoveFromTimeToTime(val.frames[i]->time, (val.frames[i]->time) + amount);
+            }
+        };
+
+        TIMELINE_SELECTION_HANDLE_BOTH_CAPTURE(MoveFunc);
+    }
+
+    void MoveAllRounded(float amount) {
+        const auto MoveFunc = [=](const auto& val) {
+            for (int i = 0; i < val.frames.size(); i++) {
+
+                float time = val.frames[i]->time;
+                float newTime = std::round((time + amount) * 10.0f) / 10.0f;
+                val.layer->MoveFromTimeToTime(time, newTime);
+            }
+        };
+
+        TIMELINE_SELECTION_HANDLE_BOTH_CAPTURE(MoveFunc);
+    }
+
     void SetBlendID(int num) {
         if (num >= BlendModes::GetNextID()) {
             printf("Error: can not set to blend mode that doesn't exist!\n");
@@ -188,19 +211,25 @@ public:
 
     explicit Timeline(const GLWindow& window) : scene({window.GetBufferWidth(), window.GetBufferHeight()}), animator(nullptr) {}
 
+
+    static float RoundToTenth(float val);
+
 private:
     float playbackSpeed = 1.0f;
     bool playing = false;
     bool focused = false, lastFocused = false, selecting = false, hasSelection = false;
     bool pingPong = false;
+    bool keyFramePressed = false;
     Mesh2D canvas;
     RenderTarget scene;
     Rectangle guiRect;
     Animator* animator;
     Vec2 selectDragStart, selectDragEnd;
+    Vec2 dragKeyFramesStart;
     TimelineSelection selection;
 
     void TopToBottomLineAt(float x, glm::vec4 color, float width = 0.001f, bool trueTop = false);
+
 };
 
 

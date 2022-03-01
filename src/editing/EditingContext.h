@@ -150,8 +150,10 @@ public:
     void SetIsDrawing(bool isDrawing) { EditingContext::isDrawing = isDrawing; }
 
     [[nodiscard]] bool CanUndo() const {
-        return !IsDrawing() && !IsTransformationActive() && undoTimer <= 0.0f;
+        return !IsDrawing() && !IsTransformationActive();
     }
+
+    [[nodiscard]] bool CanUndoHold() const { return undoTimer <= 0.0f; }
 
     void UseUndo(bool initUndo) {
         undoTimer = initUndo ? undoTimerInitMax : undoTimerRegMax;

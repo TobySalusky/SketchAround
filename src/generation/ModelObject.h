@@ -30,6 +30,7 @@
 #include "../misc/Undo.h"
 #include "../misc/UndoTypes/LineStateUndo.h"
 #include "../misc/UndoTypes/MultiUndo.h"
+#include "../util/ImGuiHelper.h"
 #include <boost/serialization/access.hpp>
 
 class Timeline;
@@ -51,6 +52,7 @@ struct RenderInfo2D {
     glm::vec2 onScreen;
     GraphView& graphView;
     EditingContext& editContext;
+    Input& input;
 };
 
 struct MouseInputInfo {
@@ -253,9 +255,9 @@ public:
         else ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.2f, 0.3f, 0.4f, 1.0f});
         if (ImGui::Button(title)) drawMode = newDrawMode;
         ImGui::PopStyleColor(1);
-
         ImGui::SameLine();
         if (ImGui::Button((std::string("X##") + title).c_str())) {
+            Undos::Add(GenLineStateUndo(newDrawMode));
             GetPointsRefByMode(newDrawMode).clear();
             DiffPoints(newDrawMode);
             UpdateMesh();
@@ -281,7 +283,7 @@ protected:
 
     void RenderTransformationGizmos(RenderInfo2D info);
 
-    void AnimatableSliderValUpdateBound(const std::string& label, float* ptr, Timeline& timeline, float min = NAN, float max = NAN);
+    void AnimatableSliderValUpdateBound(const std::string& label, float* ptr, Timeline& timeline, float min = NAN, float max = NAN, float vSpeed = 0.025f);
 
     virtual ModelObject* CopyInternals() = 0;
 

@@ -24,6 +24,7 @@ public:
     static void Initialize(const UndoersInfo& info);
 private:
     static Enums::DrawMode* drawModeSetter;
+    static std::function<void(ModelObject*)> modelObjectSetter;
 };
 
 #endif //SENIORRESEARCH_LINESTATEUNDO_H

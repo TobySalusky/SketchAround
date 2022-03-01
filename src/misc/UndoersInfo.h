@@ -7,9 +7,13 @@
 
 
 #include "../Enums.h"
+#include <functional>
+
+class ModelObject;
 
 struct UndoersInfo {
     Enums::DrawMode* drawModeSetter;
+    std::function<void(ModelObject*)> modelObjectSetter;
 };
 
 

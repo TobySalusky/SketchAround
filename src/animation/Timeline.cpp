@@ -78,19 +78,41 @@ void Timeline::Update(const TimelineUpdateInfo& info) {
         }
     }
 
+
+
     // MOUSE INPUT ==============
-    if (mouseOnGUI && input.mousePressed) {
+    if (input.mousePressed) { // determine whether a keyframe itself was grabbed (for dragging)
+        Vec2 tempStart = selectDragStart;
+        Vec2 tempEnd = selectDragEnd;
+        Vec2 diff = {0.05f, 0.02f};
+        selectDragStart = tempStart - diff;
+        selectDragEnd = tempStart + diff;
+        keyFramePressed = GenTimelineSelection().CountKeyframes() > 0;
+
+        if (selection.CountKeyframes() == 0) {
+            printf("2\n");
+            selection = GenTimelineSelection();
+        }
+        selectDragStart = tempStart;
+        selectDragEnd = tempEnd;
+        dragKeyFramesStart = selectDragStart;
+    }
+
+    if (keyFramePressed) {
+        selecting = false;
+        hasSelection = true;
+        selectDragStart = mousePos;
+
+    } else if (mouseOnGUI && input.mousePressed && focused) {
+
         if (mousePos.y < 1.0f - selectAreaSize) {
-            if (focused) {
-                selecting = true;
-                hasSelection = false;
-                selectDragStart = mousePos;
-            }
+            selecting = true;
+            hasSelection = false;
+
+            selectDragStart = mousePos;
         } else {
-            if (focused) {
-                selecting = false;
-                hasSelection = false;
-            }
+            selecting = false;
+            hasSelection = false;
         }
     }
 
@@ -99,12 +121,40 @@ void Timeline::Update(const TimelineUpdateInfo& info) {
         if (selecting) {
             selectDragEnd = mousePos;
             selection = GenTimelineSelection();
+            printf("1\n");
         } else {
             // Time-picker ===
             if (mouseOnGUI) {
                 const float prevTime = animator->currentTime;
-                animator->currentTime = std::round(mousePos.x * 10.0f) / 10.0f;
+                animator->currentTime = RoundToTenth(mousePos.x);
                 if (animator->currentTime != prevTime) SampleAllAtTime(animator->currentTime);
+            }
+        }
+    }
+
+//    if (selecting && keyFramePressed) {
+//        Vec2 tempStart = selectDragStart;
+//        Vec2 diff = {0.05f, 0.02f};
+//        selectDragStart = tempStart - diff;
+//        selectDragEnd = tempStart + diff;
+//
+//        selection = GenTimelineSelection();
+//        hasSelection = true;
+//        selecting = false;
+//    }
+
+    if (selecting && input.mousePressed) { // FIXME: sus
+        if (glm::length(selectDragEnd - selectDragStart) <= 0.001f) {
+            Vec2 midpoint = selectDragStart;
+            Vec2 diff = {0.05f, 0.02f};
+            selectDragStart = midpoint - diff;
+            selectDragEnd = midpoint + diff;
+
+            selection = GenTimelineSelection();
+            printf("3\n");
+            if (selection.CountKeyframes() > 0) {
+                hasSelection = true;
+                selecting = false;
             }
         }
     }
@@ -118,7 +168,19 @@ void Timeline::Update(const TimelineUpdateInfo& info) {
         }
         selecting = false;
         selection = GenTimelineSelection();
+        printf("4\n");
         hasSelection = selection.CountKeyframes() > 0;
+    }
+
+    if (input.mouseUnpressed) {
+        keyFramePressed = false;
+    }
+
+    if (input.mouseDown && keyFramePressed) {
+        // TODO: move
+        float diff = RoundToTenth((mousePos - dragKeyFramesStart).x);
+        selection.MoveAllRounded(diff); // FIXME: errors out, dragging back on second of 2 in row
+        dragKeyFramesStart.x += diff;
     }
     // =============================
 
@@ -380,5 +442,6 @@ TimelineSelection Timeline::GenTimelineSelection() {
     return newSelection;
 }
 
-
-
+float Timeline::RoundToTenth(float val) {
+    return std::round(val * 10.0f) / 10.0f;
+}

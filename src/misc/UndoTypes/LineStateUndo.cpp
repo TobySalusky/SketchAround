@@ -6,12 +6,15 @@
 #include "../../generation/ModelObject.h"
 
 Enums::DrawMode* LineStateUndo::drawModeSetter = nullptr;
+std::function<void(ModelObject*)> LineStateUndo::modelObjectSetter = {};
 
 void LineStateUndo::Initialize(const UndoersInfo &info) {
     drawModeSetter = info.drawModeSetter;
+    modelObjectSetter = info.modelObjectSetter;
 }
 
 void LineStateUndo::Apply() {
+    modelObjectSetter(modelObject);
     modelObject->GetAnimatorPtr()->SetTime(time); // temporal continuity!
     Vec2List& points = modelObject->GetPointsRefByMode(drawMode);
     points.clear();

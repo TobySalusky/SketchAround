@@ -91,7 +91,6 @@ int main() {
     GLWindow window(INIT_WIDTH, INIT_HEIGHT);
     Input* input = window.GetInput();
     Controls::Initialize(input);
-    Undo::InitializeUndoers({&drawMode});
 
     GLuint WIDTH  = INIT_WIDTH;
     GLuint HEIGHT = INIT_HEIGHT;
@@ -573,6 +572,8 @@ int main() {
         enteringGuiScreen = false;
     };
 
+    Undo::InitializeUndoers({&drawMode, SetModelObject});
+
     while (!window.ShouldClose()) // >> UPDATE LOOP ======================================
     {
         WIDTH  = window.GetWidth();
@@ -744,7 +745,7 @@ int main() {
 
                 if (!timeline.IsPlaying()) timeline.RenderOnionSkin(plot, drawMode);
 
-                modelObject->Render2D({plot, drawMode, onScreen, graphView, editContext});
+                modelObject->Render2D({plot, drawMode, onScreen, graphView, editContext, *input});
 
                 plot.ImmediateClearingRender();
 
@@ -834,12 +835,6 @@ int main() {
                             ImGui::GetIO().Framerate);
 
                 modelObject->AuxParameterUI({timeline});
-
-                if (ImGui::CollapsingHeader("Graph View")) {
-                    ImGui::SliderFloat("centerX", &graphView.centerAt.x, -10.0f, 10.0f);
-                    ImGui::SliderFloat("centerY", &graphView.centerAt.y, -10.0f, 10.0f);
-                    ImGui::SliderFloat("scale", &graphView.scale, 0.1f, 10.0f);
-                }
 
                 modelObject->HyperParameterUI({timeline});
 
@@ -968,7 +963,7 @@ int main() {
 
             if (editContext.CanUndo()) { // Undo-ing
                 bool initUndo = Controls::Check(CONTROLS_Undo);
-                bool holdUndo = Controls::Check(CONTROLS_UndoHold);
+                bool holdUndo = Controls::Check(CONTROLS_UndoHold) && editContext.CanUndoHold();
                 if (initUndo || holdUndo) {
                     editContext.UseUndo(initUndo);
                     Undos::UseLast();

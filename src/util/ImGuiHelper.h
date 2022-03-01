@@ -15,20 +15,32 @@
 #include "../vendor/imgui/imgui_internal.h"
 #include <string>
 
-#define COLOR_SEPARATOR ImColor(0.05f, 0.05f, 0.05f)
+#define TRIP(a) a, a, a
+
+#define COLOR_INVIS ImColor(0.0f, 0.0f, 0.0f, 0.0f)
+#define COLOR_INVIS_HOVER_HIGHLIGHT ImColor(1.0f, 1.0f, 1.0f, 0.15f)
+#define COLOR_INVIS_ACTIVE_HIGHLIGHT ImColor(1.0f, 1.0f, 1.0f, 0.3f)
+#define COLOR_SEPARATOR ImColor(TRIP(0.05f))
 #define COLOR_WINDOW_FOCUS_HIGHLIGHT ImColor(255, 122, 0)
-#define COLOR_WINDOW_BG ImColor(0.15f, 0.15f, 0.15f)
+#define COLOR_WINDOW_BG ImColor(TRIP(0.20f))
 #define COLOR_RED ImColor(1.0f, 0.0f, 0.0f)
-#define COLOR_BUTTON ImColor(0.3f, 0.3f, 0.3f)
-#define COLOR_BUTTON_HOVER ImColor(0.4f, 0.4f, 0.4f)
-#define COLOR_BUTTON_ACTIVE ImColor(0.5f, 0.5f, 0.5f)
-#define COLOR_CHECKMARK ImColor(0.1f, 0.1f, 0.1f)
-#define COLOR_CHECKBOX ImColor(0.5f, 0.5f, 0.5f)
-#define COLOR_CHECKBOX_HOVER ImColor(0.6f, 0.6f, 0.6f)
-#define COLOR_CHECKBOX_ACTIVE ImColor(0.7f, 0.7f, 0.7f)
+#define COLOR_BUTTON ImColor(TRIP(0.35f))
+#define COLOR_BUTTON_HOVER ImColor(TRIP(0.4f))
+#define COLOR_BUTTON_ACTIVE ImColor(TRIP(0.5f))
+#define COLOR_CHECKMARK ImColor(TRIP(0))
+#define COLOR_CHECKBOX ImColor(TRIP(0.5f))
+#define COLOR_CHECKBOX_HOVER ImColor(0.65f, 0.6f, 0.55f)
+#define COLOR_CHECKBOX_ACTIVE ImColor(0.75f, 0.7f, 0.65f)
 #define COLOR_TAB_UNFOCUSED ImColor(0.1f, 0.1f, 0.1f)
 #define COLOR_TAB_UNFOCUSED_ACTIVE ImColor(0.25f, 0.25f, 0.25f)
 #define COLOR_POPUP_BG ImColor(0.1f, 0.1f, 0.1f, 0.95f)
+#define COLOR_DRAG ImColor(TRIP(0.05f))
+#define COLOR_DRAG_ACTIVE ImColor(TRIP(0.15f))
+#define COLOR_DRAG_TEXT ImColor(255, 122, 0)
+#define COLOR_ANIMATE_KEYFRAME_JUMPER_TEXT ImColor(43, 161, 255)
+#define COLOR_HEADER ImColor(TRIP(0.08f))
+#define COLOR_HEADER_HOVER ImColor(TRIP(0.10f))
+#define COLOR_HEADER_ACTIVE ImColor(TRIP(0.12f))
 
 struct TimedPopup {
 
@@ -91,6 +103,21 @@ public:
 
     static void BeginComponentWindow(const char* label) {
         ImGui::Begin(label, nullptr, ImGuiWindowFlags_NoTitleBar);
+    }
+
+    static void ValDrag(const char* label, float* fPtr, float vSpeed = 0.025f) {
+        ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(COLOR_INVIS));
+        ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4(COLOR_INVIS_HOVER_HIGHLIGHT));
+        ImGui::PushStyleColor(ImGuiCol_FrameBgActive, ImVec4(COLOR_INVIS_ACTIVE_HIGHLIGHT));
+        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(COLOR_DRAG_TEXT));
+        ImGui::SetNextItemWidth(80.0f);
+//        std::string idStr = "##" + label;
+        ImGui::DragFloat((std::string("##") + label).c_str(), fPtr, vSpeed);
+        ImGui::PopStyleColor(4);
+
+        if (ImGui::IsItemHovered()) {
+            ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeEW);
+        }
     }
 
 private:

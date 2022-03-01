@@ -14,10 +14,11 @@ void CrossSectional::HyperParameterUI(const UIInfo& info) {
         if (ImGui::IsItemActive())
             UpdateMesh();
     };
+
+    AnimatableSliderValUpdateBound("sample-length", &sampleLength, info.timeline, 0.01f, 0.5f, 0.0025f);
+
     ImGui::SliderInt("count-per-ring", &countPerRing, 3, 40);
     BindUIMeshUpdate();
-
-    AnimatableSliderValUpdateBound("sample-length", &sampleLength, info.timeline, 0.01f, 0.5f);
 
     if (ImGui::Checkbox("wrap-start", &wrapStart)) {
         UpdateMesh();

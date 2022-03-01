@@ -21,6 +21,7 @@ struct RevolveData {
     const Vec2List& graphY;
     const Vec2List& graphZ;
     const Vec2List& crossSectionPoints;
+    std::optional<std::function<Vec2List(float)>> crossSectionSnapPointFunc;
 };
 
 class Revolver {

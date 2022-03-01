@@ -8,15 +8,23 @@
 #include "../util/Util.h"
 
 struct NearestInfo {
+    float partialArcLength;
+    float totalArcLength;
+    Vec2 minPoint;
+    int index;
+};
 
+struct DistanceToLineSegmentInfo {
+    float distance;
+    Vec2 projection;
 };
 
 class Collider {
 public:
-    static NearestInfo NearestLineSegmentToPoint(Vec2 p, const Vec2List& vec);
+    static NearestInfo NearestArcLengthToPoint(Vec2 p, const Vec2List& vec);
 
 private:
-    static float DistanceToLineSegment(Vec2 p, Vec2 v1, Vec2 v2);
+    static DistanceToLineSegmentInfo DistanceToLineSegment(Vec2 p, Vec2 v1, Vec2 v2);
 };
 
 

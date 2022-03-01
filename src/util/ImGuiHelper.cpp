@@ -44,6 +44,8 @@ void ImGuiHelper::Initialize(GLWindow& window) {
     style.GrabRounding = 3.0f;
     style.PopupRounding = 3.0f;
     style.PopupBorderSize = 2.0f;
+
+
     style.Colors[ImGuiCol_WindowBg] = {back, back, back, 1.0f};
     style.Colors[ImGuiCol_Separator] = COLOR_SEPARATOR;
     style.Colors[ImGuiCol_SeparatorActive] = COLOR_SEPARATOR;
@@ -66,18 +68,22 @@ void ImGuiHelper::Initialize(GLWindow& window) {
     style.Colors[ImGuiCol_TabUnfocusedActive] = COLOR_TAB_UNFOCUSED_ACTIVE;
 
     // >> collapsable headers
-//    style.Colors[ImGuiCol_Header] = COLOR_RED;
-//    style.Colors[ImGuiCol_HeaderActive] = COLOR_RED;
-//    style.Colors[ImGuiCol_HeaderHovered] = COLOR_RED;
+    style.Colors[ImGuiCol_Header] = COLOR_HEADER;
+    style.Colors[ImGuiCol_HeaderActive] = COLOR_HEADER_HOVER;
+    style.Colors[ImGuiCol_HeaderHovered] = COLOR_HEADER_ACTIVE;
     style.Colors[ImGuiCol_Button] = COLOR_BUTTON;
     style.Colors[ImGuiCol_ButtonActive] = COLOR_BUTTON_ACTIVE;
     style.Colors[ImGuiCol_ButtonHovered] = COLOR_BUTTON_HOVER;
-    style.Colors[ImGuiCol_CheckMark] = COLOR_CHECKMARK;
     style.Colors[ImGuiCol_PopupBg] = COLOR_POPUP_BG;
     style.Colors[ImGuiCol_Border] = COLOR_SEPARATOR;
+
+    style.Colors[ImGuiCol_CheckMark] = COLOR_CHECKMARK;
     style.Colors[ImGuiCol_FrameBg] = COLOR_CHECKBOX;
     style.Colors[ImGuiCol_FrameBgActive] = COLOR_CHECKBOX_ACTIVE;
     style.Colors[ImGuiCol_FrameBgHovered] = COLOR_CHECKBOX_HOVER;
+
+    style.Colors[ImGuiCol_SliderGrab] = COLOR_DRAG;
+    style.Colors[ImGuiCol_SliderGrabActive] = COLOR_DRAG_ACTIVE;
 //    style.Colors[ImGuiCol_NavWindowingHighlight] = {1.0f, 0.0f, 0.0f, 1.0f};
 //    style.Colors[ImGuiCol_NavHighlight] = {1.0f, 0.0f, 0.0f, 1.0f};
 //    style.Colors[ImGuiCol_NavWindowingDimBg] = {1.0f, 0.0f, 0.0f, 1.0f};

@@ -14,6 +14,7 @@
 #include "../graphing/Function.h"
 #include "../util/Util.h"
 #include "Sampler.h"
+#include "LineAnalyzer.h"
 
 
 // TODO: wrap end faces!!! (currently hollow)
@@ -25,15 +26,22 @@ std::tuple<std::vector<glm::vec3>, std::vector<unsigned int>> Revolver::Revolve(
     const bool hasGraphZ = !revolveData.graphZ.empty();
     const int countPerRing = revolveData.countPerRing;
 
-    bool hasCrossSection = revolveData.crossSectionPoints.size() >= 3;
+    bool hasVariableCrossSection = revolveData.crossSectionSnapPointFunc.has_value();
+
+    bool hasStaticCrossSection = revolveData.crossSectionPoints.size() >= 3;
     Vec2List sampledCrossSection;
-    if (hasCrossSection) {
+    if (hasStaticCrossSection && !hasVariableCrossSection) {
         sampledCrossSection = Sampler::SampleTo(revolveData.crossSectionPoints, countPerRing);
     }
 
+    bool hasCrossSection = hasVariableCrossSection || hasStaticCrossSection;
 
+    bool requireArcLength = hasVariableCrossSection;
+    float currentArcLength = 0.0f;
+    float totalArcLength = requireArcLength ? LineAnalyzer::FullLength(points) : 0.0f;
 
     const auto GenVec = [&](int i, const Vec2& point){
+
         if (hasCrossSection) {
             Vec2 vec2D = sampledCrossSection[i] * point.y * revolveData.scaleRadius;
             return Vec4(0.0f, vec2D.y, vec2D.x, 1.0f);
@@ -43,7 +51,15 @@ std::tuple<std::vector<glm::vec3>, std::vector<unsigned int>> Revolver::Revolve(
         return rot * glm::vec4(0.0f, point.y * revolveData.scaleRadius, 0.0f, 1.0f);
     };
 
-    for (const auto &point : points) {
+    for (int i = 0; i < points.size(); i++) {
+        const auto& point = points[i];
+        if (requireArcLength && i > 0) {
+            currentArcLength += glm::length(point - points[i - 1]);
+        }
+        if (hasVariableCrossSection) { // TODO: optimize (cache?) incredibly intensive!!!
+            sampledCrossSection = Sampler::SampleTo(revolveData.crossSectionSnapPointFunc.value()(currentArcLength / totalArcLength), countPerRing);
+        }
+
         float translateY = !hasGraphY ? 0 : Function::GetY(revolveData.graphY, point.x);
         float angleLeanY = !hasGraphY ? 0 : Function::GetAverageRadians(revolveData.graphY, point.x, 5);
 

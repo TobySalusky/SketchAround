@@ -12,6 +12,7 @@
 #include "../animation/Timeline.h"
 #include "../util/Controls.h"
 #include "../misc/Undos.h"
+#include "../misc/GuiStyle.h"
 
 int ModelObject::nextUniqueID = 0;
 
@@ -419,9 +420,9 @@ ModelObject *ModelObject::CopyRecursive() {
 
 
 
-void ModelObject::AnimatableSliderValUpdateBound(const std::string& label, float* ptr, Timeline& timeline, float min, float max) {
+void ModelObject::AnimatableSliderValUpdateBound(const std::string& label, float* ptr, Timeline& timeline, float min, float max, float vSpeed) {
     bool animated = timeline.HasFloatLayer(label);
-    ImGui::Checkbox(("##" + label).c_str(), &animated);
+    ImGui::Checkbox(label.c_str(), &animated);
     if (ImGui::IsItemClicked()) {
         if (!animated) {
             timeline.AddFloatLayer(label, *ptr);
@@ -433,11 +434,7 @@ void ModelObject::AnimatableSliderValUpdateBound(const std::string& label, float
     bool hasMin = !std::isnan(min), hasMax = !std::isnan(max);
 
     ImGui::SameLine();
-    if (hasMin && hasMax) {
-        ImGui::SliderFloat(label.c_str(), ptr, min, max);
-    } else {
-        ImGui::DragFloat(label.c_str(), ptr, 0.025f);
-    }
+    ImGuiHelper::ValDrag(label.c_str(), ptr, vSpeed);
 
     if (ImGui::IsItemActive()) {
         if (hasMin) *ptr = std::max(min, *ptr);
@@ -447,6 +444,33 @@ void ModelObject::AnimatableSliderValUpdateBound(const std::string& label, float
             timeline.UpdateFloat(label, *ptr);
         }
         UpdateMesh();
+    }
+
+    if (animated) {
+
+        GuiStyle style {{
+            {ImGuiCol_Button, COLOR_INVIS},
+            {ImGuiCol_ButtonHovered, COLOR_INVIS_HOVER_HIGHLIGHT},
+            {ImGuiCol_ButtonActive, COLOR_INVIS_ACTIVE_HIGHLIGHT},
+            {ImGuiCol_Text, COLOR_ANIMATE_KEYFRAME_JUMPER_TEXT},
+        }};
+
+        constexpr float margin = 8.0f;
+        ImGui::SameLine();
+        if (ImGui::Button(("<##" + label).c_str())) {
+
+        }
+        
+        ImGui::SameLine();
+        ImGui::SetCursorPosX(ImGui::GetCursorPosX() - margin);
+        if (ImGui::Button(("O##" + label).c_str())) {
+
+        }
+        ImGui::SameLine();
+        ImGui::SetCursorPosX(ImGui::GetCursorPosX() - margin);
+        if (ImGui::Button((">##" + label).c_str())) {
+
+        }
     }
 }
 

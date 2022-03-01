@@ -10,6 +10,7 @@
 #include "../util/Linq.h"
 #include "LineAnalyzer.h"
 #include "../graphing/Function.h"
+#include "Collider.h"
 
 void Lathe::HyperParameterUI(const UIInfo& info) {
     ImGui::Text("1: %lu; 2: %lu; 3: %lu; 4: %lu", plottedPoints.size(), graphedPointsY.size(), graphedPointsZ.size(), crossSectionPoints.size());
@@ -29,11 +30,11 @@ void Lathe::HyperParameterUI(const UIInfo& info) {
 
     AnimatableSliderValUpdateBound("lean-scalar", &leanScalar, timeline, 0.0f, 1.0f);
 
-    // TODO:
+    AnimatableSliderValUpdateBound("sample-length", &sampleLength, timeline, 0.01f, 0.5f, 0.0025f);
+
     ImGui::SliderInt("count-per-ring", &countPerRing, 3, 40);
     BindUIMeshUpdate();
 
-    AnimatableSliderValUpdateBound("sample-length", &sampleLength, timeline, 0.01f, 0.5f);
 
     if (ImGui::Checkbox("wrap-start", &wrapStart)) {
         UpdateMesh();
@@ -60,6 +61,13 @@ std::tuple<std::vector<glm::vec3>, std::vector<GLuint>> Lathe::GenMeshTuple(Topo
                 .graphY=graphedPointsY,
                 .graphZ=graphedPointsZ,
                 .crossSectionPoints=crossSectionPoints,
+                .crossSectionSnapPointFunc= (
+                        crossSectionSnapPoints.frames.empty() ?
+                        std::nullopt :
+                        std::optional<std::function<Vec2List(float)>>([&](float t) {
+                            return crossSectionSnapPoints.GetAnimatedVal(t);
+                        })
+                )
         }, outTopologyData);
     }
     return {{}, {}};
@@ -81,6 +89,43 @@ void Lathe::RenderGizmos2D(RenderInfo2D renderInfo) {
 
     if (renderInfo.drawMode == Enums::MODE_GRAPH_Y) FunctionalAngleGizmo(renderInfo, graphedPointsY);
     else if (renderInfo.drawMode == Enums::MODE_GRAPH_Z) FunctionalAngleGizmo(renderInfo, graphedPointsZ);
+
+
+    const Vec2 onCanvas = renderInfo.graphView.MousePosNPToCoords(renderInfo.onScreen);
+    if (plottedPoints.size() >= 2) {
+        const bool hoverRender = renderInfo.drawMode == Enums::MODE_PLOT || renderInfo.drawMode == Enums::MODE_CROSS_SECTION;
+
+        NearestInfo nearest = Collider::NearestArcLengthToPoint(onCanvas, plottedPoints);
+        const float nearestProportion = nearest.partialArcLength / nearest.totalArcLength;
+
+        if (renderInfo.input.Pressed(GLFW_KEY_5) && crossSectionPoints.size() >= 2) { // add point
+            crossSectionSnapPoints.Insert({crossSectionPoints, nearestProportion});
+            UpdateMesh();
+        }
+
+        const RGBA allCrossSectionSnapPointsColor = {1.0f, 0.5f, 0.0f, 1.0f};
+        const RGBA newCrossSectionSnapPointColor = {1.0f, 0.0f, 0.0f, 1.0f};
+
+        if (!crossSectionSnapPoints.frames.empty()) {
+            for (const auto& crossSectionSnapFrame : crossSectionSnapPoints.frames) { // rendering for each
+                // TODO: point
+                const Vec2 point = Function::GetPointAtLengthInefficiently(plottedPoints,
+               crossSectionSnapFrame.time * nearest.totalArcLength);
+                renderInfo.plot.AddPolygonOutline(point,
+                        0.01f, 10, allCrossSectionSnapPointsColor);
+                renderInfo.plot.AddLines(crossSectionSnapFrame.val, {0.5f, 0.4f, 0.8f, 0.3f}, 0.005f);
+            }
+            const RGBA currVariableCrossSectionColor = {0.9f, 0.4f, 0.8f, 0.6f};
+            if (hoverRender) {
+                renderInfo.plot.AddLines(crossSectionSnapPoints.GetAnimatedVal(nearestProportion), currVariableCrossSectionColor);
+            }
+        }
+
+        if (hoverRender) {
+            renderInfo.plot.AddPolygonOutline(nearest.minPoint, 0.01f, 10, newCrossSectionSnapPointColor);
+        }
+    }
+
 
 //    if (plottedPoints.size() >= 2) { // tangent TEST gizmos
 //        const float step = 0.01f;

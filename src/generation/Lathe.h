@@ -11,7 +11,9 @@
 #include <boost/serialization/vector.hpp>
 #include <boost/serialization/version.hpp>
 #include <boost/serialization/split_member.hpp>
+#include <vector>
 #include "ModelObject.h"
+#include "CrossSectionSnapPoint.h"
 
 class Lathe : public ModelObject {
     using ModelObject::ModelObject;
@@ -58,6 +60,7 @@ private:
         ar & graphedPointsY;
         ar & graphedPointsZ;
         ar & crossSectionPoints;
+        if (version >= 1) ar & crossSectionSnapPoints;
     }
 
     float scaleRadius = 1.0f, scaleZ = 1.0f, scaleY = 1.0f, leanScalar = 0.25f;
@@ -71,12 +74,16 @@ private:
     Vec2List graphedPointsZ;
     Vec2List crossSectionPoints;
 
+    KeyFrameLayer<Vec2List> crossSectionSnapPoints;
+
     RGBA plotColor = {0.0f, 0.0f, 0.0f, 1.0f};
     RGBA graphColorY = {0.0f, 0.0f, 1.0f, 1.0f};
     RGBA graphColorZ = {0.0f, 1.0f, 0.0f, 1.0f};
 
     ModelObject* CopyInternals() final;
 };
+BOOST_CLASS_VERSION(Lathe, 1)
+
 
 
 #endif //SENIORRESEARCH_LATHE_H

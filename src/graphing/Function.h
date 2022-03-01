@@ -15,6 +15,9 @@ public:
     static float GetY(const std::vector<glm::vec2>& funcPoints, float x);
     static Vec2 GetTangent(const std::vector<glm::vec2>& funcPoints, float x);
     static Vec2 GetTangentAtLength(const std::vector<glm::vec2>& funcPoints, float arcLength);
+
+    static Vec2 GetPointAtLengthInefficiently(const std::vector<glm::vec2>& funcPoints, float arcLength);
+
     static Ray2D GetRayAtLength(const std::vector<glm::vec2>& funcPoints, float arcLength);
     static Vec2List GetAvgTangentsAlongLength(const std::vector<glm::vec2>& funcPoints, float lengthPer, int count);
     static float GetAverageRadians(const std::vector<glm::vec2>& funcPoints, float x, int count);
