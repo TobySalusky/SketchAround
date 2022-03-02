@@ -65,36 +65,27 @@ struct TimelineSelection {
         TIMELINE_SELECTION_HANDLE_BOTH(DeleteFunc);
     }
 
-    bool MoveAllRounded(float amount) {
-
-        DeleteAll();
-        printf("%f e", amount);
-
-
-        bool valid = true;
-        const auto CheckFunc = [&](const auto& val) {
-            for (auto* frame : val.frames) {
-                const float newTime = std::round((frame->time + amount) * 10.0f) / 10.0f;
-                auto copy = *frame;
-
-                val.layer->HasKeyFrameAtTime(newTime);
+    void MoveAll(float amount) {
+        const auto MoveFunc = [=](const auto& val) {
+            for (int i = 0; i < val.frames.size(); i++) {
+                val.layer->MoveFromTimeToTime(val.frames[i]->time, (val.frames[i]->time) + amount);
             }
         };
-        TIMELINE_SELECTION_HANDLE_BOTH_CAPTURE(CheckFunc);
-        printf("e");
 
-        const auto InsertFunc = [&](const auto& val) {
-            for (auto* frame : val.frames) {
-                const float newTime = std::round((frame->time + amount) * 10.0f) / 10.0f;
-//                frame->time = valid ? newTime : frame->time;
-//                val.layer->Insert(*frame);
+        TIMELINE_SELECTION_HANDLE_BOTH_CAPTURE(MoveFunc);
+    }
+
+    void MoveAllRounded(float amount) {
+        const auto MoveFunc = [=](const auto& val) {
+            for (int i = 0; i < val.frames.size(); i++) {
+
+                float time = val.frames[i]->time;
+                float newTime = std::round((time + amount) * 10.0f) / 10.0f;
+                val.layer->MoveFromTimeToTime(time, newTime);
             }
         };
-        TIMELINE_SELECTION_HANDLE_BOTH_CAPTURE(InsertFunc);
-        printf("e\n");
 
-
-        return valid;
+        TIMELINE_SELECTION_HANDLE_BOTH_CAPTURE(MoveFunc);
     }
 
     void SetBlendID(int num) {
