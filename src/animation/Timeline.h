@@ -38,6 +38,23 @@ struct TimelineSelection {
 
     std::vector<std::variant<KeyFrameRowSelection<Vec2List>, KeyFrameRowSelection<float>>> rowSelections;
 
+    bool CrossCompare(TimelineSelection& other) {
+        bool returnVal = false;
+
+        const auto CompareFunc = [&](const auto& val) {
+            for (int i = 0; i < val.frames.size(); i++) {
+                if (other.ContainsKeyframe(val.frames[i])) {
+                    returnVal = true;
+                    break;
+                }
+            }
+        };
+
+        TIMELINE_SELECTION_HANDLE_BOTH_CAPTURE(CompareFunc);
+
+        return returnVal;
+    }
+
     void DeleteAll() {
         const auto DeleteFunc = [](const auto& val) {
             for (int i = val.frames.size() - 1; i >= 0; i--) {
@@ -227,6 +244,8 @@ private:
     Vec2 selectDragStart, selectDragEnd;
     Vec2 dragKeyFramesStart;
     TimelineSelection selection;
+    bool dragging;
+    float lastDragDiff;
 
     void TopToBottomLineAt(float x, glm::vec4 color, float width = 0.001f, bool trueTop = false);
 
