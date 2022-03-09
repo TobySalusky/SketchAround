@@ -16,7 +16,7 @@ void ImGuiHelper::Initialize(GLWindow& window) {
     ImGui::CreateContext();
 
     ImGuiIO& io = ImGui::GetIO(); (void)io;
-    io.Fonts->AddFontFromFileTTF("../assets/fonts/JetBrainsMono-Regular.ttf", 18);
+    io.Fonts->AddFontFromFileTTF("fonts/JetBrainsMono-Regular.ttf", 18);
 
 
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;

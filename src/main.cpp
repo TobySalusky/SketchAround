@@ -5,44 +5,44 @@
 #include <string>
 #include <fstream>
 
-#include "src/vendor/imgui/imgui.h"
-#include "src/vendor/glm/glm.hpp"
+#include "vendor/imgui/imgui.h"
+#include "vendor/glm/glm.hpp"
 
 #define GLM_SWIZZLE
-#include "src/vendor/glm/gtc/type_ptr.hpp"
+#include "vendor/glm/gtc/type_ptr.hpp"
 
-#include "src/vendor/glm/gtx/vec_swizzle.hpp"
-#include "src/gl/shaders/Shader.h"
-#include "src/gl/GLWindow.h"
-#include "src/gl/Mesh.h"
-#include "src/generation/Revolver.h"
-#include "src/util/ImGuiHelper.h"
-#include "src/gl/Camera.h"
-#include "src/gl/Light.h"
-#include "src/generation/Sampler.h"
-#include "src/gl/Texture.h"
-#include "src/gl/Mesh2D.h"
-#include "src/gl/shaders/Shader2D.h"
-#include "src/gl/RenderTarget.h"
-#include "src/gl/Material.h"
-#include "src/graphing/Function.h"
-#include "src/graphing/GraphView.h"
-#include "src/generation/ModelObject.h"
-#include "src/generation/CrossSectionTracer.h"
+#include "vendor/glm/gtx/vec_swizzle.hpp"
+#include "gl/shaders/Shader.h"
+#include "gl/GLWindow.h"
+#include "gl/Mesh.h"
+#include "generation/Revolver.h"
+#include "util/ImGuiHelper.h"
+#include "gl/Camera.h"
+#include "gl/Light.h"
+#include "generation/Sampler.h"
+#include "gl/Texture.h"
+#include "gl/Mesh2D.h"
+#include "gl/shaders/Shader2D.h"
+#include "gl/RenderTarget.h"
+#include "gl/Material.h"
+#include "graphing/Function.h"
+#include "graphing/GraphView.h"
+#include "generation/ModelObject.h"
+#include "generation/CrossSectionTracer.h"
 
-#include "src/util/Includes.h"
-#include "src/generation/Lathe.h"
-#include "src/generation/CrossSectional.h"
-#include "src/misc/Undo.h"
-#include "src/gl/MeshUtil.h"
-#include "src/animation/Timeline.h"
-#include "src/util/Rectangle.h"
-#include "src/gl/Display3DContext.h"
-#include "src/misc/Undos.h"
-#include "src/misc/Serialization.h"
-#include "src/util/Controls.h"
-#include "src/gl/TiledTextureAtlas.h"
-#include "src/exporting/ObjExporter.h"
+#include "util/Includes.h"
+#include "generation/Lathe.h"
+#include "generation/CrossSectional.h"
+#include "misc/Undo.h"
+#include "gl/MeshUtil.h"
+#include "animation/Timeline.h"
+#include "util/Rectangle.h"
+#include "gl/Display3DContext.h"
+#include "misc/Undos.h"
+#include "misc/Serialization.h"
+#include "util/Controls.h"
+#include "gl/TiledTextureAtlas.h"
+#include "exporting/ObjExporter.h"
 
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
@@ -86,6 +86,7 @@ void DragDropModelObject() {
 
 // The MAIN function, from here we start the application and run the game loop
 int main() {
+
     GraphView graphView;
 
     GLWindow window(INIT_WIDTH, INIT_HEIGHT);
@@ -99,13 +100,13 @@ int main() {
 
     ImGuiHelper::Initialize(window);
 
-    Shader shader = Shader::Read("../assets/shaders/shader.vert", "../assets/shaders/shader.frag");
+    Shader shader = Shader::Read("shaders/shader.vert", "shaders/shader.frag");
 
     // 3D-SHADER
-    Shader3D shader3D = Shader3D::Read("../assets/shaders/shader.vert", "../assets/shaders/shader.frag");
+    Shader3D shader3D = Shader3D::Read("shaders/shader.vert", "shaders/shader.frag");
 
     // 2D-SHADER
-    Shader2D shader2D = Shader2D::Read("../assets/shaders/shader2D.vert", "../assets/shaders/shader2D.frag");
+    Shader2D shader2D = Shader2D::Read("shaders/shader2D.vert", "shaders/shader2D.frag");
 
     std::vector<ModelObject*> modelObjects {new Lathe()}; // TODO: release memory please (never deleted!)
     ModelObject* modelObject; // TODO: use unique_ptr?? -- sus...
@@ -447,7 +448,7 @@ int main() {
             auto path = std::string(pathBuffer);
             bool pathExists = std::filesystem::exists(path) && std::filesystem::is_directory(path);
 
-            if (path != lastPath) { // FIXME: fix error on ["/users/[username]/Desktop/lessons"]
+            if (path != lastPath) {
                 subFolders.clear();
                 paths.clear();
                 if (pathExists) {

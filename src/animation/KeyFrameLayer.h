@@ -15,14 +15,6 @@
 template <class T>
 class KeyFrameLayer {
 public:
-    struct KeyFrameSet {
-        KeyFrame<T>& frame1;
-        KeyFrame<T>& frame2;
-
-        bool IsEither(const KeyFrame<T>& frame) const {
-            return frame == frame1 || frame == frame2;
-        }
-    };
 
     void MoveFromTimeToTime(float initTime, float newTime) {
         if (initTime == newTime) return;

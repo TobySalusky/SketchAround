@@ -30,6 +30,14 @@ struct KeyFrameRowSelection {
     KeyFrameLayer<T>* layer;
     std::vector<KeyFrame<T>*> frames;
     int index;
+
+    bool HasKeyFrameAtTime(float time) {
+        for (auto* keyFrame : frames) {
+            if (keyFrame->time == time) return true;
+            if (keyFrame->time > time) return false;
+        }
+        return false;
+    }
 };
 
 struct TimelineSelection {
@@ -75,17 +83,45 @@ struct TimelineSelection {
         TIMELINE_SELECTION_HANDLE_BOTH_CAPTURE(MoveFunc);
     }
 
-    void MoveAllRounded(float amount) {
-        const auto MoveFunc = [=](const auto& val) {
-            for (int i = 0; i < val.frames.size(); i++) {
+    int CountAll() {
+        int count = 0;
+        const auto CountFunc = [&](const auto& val) {
+            count += val.frames.size();
+        };
+        TIMELINE_SELECTION_HANDLE_BOTH_CAPTURE(CountFunc);
+        return count;
+    }
 
-                float time = val.frames[i]->time;
-                float newTime = std::round((time + amount) * 10.0f) / 10.0f;
+    bool MoveAllRounded(float amount) {
+
+        bool failed = false;
+        const auto CheckFunc = [&](const auto& val) {
+            if (failed) return;
+
+            for (auto* keyFramePtr : val.frames) {
+                const float time = keyFramePtr->time;
+                const float newTime = std::round((time + amount) * 10.0f) / 10.0f;
+
+                if (val.layer->HasKeyFrameAtTime(newTime) && !val.HasKeyFrameAtTime(newTime)) {
+                    failed = true;
+                    return;
+                }
+            }
+        };
+
+        if (failed) return false;
+
+        const auto MoveFunc = [=](const auto& val) {
+            for (auto* keyFramePtr : val.frames) {
+                const float time = keyFramePtr->time;
+                const float newTime = std::round((time + amount) * 10.0f) / 10.0f;
                 val.layer->MoveFromTimeToTime(time, newTime);
             }
         };
 
         TIMELINE_SELECTION_HANDLE_BOTH_CAPTURE(MoveFunc);
+
+        return true;
     }
 
     void SetBlendID(int num) {
