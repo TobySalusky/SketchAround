@@ -4,6 +4,7 @@
 
 #include "Controls.h"
 #include "../vendor/imgui/imgui.h"
+#include "Util.h"
 #include <string>
 #include <algorithm>
 
@@ -240,7 +241,7 @@ bool Controls::Check(int CONTROL_CODE) {
                 if (controlCode == CONTROL_CODE || !OverlappingCheck(controlCode)) continue;
                 int otherPrecedence = Precedence(controls[controlCode]);
                 if (selfPrecedence < otherPrecedence) return false;
-                if (selfPrecedence == otherPrecedence) printf("[Warning]: Same level of control precedence! (between codes: %i and %i)", CONTROL_CODE, controlCode);
+                if (selfPrecedence == otherPrecedence) LOG("[Warning]: Same level of control precedence! (between codes: %i and %i)", CONTROL_CODE, controlCode);
             }
         }
 

@@ -21,7 +21,7 @@ void TiledTextureAtlas::Generate(int tileSize, const std::vector<std::vector<uns
 
     const int maxCount = perAxis * perAxis;
     if (count > maxCount) {
-        printf("[WARNING]: too many textures for texture atlas: Max=%i -- Count=%i", maxCount, count);
+	    LOG("[WARNING]: too many textures for texture atlas: Max=%i -- Count=%i", maxCount, count);
     }
 
     unsigned char arr[rows * cols * imgByteCount];

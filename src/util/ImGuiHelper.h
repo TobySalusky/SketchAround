@@ -78,6 +78,8 @@ public:
     static void BeginFrame();
     static void EndFrame();
 
+    static void CreateDockSpace();
+
     static void Destroy();
 
     static void Initialize(GLWindow &window);

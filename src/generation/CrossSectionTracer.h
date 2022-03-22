@@ -22,16 +22,20 @@ public:
     };
 
     struct Segment {
-        glm::vec2 p1{}, p2{};
+        Vec2 p1{};
+        Vec2 p2{};
     };
 
-    // TODO: Use curvature formula to find relative max curvature nearest to midpoint (use that in place of midpoint)
     static Vec2List AutoGenChordalAxis(const Vec2List& boundPoints, float sampleLength);
 
-    static std::tuple<std::vector<glm::vec3>, std::vector<unsigned int>> Trace(const std::vector<glm::vec2> &points, const std::vector<glm::vec2> &pathTrace, const CrossSectionTraceData& data, TopologyCorrector* outTopologyData = nullptr);
-    static std::tuple<std::vector<glm::vec3>, std::vector<unsigned int>> Inflate(const std::vector<Segment> &segments, const CrossSectionTraceData& data, TopologyCorrector* outTopologyData = nullptr);
-    static std::vector<Segment> TraceSegments(const std::vector<glm::vec2> &points, const std::vector<glm::vec2> &pathTrace, const CrossSectionTraceData& data);
-private:
+    static std::tuple<std::vector<glm::vec3>, std::vector<unsigned int>>
+    Trace(const std::vector<glm::vec2> &points, const std::vector<glm::vec2> &pathTrace, const CrossSectionTraceData& data, TopologyCorrector* outTopologyData = nullptr);
+
+    static std::tuple<std::vector<glm::vec3>, std::vector<unsigned int>>
+    Inflate(const std::vector<Segment> &segments, const CrossSectionTraceData& data, TopologyCorrector* outTopologyData = nullptr);
+
+    static std::vector<Segment>
+    TraceSegments(const std::vector<glm::vec2> &points, const std::vector<glm::vec2> &pathTrace, const CrossSectionTraceData& data);
 };
 
 

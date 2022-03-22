@@ -5,6 +5,7 @@
 #include <glew.h>
 #include "Texture.h"
 #include "../vendor/stb/stb_image.h"
+#include "../util/Util.h"
 
 Texture::Texture(const char* path) {
 
@@ -13,7 +14,7 @@ Texture::Texture(const char* path) {
     localBuffer = stbi_load(path, &width, &height, &bitsPerPixel, 4);
 
     if (!localBuffer) {
-        printf("Failed to find: %s\n", path);
+	    LOG("Failed to find: %s\n", path);
         return;
     }
 

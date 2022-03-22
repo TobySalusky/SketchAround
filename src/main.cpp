@@ -207,11 +207,11 @@ int main() {
 
     const auto SerializeScene = [&](const std::string& path) {
 
-        printf("saving to \"%s\" -- ", path.c_str());
+        LOG("saving to \"%s\" -- ", path.c_str());
         std::ofstream ofs(path);
         boost::archive::text_oarchive oa(ofs);
         oa << Serialization(modelObjects, RenderTarget::SampleCentralSquare(modelScene, 64));
-        printf("save successful!\n");
+        LOG("save successful!\n");
     };
 
     const auto DeserializeMeta = [&](const std::string& path) {
@@ -229,7 +229,7 @@ int main() {
 
     const auto DeSerializeScene = [&](const std::string& path) {
 
-        printf("loading from \"%s\" -- ", path.c_str());
+        LOG("loading from \"%s\" -- ", path.c_str());
         Serialization serialization;
 
         std::ifstream ifs(path);
@@ -243,7 +243,7 @@ int main() {
         }
         SetModelObject(modelObjects[0]);
 
-        printf("load successful!\n");
+        LOG("load successful!\n");
     };
 
 
@@ -251,7 +251,8 @@ int main() {
     const auto MouseModelsIntersectionAt = [&] (Vec2 mousePos) {
         Vec3 rayOrigin = camera.GetPos(); //+ camera.GetRight() * mousePos.x - camera.GetUp() * mousePos.y; // FIXME
         Vec3 rayDir = camera.GetDir();
-        constexpr float constX = 0.73f, constY = 0.5f;
+        constexpr float constX = 0.73f;
+        constexpr float constY = 0.5f;
         glm::mat4 rotX = glm::rotate(glm::mat4(1.0f), -mousePos.x * constX, camera.GetUp());
         glm::mat4 rotY = glm::rotate(glm::mat4(1.0f), -mousePos.y * constY, camera.GetRight());
 
@@ -312,7 +313,7 @@ int main() {
             static char nameBuffer[256] = "";
             if (enteringGuiScreen) memset(&nameBuffer[0], 0, sizeof(nameBuffer));
 
-            static char pathBuffer[256] = "../output";
+            static char pathBuffer[256] = "/Users/toby/ClionProjects/SeniorResearch/output";
 
             if (enteringGuiScreen) ImGui::SetKeyboardFocusHere();
 
@@ -368,7 +369,7 @@ int main() {
             static char exportNameBuffer[256] = "";
             if (enteringGuiScreen) memset(&exportNameBuffer[0], 0, sizeof(exportNameBuffer));
 
-            static char pathBuffer[256] = "../output/obj";
+            static char pathBuffer[256] = "/Users/toby/ClionProjects/SeniorResearch/output/obj";
 
             if (enteringGuiScreen) ImGui::SetKeyboardFocusHere();
 
@@ -387,12 +388,12 @@ int main() {
 
                 const auto ExportTo = [](const std::string& path, const std::string& content) {
                     std::ofstream f(path);
-                    printf("Exporting to \"%s\" -- ", path.c_str());
+                    LOG("Exporting to \"%s\" -- ", path.c_str());
                     if (!f.fail()) {
                         f << content.c_str();
-                        printf("export successful!\n");
+                        LOG("export successful!\n");
                     } else {
-                        printf("export failed!\n");
+                        LOG("export failed!\n");
                     }
                 };
 
@@ -434,7 +435,7 @@ int main() {
         {
             SubGuiExitOptions();
 
-            static char pathBuffer[256] = "../output";
+            static char pathBuffer[256] = "/Users/toby/ClionProjects/SeniorResearch/output";
 
             if (enteringGuiScreen) {
                 lastPath = "";
@@ -445,7 +446,7 @@ int main() {
             ImGui::InputTextWithHint("##Path-Open", "path:", pathBuffer, IM_ARRAYSIZE(pathBuffer), ImGuiInputTextFlags_EnterReturnsTrue);
             ImGuiHelper::SpacedSep();
 
-            auto path = std::string(pathBuffer);
+            std::filesystem::path path = std::string(pathBuffer);
             bool pathExists = std::filesystem::exists(path) && std::filesystem::is_directory(path);
 
             if (path != lastPath) {
@@ -459,11 +460,11 @@ int main() {
                 }
                 std::vector<Serialization> metaReads;
                 metaReads.reserve(paths.size());
-                for (const std::string pathStr : paths) {
+                for (std::string pathStr : paths) {
                     auto& ref = metaReads.emplace_back(DeserializeMeta(pathStr));
                     const int desiredSize = 64 * 64 * 3;
                     if (ref.img.size() != desiredSize) {
-                        printf("[Warning]: Preview image is incorrect size!\n");
+                        LOG("[Warning]: Preview image is incorrect size!\n");
                         ref.img.clear();
                         ref.img.reserve(desiredSize);
                         for (int i = 0; i < desiredSize; i++) {ref.img.emplace_back(0);}
@@ -491,7 +492,7 @@ int main() {
                 ImGui::Columns(columnCount, nullptr, false);
 
                 int childPathIndex = 0;
-                for (auto& childPath : paths) {
+                for (const std::filesystem::path& childPath : paths) {
                     const auto OnPress = [&] {
                         DeSerializeScene(childPath);
                         inOpenFileGUI = false;
@@ -517,10 +518,11 @@ int main() {
                     { // displays a shortened version of the filename
                         // TODO: once filename vs. extension is serialized properly, this should be removed
                         std::string fileName = childPath.filename();
-                        const int index = (int) fileName.find_last_of('.');
-                        if (index != -1) {
+
+                        if (const int index = (int) fileName.find_last_of('.') != -1) {
                             fileName = fileName.substr(0, index);
                         }
+
                         const std::string fullFileName = fileName;
                         bool shortened = false;
                         const float textWidth = ImGui::CalcTextSize(fileName.c_str()).x;
@@ -539,7 +541,7 @@ int main() {
                 ImGui::Columns(1);
             }
 
-            for (auto& subFolder : subFolders) {
+            for (const auto& subFolder : subFolders) {
                 ImGui::BulletText("%s", subFolder.c_str());
             }
 
@@ -644,7 +646,8 @@ int main() {
         bool executionPaused = inControlsGUI || inOpenFileGUI || inSaveFileGUI || inExportGUI;
 
         if (executionPaused) {
-            ImGuiHelper::BeginFrame();
+	        ImGuiHelper::BeginFrame();
+
             {
                 if (inSaveFileGUI) SaveFileGUI(deltaTime);
                 if (inOpenFileGUI) OpenFileGUI();
@@ -766,6 +769,7 @@ int main() {
 
             // >> ImGui Render3D ====================
             ImGuiHelper::BeginFrame();
+	        ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
 
             // 3D-view Window
             ImGui::Begin("Model Scene");
@@ -773,7 +777,7 @@ int main() {
 
                 Vec2 displayDimens = Util::FitRatio({WIDTH / 2.0f, HEIGHT / 2.0f},
                                                     Util::ToVec(ImGui::GetWindowContentRegionMax()) - Util::ToVec(ImGui::GetWindowContentRegionMin()) - Vec2(8.0f, 6.0f));
-                ImGui::SameLine((ImGui::GetWindowWidth()) / 2.0f - (displayDimens.x / 2.0f)); // TODO: remove padding, make no scroll!!
+                ImGui::SameLine((ImGui::GetWindowWidth()) / 2.0f - (displayDimens.x / 2.0f));
 
                 ImGui::ImageButton((void*) (intptr_t) modelScene.GetTexture(),
                                    Util::ToImVec(displayDimens),

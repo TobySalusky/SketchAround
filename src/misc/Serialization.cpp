@@ -13,7 +13,7 @@ Serialization::Serialization(const std::vector<ModelObject*>& modelObjects, cons
         } else if (obj->GetType() == Enums::CROSS_SECTIONAL) {
             crossSectionals.emplace_back((CrossSectional*) obj);
         } else {
-            printf("ERROR: handle type please");
+	        LOG("ERROR: handle type please");
         }
     }
     order = Linq::Select<ModelObject*, int>(modelObjects, [&](ModelObject* obj) {

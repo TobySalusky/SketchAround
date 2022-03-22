@@ -21,6 +21,8 @@ typedef glm::vec4 RGBA;
 typedef std::vector<glm::vec2> Vec2List;
 typedef std::vector<glm::vec3> Vec3List;
 
+#define LOG printf
+
 
 struct MatrixComponents {
     Vec3 pos, dir;

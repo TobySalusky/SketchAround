@@ -152,7 +152,6 @@ void Timeline::Update(const TimelineUpdateInfo& info) {
         dragging = false;
     }
 
-//    printf("eee: %i\n", dragging);
     // =============================
 
     if (focused) {

@@ -7,11 +7,11 @@
 
 
 std::string Util::ReadFile(const char *path) {
-    std:: string content;
+    std::string content;
     std::ifstream fileStream(path, std::ios::in);
 
     if (!fileStream.is_open()) {
-        printf("Failed to read %s! File doesn't exist!", path);
+        LOG("Failed to read %s! File doesn't exist!", path);
     }
 
     std::string line;

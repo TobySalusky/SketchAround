@@ -26,7 +26,7 @@ RenderTarget::RenderTarget(GLint width, GLint height, bool hasDepth) : hasDepth(
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rboID);
 
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-        printf("problem setting up framebuffer");
+	    LOG("problem setting up framebuffer");
     }
 }
 
@@ -71,7 +71,7 @@ std::vector<unsigned char> RenderTarget::SampleCentralSquare(const RenderTarget&
 }
 
 RenderTarget::~RenderTarget() {
-    printf("Disposing render target\n");
+    LOG("Disposing render target\n");
     glDeleteTextures(1, &textureID);
     glDeleteFramebuffers(1, &fboID);
     glDeleteRenderbuffers(1, &rboID);
@@ -98,6 +98,6 @@ void RenderTarget::ChangeDimensions(GLint width, GLint height) {
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-        printf("problem resizing framebuffer");
+	    LOG("problem resizing framebuffer");
     }
 }

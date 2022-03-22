@@ -17,7 +17,6 @@
 #include "LineAnalyzer.h"
 
 
-// TODO: wrap end faces!!! (currently hollow)
 std::tuple<std::vector<glm::vec3>, std::vector<unsigned int>> Revolver::Revolve(const std::vector<glm::vec2>& points, const RevolveData& revolveData, TopologyCorrector* outTopologyData) {
     std::vector<glm::vec3> vertices;
     std::vector<unsigned int> indices;
@@ -95,20 +94,7 @@ std::tuple<std::vector<glm::vec3>, std::vector<unsigned int>> Revolver::Revolve(
                     p1, p3, p2,
                     p2, p3, p4,
             });
-
-            /*if (reverse) {
-                indices.insert(indices.end(), {
-                        p2, p3, p1,
-                        p4, p3, p2,
-                });
-            } else {
-                indices.insert(indices.end(), {
-                        p1, p3, p2,
-                        p2, p3, p4,
-                });
-            }*/
         }
-
     }
 
     const int sideQuadCount = (int) (points.size() - 1) * countPerRing;

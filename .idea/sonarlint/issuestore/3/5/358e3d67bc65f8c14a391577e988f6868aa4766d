@@ -1,0 +1,681 @@
+
+;	cpp:S11031"&Remove the misleading "//" characters.(ìÃÑª
+@	cpp:S11032"&Remove the misleading "//" characters.(û´™şúÿÿÿÿ
+@	cpp:S11033"&Remove the misleading "//" characters.(¿ñ‹»ıÿÿÿÿ
+;	cpp:S11034"&Remove the misleading "//" characters.(”÷µ¹
+@	cpp:S11035"&Remove the misleading "//" characters.(«–çşÿÿÿÿ
+@	cpp:S11036"&Remove the misleading "//" characters.(ãÚŠµøÿÿÿÿ
+@	cpp:S11037"&Remove the misleading "//" characters.( Ï°İÿÿÿÿÿ
+;	cpp:S11038"&Remove the misleading "//" characters.(ïÉê˜
+;	cpp:S11039"&Remove the misleading "//" characters.(«›ß³
+@	cpp:S1103:"&Remove the misleading "//" characters.(ÁÍÓ•ıÿÿÿÿ
+@	cpp:S1103;"&Remove the misleading "//" characters.(­÷Âÿÿÿÿÿ
+;	cpp:S1103<"&Remove the misleading "//" characters.(ä¤§Š
+@	cpp:S1103="&Remove the misleading "//" characters.(·œíúÿÿÿÿ
+@	cpp:S1103>"&Remove the misleading "//" characters.(†Öÿ½ûÿÿÿÿ
+;	cpp:S1103?"&Remove the misleading "//" characters.(›Ï‚
+;	cpp:S1103@"&Remove the misleading "//" characters.(—´â‚
+@	cpp:S1103A"&Remove the misleading "//" characters.(¸ó»¥ûÿÿÿÿ
+@	cpp:S1103B"&Remove the misleading "//" characters.(ü¤øíøÿÿÿÿ
+@	cpp:S1103C"&Remove the misleading "//" characters.(ŞÇÁÎıÿÿÿÿ
+@	cpp:S1103D"&Remove the misleading "//" characters.(Áú¿Éşÿÿÿÿ
+;	cpp:S1103E"&Remove the misleading "//" characters.(àÌ½›
+@	cpp:S1103F"&Remove the misleading "//" characters.(ÛÛÁ‹ùÿÿÿÿ
+;	cpp:S1103G"&Remove the misleading "//" characters.(­¯ğ”
+S	cpp:S5028"8Replace this macro by "const", "constexpr" or an "enum".(ªöœÙÿÿÿÿÿ
+S	cpp:S5028’"8Replace this macro by "const", "constexpr" or an "enum".(ùËèÛüÿÿÿÿ
+S	cpp:S5028“"8Replace this macro by "const", "constexpr" or an "enum".(¥ûşÜûÿÿÿÿ
+Acpp:CommentedCodeò"Remove the commented out code.(Ö­´‡şÿÿÿÿ
+Acpp:CommentedCode‘"Remove the commented out code.(¼úûşÿÿÿÿ
+Acpp:CommentedCode“"Remove the commented out code.(‰øÈÿÿÿÿÿ
+<cpp:CommentedCodeö"Remove the commented out code.(Ğ¡°Î
+<cpp:CommentedCode‘"Remove the commented out code.(¢Åè
+<cpp:CommentedCode©"Remove the commented out code.(îÃ­«
+g	cpp:S1134Ø	"LTake the required action to fix the issue indicated by this "FIXME" comment.(õ²€…ùÿÿÿÿ
+g	cpp:S1134€"LTake the required action to fix the issue indicated by this "FIXME" comment.(ÄØï‘üÿÿÿÿ
+;cpp:CommentedCode"Remove the commented out code.(”èÙz
+g	cpp:S1134ğ"LTake the required action to fix the issue indicated by this "FIXME" comment.(Î÷Áüÿÿÿÿ
+<cpp:CommentedCodeğ"Remove the commented out code.(²îòç
+<cpp:CommentedCode"Remove the commented out code.(—¾Ãş
+<cpp:CommentedCodeŸ"Remove the commented out code.(€ü‘ı
+Acpp:CommentedCodeø"Remove the commented out code.(¯ÿÖ¼şÿÿÿÿ
+Acpp:CommentedCodeú"Remove the commented out code.(—©¥éûÿÿÿÿ
+Acpp:CommentedCode×"Remove the commented out code.(œÇ¦øÿÿÿÿ
+<cpp:CommentedCodeÄ"Remove the commented out code.(ÄÆ÷”
+b	cpp:S1134‘"LTake the required action to fix the issue indicated by this "FIXME" comment.(Ãº”İ
+Acpp:CommentedCodeÌ"Remove the commented out code.(á¼ÿÇıÿÿÿÿ
+b	cpp:S1134Ô"LTake the required action to fix the issue indicated by this "FIXME" comment.(¸ÿÀ 
+g	cpp:S1134û!"LTake the required action to fix the issue indicated by this "FIXME" comment.(¬³ÔĞûÿÿÿÿ
+g	cpp:S1134¥%"LTake the required action to fix the issue indicated by this "FIXME" comment.(Ÿ…æ÷ıÿÿÿÿ
+Acpp:CommentedCodeÃ'"Remove the commented out code.(ä–ØÃøÿÿÿÿ
+g	cpp:S1134Ä'"LTake the required action to fix the issue indicated by this "FIXME" comment.(áå¶°üÿÿÿÿ
+Acpp:CommentedCode«("Remove the commented out code.(¢à øÿÿÿÿ
+a	cpp:S1134ğ("LTake the required action to fix the issue indicated by this "FIXME" comment.(£¾‹
+<cpp:CommentedCode€)"Remove the commented out code.(ñ©ÆÙ
+<cpp:CommentedCodeû)"Remove the commented out code.(ÙØú
+g	cpp:S1134ä+"LTake the required action to fix the issue indicated by this "FIXME" comment.(…•øÑûÿÿÿÿ
+<cpp:CommentedCode–0"Remove the commented out code.(¼ËŠĞ
+g	cpp:S1134Ö1"LTake the required action to fix the issue indicated by this "FIXME" comment.(÷ü¿±üÿÿÿÿ
+O	cpp:S1135ø1"4Complete the task associated to this "TODO" comment.(„º–éüÿÿÿÿ
+<cpp:CommentedCode2"Remove the commented out code.(Êí­ü
+Acpp:CommentedCode2"Remove the commented out code.(Åß›ıÿÿÿÿ
+<cpp:CommentedCode¢2"Remove the commented out code.(Û›Ú×
+Acpp:CommentedCode¤2"Remove the commented out code.(ñ£ûÍıÿÿÿÿ
+<cpp:CommentedCodeœ3"Remove the commented out code.(íûÕ
+Acpp:CommentedCode‹4"Remove the commented out code.(Œó—¥úÿÿÿÿ
+Acpp:CommentedCodeã4"Remove the commented out code.(ÈøóØıÿÿÿÿ
+b	cpp:S1134¾5"LTake the required action to fix the issue indicated by this "FIXME" comment.(¦ıÙ
+Acpp:CommentedCode°6"Remove the commented out code.(ş×©˜ùÿÿÿÿ
+;cpp:CommentedCodeÆ9"Remove the commented out code.(â”Üw
+;cpp:CommentedCodeÊ9"Remove the commented out code.(…¹Ö"
+Acpp:CommentedCodeÌ:"Remove the commented out code.(Ûëº¾ùÿÿÿÿ
+<cpp:CommentedCodeê<"Remove the commented out code.(“–Åï
+y	cpp:S5350Ú"dMake the type of this variable a reference-to-const. The current type of "io" is "struct ImGuiIO &".(½×¢A
+o	cpp:S3776"TRefactor this function to reduce its Cognitive Complexity from 71 to the 25 allowed.(«ÜúŠùÿÿÿÿ
+gcpp:S134È"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(ªˆ…ùÿÿÿÿ
+acpp:S134Í"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(øÁÁ
+F	cpp:S1066¯"1Merge this "if" statement with the enclosing one.(ºÊ!
+0	cpp:S4962ß"Use the "nullptr" literal.(¸ßµ¿
+5	cpp:S4962"Use the "nullptr" literal.(»°™şÿÿÿÿ
+/	cpp:S4962‚"Use the "nullptr" literal.(ÂÊ}
+/	cpp:S4962ƒ"Use the "nullptr" literal.(ğ—­
+0	cpp:S4962„"Use the "nullptr" literal.(Ş’Şõ
+0	cpp:S4962…"Use the "nullptr" literal.(Õû§µ
+0	cpp:S4962†"Use the "nullptr" literal.(Ä˜à¹
+5	cpp:S4962‡"Use the "nullptr" literal.(Ğ™ûıÿÿÿÿ
+5	cpp:S4962ˆ"Use the "nullptr" literal.(ÍÎ½ÿÿÿÿÿ
+5	cpp:S4962‰"Use the "nullptr" literal.(’”œÇüÿÿÿÿ
+5	cpp:S4962Š"Use the "nullptr" literal.(ı‹ıËüÿÿÿÿ
+5	cpp:S4962‹"Use the "nullptr" literal.(Òˆ‹¦ıÿÿÿÿ
+0	cpp:S4962Œ"Use the "nullptr" literal.(Ø±œ
+5	cpp:S4962"Use the "nullptr" literal.(¿èáŒúÿÿÿÿ
+0	cpp:S4962"Use the "nullptr" literal.( ÒÔÖ
+5	cpp:S4962•"Use the "nullptr" literal.(‘±ïèşÿÿÿÿ
+5	cpp:S4962–"Use the "nullptr" literal.(ÖÇÃåşÿÿÿÿ
+0	cpp:S4962˜"Use the "nullptr" literal.(Ó÷ì
+0	cpp:S4962™"Use the "nullptr" literal.(Ù¥í
+c	cpp:S6004Ë"HUse the init-statement to declare "is_selected" inside the if statement.(—‘é¾üÿÿÿÿ
+`	cpp:S6004¬"EUse the init-statement to declare "tint_col" inside the if statement.(åÕ·éûÿÿÿÿ
+f	cpp:S6004Ç"PUse the init-statement to declare "combo_preview_value" inside the if statement.(èÆæ’
+`	cpp:S6004Ğ"JUse the init-statement to declare "tab_bar_flags" inside the if statement.(¼æãˆ
+g	cpp:S6004ú"QUse the init-statement to declare "palette_button_flags" inside the if statement.(èèØ
+p	cpp:S3776Í"URefactor this function to reduce its Cognitive Complexity from 753 to the 25 allowed.(ö÷Áùÿÿÿÿ
+bcpp:S134 "MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(ë÷‚
+bcpp:S134£"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(Ñƒæ²
+gcpp:S134Ë"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(—‘é¾üÿÿÿÿ
+bcpp:S134Í"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(ç¢Êä
+gcpp:S134ô"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(Ìı¬÷ıÿÿÿÿ
+acpp:S134Ä"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(£ã¦
+gcpp:S134Ì"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(–§åÑûÿÿÿÿ
+gcpp:S134Ğ"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(—‘é¾üÿÿÿÿ
+gcpp:S134ô"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(–§åÑûÿÿÿÿ
+gcpp:S134ø"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(—‘é¾üÿÿÿÿ
+gcpp:S134…	"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(–§åÑûÿÿÿÿ
+gcpp:S134‰	"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(—‘é¾üÿÿÿÿ
+gcpp:S134¢	"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(Åóªÿÿÿÿÿ
+`cpp:S134­	"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(³ó9
+gcpp:S134º	"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(Á×¹øÿÿÿÿ
+gcpp:S134Ó	"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(·Ä©øÿÿÿÿ
+gcpp:S134ß	"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(·Ä©øÿÿÿÿ
+bcpp:S134ú	"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(ì”î­
+gcpp:S134˜
+"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(ŞÕŞ üÿÿÿÿ
+bcpp:S134ñ
+"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(ÖÕÿİ
+gcpp:S134‚"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(ÀÌïƒüÿÿÿÿ
+gcpp:S134Ò"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(±ÊÇÒøÿÿÿÿ
+bcpp:S134×"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(„¿Ò‰
+bcpp:S134Ü"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(Ö«ó¥
+gcpp:S134û"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(À¡ÙÈùÿÿÿÿ
+bcpp:S134ƒ"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(›å¯±
+gcpp:S134–"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(Õ¡ÔÀıÿÿÿÿ
+gcpp:S134¬"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(€’±šüÿÿÿÿ
+gcpp:S134¯"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(–×û¨øÿÿÿÿ
+gcpp:S134·"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(ƒ…ñıÿÿÿÿ
+gcpp:S134¼"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(‘ùŞ÷ùÿÿÿÿ
+gcpp:S134ö"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(ş¥êüÿÿÿÿ
+bcpp:S134ú"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(èèØ
+gcpp:S134ÿ"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(ÕÑÅ¸úÿÿÿÿ
+bcpp:S134¾"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(€´–
+bcpp:S134û"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(Ì«ò
+gcpp:S134€"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(ÏÃ×ÿÿÿÿÿ
+gcpp:S134Œ"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(ÕÑÅ¸úÿÿÿÿ
+gcpp:S134µ"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(†ˆ”±ÿÿÿÿÿ
+bcpp:S134õ"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(®Ù£€
+Q	cpp:S1199œ"6Extract this nested code block into a separate method.(ÒÌâ–øÿÿÿÿ
+Q	cpp:S1199¦"6Extract this nested code block into a separate method.(ÒÌâ–øÿÿÿÿ
+Q	cpp:S1199Ò"6Extract this nested code block into a separate method.(ÒÌâ–øÿÿÿÿ
+Q	cpp:S1199á"6Extract this nested code block into a separate method.(ÒÌâ–øÿÿÿÿ
+Q	cpp:S1199ø"6Extract this nested code block into a separate method.(ÒÌâ–øÿÿÿÿ
+Q	cpp:S1199…"6Extract this nested code block into a separate method.(ÒÌâ–øÿÿÿÿ
+X	cpp:S5945“"=Use "std::array" or "std::vector" instead of a C-style array.(›••³şÿÿÿÿ
+X	cpp:S5945Ÿ"=Use "std::array" or "std::vector" instead of a C-style array.(¢ˆ¨¬şÿÿÿÿ
+H	cpp:S5945©"2Use "std::string" instead of a C-style char array.(ÑÎÔç
+M	cpp:S5945¸"2Use "std::string" instead of a C-style char array.(Ÿ¾®İùÿÿÿÿ
+X	cpp:S5945Î"=Use "std::array" or "std::vector" instead of a C-style array.(‘í¶èøÿÿÿÿ
+c!cpp:SingleDeclarationPerStatementÓ"0Define each identifier in a dedicated statement.(°çÆşÿÿÿÿ
+c!cpp:SingleDeclarationPerStatementÜ"0Define each identifier in a dedicated statement.(®—êŞıÿÿÿÿ
+^!cpp:SingleDeclarationPerStatementæ"0Define each identifier in a dedicated statement.(òüŸ€
+A	cpp:S3642ğ"&Replace this "enum" with "enum class".(—œÉÈúÿÿÿÿ
+X	cpp:S5945ò"=Use "std::array" or "std::vector" instead of a C-style array.(ø¨Ôıúÿÿÿÿ
+S	cpp:S5945ù"=Use "std::array" or "std::vector" instead of a C-style array.(ÏøÒ£
+X	cpp:S5945ú"=Use "std::array" or "std::vector" instead of a C-style array.(Â¶¾ıÿÿÿÿ
+X	cpp:S5945ˆ"=Use "std::array" or "std::vector" instead of a C-style array.(•†ˆøûÿÿÿÿ
+ˆcpp:EmptyCompoundStatement§"\Fill this compound statement, remove it, or add a nested comment explaining why it is empty.(Ê¡Å«şÿÿÿÿ
+5	cpp:S4962Õ"Use the "nullptr" literal.(çÛˆ—ùÿÿÿÿ
+5	cpp:S4962ê"Use the "nullptr" literal.(çÛˆ—ùÿÿÿÿ
+=	cpp:S5827Á"'Replace the redundant type with "auto".(äµ¸
+=	cpp:S5827Â"'Replace the redundant type with "auto".(‚†Æú
+H	cpp:S5945ä"2Use "std::string" instead of a C-style char array.(—ÂîÛ
+B	cpp:S5827„"'Replace the redundant type with "auto".(§°Õùùÿÿÿÿ
+B	cpp:S5827…"'Replace the redundant type with "auto".(Û¤¥Îøÿÿÿÿ
+Q	cpp:S1199†"6Extract this nested code block into a separate method.(ÒÌâ–øÿÿÿÿ
+=	cpp:S5827‰"'Replace the redundant type with "auto".(Şÿµœ
+B	cpp:S5827Š"'Replace the redundant type with "auto".(êÈ¿Ôÿÿÿÿÿ
+B	cpp:S5827‹"'Replace the redundant type with "auto".(–¤‡—ıÿÿÿÿ
+=	cpp:S5827Œ"'Replace the redundant type with "auto".(µ™²¬
+=	cpp:S5827›"'Replace the redundant type with "auto".(¨ı…Õ
+B	cpp:S5827œ"'Replace the redundant type with "auto".(Ş€€†ùÿÿÿÿ
+7	cpp:S1110›"!Remove these useless parentheses.(¨ı…Õ
+7	cpp:S1110›"!Remove these useless parentheses.(¨ı…Õ
+=	cpp:S5827§"'Replace the redundant type with "auto".(ú²ğ¡
+B	cpp:S5827¨"'Replace the redundant type with "auto".(‡×›°øÿÿÿÿ
+=	cpp:S5827©"'Replace the redundant type with "auto".(îÃ­«
+=	cpp:S5827ª"'Replace the redundant type with "auto".(ûœğÉ
+B	cpp:S5827«"'Replace the redundant type with "auto".(–¤‡—ıÿÿÿÿ
+X	cpp:S5945Ä"=Use "std::array" or "std::vector" instead of a C-style array.(“ëò‹üÿÿÿÿ
+X	cpp:S5945í"=Use "std::array" or "std::vector" instead of a C-style array.(“ëò‹üÿÿÿÿ
+L	cpp:S1066¢	"1Merge this "if" statement with the enclosing one.(Åóªÿÿÿÿÿ
+X	cpp:S5945œ	"=Use "std::array" or "std::vector" instead of a C-style array.(±×Øıÿÿÿÿ
+H	cpp:S5945«	"2Use "std::string" instead of a C-style char array.(Íƒõ
+S	cpp:S5945µ	"=Use "std::array" or "std::vector" instead of a C-style array.(øˆóÍ
+H	cpp:S5945¸	"2Use "std::string" instead of a C-style char array.(Íƒõ
+Fcpp:S872¾	",Reconsider this operator for 'bool' operand.(Ğ ¥’ûÿÿÿÿ
+X	cpp:S5945Ç	"=Use "std::array" or "std::vector" instead of a C-style array.(Ä¾£–ûÿÿÿÿ
+S	cpp:S5945Ï	"=Use "std::array" or "std::vector" instead of a C-style array.(ÌÒÓˆ
+M	cpp:S5945Õ	"2Use "std::string" instead of a C-style char array.(óÑ”íÿÿÿÿÿ
+M	cpp:S5945á	"2Use "std::string" instead of a C-style char array.(óÑ”íÿÿÿÿÿ
+=	cpp:S5827ô	"'Replace the redundant type with "auto".(Ú“ˆÒ
+S	cpp:S5945ñ	"=Use "std::array" or "std::vector" instead of a C-style array.(ÒÛôú
+H	cpp:S5945ñ	"2Use "std::string" instead of a C-style char array.(ÒÛôú
+5	cpp:S4962õ	"Use the "nullptr" literal.(ÇÎşİúÿÿÿÿ
+O	cpp:S6022‚
+"4Use "std::byte" for byte-oriented data manipulation.(æ­Ëüÿÿÿÿ
+J	cpp:S6022ƒ
+"4Use "std::byte" for byte-oriented data manipulation.(¥ÍŞê
+I	cpp:S6022„
+"4Use "std::byte" for byte-oriented data manipulation.(şÏ».
+O	cpp:S6022…
+"4Use "std::byte" for byte-oriented data manipulation.(´¨Éçûÿÿÿÿ
+O	cpp:S6022†
+"4Use "std::byte" for byte-oriented data manipulation.(šŞÌÿÿÿÿÿ
+S	cpp:S5945•
+"=Use "std::array" or "std::vector" instead of a C-style array.(´Êªƒ
+B	cpp:S5827š
+"'Replace the redundant type with "auto".(ÆÀ¹Èıÿÿÿÿ
+H	cpp:S5945›
+"2Use "std::string" instead of a C-style char array.(´¹…
+M	cpp:S5945°
+"2Use "std::string" instead of a C-style char array.(ù¨úÿÿÿÿ
+cpp:S995Ê
+"xMake the type of this parameter a pointer-to-const. The current type of "data" is "struct ImGuiInputTextCallbackData *".(ñù¸ü
+H	cpp:S5945Ò
+"2Use "std::string" instead of a C-style char array.(ñĞ†
+M	cpp:S5945Ó
+"2Use "std::string" instead of a C-style char array.(‡ıâæşÿÿÿÿ
+M	cpp:S5945Ô
+"2Use "std::string" instead of a C-style char array.(åÿ»şÿÿÿÿ
+M	cpp:S5945Õ
+"2Use "std::string" instead of a C-style char array.(¼ƒšõùÿÿÿÿ
+M	cpp:S5945Ö
+"2Use "std::string" instead of a C-style char array.(ñØàüÿÿÿÿ
+G	cpp:S5945×
+"2Use "std::string" instead of a C-style char array.(Úıä
+
+M	cpp:S5945İ
+"2Use "std::string" instead of a C-style char array.(ÎµÜ€øÿÿÿÿ
+Y	cpp:S6004‚">Use the init-statement to declare "c" inside the if statement.(ÀÌïƒüÿÿÿÿ
+B	cpp:S5827†"'Replace the redundant type with "auto".(İ›ÆÒúÿÿÿÿ
+O	cpp:S6022‚"4Use "std::byte" for byte-oriented data manipulation.(ÀÌïƒüÿÿÿÿ
+M	cpp:S5945Œ"2Use "std::string" instead of a C-style char array.(à‹æÚúÿÿÿÿ
+M	cpp:S5945"2Use "std::string" instead of a C-style char array.(Ôìü›ùÿÿÿÿ
+G	cpp:S5945”"2Use "std::string" instead of a C-style char array.(íğÇQ
+=	cpp:S5827«"'Replace the redundant type with "auto".(ôåàÚ
+X	cpp:S5945÷"=Use "std::array" or "std::vector" instead of a C-style array.(ñ§˜âıÿÿÿÿ
+X	cpp:S5945ø"=Use "std::array" or "std::vector" instead of a C-style array.(àŞ™™ÿÿÿÿÿ
+Ucpp:AssignmentInSubExpression—",Extract the assignment from this expression.(ˆÑ§c
+L	cpp:S1066­"1Merge this "if" statement with the enclosing one.(åÊÚúÿÿÿÿ
+L	cpp:S1066¸"1Merge this "if" statement with the enclosing one.(˜¨Ì·øÿÿÿÿ
+[cpp:AssignmentInSubExpression¹",Extract the assignment from this expression.(À›ö‚ıÿÿÿÿ
+H	cpp:S5945¿"2Use "std::string" instead of a C-style char array.(¼ĞÁ•
+Q	cpp:S1199õ"6Extract this nested code block into a separate method.(ÒÌâ–øÿÿÿÿ
+c!cpp:SingleDeclarationPerStatement‡"0Define each identifier in a dedicated statement.(çÈıêşÿÿÿÿ
+c!cpp:SingleDeclarationPerStatement“"0Define each identifier in a dedicated statement.(ÛşÕçÿÿÿÿÿ
+X	cpp:S5945Ş"=Use "std::array" or "std::vector" instead of a C-style array.(›••³şÿÿÿÿ
+5	cpp:S4962à"Use the "nullptr" literal.(‡÷üãûÿÿÿÿ
+X	cpp:S5945å"=Use "std::array" or "std::vector" instead of a C-style array.(€ºˆ›ıÿÿÿÿ
+f	cpp:S5566÷"KChange this raw for-loop to a range for-loop or an "std::ranges::for_each".(ÑŒöÕÿÿÿÿÿ
+H	cpp:S5945ú"2Use "std::string" instead of a C-style char array.(¨Ç
+€cpp:S995„"kMake the type of this parameter a pointer-to-const. The current type of this unnamed parameter is "void *".(ß­ñ
+…cpp:S995…"kMake the type of this parameter a pointer-to-const. The current type of this unnamed parameter is "void *".(˜Â¨Âúÿÿÿÿ
+5	cpp:S4962"Use the "nullptr" literal.(¾ıùÿÿÿÿ
+5	cpp:S4962"Use the "nullptr" literal.(¾ıùÿÿÿÿ
+0	cpp:S4962"Use the "nullptr" literal.(Ô§”Ø
+0	cpp:S4962"Use the "nullptr" literal.(Ô§”Ø
+H	cpp:S5945¢"2Use "std::string" instead of a C-style char array.(Íƒõ
+B	cpp:S5827ª"'Replace the redundant type with "auto".(‹§æØşÿÿÿÿ
+]	cpp:S3358¶"GExtract this nested conditional operator into an independent statement.(åü¨¦
+X	cpp:S5945Ï"=Use "std::array" or "std::vector" instead of a C-style array.(ÀÀŠûÿÿÿÿ
+6	cpp:S1905‘"Remove this redundant cast.(•¥È‡ÿÿÿÿÿ
+0	cpp:S4962¹"Use the "nullptr" literal.(éÚ¬ã
+]!cpp:SingleDeclarationPerStatementù"0Define each identifier in a dedicated statement.(Ğ—ñ 
+^!cpp:SingleDeclarationPerStatementú"0Define each identifier in a dedicated statement.(‰üê
+c!cpp:SingleDeclarationPerStatement™"0Define each identifier in a dedicated statement.(…äğıÿÿÿÿ
+^!cpp:SingleDeclarationPerStatementš"0Define each identifier in a dedicated statement.(é“ëÃ
+^!cpp:SingleDeclarationPerStatement›"0Define each identifier in a dedicated statement.(½»ö”
+c!cpp:SingleDeclarationPerStatementœ"0Define each identifier in a dedicated statement.(ä”Áâûÿÿÿÿ
+^!cpp:SingleDeclarationPerStatement"0Define each identifier in a dedicated statement.(ÉÕÁ‘
+^!cpp:SingleDeclarationPerStatement"0Define each identifier in a dedicated statement.(¼§•ş
+^!cpp:SingleDeclarationPerStatementŸ"0Define each identifier in a dedicated statement.(¾†Š
+c!cpp:SingleDeclarationPerStatement "0Define each identifier in a dedicated statement.(Š¡Í‹øÿÿÿÿ
+c!cpp:SingleDeclarationPerStatement¡"0Define each identifier in a dedicated statement.(²›ÃËıÿÿÿÿ
+c!cpp:SingleDeclarationPerStatement¢"0Define each identifier in a dedicated statement.(¶”ìÜûÿÿÿÿ
+=	cpp:S5827ª"'Replace the redundant type with "auto".(‰Ìœã
+=	cpp:S5827¬"'Replace the redundant type with "auto".(‚ÅÉ
+0	cpp:S4962·"Use the "nullptr" literal.(”üèÄ
+0	cpp:S4962·"Use the "nullptr" literal.(”üèÄ
+0	cpp:S4962¸"Use the "nullptr" literal.(ë¬Ÿ…
+0	cpp:S4962¸"Use the "nullptr" literal.(ë¬Ÿ…
+0	cpp:S4962¹"Use the "nullptr" literal.(Æú×½
+0	cpp:S4962¹"Use the "nullptr" literal.(Æú×½
+5	cpp:S4962º"Use the "nullptr" literal.(‹È¢«üÿÿÿÿ
+5	cpp:S4962º"Use the "nullptr" literal.(‹È¢«üÿÿÿÿ
+5	cpp:S4962»"Use the "nullptr" literal.(İ÷‘Œÿÿÿÿÿ
+5	cpp:S4962»"Use the "nullptr" literal.(İ÷‘Œÿÿÿÿÿ
+5	cpp:S4962¼"Use the "nullptr" literal.(â…ï«ÿÿÿÿÿ
+5	cpp:S4962¼"Use the "nullptr" literal.(â…ï«ÿÿÿÿÿ
+5	cpp:S4962½"Use the "nullptr" literal.(ÎªŞÿÿÿÿÿ
+5	cpp:S4962½"Use the "nullptr" literal.(ÎªŞÿÿÿÿÿ
+/	cpp:S4962¾"Use the "nullptr" literal.(ù°òS
+/	cpp:S4962¾"Use the "nullptr" literal.(ù°òS
+/	cpp:S4962Á"Use the "nullptr" literal.(³¯µ0
+5	cpp:S4962ç"Use the "nullptr" literal.(á½¶”úÿÿÿÿ
+5	cpp:S4962ç"Use the "nullptr" literal.(á½¶”úÿÿÿÿ
+0	cpp:S4962è"Use the "nullptr" literal.(»™ƒ
+0	cpp:S4962è"Use the "nullptr" literal.(»™ƒ
+0	cpp:S4962é"Use the "nullptr" literal.(À¦ú 
+0	cpp:S4962é"Use the "nullptr" literal.(À¦ú 
+0	cpp:S4962ê"Use the "nullptr" literal.(•š¥æ
+0	cpp:S4962ê"Use the "nullptr" literal.(•š¥æ
+0	cpp:S4962ë"Use the "nullptr" literal.(ÏöûÙ
+0	cpp:S4962ë"Use the "nullptr" literal.(ÏöûÙ
+5	cpp:S4962ì"Use the "nullptr" literal.(¾–úœÿÿÿÿÿ
+5	cpp:S4962ì"Use the "nullptr" literal.(¾–úœÿÿÿÿÿ
+0	cpp:S4962í"Use the "nullptr" literal.(œÓ®¶
+0	cpp:S4962í"Use the "nullptr" literal.(œÓ®¶
+0	cpp:S4962î"Use the "nullptr" literal.(†Á›•
+0	cpp:S4962î"Use the "nullptr" literal.(†Á›•
+0	cpp:S4962ï"Use the "nullptr" literal.(üŠÅ‹
+5	cpp:S4962ğ"Use the "nullptr" literal.(¾Ùöıÿÿÿÿ
+/	cpp:S4962ñ"Use the "nullptr" literal.(èâÅ
+5	cpp:S4962ò"Use the "nullptr" literal.(ñå®¾ùÿÿÿÿ
+X	cpp:S5945ù"=Use "std::array" or "std::vector" instead of a C-style array.(ô½Å’øÿÿÿÿ
+S	cpp:S5945ú"=Use "std::array" or "std::vector" instead of a C-style array.(ò°çı
+X	cpp:S5945Ÿ"=Use "std::array" or "std::vector" instead of a C-style array.(ÎİÊ™øÿÿÿÿ
+X	cpp:S5945³"=Use "std::array" or "std::vector" instead of a C-style array.(µÍ’åıÿÿÿÿ
+S	cpp:S5945ß"=Use "std::array" or "std::vector" instead of a C-style array.(ÏøÒ£
+X	cpp:S5945à"=Use "std::array" or "std::vector" instead of a C-style array.(Â¶¾ıÿÿÿÿ
+A	cpp:S3642è"&Replace this "enum" with "enum class".(ôØºåøÿÿÿÿ
+S	cpp:S5945ò"=Use "std::array" or "std::vector" instead of a C-style array.(¤ê
+S	cpp:S5945¯"=Use "std::array" or "std::vector" instead of a C-style array.(ú¹êÁ
+S	cpp:S5945É"=Use "std::array" or "std::vector" instead of a C-style array.(’Ä˜Ê
+S	cpp:S5945Ø"=Use "std::array" or "std::vector" instead of a C-style array.(Ä£¿
+M	cpp:S5945Ù"2Use "std::string" instead of a C-style char array.(‘·…ùÿÿÿÿ
+X	cpp:S5945é"=Use "std::array" or "std::vector" instead of a C-style array.(÷Ë¾ßıÿÿÿÿ
+X	cpp:S5945ê"=Use "std::array" or "std::vector" instead of a C-style array.(åÛÙ‹ûÿÿÿÿ
+M	cpp:S5945œ"2Use "std::string" instead of a C-style char array.(á¡£­ıÿÿÿÿ
+`	cpp:S6004†"KUse the init-statement to declare "next_button_x2" inside the if statement.(ëƒ”
+k	cpp:S3776"URefactor this function to reduce its Cognitive Complexity from 243 to the 25 allowed.(¢Ÿ©Ã
+bcpp:S134è"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(Ìš€Ğ
+bcpp:S134‘"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(Ìš€Ğ
+gcpp:S134½"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(ö„¿®øÿÿÿÿ
+gcpp:S134”"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(—ı½ùúÿÿÿÿ
+bcpp:S134¦"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(½’«ñ
+acpp:S134±"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(‡¤ÏG
+bcpp:S134º"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(ÍÉ“ö
+bcpp:S134»"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(í‰ŞÑ
+bcpp:S134¼"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(ÀßÍ¾
+gcpp:S134½"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(íöğÍşÿÿÿÿ
+Q	cpp:S1199"6Extract this nested code block into a separate method.(ÒÌâ–øÿÿÿÿ
+Q	cpp:S1199ª"6Extract this nested code block into a separate method.(ÒÌâ–øÿÿÿÿ
+Q	cpp:S1199Ó"6Extract this nested code block into a separate method.(ÒÌâ–øÿÿÿÿ
+H	cpp:S5945¿"2Use "std::string" instead of a C-style char array.(Íƒõ
+c!cpp:SingleDeclarationPerStatementÖ"0Define each identifier in a dedicated statement.(¯Èüÿÿÿÿ
+^!cpp:SingleDeclarationPerStatementİ"0Define each identifier in a dedicated statement.(šÅ•¡
+X	cpp:S5945ß"=Use "std::array" or "std::vector" instead of a C-style array.(çÒŒíÿÿÿÿÿ
+S	cpp:S5945é"=Use "std::array" or "std::vector" instead of a C-style array.(Ÿ¨‰
+	cpp:S5350ı"jMake the type of this variable a reference-to-const. The current type of "style" is "struct ImGuiStyle &".(øÎĞ
+Q	cpp:S1199•"6Extract this nested code block into a separate method.(ÒÌâ–øÿÿÿÿ
+S	cpp:S5945§"=Use "std::array" or "std::vector" instead of a C-style array.(ûåÙÄ
+5	cpp:S4962¨"Use the "nullptr" literal.(É³ãÚÿÿÿÿÿ
+Q	cpp:S1199¿"6Extract this nested code block into a separate method.(ÒÌâ–øÿÿÿÿ
+Q	cpp:S1199ä"6Extract this nested code block into a separate method.(ÒÌâ–øÿÿÿÿ
+Q	cpp:S1199ü"6Extract this nested code block into a separate method.(ÒÌâ–øÿÿÿÿ
+B	cpp:S5827²"'Replace the redundant type with "auto".(ªØ¢ùÿÿÿÿ
+	cpp:S5350Î"jMake the type of this variable a reference-to-const. The current type of "style" is "struct ImGuiStyle &".(øÎĞ
+X	cpp:S5945×"=Use "std::array" or "std::vector" instead of a C-style array.(œÔ»Ëûÿÿÿÿ
+X	cpp:S5945¤"=Use "std::array" or "std::vector" instead of a C-style array.(ƒŞşùÿÿÿÿ
+H	cpp:S5945¿"2Use "std::string" instead of a C-style char array.(ÜõÁè
+]	cpp:S3358Á"GExtract this nested conditional operator into an independent statement.(¹¨˜
+]	cpp:S3358Á"GExtract this nested conditional operator into an independent statement.(¹¨˜
+=	cpp:S5827â"'Replace the redundant type with "auto".(ãÚİ¢
+Rcpp:SwitchWithoutDefaultå".Add a "default" case to this switch statement.(ÖÒ®
+5	cpp:S4962‚"Use the "nullptr" literal.(…íşışÿÿÿÿ
+^	cpp:S6004‚"HUse the init-statement to declare "unused_open" inside the if statement.(Â¯ãü
+k	cpp:S3776"URefactor this function to reduce its Cognitive Complexity from 127 to the 25 allowed.(ğÅ
+gcpp:S134¹"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(ë²¤†øÿÿÿÿ
+gcpp:S134Ô"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(©•¯¡ùÿÿÿÿ
+bcpp:S134Ö"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(ÿµà¥
+gcpp:S134‹"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(¾€’Îÿÿÿÿÿ
+bcpp:S134ì"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(¡¾¹
+gcpp:S134…"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(¾€’Îÿÿÿÿÿ
+S	cpp:S5945«"=Use "std::array" or "std::vector" instead of a C-style array.(«Šå·
+X	cpp:S5945¬"=Use "std::array" or "std::vector" instead of a C-style array.(İê™„ıÿÿÿÿ
+Q	cpp:S1199ƒ"6Extract this nested code block into a separate method.(ÒÌâ–øÿÿÿÿ
+Q	cpp:S1199—"6Extract this nested code block into a separate method.(ÒÌâ–øÿÿÿÿ
+Q	cpp:S1199³"6Extract this nested code block into a separate method.(ÒÌâ–øÿÿÿÿ
+f	cpp:S5566…"KChange this raw for-loop to a range for-loop or an "std::ranges::for_each".(ÂÓÑùÿÿÿÿ
+S	cpp:S5945„"=Use "std::array" or "std::vector" instead of a C-style array.(Ñ¡ÌÑ
+M	cpp:S6164"2Replace constant with "std::numbers::pi_v<float>".(İôã‘ÿÿÿÿÿ
+H	cpp:S5945µ"2Use "std::string" instead of a C-style char array.(ºõÓÈ
+M	cpp:S5945¶"2Use "std::string" instead of a C-style char array.(È’¯Ãüÿÿÿÿ
+0	cpp:S4962Ò"Use the "nullptr" literal.(·ÑÛ£
+5	cpp:S4962è"Use the "nullptr" literal.(É¿©ùÿÿÿÿ
+ˆcpp:EmptyCompoundStatementî"\Fill this compound statement, remove it, or add a nested comment explaining why it is empty.(¯Âãøÿÿÿÿ
+X	cpp:S5945÷"=Use "std::array" or "std::vector" instead of a C-style array.(¥ß„»ıÿÿÿÿ
+<	cpp:S3642±"&Replace this "enum" with "enum class".(ìíÔş
+=	cpp:S5827Ì"'Replace the redundant type with "auto".(‹†Åº
+=	cpp:S5827Í"'Replace the redundant type with "auto".(êÔŒÖ
+0	cpp:S4962ç"Use the "nullptr" literal.(Ê«Á³
+	cpp:S5350í"jMake the type of this variable a reference-to-const. The current type of "style" is "struct ImGuiStyle &".(øÎĞ
+_	cpp:S6004ˆ"IUse the init-statement to declare "preview_text" inside the if statement.(Œ¦µ
+X	cpp:S5945û"=Use "std::array" or "std::vector" instead of a C-style array.(Ğ¹Ä‰øÿÿÿÿ
+]	cpp:S3358‡"GExtract this nested conditional operator into an independent statement.(°Œ«»
+f	cpp:S5566•"KChange this raw for-loop to a range for-loop or an "std::ranges::for_each".(ÖÉ€ßüÿÿÿÿ
+]	cpp:S6004ö "GUse the init-statement to declare "outer_size" inside the if statement.(•ğñÚ
+]	cpp:S6004‘""GUse the init-statement to declare "outer_size" inside the if statement.(òÏ¹¾
+]	cpp:S6004º#"GUse the init-statement to declare "outer_size" inside the if statement.(üË˜Ö
+X	cpp:S6004«$"BUse the init-statement to declare "flags" inside the if statement.(Ë×ì
+`	cpp:S6004%"JUse the init-statement to declare "COLUMNS_COUNT" inside the if statement.(øË™Ú
+^	cpp:S6004ó%"CUse the init-statement to declare "flags2" inside the if statement.(²Ü™Êÿÿÿÿÿ
+e	cpp:S6004Í("OUse the init-statement to declare "inner_width_to_use" inside the if statement.(ŒéâÙ
+p	cpp:S3776Â"URefactor this function to reduce its Cognitive Complexity from 651 to the 25 allowed.(ı•å÷ıÿÿÿÿ
+bcpp:S134ù"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(¸—ãı
+bcpp:S134İ"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(¸—ãı
+bcpp:S134ÿ"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(¸—ãı
+bcpp:S134 "MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(¸—ãı
+bcpp:S134½"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(¸—ãı
+gcpp:S134Ñ"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(İ³íéıÿÿÿÿ
+bcpp:S134÷"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(¸—ãı
+bcpp:S134Š"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(¸—ãı
+bcpp:S134¿"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(¸—ãı
+gcpp:S134ğ"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(Ìä×æøÿÿÿÿ
+bcpp:S134– "MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(•‹ÍÆ
+bcpp:S134¡ "MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(•‹ÍÆ
+gcpp:S134Ø "MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(·…¨ÿşÿÿÿÿ
+gcpp:S134ƒ!"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(òİ‡Äûÿÿÿÿ
+bcpp:S134º!"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(¾ËŸ»
+acpp:S134""MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(·ÕåK
+bcpp:S134¿""MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(¸—ãı
+bcpp:S134İ""MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(Õøıâ
+bcpp:S134¿#"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(¸—ãı
+bcpp:S134Ò#"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(¸—ãı
+bcpp:S134à#"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(¸—ãı
+bcpp:S134‰$"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(’í¤ñ
+bcpp:S134$"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(Õ¬¾ó
+gcpp:S134Ç$"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(”Ê‹åşÿÿÿÿ
+bcpp:S134ı$"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(¾ö¸¤
+bcpp:S134º%"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(¸—ãı
+acpp:S134ä%"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(‡×½I
+acpp:S134ş%"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(‡×½I
+gcpp:S134š&"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(Õ„šîşÿÿÿÿ
+gcpp:S134œ&"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(Áê—üüÿÿÿÿ
+gcpp:S134&"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(Ãè»âıÿÿÿÿ
+bcpp:S134Â&"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(úÄ’Å
+gcpp:S134†'"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(åãäĞûÿÿÿÿ
+bcpp:S134“'"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(•¢´¨
+bcpp:S134ø("MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(•¢´¨
+A	cpp:S3642¬"&Replace this "enum" with "enum class".(ìÚå£úÿÿÿÿ
+H	cpp:S5945à"2Use "std::string" instead of a C-style char array.(Íƒõ
+H	cpp:S5945È"2Use "std::string" instead of a C-style char array.(Íƒõ
+X	cpp:S5945é"=Use "std::array" or "std::vector" instead of a C-style array.(á¬üúÿÿÿÿ
+M	cpp:S5945é"2Use "std::string" instead of a C-style char array.(á¬üúÿÿÿÿ
+S	cpp:S5945‹ "=Use "std::array" or "std::vector" instead of a C-style array.(”ø
+A	cpp:S3642² "&Replace this "enum" with "enum class".(ü®…Æùÿÿÿÿ
+Xcpp:SwitchWithoutDefaultØ ".Add a "default" case to this switch statement.(·…¨ÿşÿÿÿÿ
+M	cpp:S5945Õ "2Use "std::string" instead of a C-style char array.(óÑ”íÿÿÿÿÿ
+H	cpp:S5945Ö "2Use "std::string" instead of a C-style char array.(êøÛ–
+<	cpp:S5827õ "'Replace the redundant type with "auto".(´—ÿ5
+<	cpp:S5827«!"'Replace the redundant type with "auto".(´—ÿ5
+0	cpp:S4962¤!"Use the "nullptr" literal.(¨ÔÙÉ
+5	cpp:S4962¦!"Use the "nullptr" literal.(‘Ï¬³ûÿÿÿÿ
+=	cpp:S5827""'Replace the redundant type with "auto".(Ü—ˆì
+X	cpp:S5945ğ!"=Use "std::array" or "std::vector" instead of a C-style array.(õÓ”Ûûÿÿÿÿ
+S	cpp:S5945ñ!"=Use "std::array" or "std::vector" instead of a C-style array.(Îƒ¦¦
+X	cpp:S5945ò!"=Use "std::array" or "std::vector" instead of a C-style array.(ÕéÏ‘şÿÿÿÿ
+=	cpp:S5827˜""'Replace the redundant type with "auto".(ê»«Ş
+Q	cpp:S1199ù""6Extract this nested code block into a separate method.(ÒÌâ–øÿÿÿÿ
+B	cpp:S5827 #"'Replace the redundant type with "auto".(Ü¼ùÿÿÿÿ
+B	cpp:S5827¹#"'Replace the redundant type with "auto".(´ï‹ûÿÿÿÿ
+6	cpp:S1905ù#"Remove this redundant cast.(Ö³ôıÿÿÿÿ
+6	cpp:S1905ú#"Remove this redundant cast.(şïöÿÿÿÿÿ
+6	cpp:S1905û#"Remove this redundant cast.(˜Í—òùÿÿÿÿ
+X	cpp:S5945Ø$"=Use "std::array" or "std::vector" instead of a C-style array.(ÌáÂúÿÿÿÿ
+S	cpp:S5945¦%"=Use "std::array" or "std::vector" instead of a C-style array.(˜é³¢
+H	cpp:S5945¼%"2Use "std::string" instead of a C-style char array.(Íƒõ
+H	cpp:S5945¹&"2Use "std::string" instead of a C-style char array.(Íƒõ
+R	cpp:S5945Ğ&"=Use "std::array" or "std::vector" instead of a C-style array.(Ûñ×0
+/	cpp:S4962‹'"Use the "nullptr" literal.(¥ëå-
+•	cpp:S5350–'"zMake the type of this variable a pointer-to-const. The current type of "item" is "struct (anonymous namespace)::MyItem *".(ˆ²¯şÿÿÿÿ
+B	cpp:S5827½'"'Replace the redundant type with "auto".(†ôªªÿÿÿÿÿ
+^!cpp:SingleDeclarationPerStatementÈ("0Define each identifier in a dedicated statement.(á§º«
+A	cpp:S3642·'"&Replace this "enum" with "enum class".(¹¯ê·ıÿÿÿÿ
+S	cpp:S5945¹'"=Use "std::array" or "std::vector" instead of a C-style array.(úúïŞ
+0	cpp:S4962‚("Use the "nullptr" literal.(¨ÔÙÉ
+5	cpp:S4962†("Use the "nullptr" literal.(‘Ï¬³ûÿÿÿÿ
+b	cpp:S3358Â("GExtract this nested conditional operator into an independent statement.(õƒßúÿÿÿÿ
+/	cpp:S4962É("Use the "nullptr" literal.(òØ³z
+/	cpp:S4962â("Use the "nullptr" literal.(¥ëå-
+M	cpp:S5945‰)"2Use "std::string" instead of a C-style char array.(óÑ”íÿÿÿÿÿ
+j	cpp:S3776è)"TRefactor this function to reduce its Cognitive Complexity from 67 to the 25 allowed.(™¦ 
+gcpp:S134û*"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(ş»Åúÿÿÿÿ
+bcpp:S134‘+"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(Û‰ÓÔ
+M	cpp:S5945ø)"2Use "std::string" instead of a C-style char array.(óÑ”íÿÿÿÿÿ
+ƒcpp:EmptyCompoundStatementú)"\Fill this compound statement, remove it, or add a nested comment explaining why it is empty.(”›¸†
+X	cpp:S5945‰*"=Use "std::array" or "std::vector" instead of a C-style array.(³¬ÎÇùÿÿÿÿ
+S	cpp:S5945Š*"=Use "std::array" or "std::vector" instead of a C-style array.(£ê™¢
+M	cpp:S5945*"2Use "std::string" instead of a C-style char array.(óÑ”íÿÿÿÿÿ
+5	cpp:S4962¬*"Use the "nullptr" literal.( °§£úÿÿÿÿ
+=	cpp:S5827ğ*"'Replace the redundant type with "auto".(Á†™î
+p	cpp:S3776­+"URefactor this function to reduce its Cognitive Complexity from 159 to the 25 allowed.(ı¹×’øÿÿÿÿ
+bcpp:S134Ô+"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(Ö«Ğ€
+gcpp:S134Õ+"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(‡Ğ¼Ôûÿÿÿÿ
+gcpp:S134Ö+"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(‹„¬†ıÿÿÿÿ
+gcpp:S134×+"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(†úˆµùÿÿÿÿ
+acpp:S134à+"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(˜ã€g
+bcpp:S134á+"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(úè‚‚
+bcpp:S134â+"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(°–÷
+gcpp:S134æ+"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(Äû›çøÿÿÿÿ
+bcpp:S134ç+"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(¨Ïì´
+gcpp:S134Ø,"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(²çìÍÿÿÿÿÿ
+f	cpp:S5566»+"KChange this raw for-loop to a range for-loop or an "std::ranges::for_each".(á™á–üÿÿÿÿ
+S	cpp:S5945º+"=Use "std::array" or "std::vector" instead of a C-style array.(ÜÜªø
+H	cpp:S5945ö+"2Use "std::string" instead of a C-style char array.(ñ³û±
+M	cpp:S5945ˆ,"2Use "std::string" instead of a C-style char array.(‰“‹ şÿÿÿÿ
+S	cpp:S5945Ÿ,"=Use "std::array" or "std::vector" instead of a C-style array.(ÛÏ†«
+X	cpp:S5945É,"=Use "std::array" or "std::vector" instead of a C-style array.(Öèøÿÿÿÿ
+M	cpp:S5945Õ,"2Use "std::string" instead of a C-style char array.(óÑ”íÿÿÿÿÿ
+j	cpp:S3776å,"TRefactor this function to reduce its Cognitive Complexity from 70 to the 25 allowed.(ÉŠêÏ
+=	cpp:S5827ù,"'Replace the redundant type with "auto".(›ıÇ‰
+y	cpp:S5350õ,"dMake the type of this variable a reference-to-const. The current type of "io" is "struct ImGuiIO &".(½×¢A
+	cpp:S5350ö,"jMake the type of this variable a reference-to-const. The current type of "style" is "struct ImGuiStyle &".(øÎĞ
+6	cpp:S1905¼-"Remove this redundant cast.(ùßÿúÿÿÿÿ
+ecpp:NamespaceNameŠ."HRename this namespace to match the regular expression: ^[a-z][a-z_0-9]*$(‘Œúp
+d	cpp:S6004’."IUse the init-statement to declare "font_current" inside the if statement.(óºŞÀøÿÿÿÿ
+†	cpp:S5350‘."kMake the type of this variable a pointer-to-const. The current type of "font_current" is "struct ImFont *".(Ä­¶Ìşÿÿÿÿ
+a	cpp:S6004¬."FUse the init-statement to declare "style_idx" inside the if statement.(ÙÉíøüÿÿÿÿ
+Xcpp:SwitchWithoutDefault®.".Add a "default" case to this switch statement.(êÓ°Íùÿÿÿÿ
+n	cpp:S6004„/"XUse the init-statement to declare "window_menu_button_position" inside the if statement.(·™“
+i	cpp:S3776¹."TRefactor this function to reduce its Cognitive Complexity from 89 to the 25 allowed.(•ÛÖV
+gcpp:S134—/"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(§ÔïÚøÿÿÿÿ
+bcpp:S134œ/"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(ı¯¢á
+bcpp:S134º/"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(­¨Á
+bcpp:S134¾/"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(û«è
+bcpp:S134ƒ0"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(êí‘Î
+K	cpp:S1199Ñ."6Extract this nested code block into a separate method.(Ÿû±(
+Q	cpp:S1199Ó."6Extract this nested code block into a separate method.(ˆ‘ÆĞúÿÿÿÿ
+Q	cpp:S1199Õ."6Extract this nested code block into a separate method.(ê“å»şÿÿÿÿ
+0	cpp:S4962Â."Use the "nullptr" literal.(¸ä´ã
+5	cpp:S4962Å."Use the "nullptr" literal.(†×ÜÔşÿÿÿÿ
+1	cpp:S1905„/"Remove this redundant cast.(·™“
+1	cpp:S1905†/"Remove this redundant cast.(“ÕÄ
+ƒcpp:EmptyCompoundStatementÆ0"\Fill this compound statement, remove it, or add a nested comment explaining why it is empty.(áò´ô
+ƒcpp:EmptyCompoundStatementÇ0"\Fill this compound statement, remove it, or add a nested comment explaining why it is empty.(á²Üï
+ƒcpp:EmptyCompoundStatementÉ0"\Fill this compound statement, remove it, or add a nested comment explaining why it is empty.(µş´Œ
+ƒcpp:EmptyCompoundStatementÊ0"\Fill this compound statement, remove it, or add a nested comment explaining why it is empty.(îà¡ø
+ˆcpp:EmptyCompoundStatementË0"\Fill this compound statement, remove it, or add a nested comment explaining why it is empty.(„şØüÿÿÿÿ
+0	cpp:S4962Ö0"Use the "nullptr" literal.(ßÚƒç
+ƒcpp:EmptyCompoundStatement×0"\Fill this compound statement, remove it, or add a nested comment explaining why it is empty.(üÔ·á
+ˆcpp:EmptyCompoundStatementØ0"\Fill this compound statement, remove it, or add a nested comment explaining why it is empty.(„€¦±ùÿÿÿÿ
+ƒcpp:EmptyCompoundStatementë0"\Fill this compound statement, remove it, or add a nested comment explaining why it is empty.(õøñç
+ƒcpp:EmptyCompoundStatementì0"\Fill this compound statement, remove it, or add a nested comment explaining why it is empty.(¥¶ŠŠ
+6	cpp:S1905„1"Remove this redundant cast.(äªğûÿÿÿÿ
+6	cpp:S1905†1"Remove this redundant cast.(áãÈ—ùÿÿÿÿ
+ˆcpp:EmptyCompoundStatementœ1"\Fill this compound statement, remove it, or add a nested comment explaining why it is empty.(†¥ùïüÿÿÿÿ
+5	cpp:S4962œ1"Use the "nullptr" literal.(†¥ùïüÿÿÿÿ
+ˆcpp:EmptyCompoundStatement1"\Fill this compound statement, remove it, or add a nested comment explaining why it is empty.(Ç˜‹Æûÿÿÿÿ
+ù	cpp:S3624¦1"âExplicitly define or delete the missing copy constructor and copy assignment operator so that they will not be implicitly provided. Additionally, you may consider defining the move assignment operator and the move constructor.(£×­ï
+_	cpp:S4963¦1"IRemove this class' destructor so that the class follows the rule of Zero.(£×­ï
+M	cpp:S5945¨1"2Use "std::string" instead of a C-style char array.(¬™ÓÅüÿÿÿÿ
+|	cpp:S3230µ1"fDo not assign data members in a constructor. Initialize member "HistoryPos" in an initialization list.(Â‹òÖ
+	cpp:S3230¼1"fDo not assign data members in a constructor. Initialize member "AutoScroll" in an initialization list.(ÜÙ„üÿÿÿÿ
+€	cpp:S3230½1"jDo not assign data members in a constructor. Initialize member "ScrollToBottom" in an initialization list.(®«º´
+5	cpp:S1231Ä1"Remove this use of "free".(¨œä÷üÿÿÿÿ
+€&cpp:SideEffectInRightHandSideOfLogicalÉ1"HRemove any side effects from right hand operands of logical && operator.(§ê½Õûÿÿÿÿ
+7	cpp:S1231Ê1"Remove this use of "malloc".(¶óÅşÿÿÿÿ
+M	cpp:S2681Ë1"2This statement will not be executed conditionally.(ÓéÃüÿÿÿÿ
+0	cpp:S1231Ğ1"Remove this use of "free".(æğíº
+Acpp:FunctionEllipsisÔ1" Remove use of ellipsis notation.(ÒÕÑü
+M	cpp:S5945×1"2Use "std::string" instead of a C-style char array.(²Ššôúÿÿÿÿ
+h	cpp:S6004×2"MUse the init-statement to declare "input_text_flags" inside the if statement.(—µëùüÿÿÿÿ
+o	cpp:S3776à1"TRefactor this function to reduce its Cognitive Complexity from 31 to the 25 allowed.(á—ú©ÿÿÿÿÿ
+5	cpp:S1231ó2"Remove this use of "free".(¨œä÷üÿÿÿÿ
+B	cpp:S5827–3"'Replace the redundant type with "auto".(·ÔÍüÿÿÿÿ
+T	cpp:S6004©3">Use the init-statement to declare "c" inside the if statement.(µúº›
+j	cpp:S3776š3"TRefactor this function to reduce its Cognitive Complexity from 60 to the 25 allowed.(âéÛé
+bcpp:S134É3"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(ª£
+gcpp:S134Î3"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(ÓÜÿöÿÿÿÿÿ
+gcpp:S134ï3"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(Œ È‰şÿÿÿÿ
+Scpp:SwitchWithoutDefault3".Add a "default" case to this switch statement.(àùˆİ
+Q	cpp:S1199 3"6Extract this nested code block into a separate method.(ÒÌâ–øÿÿÿÿ
+=	cpp:S5827Ä3"'Replace the redundant type with "auto".(öÓ›
+Q	cpp:S1199â3"6Extract this nested code block into a separate method.(ÒÌâ–øÿÿÿÿ
+G	cpp:S1066î3"1Merge this "if" statement with the enclosing one.(µşÈÙ
+L	cpp:S1066ï3"1Merge this "if" statement with the enclosing one.(Œ È‰şÿÿÿÿ
+	cpp:S3230—4"fDo not assign data members in a constructor. Initialize member "AutoScroll" in an initialization list.(ÜÙ„üÿÿÿÿ
+Acpp:FunctionEllipsis¢4" Remove use of ellipsis notation.(ÒÕÑü
+o	cpp:S3776®4"TRefactor this function to reduce its Cognitive Complexity from 26 to the 25 allowed.(Ã¾Éºıÿÿÿÿ
+5	cpp:S4962®4"Use the "nullptr" literal.(Ã¾Éºıÿÿÿÿ
+=	cpp:S6234Ğ4"'Replace the redundant type with "auto".(¼Ú©Ì
+=	cpp:S6234Ñ4"'Replace the redundant type with "auto".(· ˜
+X	cpp:S5945“5"=Use "std::array" or "std::vector" instead of a C-style array.(ª•…Æùÿÿÿÿ
+S	cpp:S5945”5"=Use "std::array" or "std::vector" instead of a C-style array.(ÓâÑ
+j	cpp:S3776©5"TRefactor this function to reduce its Cognitive Complexity from 27 to the 25 allowed.(¸ºêù
+acpp:S134²5"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(ğ…‰W
+Q	cpp:S1199º5"6Extract this nested code block into a separate method.(ÒÌâ–øÿÿÿÿ
+Q	cpp:S1199É5"6Extract this nested code block into a separate method.(ÒÌâ–øÿÿÿÿ
+H	cpp:S5945¿5"2Use "std::string" instead of a C-style char array.(½‘ßâ
+ˆcpp:EmptyCompoundStatementİ5"\Fill this compound statement, remove it, or add a nested comment explaining why it is empty.(Şìâÿÿÿÿÿ
+ˆcpp:EmptyCompoundStatementß5"\Fill this compound statement, remove it, or add a nested comment explaining why it is empty.(‹û‹ôşÿÿÿÿ
+bcpp:S134Œ6"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(ìé¶
+S	cpp:S5945ù5"=Use "std::array" or "std::vector" instead of a C-style array.(•ªÛç
+H	cpp:S6164ù5"2Replace constant with "std::numbers::pi_v<float>".(•ªÛç
+Scpp:SwitchWithoutDefaultØ6".Add a "default" case to this switch statement.(•š—¼
+Q	cpp:S1199ß6"6Extract this nested code block into a separate method.(ÒÌâ–øÿÿÿÿ
+]	cpp:S6004³7"BUse the init-statement to declare "flags" inside the if statement.(¤Ó¶÷ùÿÿÿÿ
+=	cpp:S5827™7"'Replace the redundant type with "auto".(üÁå¬
+S	cpp:S5945œ7"=Use "std::array" or "std::vector" instead of a C-style array.(â‘ÅÜ
+o	cpp:S3776Ë7"TRefactor this function to reduce its Cognitive Complexity from 34 to the 25 allowed.(ÚÅƒúıÿÿÿÿ
+y	cpp:S5350Î7"dMake the type of this variable a reference-to-const. The current type of "io" is "struct ImGuiIO &".(½×¢A
+c!cpp:SingleDeclarationPerStatementÖ7"0Define each identifier in a dedicated statement.(È§Ëşÿÿÿÿ
+3	cpp:S3728â7"Merge these literals together.(ìêš/
+0	cpp:S4962ê7"Use the "nullptr" literal.(’¢ë
+0	cpp:S4962ë7"Use the "nullptr" literal.(ş‘ÌÓ
+/	cpp:S4962ì7"Use the "nullptr" literal.(†¿‚)
+0	cpp:S4962í7"Use the "nullptr" literal.(ıš–Ş
+5	cpp:S4962î7"Use the "nullptr" literal.(–ŞÓñÿÿÿÿÿ
+cpp:S995¡8"lMake the type of this parameter a pointer-to-const. The current type of this unnamed parameter is "_Bool *".(¼Áã’
+M	cpp:S5945µ8"2Use "std::string" instead of a C-style char array.(çÆĞªûÿÿÿÿ
+j	cpp:S6004ñ9"TUse the init-statement to declare "mouse_threshold_for_pan" inside the if statement.(€ÍÂÔ
+b	cpp:S6004ù9"GUse the init-statement to declare "drag_delta" inside the if statement.(ŞÓ¢ˆûÿÿÿÿ
+o	cpp:S3776Â8"TRefactor this function to reduce its Cognitive Complexity from 84 to the 25 allowed.(ÁÃüÿÿÿÿ
+gcpp:S134ê9"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.( ˆŸÌşÿÿÿÿ
+bcpp:S134ı9"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(¼•„±
+bcpp:S134€:"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(Ô¯¦ˆ
+gcpp:S134:"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(Ê©¸Âúÿÿÿÿ
+bcpp:S134Š:"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(ç…ÍÒ
+bcpp:S134Œ:"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(ı±ŸÊ
+B	cpp:S5827Ú8"'Replace the redundant type with "auto".(¡Ãñêùÿÿÿÿ
+Q	cpp:S1199Û8"6Extract this nested code block into a separate method.(ÒÌâ–øÿÿÿÿ
+Q	cpp:S1199ã8"6Extract this nested code block into a separate method.(ÒÌâ–øÿÿÿÿ
+<	cpp:S5827õ8"'Replace the redundant type with "auto".(¨ü˜3
+=	cpp:S5827İ8"'Replace the redundant type with "auto".(ä¢‹ø
+=	cpp:S5827å8"'Replace the redundant type with "auto".(ä¢‹ø
+R	cpp:S5945š9"=Use "std::array" or "std::vector" instead of a C-style array.(õ±ˆ8
+X	cpp:S59459"=Use "std::array" or "std::vector" instead of a C-style array.(óúøÿÿÿÿ
+B	cpp:S5827Ñ9"'Replace the redundant type with "auto".(¢Àâïüÿÿÿÿ
+y	cpp:S5350Ô9"dMake the type of this variable a reference-to-const. The current type of "io" is "struct ImGuiIO &".(½×¢A
+0	cpp:S4962€:"Use the "nullptr" literal.(Ô¯¦ˆ
+5	cpp:S4962:"Use the "nullptr" literal.(Ê©¸Âúÿÿÿÿ
+9	cpp:S2193Š:"#Do not use a counter of type float.(ç…ÍÒ
+9	cpp:S2193Œ:"#Do not use a counter of type float.(ı±ŸÊ
+=	cpp:S5827 :"'Replace the redundant type with "auto".(”øó¬
+U	cpp:S6004û:"?Use the init-statement to declare "io" inside the if statement.(Õó½
+j	cpp:S3776À:"TRefactor this function to reduce its Cognitive Complexity from 29 to the 25 allowed.(Œª¬µ
+Lcpp:S833À:"7Add the "static" storage specifier to this declaration.(Œª¬µ
+y	cpp:S5350ú:"dMake the type of this variable a reference-to-const. The current type of "io" is "struct ImGuiIO &".(½×¢A
+5	cpp:S4962‹;"Use the "nullptr" literal.(ğ˜İ°ıÿÿÿÿ
+5	cpp:S4962Œ;"Use the "nullptr" literal.(§×€ıÿÿÿÿ
+0	cpp:S4962–;"Use the "nullptr" literal.(…¯Ò»
+0	cpp:S4962–;"Use the "nullptr" literal.(…¯Ò»
+4	cpp:S3728›;"Merge these literals together.(ªáïº
+{	cpp:S3230¹;"`Do not assign data members in a constructor. Initialize member "Name" in an initialization list.(ô‡é¸üÿÿÿÿ
+|	cpp:S3230»;"aDo not assign data members in a constructor. Initialize member "Dirty" in an initialization list.(æ…àÿúÿÿÿÿ
+{	cpp:S3230¼;"eDo not assign data members in a constructor. Initialize member "WantClose" in an initialization list.(ÔŠÊ‰
+|	cpp:S3230½;"aDo not assign data members in a constructor. Initialize member "Color" in an initialization list.(»©åêúÿÿÿÿ
+H	cpp:S5945Û;"2Use "std::string" instead of a C-style char array.(Œ©¹å
+^	cpp:S6004à="HUse the init-statement to declare "item_height" inside the if statement.(ì“÷¤
+k	cpp:S3776‡<"URefactor this function to reduce its Cognitive Complexity from 174 to the 25 allowed.(¤Ú£”
+bcpp:S134¯<"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(Ù¸§¦
+bcpp:S134¹<"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(Ù¸§¦
+bcpp:S134ñ<"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(ë†ñí
+gcpp:S134ø<"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(¹®½×şÿÿÿÿ
+gcpp:S134ÿ<"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(¹—Ùôúÿÿÿÿ
+bcpp:S134—="MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(ë†ñí
+gcpp:S134Ÿ="MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(¹®½×şÿÿÿÿ
+gcpp:S134¦="MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(¹—Ùôúÿÿÿÿ
+bcpp:S134à="MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(ì“÷¤
+gcpp:S134é="MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(·Ü¦¨üÿÿÿÿ
+bcpp:S134õ="MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(Ú¡©‡
+gcpp:S134ı="MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(‚Ì»Úùÿÿÿÿ
+Lcpp:S833‡<"7Add the "static" storage specifier to this declaration.(¤Ú£”
+<	cpp:S3642Œ<"&Replace this "enum" with "enum class".(¸İ”¦
+G	cpp:S1066³<"1Merge this "if" statement with the enclosing one.(Àæã»
+0	cpp:S4962¸<"Use the "nullptr" literal.(ŸÛ“
+ƒcpp:EmptyCompoundStatement»<"\Fill this compound statement, remove it, or add a nested comment explaining why it is empty.(¨ëÍ™
+G	cpp:S1066É<"1Merge this "if" statement with the enclosing one.(ë†ñí
+<	cpp:S1110ã<"!Remove these useless parentheses.(é ğ€øÿÿÿÿ
+0	cpp:S4962Ü="Use the "nullptr" literal.(ñØÜ³
+O	cpp:S5008„"9Replace this use of "void *" with a more meaningful type.(ß­ñ
+T	cpp:S5008…"9Replace this use of "void *" with a more meaningful type.(˜Â¨Âúÿÿÿÿ
+Q	cpp:S2259—;";Dereference of null pointer (loaded from variable 'p_open')(îñõ—

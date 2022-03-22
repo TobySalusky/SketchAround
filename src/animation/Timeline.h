@@ -63,7 +63,7 @@ struct TimelineSelection {
         return returnVal;
     }
 
-    void DeleteAll() {
+    void DeleteAll() const { 
         const auto DeleteFunc = [](const auto& val) {
             for (int i = val.frames.size() - 1; i >= 0; i--) {
                 val.layer->RemoveAtTime((val.frames[i]->time));
@@ -73,7 +73,7 @@ struct TimelineSelection {
         TIMELINE_SELECTION_HANDLE_BOTH(DeleteFunc);
     }
 
-    void MoveAll(float amount) {
+    void MoveAll(float amount) const {
         const auto MoveFunc = [=](const auto& val) {
             for (int i = 0; i < val.frames.size(); i++) {
                 val.layer->MoveFromTimeToTime(val.frames[i]->time, (val.frames[i]->time) + amount);
@@ -83,7 +83,7 @@ struct TimelineSelection {
         TIMELINE_SELECTION_HANDLE_BOTH_CAPTURE(MoveFunc);
     }
 
-    int CountAll() {
+    int CountAll() const {
         int count = 0;
         const auto CountFunc = [&](const auto& val) {
             count += val.frames.size();
@@ -124,9 +124,9 @@ struct TimelineSelection {
         return true;
     }
 
-    void SetBlendID(int num) {
+    void SetBlendID(int num) const {
         if (num >= BlendModes::GetNextID()) {
-            printf("Error: can not set to blend mode that doesn't exist!\n");
+            LOG("Error: can not set to blend mode that doesn't exist!\n");
             return;
         }
 
@@ -139,7 +139,7 @@ struct TimelineSelection {
         TIMELINE_SELECTION_HANDLE_BOTH_CAPTURE(SetFunc);
     }
 
-    int CountKeyframes() {
+    [[nodiscard]] int CountKeyframes() const {
         int count = 0;
         const auto CountFunc = [&](const auto& val) {
             for (auto* keyFramePtr : val.frames) {
@@ -151,7 +151,7 @@ struct TimelineSelection {
         return count;
     }
 
-    bool ContainsKeyframe(std::variant<KeyFrame<Vec2List>*, KeyFrame<float>*> frame) {
+    bool ContainsKeyframe(std::variant<KeyFrame<Vec2List>*, KeyFrame<float>*> frame) const {
         bool contains = false;
 
         if (std::holds_alternative<KeyFrame<Vec2List>*>(frame)) {
@@ -175,7 +175,7 @@ struct TimelineSelection {
     }
 private:
     template <class T>
-    void HandleTypeCapture(const std::function<void(const KeyFrameRowSelection<T>&)>& func) {
+    void HandleTypeCapture(const std::function<void(const KeyFrameRowSelection<T>&)>& func) const {
         for (const auto& selectionVariant : rowSelections) {
             if (std::holds_alternative<KeyFrameRowSelection<T>>(selectionVariant)) {
                 func(std::get<KeyFrameRowSelection<T>>(selectionVariant));
@@ -183,7 +183,7 @@ private:
         }
     }
 
-    void HandleAllCapture(const std::function<void(const KeyFrameRowSelection<Vec2List>&)>& vec2ListFuncPtr, const std::function<void(const KeyFrameRowSelection<float>&)>& floatFuncPtr) {
+    void HandleAllCapture(const std::function<void(const KeyFrameRowSelection<Vec2List>&)>& vec2ListFuncPtr, const std::function<void(const KeyFrameRowSelection<float>&)>& floatFuncPtr) const {
         for (const auto& selectionVariant : rowSelections) {
             if (std::holds_alternative<KeyFrameRowSelection<Vec2List>>(selectionVariant)) {
                 vec2ListFuncPtr(std::get<KeyFrameRowSelection<Vec2List>>(selectionVariant));
@@ -193,7 +193,7 @@ private:
         }
     }
 
-    void HandleAll(void(* vec2ListFuncPtr)(const KeyFrameRowSelection<Vec2List>& val), void(* floatFuncPtr)(const KeyFrameRowSelection<float>& val)) {
+    void HandleAll(void(* vec2ListFuncPtr)(const KeyFrameRowSelection<Vec2List>& val), void(* floatFuncPtr)(const KeyFrameRowSelection<float>& val)) const {
         for (const auto& selectionVariant : rowSelections) {
             if (std::holds_alternative<KeyFrameRowSelection<Vec2List>>(selectionVariant)) {
                 vec2ListFuncPtr(std::get<KeyFrameRowSelection<Vec2List>>(selectionVariant));

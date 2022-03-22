@@ -21,13 +21,15 @@ struct RevolveData {
     const Vec2List& graphY;
     const Vec2List& graphZ;
     const Vec2List& crossSectionPoints;
-    std::optional<std::function<Vec2List(float)>> crossSectionSnapPointFunc;
+    std::optional<std::function<Vec2List(float)>>
+    crossSectionSnapPointFunc;
 };
 
 class Revolver {
 public:
     static std::tuple<std::vector<glm::vec3>, std::vector<unsigned int>>
-    Revolve(const std::vector<glm::vec2> &points, const RevolveData& revolveData, TopologyCorrector* outTopologyData = nullptr);
+    Revolve(const std::vector<glm::vec2> &points,
+			const RevolveData& revolveData, TopologyCorrector* outTopologyData = nullptr);
 };
 
 

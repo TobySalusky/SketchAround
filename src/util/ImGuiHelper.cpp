@@ -148,3 +148,25 @@ void ImGuiHelper::InnerWindowBorders() {
     g.AddRect(pos, Add(pos, dimens), COLOR_SEPARATOR, 3.0f, 0, 1.0f);
     g.PopClipRect();
 }
+
+void ImGuiHelper::CreateDockSpace() {
+//	ImGuiViewport const* viewport = ImGui::GetMainViewport();
+//	ImGui::SetNextWindowPos(viewport->Pos);
+//	ImGui::SetNextWindowSize(viewport->Size);
+//	ImGui::SetNextWindowViewport(viewport->ID);
+//	ImGui::SetNextWindowBgAlpha(0.0f);
+//
+//	ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
+//	window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
+//	window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+//
+////	ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+////	ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+////	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+////	ImGui::Begin("DockSpace Demo", p_open, window_flags);
+////	ImGui::PopStyleVar(3);
+//
+//	ImGuiID dockspace_id = ImGui::GetID("MyDockspace");
+////	ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_PassthruDockspace;
+//	ImGui::DockSpace(dockspace_id, ImVec2(400.0f, 400.0f));
+}

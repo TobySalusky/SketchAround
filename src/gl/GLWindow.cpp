@@ -9,6 +9,7 @@
 
 #include "GLWindow.h"
 #include "../vendor/stb/stb_image.h"
+#include "../util/Util.h"
 
 GLWindow::GLWindow(GLint windowWidth, GLint windowHeight) { // NOLINT(cppcoreguidelines-pro-type-member-init)
     width = windowWidth;
@@ -16,7 +17,7 @@ GLWindow::GLWindow(GLint windowWidth, GLint windowHeight) { // NOLINT(cppcoregui
 
     // Init GLFW
     if (!glfwInit()) {
-        printf("Error Initialising GLFW");
+	    LOG("Error Initialising GLFW");
         glfwTerminate();
     }
     // Init all the required options for GLFW
@@ -34,7 +35,7 @@ GLWindow::GLWindow(GLint windowWidth, GLint windowHeight) { // NOLINT(cppcoregui
 
     if (window == nullptr)
     {
-        printf("Failed to create GLFW window");
+        LOG("Failed to create GLFW window");
         glfwDestroyWindow(window);
         glfwTerminate();
     }
@@ -46,7 +47,7 @@ GLWindow::GLWindow(GLint windowWidth, GLint windowHeight) { // NOLINT(cppcoregui
     // Initialize GLEW to setup the OpenGL Function pointers
     if (glewInit() != GLEW_OK)
     {
-        printf("Failed to initialize GLEW");
+	    LOG("Failed to initialize GLEW");
         glfwDestroyWindow(window);
         glfwTerminate();
     }

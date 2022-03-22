@@ -1,0 +1,753 @@
+
+;	cpp:S1103"&Remove the misleading "//" characters.(öÕ†ø
+;	cpp:S1103"&Remove the misleading "//" characters.(¹¿ÿ
+@	cpp:S1103"&Remove the misleading "//" characters.(ŒÇ÷Êşÿÿÿÿ
+;	cpp:S1103"&Remove the misleading "//" characters.(û”²í
+@	cpp:S1103"&Remove the misleading "//" characters.(çÎĞıÿÿÿÿ
+;	cpp:S1103"&Remove the misleading "//" characters.(Ì¥Äò
+@	cpp:S1103"&Remove the misleading "//" characters.(€Ø‘†ùÿÿÿÿ
+@	cpp:S1103"&Remove the misleading "//" characters.(ÕèÅõúÿÿÿÿ
+;	cpp:S1103"&Remove the misleading "//" characters.(èˆ‡€
+@	cpp:S1103"&Remove the misleading "//" characters.(®õÛ•úÿÿÿÿ
+;	cpp:S1103"&Remove the misleading "//" characters.(İ£¼
+;	cpp:S1103"&Remove the misleading "//" characters.(çàà˜
+:	cpp:S1103"&Remove the misleading "//" characters.(âÔ°c
+@	cpp:S1103"&Remove the misleading "//" characters.(‡ş°ïüÿÿÿÿ
+@	cpp:S1103"&Remove the misleading "//" characters.(İ‹½ğûÿÿÿÿ
+;	cpp:S1103"&Remove the misleading "//" characters.(ü±Ç×
+@	cpp:S1103"&Remove the misleading "//" characters.(Õ¼úûÿÿÿÿ
+;	cpp:S1103"&Remove the misleading "//" characters.(ÈØ
+;	cpp:S1103"&Remove the misleading "//" characters.(Š²âŞ
+@	cpp:S1103 "&Remove the misleading "//" characters.(šæ´ñúÿÿÿÿ
+@	cpp:S1103!"&Remove the misleading "//" characters.( É÷ÿÿÿÿÿ
+@	cpp:S1103""&Remove the misleading "//" characters.(­‘É†ıÿÿÿÿ
+@	cpp:S1103#"&Remove the misleading "//" characters.(ŞÆ§„ÿÿÿÿÿ
+^cpp:PPUndefUsage·"ARemove this #undef directive that undefines a non-existing macro.(ÑãÄ´
+ccpp:PPUndefUsage¸"ARemove this #undef directive that undefines a non-existing macro.(¡ÓÑÛúÿÿÿÿ
+M	cpp:S5028¼"8Replace this macro by "const", "constexpr" or an "enum".(Ï©Ğ
+N	cpp:S5028½"8Replace this macro by "const", "constexpr" or an "enum".(äô¥º
+N	cpp:S5028Ç"8Replace this macro by "const", "constexpr" or an "enum".(åÿŸ
+M	cpp:S6164ï"2Replace constant with "std::numbers::pi_v<float>".(¬ºÍêøÿÿÿÿ
+S	cpp:S5028ï"8Replace this macro by "const", "constexpr" or an "enum".(¬ºÍêøÿÿÿÿ
+S	cpp:S5028ó"8Replace this macro by "const", "constexpr" or an "enum".(ªöœÙÿÿÿÿÿ
+Acpp:CommentedCode…"Remove the commented out code.(à´®ùÿÿÿÿ
+N	cpp:S5028¸"8Replace this macro by "const", "constexpr" or an "enum".(§şÇâ
+S	cpp:S5028¹"8Replace this macro by "const", "constexpr" or an "enum".(åÜ˜ÿÿÿÿÿ
+S	cpp:S5028Â"8Replace this macro by "const", "constexpr" or an "enum".(ìèÍšúÿÿÿÿ
+g	cpp:S1134ï"LTake the required action to fix the issue indicated by this "FIXME" comment.(ŒŠıŠûÿÿÿÿ
+Acpp:CommentedCodeğ"Remove the commented out code.(Î«íˆşÿÿÿÿ
+a	cpp:S1134ò"LTake the required action to fix the issue indicated by this "FIXME" comment.(›€¯M
+a	cpp:S1134ª"LTake the required action to fix the issue indicated by this "FIXME" comment.(¡¡N
+b	cpp:S1134È"LTake the required action to fix the issue indicated by this "FIXME" comment.(½×ùË
+g	cpp:S1134è"LTake the required action to fix the issue indicated by this "FIXME" comment.(‰ò’¢ıÿÿÿÿ
+b	cpp:S1134’"LTake the required action to fix the issue indicated by this "FIXME" comment.(¾ÔØ¿
+Acpp:CommentedCodeÃ	"Remove the commented out code.(Ğá•‚şÿÿÿÿ
+b	cpp:S1134Ø	"LTake the required action to fix the issue indicated by this "FIXME" comment.(­›º
+a	cpp:S1134µ"LTake the required action to fix the issue indicated by this "FIXME" comment.(…Í¾%
+<cpp:CommentedCodeÔ"Remove the commented out code.(º—À©
+b	cpp:S1134æ"LTake the required action to fix the issue indicated by this "FIXME" comment.(œûèÃ
+g	cpp:S1134õ"LTake the required action to fix the issue indicated by this "FIXME" comment.(Éô´«üÿÿÿÿ
+b	cpp:S1134·"LTake the required action to fix the issue indicated by this "FIXME" comment.(ÄâÍ¾
+g	cpp:S1134Â"LTake the required action to fix the issue indicated by this "FIXME" comment.(Øı¸Øøÿÿÿÿ
+g	cpp:S1134Ÿ"LTake the required action to fix the issue indicated by this "FIXME" comment.(î×Şïøÿÿÿÿ
+g	cpp:S1134«"LTake the required action to fix the issue indicated by this "FIXME" comment.(÷‘¡şÿÿÿÿ
+g	cpp:S1134¶"LTake the required action to fix the issue indicated by this "FIXME" comment.(ƒÀïÿÿÿÿÿ
+b	cpp:S1134ˆ"LTake the required action to fix the issue indicated by this "FIXME" comment.(²»Õ
+b	cpp:S1134Š"LTake the required action to fix the issue indicated by this "FIXME" comment.(—ØËø
+b	cpp:S1134Ô"LTake the required action to fix the issue indicated by this "FIXME" comment.(ÙÎÉ
+S	cpp:S5028§"8Replace this macro by "const", "constexpr" or an "enum".(á´Úòÿÿÿÿÿ
+a	cpp:S1134ó"LTake the required action to fix the issue indicated by this "FIXME" comment.(å¤šH
+b	cpp:S1134³"LTake the required action to fix the issue indicated by this "FIXME" comment.(¡Üß†
+g	cpp:S1134Ø"LTake the required action to fix the issue indicated by this "FIXME" comment.(ÇüÁÔıÿÿÿÿ
+Vcpp:PPIncludeNotAtTop¾"4Move this #include directive to the top of the file.(ã˜æ
+B	cpp:S1103"&Remove the misleading "//" characters.(öÕ†ø8ŸÌ†ù/
+B	cpp:S1103"&Remove the misleading "//" characters.(¹¿ÿ8 Ì†ù/
+G	cpp:S1103"&Remove the misleading "//" characters.(ŒÇ÷Êşÿÿÿÿ8¢Ì†ù/
+B	cpp:S1103"&Remove the misleading "//" characters.(û”²í8£Ì†ù/
+G	cpp:S1103"&Remove the misleading "//" characters.(çÎĞıÿÿÿÿ8£Ì†ù/
+B	cpp:S1103"&Remove the misleading "//" characters.(Ì¥Äò8¤Ì†ù/
+G	cpp:S1103"&Remove the misleading "//" characters.(€Ø‘†ùÿÿÿÿ8¥Ì†ù/
+G	cpp:S1103"&Remove the misleading "//" characters.(ÕèÅõúÿÿÿÿ8¦Ì†ù/
+B	cpp:S1103"&Remove the misleading "//" characters.(èˆ‡€8§Ì†ù/
+G	cpp:S1103"&Remove the misleading "//" characters.(®õÛ•úÿÿÿÿ8¨Ì†ù/
+B	cpp:S1103"&Remove the misleading "//" characters.(İ£¼8¨Ì†ù/
+B	cpp:S1103"&Remove the misleading "//" characters.(çàà˜8©Ì†ù/
+A	cpp:S1103"&Remove the misleading "//" characters.(âÔ°c8ªÌ†ù/
+G	cpp:S1103"&Remove the misleading "//" characters.(‡ş°ïüÿÿÿÿ8«Ì†ù/
+G	cpp:S1103"&Remove the misleading "//" characters.(İ‹½ğûÿÿÿÿ8¬Ì†ù/
+B	cpp:S1103"&Remove the misleading "//" characters.(ü±Ç×8¬Ì†ù/
+G	cpp:S1103"&Remove the misleading "//" characters.(Õ¼úûÿÿÿÿ8­Ì†ù/
+B	cpp:S1103"&Remove the misleading "//" characters.(ÈØ8®Ì†ù/
+B	cpp:S1103"&Remove the misleading "//" characters.(Š²âŞ8¯Ì†ù/
+G	cpp:S1103 "&Remove the misleading "//" characters.(šæ´ñúÿÿÿÿ8°Ì†ù/
+G	cpp:S1103!"&Remove the misleading "//" characters.( É÷ÿÿÿÿÿ8±Ì†ù/
+G	cpp:S1103""&Remove the misleading "//" characters.(­‘É†ıÿÿÿÿ8±Ì†ù/
+G	cpp:S1103#"&Remove the misleading "//" characters.(ŞÆ§„ÿÿÿÿÿ8²Ì†ù/
+ecpp:PPUndefUsage·"ARemove this #undef directive that undefines a non-existing macro.(ÑãÄ´8œÑ†ù/
+jcpp:PPUndefUsage¸"ARemove this #undef directive that undefines a non-existing macro.(¡ÓÑÛúÿÿÿÿ8œÑ†ù/
+T	cpp:S5028¼"8Replace this macro by "const", "constexpr" or an "enum".(Ï©Ğ8Ñ†ù/
+U	cpp:S5028½"8Replace this macro by "const", "constexpr" or an "enum".(äô¥º8Ñ†ù/
+U	cpp:S5028Ç"8Replace this macro by "const", "constexpr" or an "enum".(åÿŸ8¡Ñ†ù/
+T	cpp:S6164ï"2Replace constant with "std::numbers::pi_v<float>".(¬ºÍêøÿÿÿÿ8¡Ñ†ù/
+Z	cpp:S5028ï"8Replace this macro by "const", "constexpr" or an "enum".(¬ºÍêøÿÿÿÿ8¢Ñ†ù/
+Z	cpp:S5028ó"8Replace this macro by "const", "constexpr" or an "enum".(ªöœÙÿÿÿÿÿ8£Ñ†ù/
+Hcpp:CommentedCode…"Remove the commented out code.(à´®ùÿÿÿÿ8¨Ñ†ù/
+U	cpp:S5028¸"8Replace this macro by "const", "constexpr" or an "enum".(§şÇâ8ªÑ†ù/
+Z	cpp:S5028¹"8Replace this macro by "const", "constexpr" or an "enum".(åÜ˜ÿÿÿÿÿ8ªÑ†ù/
+Z	cpp:S5028Â"8Replace this macro by "const", "constexpr" or an "enum".(ìèÍšúÿÿÿÿ8«Ñ†ù/
+n	cpp:S1134ï"LTake the required action to fix the issue indicated by this "FIXME" comment.(ŒŠıŠûÿÿÿÿ8¬Ñ†ù/
+Hcpp:CommentedCodeğ"Remove the commented out code.(Î«íˆşÿÿÿÿ8¬Ñ†ù/
+h	cpp:S1134ò"LTake the required action to fix the issue indicated by this "FIXME" comment.(›€¯M8­Ñ†ù/
+h	cpp:S1134ª"LTake the required action to fix the issue indicated by this "FIXME" comment.(¡¡N8®Ñ†ù/
+i	cpp:S1134È"LTake the required action to fix the issue indicated by this "FIXME" comment.(½×ùË8¯Ñ†ù/
+n	cpp:S1134è"LTake the required action to fix the issue indicated by this "FIXME" comment.(‰ò’¢ıÿÿÿÿ8¯Ñ†ù/
+i	cpp:S1134’"LTake the required action to fix the issue indicated by this "FIXME" comment.(¾ÔØ¿8°Ñ†ù/
+Hcpp:CommentedCodeÃ	"Remove the commented out code.(Ğá•‚şÿÿÿÿ8±Ñ†ù/
+i	cpp:S1134Ø	"LTake the required action to fix the issue indicated by this "FIXME" comment.(­›º8²Ñ†ù/
+h	cpp:S1134µ"LTake the required action to fix the issue indicated by this "FIXME" comment.(…Í¾%8·Ñ†ù/
+Ccpp:CommentedCodeÔ"Remove the commented out code.(º—À©8ºÑ†ù/
+i	cpp:S1134æ"LTake the required action to fix the issue indicated by this "FIXME" comment.(œûèÃ8»Ñ†ù/
+n	cpp:S1134õ"LTake the required action to fix the issue indicated by this "FIXME" comment.(Éô´«üÿÿÿÿ8»Ñ†ù/
+i	cpp:S1134·"LTake the required action to fix the issue indicated by this "FIXME" comment.(ÄâÍ¾8¼Ñ†ù/
+n	cpp:S1134Â"LTake the required action to fix the issue indicated by this "FIXME" comment.(Øı¸Øøÿÿÿÿ8½Ñ†ù/
+n	cpp:S1134Ÿ"LTake the required action to fix the issue indicated by this "FIXME" comment.(î×Şïøÿÿÿÿ8ÁÑ†ù/
+n	cpp:S1134«"LTake the required action to fix the issue indicated by this "FIXME" comment.(÷‘¡şÿÿÿÿ8ÁÑ†ù/
+n	cpp:S1134¶"LTake the required action to fix the issue indicated by this "FIXME" comment.(ƒÀïÿÿÿÿÿ8ÂÑ†ù/
+i	cpp:S1134ˆ"LTake the required action to fix the issue indicated by this "FIXME" comment.(²»Õ8ÃÑ†ù/
+i	cpp:S1134Š"LTake the required action to fix the issue indicated by this "FIXME" comment.(—ØËø8ÄÑ†ù/
+i	cpp:S1134Ô"LTake the required action to fix the issue indicated by this "FIXME" comment.(ÙÎÉ8ÇÑ†ù/
+Z	cpp:S5028§"8Replace this macro by "const", "constexpr" or an "enum".(á´Úòÿÿÿÿÿ8ÈÑ†ù/
+h	cpp:S1134ó"LTake the required action to fix the issue indicated by this "FIXME" comment.(å¤šH8ÉÑ†ù/
+i	cpp:S1134³"LTake the required action to fix the issue indicated by this "FIXME" comment.(¡Üß†8ÊÑ†ù/
+n	cpp:S1134Ø"LTake the required action to fix the issue indicated by this "FIXME" comment.(ÇüÁÔıÿÿÿÿ8ÏÑ†ù/
+]cpp:PPIncludeNotAtTop¾"4Move this #include directive to the top of the file.(ã˜æ8ïÑ†ù/
+Q	cpp:S5416•";"using" should be preferred to "typedef" for type aliasing.(ú«Ç¯
+Q	cpp:S5416–";"using" should be preferred to "typedef" for type aliasing.(¶—¢ş
+V	cpp:S5416—";"using" should be preferred to "typedef" for type aliasing.(¡øÿÿÿÿ
+Q	cpp:S5416˜";"using" should be preferred to "typedef" for type aliasing.(ºÈÔš
+P	cpp:S5416™";"using" should be preferred to "typedef" for type aliasing.(Îÿì#
+V	cpp:S5416š";"using" should be preferred to "typedef" for type aliasing.(†ö»Ãşÿÿÿÿ
+V	cpp:S5416›";"using" should be preferred to "typedef" for type aliasing.(àÛ°¬ıÿÿÿÿ
+Q	cpp:S5416œ";"using" should be preferred to "typedef" for type aliasing.(õ·àö
+V	cpp:S5416";"using" should be preferred to "typedef" for type aliasing.(¨Â¦ùÿÿÿÿ
+P	cpp:S5416";"using" should be preferred to "typedef" for type aliasing.(´ôì
+Q	cpp:S5416Ÿ";"using" should be preferred to "typedef" for type aliasing.(şÙê
+V	cpp:S5416 ";"using" should be preferred to "typedef" for type aliasing.(ÄÚï¯úÿÿÿÿ
+Q	cpp:S5416¡";"using" should be preferred to "typedef" for type aliasing.(‘ºÈ—
+V	cpp:S5416¢";"using" should be preferred to "typedef" for type aliasing.(‡”éãıÿÿÿÿ
+V	cpp:S5416£";"using" should be preferred to "typedef" for type aliasing.(ÙÁÈ´şÿÿÿÿ
+Q	cpp:S5416¥";"using" should be preferred to "typedef" for type aliasing.(›¾¿ß
+D	cpp:S5421­".Global Pointer should be const at every level.(ÖÚÔÄ
+fcpp:NamespaceName´"HRename this namespace to match the regular expression: ^[a-z][a-z_0-9]*$(ìİÈ´
+a	cpp:S6228¼"FUse "std::has_single_bit" to check if "v" is an integral power of two.(ÄÎ´Çúÿÿÿÿ
+M	cpp:S5945Ö"2Use "std::string" instead of a C-style char array.(½µ¾âúÿÿÿÿ
+0	cpp:S4962Ù"Use the "nullptr" literal.(¤´âï
+V	cpp:S5416€";"using" should be preferred to "typedef" for type aliasing.(²Œ‚òÿÿÿÿÿ
+5	cpp:S4962‰"Use the "nullptr" literal.(Ñ˜øıÿÿÿÿ
+b	cpp:S3358 "GExtract this nested conditional operator into an independent statement.(ë¶”¥üÿÿÿÿ
+b	cpp:S3358¡"GExtract this nested conditional operator into an independent statement.(şùæøüÿÿÿÿ
+]	cpp:S3358­"GExtract this nested conditional operator into an independent statement.(­Ãûö
+M	cpp:S2681°"2This statement will not be executed conditionally.(‚òÆ×ûÿÿÿÿ
+M	cpp:S2681°"2This statement will not be executed conditionally.(‚òÆ×ûÿÿÿÿ
+R	cpp:S3972°"7Move this "if" to a new line or add the missing "else".(‚òÆ×ûÿÿÿÿ
+H	cpp:S2681±"2This statement will not be executed conditionally.(†Ëí
+H	cpp:S2681±"2This statement will not be executed conditionally.(†Ëí
+M	cpp:S3972±"7Move this "if" to a new line or add the missing "else".(†Ëí
+b	cpp:S3358µ"GExtract this nested conditional operator into an independent statement.(“Ş²§ùÿÿÿÿ
+b	cpp:S3358µ"GExtract this nested conditional operator into an independent statement.(“Ş²§ùÿÿÿÿ
+b	cpp:S3358¹"GExtract this nested conditional operator into an independent statement.(®Üà¬ùÿÿÿÿ
+Y	cpp:S6004¼">Use the init-statement to declare "d" inside the if statement.(Û³»øøÿÿÿÿ
+M	cpp:S2681¼"2This statement will not be executed conditionally.(Û³»øøÿÿÿÿ
+M	cpp:S2681Ã"2This statement will not be executed conditionally.(õÍßÈıÿÿÿÿ
+M	cpp:S2681Ã"2This statement will not be executed conditionally.(õÍßÈıÿÿÿÿ
+R	cpp:S3972Ã"7Move this "if" to a new line or add the missing "else".(õÍßÈıÿÿÿÿ
+x	cpp:S3230Ù"]Do not assign data members in a constructor. Initialize member "x" in an initialization list.(¢ˆ®İùÿÿÿÿ
+x	cpp:S3230Ú"]Do not assign data members in a constructor. Initialize member "x" in an initialization list.(¶ùºÿùÿÿÿÿ
+J	cpp:S1709Ú"/Add the "explicit" keyword to this constructor.(¶ùºÿùÿÿÿÿ
+c!cpp:SingleDeclarationPerStatementà"0Define each identifier in a dedicated statement.(Îº°ıÿÿÿÿ
+s	cpp:S3230â"]Do not assign data members in a constructor. Initialize member "x" in an initialization list.(õ†›Í
+s	cpp:S3230â"]Do not assign data members in a constructor. Initialize member "y" in an initialization list.(õ†›Í
+x	cpp:S3230ã"]Do not assign data members in a constructor. Initialize member "x" in an initialization list.(Ûú…–ùÿÿÿÿ
+x	cpp:S3230ã"]Do not assign data members in a constructor. Initialize member "y" in an initialization list.(Ûú…–ùÿÿÿÿ
+E	cpp:S1709ï"/Add the "explicit" keyword to this constructor.(û¹À
+H	cpp:S2681ş"2This statement will not be executed conditionally.(“îÑÏ
+H	cpp:S2681ş"2This statement will not be executed conditionally.(“îÑÏ
+H	cpp:S2681ş"2This statement will not be executed conditionally.(“îÑÏ
+M	cpp:S3972ş"7Move this "if" to a new line or add the missing "else".(“îÑÏ
+M	cpp:S3972ş"7Move this "if" to a new line or add the missing "else".(“îÑÏ
+M	cpp:S3972ş"7Move this "if" to a new line or add the missing "else".(“îÑÏ
+H	cpp:S2681ÿ"2This statement will not be executed conditionally.(ÉçŠĞ
+H	cpp:S2681ÿ"2This statement will not be executed conditionally.(ÉçŠĞ
+H	cpp:S2681ÿ"2This statement will not be executed conditionally.(ÉçŠĞ
+M	cpp:S3972ÿ"7Move this "if" to a new line or add the missing "else".(ÉçŠĞ
+M	cpp:S3972ÿ"7Move this "if" to a new line or add the missing "else".(ÉçŠĞ
+M	cpp:S3972ÿ"7Move this "if" to a new line or add the missing "else".(ÉçŠĞ
+S	cpp:S5945£"=Use "std::array" or "std::vector" instead of a C-style array.(óô 
+{	cpp:S3230Ã"`Do not assign data members in a constructor. Initialize member "Data" in an initialization list.(§ÙûÙşÿÿÿÿ
+~	cpp:S3230Ã"cDo not assign data members in a constructor. Initialize member "DataEnd" in an initialization list.(§ÙûÙşÿÿÿÿ
+v	cpp:S3230Ä"`Do not assign data members in a constructor. Initialize member "Data" in an initialization list.(’¹©
+y	cpp:S3230Ä"cDo not assign data members in a constructor. Initialize member "DataEnd" in an initialization list.(’¹©
+5	cpp:S4962Â"Use the "nullptr" literal.(ÎÖ¡Àùÿÿÿÿ
+X	cpp:S5945ß"=Use "std::array" or "std::vector" instead of a C-style array.(¸Û©¶øÿÿÿÿ
+S	cpp:S5945à"=Use "std::array" or "std::vector" instead of a C-style array.(Î¡¡ˆ
+D	cpp:S5817ä")This function should be declared "const".(äÃ²üÿÿÿÿ
+Q	cpp:S5416ï";"using" should be preferred to "typedef" for type aliasing.(“Óø¡
+ù	cpp:S3624ñ"âExplicitly define or delete the missing copy constructor and copy assignment operator so that they will not be implicitly provided. Additionally, you may consider defining the move assignment operator and the move constructor.(õòÂ€
+_	cpp:S4963ñ"IRemove this class' destructor so that the class follows the rule of Zero.(õòÂ€
+H	cpp:S2681ı"2This statement will not be executed conditionally.(ğ¿´¨
+M	cpp:S2681Š"2This statement will not be executed conditionally.(í«Ôáûÿÿÿÿ
+7	cpp:S3432ÿ"Remove this destructor call.(ÚçŠÄıÿÿÿÿ
+M	cpp:S2681"2This statement will not be executed conditionally.(òÍ„Ûøÿÿÿÿ
+?	cpp:S5817 ")This function should be declared "const".(¡ÜŒà
+?	cpp:S5817¢")This function should be declared "const".(ı½¡ı
+`	cpp:S5018¤"JEnsure that the swap function is exception-free and declare it "noexcept".(û¨ú¸
+S	cpp:S5945Ó"=Use "std::array" or "std::vector" instead of a C-style array.(Ì¸÷
+H	cpp:S5945Õ"2Use "std::string" instead of a C-style char array.(—Õ¿÷
+X	cpp:S5945Ş"=Use "std::array" or "std::vector" instead of a C-style array.(·Ÿ¾üÿÿÿÿ
+a	cpp:S5566à"KChange this raw for-loop to a range for-loop or an "std::ranges::for_each".(®ñ®»
+a	cpp:S5566á"KChange this raw for-loop to a range for-loop or an "std::ranges::for_each".(ÖËå›
+H	cpp:S2681â"2This statement will not be executed conditionally.(øáæÿ
+a	cpp:S5566â"KChange this raw for-loop to a range for-loop or an "std::ranges::for_each".(øáæÿ
+A	cpp:S3642ì"&Replace this "enum" with "enum class".(ó€­İıÿÿÿÿ
+A	cpp:S3642û"&Replace this "enum" with "enum class".(„ïş™ûÿÿÿÿ
+<	cpp:S3642”"&Replace this "enum" with "enum class".(ƒ· é
+<	cpp:S3642"&Replace this "enum" with "enum class".(œáóå
+A	cpp:S3642´"&Replace this "enum" with "enum class".(Ãóºİÿÿÿÿÿ
+A	cpp:S3642º"&Replace this "enum" with "enum class".(€ä’ıÿÿÿÿ
+A	cpp:S3642Á"&Replace this "enum" with "enum class".(‘±üÿüÿÿÿÿ
+A	cpp:S3642Ï"&Replace this "enum" with "enum class".(äÊ¸Úşÿÿÿÿ
+A	cpp:S3642Ô"&Replace this "enum" with "enum class".(ºíÛËÿÿÿÿÿ
+A	cpp:S3642Ü"&Replace this "enum" with "enum class".(ü¬·üüÿÿÿÿ
+A	cpp:S3642â"&Replace this "enum" with "enum class".(½–¿Éøÿÿÿÿ
+A	cpp:S3642ê"&Replace this "enum" with "enum class".(æıÂÃüÿÿÿÿ
+<	cpp:S3642ğ"&Replace this "enum" with "enum class".(ıËŒß
+A	cpp:S3642ú"&Replace this "enum" with "enum class".(¼á…øÿÿÿÿ
+<	cpp:S3642"&Replace this "enum" with "enum class".(å‚ıò
+<	cpp:S3642‡"&Replace this "enum" with "enum class".(ŒÕÂ¶
+A	cpp:S3642“"&Replace this "enum" with "enum class".(ÎÑÃªşÿÿÿÿ
+A	cpp:S3642"&Replace this "enum" with "enum class".(ß¶àŸüÿÿÿÿ
+H	cpp:S5945¦"2Use "std::string" instead of a C-style char array.(­Ú¯í
+A	cpp:S3642³"&Replace this "enum" with "enum class".(‡„•Íúÿÿÿÿ
+X	cpp:S5945Å"=Use "std::array" or "std::vector" instead of a C-style array.(•úÓ¾ÿÿÿÿÿ
+X	cpp:S5945Å"=Use "std::array" or "std::vector" instead of a C-style array.(•úÓ¾ÿÿÿÿÿ
+w	cpp:S3230Æ"bDo not assign data members in a constructor. Initialize member "VarIdx" in an initialization list.(Ê¸»8
+x	cpp:S3230Ç"bDo not assign data members in a constructor. Initialize member "VarIdx" in an initialization list.(ÚÙ§˜
+}	cpp:S3230È"bDo not assign data members in a constructor. Initialize member "VarIdx" in an initialization list.(—âÑ‹şÿÿÿÿ
+X	cpp:S5945ò"=Use "std::array" or "std::vector" instead of a C-style array.(ªù·ôùÿÿÿÿ
+^!cpp:SingleDeclarationPerStatementÿ"0Define each identifier in a dedicated statement.(ƒ×Å¾
+o	cpp:S4999"ZUse constructors or assignment operators, "ImGuiInputTextState" is not trivially copyable.(†Ş·7
+…	cpp:S3230¬"jDo not assign data members in a constructor. Initialize member "OpenFrameCount" in an initialization list.(©‹Äúÿÿÿÿ
+A	cpp:S3642¯"&Replace this "enum" with "enum class".(”ƒÚ“ùÿÿÿÿ
+<	cpp:S3642Û"&Replace this "enum" with "enum class".(Ÿ™±µ
+u	cpp:S3230Ÿ	"_Do not assign data members in a constructor. Initialize member "Ptr" in an initialization list.(Î„¥ö
+w	cpp:S3230Ÿ	"aDo not assign data members in a constructor. Initialize member "Index" in an initialization list.(Î„¥ö
+E	cpp:S1709Ÿ	"/Add the "explicit" keyword to this constructor.(Î„¥ö
+u	cpp:S3230 	"_Do not assign data members in a constructor. Initialize member "Ptr" in an initialization list.(‚ÌĞµ
+w	cpp:S3230 	"aDo not assign data members in a constructor. Initialize member "Index" in an initialization list.(‚ÌĞµ
+E	cpp:S1709 	"/Add the "explicit" keyword to this constructor.(‚ÌĞµ
+0	cpp:S4962 	"Use the "nullptr" literal.(‚ÌĞµ
+<	cpp:S3642§	"&Replace this "enum" with "enum class".(½¢éç
+;	cpp:S3642°	"&Replace this "enum" with "enum class".(“³ò~
+A	cpp:S3642¾	"&Replace this "enum" with "enum class".(Ü¬úÌùÿÿÿÿ
+A	cpp:S3642Ç	"&Replace this "enum" with "enum class".(…¡ÀÂøÿÿÿÿ
+<	cpp:S3642Ï	"&Replace this "enum" with "enum class".(ò’ù°
+ocpp:EnumPartialInitializationİ	"@Initialize none, only the first, or all enumeration definitions.(•Ä¦½şÿÿÿÿ
+A	cpp:S3642İ	"&Replace this "enum" with "enum class".(•Ä¦½şÿÿÿÿ
+5	cpp:S4962ï	"Use the "nullptr" literal.(ä¿…ıÿÿÿÿ
+A	cpp:S3642÷	"&Replace this "enum" with "enum class".(¢Îˆ¦úÿÿÿÿ
+^!cpp:SingleDeclarationPerStatement
+"0Define each identifier in a dedicated statement.(‡²Œ
+^!cpp:SingleDeclarationPerStatement
+"0Define each identifier in a dedicated statement.(©šÕ
+q	cpp:S4999§
+"VUse constructors or assignment operators, "ImGuiOldColumns" is not trivially copyable.(ğÿ‘Ğùÿÿÿÿ
+A	cpp:S3642¹
+"&Replace this "enum" with "enum class".(çë £ûÿÿÿÿ
+<	cpp:S3642Ò
+"&Replace this "enum" with "enum class".(õîíı
+A	cpp:S3642Ù
+"&Replace this "enum" with "enum class".(¢Ñ²™şÿÿÿÿ
+y	cpp:S1820â
+"^Refactor this structure so it has no more than 20 fields, rather than the 40 it currently has.(¡øĞûÿÿÿÿ
+S	cpp:S5945ë
+"=Use "std::array" or "std::vector" instead of a C-style array.(ÙÃ•ê
+E	cpp:S1709"/Add the "explicit" keyword to this constructor.(îîâÉ
+5	cpp:S4962"Use the "nullptr" literal.(¼ªÖ—ûÿÿÿÿ
+5	cpp:S4962’"Use the "nullptr" literal.(ˆØ‹åøÿÿÿÿ
+0	cpp:S4962–"Use the "nullptr" literal.(ÆğÇ·
+0	cpp:S4962—"Use the "nullptr" literal.(×Ë¨
+0	cpp:S4962˜"Use the "nullptr" literal.(¿èò
+<	cpp:S3642£"&Replace this "enum" with "enum class".(óÌÄÁ
+S	cpp:S5945°"=Use "std::array" or "std::vector" instead of a C-style array.(ÆÊÀö
+m	cpp:S4999¹"WUse constructors or assignment operators, "ImGuiDockContext" is not trivially copyable.(ôÕ­
+ş	cpp:S3624Ä"âExplicitly define or delete the missing copy constructor and copy assignment operator so that they will not be implicitly provided. Additionally, you may consider defining the move assignment operator and the move constructor.(ŞÛ†Ëúÿÿÿÿ
+d	cpp:S4963Ä"IRemove this class' destructor so that the class follows the rule of Zero.(ŞÛ†Ëúÿÿÿÿ
+y	cpp:S1820Ä"^Refactor this structure so it has no more than 20 fields, rather than the 21 it currently has.(ŞÛ†Ëúÿÿÿÿ
+S	cpp:S5945Ğ"=Use "std::array" or "std::vector" instead of a C-style array.(Ì§íî
+X	cpp:S5945Ñ"=Use "std::array" or "std::vector" instead of a C-style array.(ş°´†şÿÿÿÿ
+t	cpp:S3230Ü"_Do not assign data members in a constructor. Initialize member "Idx" in an initialization list.(²éËT
+}	cpp:S3230Ü"hDo not assign data members in a constructor. Initialize member "LastNameHash" in an initialization list.(²éËT
+€	cpp:S3230Ü"kDo not assign data members in a constructor. Initialize member "PlatformMonitor" in an initialization list.(²éËT
+†	cpp:S3230Ü"qDo not assign data members in a constructor. Initialize member "PlatformWindowCreated" in an initialization list.(²éËT
+w	cpp:S3230Ü"bDo not assign data members in a constructor. Initialize member "Window" in an initialization list.(²éËT
+/	cpp:S4962Ü"Use the "nullptr" literal.(²éËT
+/	cpp:S4962Ü"Use the "nullptr" literal.(²éËT
+H	cpp:S2681İ"2This statement will not be executed conditionally.(’Ğ¥í
+M	cpp:S3972İ"7Move this "if" to a new line or add the missing "else".(’Ğ¥í
+{	cpp:S3230ÿ"eDo not assign data members in a constructor. Initialize member "DockOrder" in an initialization list.(”ÌÈ±
+	cpp:S3230¤"iDo not assign data members in a constructor. Initialize member "ShowStackTool" in an initialization list.(’Õ‚Â
+‚	cpp:S3230¥"lDo not assign data members in a constructor. Initialize member "ShowWindowsRects" in an initialization list.(¶òÏŒ
+‡	cpp:S3230¦"qDo not assign data members in a constructor. Initialize member "ShowWindowsBeginOrder" in an initialization list.(±óå
+†	cpp:S3230§"kDo not assign data members in a constructor. Initialize member "ShowTablesRects" in an initialization list.(”ßˆøÿÿÿÿ
+	cpp:S3230¨"kDo not assign data members in a constructor. Initialize member "ShowDrawCmdMesh" in an initialization list.(ÅåâÛ
+	cpp:S3230©"tDo not assign data members in a constructor. Initialize member "ShowDrawCmdBoundingBoxes" in an initialization list.(„”²×øÿÿÿÿ
+‚	cpp:S3230ª"lDo not assign data members in a constructor. Initialize member "ShowDockingNodes" in an initialization list.(Œæ«ã
+†	cpp:S3230«"pDo not assign data members in a constructor. Initialize member "ShowWindowsRectsType" in an initialization list.(öˆ
+„	cpp:S3230¬"oDo not assign data members in a constructor. Initialize member "ShowTablesRectsType" in an initialization list.(÷Ï×e
+G	cpp:S5945µ"2Use "std::string" instead of a C-style char array.(…Í¾%
+p	cpp:S4999Â"UUse constructors or assignment operators, "ImGuiStackTool" is not trivially copyable.(âğƒ‹ıÿÿÿÿ
+V	cpp:S5416É";"using" should be preferred to "typedef" for type aliasing.(âò³„ûÿÿÿÿ
+<	cpp:S3642Ê"&Replace this "enum" with "enum class".(å«ì£
+t	cpp:S1820Û"_Refactor this structure so it has no more than 20 fields, rather than the 229 it currently has.(€Ó /
+M	cpp:S5945“"2Use "std::string" instead of a C-style char array.(ö¤‰ûÿÿÿÿ
+S	cpp:S5945ã"=Use "std::array" or "std::vector" instead of a C-style array.(“ƒ«¦
+M	cpp:S5945ê"2Use "std::string" instead of a C-style char array.(×öÏŸúÿÿÿÿ
+‚	cpp:S3230î"gDo not assign data members in a constructor. Initialize member "Initialized" in an initialization list.(‚æ› ûÿÿÿÿ
+	cpp:S3230ğ"sDo not assign data members in a constructor. Initialize member "FontAtlasOwnedByContext" in an initialization list.(ÇÖíÅúÿÿÿÿ
+{	cpp:S3230ñ"`Do not assign data members in a constructor. Initialize member "Font" in an initialization list.(•ü«ìúÿÿÿÿ
+v	cpp:S3230ô"`Do not assign data members in a constructor. Initialize member "Time" in an initialization list.(èá—Ë
+|	cpp:S3230õ"fDo not assign data members in a constructor. Initialize member "FrameCount" in an initialization list.(ŒÉ¯­
+~	cpp:S3230ø"hDo not assign data members in a constructor. Initialize member "GcCompactAll" in an initialization list.(¦ŒÀÉ
+Š	cpp:S3230ù"oDo not assign data members in a constructor. Initialize member "TestEngineHookItems" in an initialization list.(“Üæ®şÿÿÿÿ
+|	cpp:S3230ú"fDo not assign data members in a constructor. Initialize member "TestEngine" in an initialization list.(Ïúß
+‰	cpp:S3230ü"nDo not assign data members in a constructor. Initialize member "WindowsActiveCount" in an initialization list.(ç‘¼¢ûÿÿÿÿ
+„	cpp:S3230ı"iDo not assign data members in a constructor. Initialize member "CurrentWindow" in an initialization list.(šĞà£ÿÿÿÿÿ
+„	cpp:S3230ş"iDo not assign data members in a constructor. Initialize member "HoveredWindow" in an initialization list.(ÄÜì“ûÿÿÿÿ
+•	cpp:S3230ÿ"zDo not assign data members in a constructor. Initialize member "HoveredWindowUnderMovingWindow" in an initialization list.(º®¤»şÿÿÿÿ
+†	cpp:S3230€"kDo not assign data members in a constructor. Initialize member "HoveredDockNode" in an initialization list.(¬å’¸üÿÿÿÿ
+ƒ	cpp:S3230"hDo not assign data members in a constructor. Initialize member "MovingWindow" in an initialization list.(šñìÌÿÿÿÿÿ
+…	cpp:S3230‚"jDo not assign data members in a constructor. Initialize member "WheelingWindow" in an initialization list.(àÎçªùÿÿÿÿ
+…	cpp:S3230ƒ"oDo not assign data members in a constructor. Initialize member "WheelingWindowTimer" in an initialization list.(ƒÁ·Ó
+	cpp:S3230…"kDo not assign data members in a constructor. Initialize member "DebugHookIdInfo" in an initialization list.(ğ¨Ç˜
+Œ	cpp:S3230‡"qDo not assign data members in a constructor. Initialize member "HoveredIdAllowOverlap" in an initialization list.(…ºµ÷ùÿÿÿÿ
+‚	cpp:S3230‰"mDo not assign data members in a constructor. Initialize member "HoveredIdDisabled" in an initialization list.(®Ã£
+z	cpp:S3230‹"dDo not assign data members in a constructor. Initialize member "ActiveId" in an initialization list.(ôë»Æ
+	cpp:S3230Œ"kDo not assign data members in a constructor. Initialize member "ActiveIdIsAlive" in an initialization list.(Öüº
+„	cpp:S3230"iDo not assign data members in a constructor. Initialize member "ActiveIdTimer" in an initialization list.(“Áüíıÿÿÿÿ
+‰	cpp:S3230"sDo not assign data members in a constructor. Initialize member "ActiveIdIsJustActivated" in an initialization list.(Ã³Ú
+‹	cpp:S3230"pDo not assign data members in a constructor. Initialize member "ActiveIdAllowOverlap" in an initialization list.(ÿ°Èğıÿÿÿÿ
+‘	cpp:S3230"vDo not assign data members in a constructor. Initialize member "ActiveIdNoClearOnFocusLoss" in an initialization list.(‰µ—–øÿÿÿÿ
+“	cpp:S3230‘"xDo not assign data members in a constructor. Initialize member "ActiveIdHasBeenPressedBefore" in an initialization list.(æÓùÿÿÿÿ
+’	cpp:S3230’"wDo not assign data members in a constructor. Initialize member "ActiveIdHasBeenEditedBefore" in an initialization list.(«‘›ûÿÿÿÿ
+	cpp:S3230“"zDo not assign data members in a constructor. Initialize member "ActiveIdHasBeenEditedThisFrame" in an initialization list.(›×«®
+	cpp:S3230”"sDo not assign data members in a constructor. Initialize member "ActiveIdUsingMouseWheel" in an initialization list.(à¥·èüÿÿÿÿ
+	cpp:S3230•"sDo not assign data members in a constructor. Initialize member "ActiveIdUsingNavDirMask" in an initialization list.(÷©©İúÿÿÿÿ
+	cpp:S3230–"uDo not assign data members in a constructor. Initialize member "ActiveIdUsingNavInputMask" in an initialization list.(°©×‡ùÿÿÿÿ
+	cpp:S3230—"uDo not assign data members in a constructor. Initialize member "ActiveIdUsingKeyInputMask" in an initialization list.(ñì±»ÿÿÿÿÿ
+Š	cpp:S3230˜"oDo not assign data members in a constructor. Initialize member "ActiveIdClickOffset" in an initialization list.(ŞÛ…Şÿÿÿÿÿ
+€	cpp:S3230™"jDo not assign data members in a constructor. Initialize member "ActiveIdWindow" in an initialization list.(±•Á¯
+Š	cpp:S3230›"oDo not assign data members in a constructor. Initialize member "ActiveIdMouseButton" in an initialization list.(‘­‰Áıÿÿÿÿ
+Œ	cpp:S3230œ"qDo not assign data members in a constructor. Initialize member "ActiveIdPreviousFrame" in an initialization list.(µÇ¬ˆÿÿÿÿÿ
+“	cpp:S3230"xDo not assign data members in a constructor. Initialize member "ActiveIdPreviousFrameIsAlive" in an initialization list.(Õ¿Ü´şÿÿÿÿ
+›	cpp:S3230"„Do not assign data members in a constructor. Initialize member "ActiveIdPreviousFrameHasBeenEditedBefore" in an initialization list.(ä¾ÄŞ
+	cpp:S3230Ÿ"wDo not assign data members in a constructor. Initialize member "ActiveIdPreviousFrameWindow" in an initialization list.(ÒÉñ°
+ƒ	cpp:S3230 "hDo not assign data members in a constructor. Initialize member "LastActiveId" in an initialization list.(Ò¥úıÿÿÿÿ
+ˆ	cpp:S3230¡"mDo not assign data members in a constructor. Initialize member "LastActiveIdTimer" in an initialization list.(ÓÉ°ßøÿÿÿÿ
+€	cpp:S3230¥"kDo not assign data members in a constructor. Initialize member "CurrentDpiScale" in an initialization list.(†»w
+†	cpp:S3230¦"kDo not assign data members in a constructor. Initialize member "CurrentViewport" in an initialization list.(¸¦Õøÿÿÿÿ
+	cpp:S3230¨"yDo not assign data members in a constructor. Initialize member "PlatformLastFocusedViewportId" in an initialization list.(«îù
+’	cpp:S3230©"wDo not assign data members in a constructor. Initialize member "ViewportFrontMostStampCount" in an initialization list.(İ–‡üúÿÿÿÿ
+{	cpp:S3230«"eDo not assign data members in a constructor. Initialize member "NavWindow" in an initialization list.(´¥ü
+†	cpp:S3230²"kDo not assign data members in a constructor. Initialize member "NavIdTabCounter" in an initialization list.(ò‚ÎÒüÿÿÿÿ
+ƒ	cpp:S3230³"hDo not assign data members in a constructor. Initialize member "NavIdIsAlive" in an initialization list.(åàœ˜ûÿÿÿÿ
+‡	cpp:S3230´"lDo not assign data members in a constructor. Initialize member "NavMousePosDirty" in an initialization list.(ÈÄ·•şÿÿÿÿ
+…	cpp:S3230µ"oDo not assign data members in a constructor. Initialize member "NavDisableHighlight" in an initialization list.(Ñ«ÿš
+‹	cpp:S3230¶"pDo not assign data members in a constructor. Initialize member "NavDisableMouseHover" in an initialization list.(Ô†Û¦úÿÿÿÿ
+	cpp:S3230·"iDo not assign data members in a constructor. Initialize member "NavAnyRequest" in an initialization list.(–Òİ‚
+€	cpp:S3230¸"jDo not assign data members in a constructor. Initialize member "NavInitRequest" in an initialization list.(½‰¿“
+ˆ	cpp:S3230¹"rDo not assign data members in a constructor. Initialize member "NavInitRequestFromMove" in an initialization list.(¨ÑÏ
+	cpp:S3230º"kDo not assign data members in a constructor. Initialize member "NavInitResultId" in an initialization list.(û¾’½
+‡	cpp:S3230»"lDo not assign data members in a constructor. Initialize member "NavMoveSubmitted" in an initialization list.(¿ÀÔÿúÿÿÿÿ
+„	cpp:S3230¼"oDo not assign data members in a constructor. Initialize member "NavMoveScoringItems" in an initialization list.(ˆŠJ
+	cpp:S3230½"uDo not assign data members in a constructor. Initialize member "NavMoveForwardToNextFrame" in an initialization list.(Ûƒôæşÿÿÿÿ
+‹	cpp:S3230Â"pDo not assign data members in a constructor. Initialize member "NavScoringDebugCount" in an initialization list.(‚Ş®Şúÿÿÿÿ
+	cpp:S3230Æ"sDo not assign data members in a constructor. Initialize member "NavWindowingToggleLayer" in an initialization list.(ä—Öİúÿÿÿÿ
+†	cpp:S3230Ë"kDo not assign data members in a constructor. Initialize member "TabFocusPressed" in an initialization list.(¼‘æñüÿÿÿÿ
+	cpp:S3230Í"fDo not assign data members in a constructor. Initialize member "DimBgRatio" in an initialization list.(Ù£é•şÿÿÿÿ
+	cpp:S3230Ò"tDo not assign data members in a constructor. Initialize member "DragDropSourceFrameCount" in an initialization list.(æ—–Èÿÿÿÿÿ
+Š	cpp:S3230Ó"oDo not assign data members in a constructor. Initialize member "DragDropMouseButton" in an initialization list.(ö·Í©şÿÿÿÿ
+‚	cpp:S3230Ô"lDo not assign data members in a constructor. Initialize member "DragDropTargetId" in an initialization list.(äÈÈá
+–	cpp:S3230Ö"{Do not assign data members in a constructor. Initialize member "DragDropAcceptIdCurrRectSurface" in an initialization list.(ƒ Ê‡ÿÿÿÿÿ
+	cpp:S3230Ø"tDo not assign data members in a constructor. Initialize member "DragDropAcceptFrameCount" in an initialization list.(öÙåßıÿÿÿÿ
+	cpp:S3230Ù"uDo not assign data members in a constructor. Initialize member "DragDropHoldJustPressedId" in an initialization list.(¾Ë³Ìÿÿÿÿÿ
+~	cpp:S3230Ü"hDo not assign data members in a constructor. Initialize member "CurrentTable" in an initialization list.(î•İÖ
+†	cpp:S3230İ"pDo not assign data members in a constructor. Initialize member "CurrentTableStackIdx" in an initialization list.(©İ›
+	cpp:S3230Ş"iDo not assign data members in a constructor. Initialize member "CurrentTabBar" in an initialization list.(ª”÷‹
+‚	cpp:S3230à"gDo not assign data members in a constructor. Initialize member "TempInputId" in an initialization list.(Æó¾¾üÿÿÿÿ
+‰	cpp:S3230ã"nDo not assign data members in a constructor. Initialize member "ColorEditLastColor" in an initialization list.(Şóº˜şÿÿÿÿ
+‰	cpp:S3230ä"nDo not assign data members in a constructor. Initialize member "SliderCurrentAccum" in an initialization list.(Ğ©•äşÿÿÿÿ
+‰	cpp:S3230å"sDo not assign data members in a constructor. Initialize member "SliderCurrentAccumDirty" in an initialization list.(ò¢»Š
+Œ	cpp:S3230æ"qDo not assign data members in a constructor. Initialize member "DragCurrentAccumDirty" in an initialization list.(ãË¥Åøÿÿÿÿ
+‡	cpp:S3230ç"lDo not assign data members in a constructor. Initialize member "DragCurrentAccum" in an initialization list.(‘›°¸ûÿÿÿÿ
+‡	cpp:S3230è"qDo not assign data members in a constructor. Initialize member "DragSpeedDefaultRatio" in an initialization list.(Çí·Õ
+…	cpp:S3230é"oDo not assign data members in a constructor. Initialize member "DisabledAlphaBackup" in an initialization list.(‘Û©ï
+‚	cpp:S3230ê"mDo not assign data members in a constructor. Initialize member "DisabledStackSize" in an initialization list.(µ´U
+–	cpp:S3230ë"{Do not assign data members in a constructor. Initialize member "ScrollbarClickDeltaToGrabCenter" in an initialization list.(ÔŒÏ˜şÿÿÿÿ
+‹	cpp:S3230ì"pDo not assign data members in a constructor. Initialize member "TooltipOverrideCount" in an initialization list.(´ßƒ—şÿÿÿÿ
+‡	cpp:S3230í"lDo not assign data members in a constructor. Initialize member "TooltipSlowDelay" in an initialization list.(Ü¦ñßûÿÿÿÿ
+	cpp:S3230ğ"rDo not assign data members in a constructor. Initialize member "PlatformImePosViewport" in an initialization list.(Û‘¾õûÿÿÿÿ
+Œ	cpp:S3230ñ"vDo not assign data members in a constructor. Initialize member "PlatformLocaleDecimalPoint" in an initialization list.(ÒÆ ø
+…	cpp:S3230ó"jDo not assign data members in a constructor. Initialize member "SettingsLoaded" in an initialization list.(„¦ıäıÿÿÿÿ
+„	cpp:S3230ô"nDo not assign data members in a constructor. Initialize member "SettingsDirtyTimer" in an initialization list.(ô€Õ
+|	cpp:S3230õ"fDo not assign data members in a constructor. Initialize member "HookIdNext" in an initialization list.(¨ûÅú
+	cpp:S3230÷"fDo not assign data members in a constructor. Initialize member "LogEnabled" in an initialization list.(°Ø°õùÿÿÿÿ
+~	cpp:S3230ú"cDo not assign data members in a constructor. Initialize member "LogFile" in an initialization list.(¢Œşëıÿÿÿÿ
+‚	cpp:S3230û"gDo not assign data members in a constructor. Initialize member "LogLinePosY" in an initialization list.(Ô¸–Îıÿÿÿÿ
+‡	cpp:S3230ü"lDo not assign data members in a constructor. Initialize member "LogLineFirstItem" in an initialization list.(ø©€ïøÿÿÿÿ
+‚	cpp:S3230ı"gDo not assign data members in a constructor. Initialize member "LogDepthRef" in an initialization list.(¦¼Äíıÿÿÿÿ
+Œ	cpp:S3230€"qDo not assign data members in a constructor. Initialize member "DebugItemPickerActive" in an initialization list.(´ê”ùÿÿÿÿ
+	cpp:S3230"rDo not assign data members in a constructor. Initialize member "DebugItemPickerBreakId" in an initialization list.(á’ÓÖúÿÿÿÿ
+	cpp:S3230…"uDo not assign data members in a constructor. Initialize member "FramerateSecPerFrameAccum" in an initialization list.(Ù •‡şÿÿÿÿ
+J	cpp:S1709ì"/Add the "explicit" keyword to this constructor.(‰º”Äıÿÿÿÿ
+5	cpp:S4962ñ"Use the "nullptr" literal.(•ü«ìúÿÿÿÿ
+0	cpp:S4962ú"Use the "nullptr" literal.(Ïúß
+5	cpp:S4962ı"Use the "nullptr" literal.(šĞà£ÿÿÿÿÿ
+5	cpp:S4962ş"Use the "nullptr" literal.(ÄÜì“ûÿÿÿÿ
+5	cpp:S4962ÿ"Use the "nullptr" literal.(º®¤»şÿÿÿÿ
+5	cpp:S4962€"Use the "nullptr" literal.(¬å’¸üÿÿÿÿ
+5	cpp:S4962"Use the "nullptr" literal.(šñìÌÿÿÿÿÿ
+5	cpp:S4962‚"Use the "nullptr" literal.(àÎçªùÿÿÿÿ
+0	cpp:S4962™"Use the "nullptr" literal.(±•Á¯
+0	cpp:S4962Ÿ"Use the "nullptr" literal.(ÒÉñ°
+5	cpp:S4962¦"Use the "nullptr" literal.(¸¦Õøÿÿÿÿ
+0	cpp:S4962§"Use the "nullptr" literal.(«øŠ°
+0	cpp:S4962«"Use the "nullptr" literal.(´¥ü
+0	cpp:S4962Ä"Use the "nullptr" literal.(’¤¡¬
+0	cpp:S4962È"Use the "nullptr" literal.(÷ÉŸŒ
+0	cpp:S4962Ü"Use the "nullptr" literal.(î•İÖ
+0	cpp:S4962Ş"Use the "nullptr" literal.(ª”÷‹
+5	cpp:S4962ğ"Use the "nullptr" literal.(Û‘¾õûÿÿÿÿ
+5	cpp:S4962ù"Use the "nullptr" literal.(ôÅ™³øÿÿÿÿ
+5	cpp:S4962ú"Use the "nullptr" literal.(¢Œşëıÿÿÿÿ
+y	cpp:S1820’"^Refactor this structure so it has no more than 20 fields, rather than the 35 it currently has.(¦Ñ‹Ëüÿÿÿÿ
+n	cpp:S3539¶"SRemove this redundant access specifier; it does not change the accessibility level.(îĞÎúüÿÿÿÿ
+c!cpp:SingleDeclarationPerStatementÆ"0Define each identifier in a dedicated statement.(á¤Ñ‰ûÿÿÿÿ
+c!cpp:SingleDeclarationPerStatementŞ"0Define each identifier in a dedicated statement.(®ç÷ùÿÿÿÿ
+^!cpp:SingleDeclarationPerStatementğ"0Define each identifier in a dedicated statement.(·«ƒ
+u	cpp:S1820Â"_Refactor this structure so it has no more than 20 fields, rather than the 106 it currently has.(Ñ‘¬
+X	cpp:S5945¢"=Use "std::array" or "std::vector" instead of a C-style array.(¾‡£Öÿÿÿÿÿ
+X	cpp:S5945£"=Use "std::array" or "std::vector" instead of a C-style array.(ÏñÆÙşÿÿÿÿ
+5	cpp:S4962º"Use the "nullptr" literal.(ğ× ùÿÿÿÿ
+0	cpp:S4962½"Use the "nullptr" literal.(éë„
+H	cpp:S2681Ä"2This statement will not be executed conditionally.(şÍìø
+~	cpp:S5350Ä"hMake the type of this variable a reference-to-const. The current type of "g" is "struct ImGuiContext &".(şÍìø
+~	cpp:S5350Å"hMake the type of this variable a reference-to-const. The current type of "g" is "struct ImGuiContext &".(Ìëõø
+ƒ	cpp:S5350Ç"hMake the type of this variable a reference-to-const. The current type of "g" is "struct ImGuiContext &".(ùßÛÅûÿÿÿÿ
+A	cpp:S3642Ğ"&Replace this "enum" with "enum class".(­ıÒ÷ûÿÿÿÿ
+A	cpp:S3642Ø"&Replace this "enum" with "enum class".(äûÓ°úÿÿÿÿ
+|	cpp:S3230ñ"fDo not assign data members in a constructor. Initialize member "NameOffset" in an initialization list.(³›œ
+y	cpp:S1820õ"^Refactor this structure so it has no more than 20 fields, rather than the 31 it currently has.(™¶»¶øÿÿÿÿ
+V	cpp:S5416«";"using" should be preferred to "typedef" for type aliasing.(ÔõÎşÿÿÿÿ
+V	cpp:S5416¬";"using" should be preferred to "typedef" for type aliasing.(£ÍÃ‚øÿÿÿÿ
+t	cpp:S1820²"^Refactor this structure so it has no more than 20 fields, rather than the 41 it currently has.(—É©²
+	cpp:S3230â"fDo not assign data members in a constructor. Initialize member "NameOffset" in an initialization list.(„äÖùÿÿÿÿ
+{	cpp:S3230å"eDo not assign data members in a constructor. Initialize member "SortOrder" in an initialization list.(–âÙ
+ù	cpp:S3624ô"âExplicitly define or delete the missing copy constructor and copy assignment operator so that they will not be implicitly provided. Additionally, you may consider defining the move assignment operator and the move constructor.(ã–’÷
+_	cpp:S4963ô"IRemove this class' destructor so that the class follows the rule of Zero.(ã–’÷
+u	cpp:S1820ô"_Refactor this structure so it has no more than 20 fields, rather than the 103 it currently has.(ã–’÷
+X	cpp:S5945‘"=Use "std::array" or "std::vector" instead of a C-style array.(ÅñİĞÿÿÿÿÿ
+	cpp:S3230Ş"kDo not assign data members in a constructor. Initialize member "LastFrameActive" in an initialization list.(”äÕŞ
+g	cpp:S4999Ş"QUse constructors or assignment operators, "ImGuiTable" is not trivially copyable.(”äÕŞ
+…	cpp:S3230ö"jDo not assign data members in a constructor. Initialize member "LastTimeActive" in an initialization list.(Âá¯–ÿÿÿÿÿ
+t	cpp:S4999ö"YUse constructors or assignment operators, "ImGuiTableTempData" is not trivially copyable.(Âá¯–ÿÿÿÿÿ
+	cpp:S3230‡"iDo not assign data members in a constructor. Initialize member "WidthOrWeight" in an initialization list.(¤Ù³ì
+}	cpp:S3230ˆ"bDo not assign data members in a constructor. Initialize member "UserID" in an initialization list.(ÕÇ¥Ûıÿÿÿÿ
+|	cpp:S3230‰"aDo not assign data members in a constructor. Initialize member "Index" in an initialization list.(ŠäÈÓùÿÿÿÿ
+{	cpp:S3230Œ"eDo not assign data members in a constructor. Initialize member "IsEnabled" in an initialization list.(¨Å‡…
+{	cpp:S3230"eDo not assign data members in a constructor. Initialize member "IsStretch" in an initialization list.(´²ƒ‹
+kcpp:NamespaceName¤"HRename this namespace to match the regular expression: ^[a-z][a-z_0-9]*$(ùÿ™¨ÿÿÿÿÿ
+~	cpp:S5350õ"hMake the type of this variable a reference-to-const. The current type of "g" is "struct ImGuiContext &".(—Ü„î
+ƒ	cpp:S5350ö"hMake the type of this variable a reference-to-const. The current type of "g" is "struct ImGuiContext &".(à‰ó—úÿÿÿÿ
+ƒ	cpp:S5350÷"hMake the type of this variable a reference-to-const. The current type of "g" is "struct ImGuiContext &".(Ó…¦ıÿÿÿÿ
+ƒ	cpp:S5350ø"hMake the type of this variable a reference-to-const. The current type of "g" is "struct ImGuiContext &".(½âÜªüÿÿÿÿ
+ƒ	cpp:S5350ù"hMake the type of this variable a reference-to-const. The current type of "g" is "struct ImGuiContext &".(âç¬ÿÿÿÿÿ
+0	cpp:S4962‡"Use the "nullptr" literal.(’…¾
+…cpp:S995"kMake the type of this parameter a pointer-to-const. The current type of "window" is "struct ImGuiWindow *".(ëîÃÕüÿÿÿÿ
+€cpp:S995Ÿ"kMake the type of this parameter a pointer-to-const. The current type of "window" is "struct ImGuiWindow *".(éÊÃ’
+0	cpp:S4962¥"Use the "nullptr" literal.(Ñæ¾Œ
+5	cpp:S4962¹"Use the "nullptr" literal.(ğÈ½˜şÿÿÿÿ
+ƒ	cpp:S5350Ô"hMake the type of this variable a reference-to-const. The current type of "g" is "struct ImGuiContext &".(‚ß¢‘ûÿÿÿÿ
+ƒ	cpp:S5350Õ"hMake the type of this variable a reference-to-const. The current type of "g" is "struct ImGuiContext &".(ç›÷¨ûÿÿÿÿ
+ƒ	cpp:S5350Û"hMake the type of this variable a reference-to-const. The current type of "g" is "struct ImGuiContext &".(É„ûÿÿÿÿ
+ƒ	cpp:S5350Ü"hMake the type of this variable a reference-to-const. The current type of "g" is "struct ImGuiContext &".(ºÑş€øÿÿÿÿ
+~	cpp:S5350İ"hMake the type of this variable a reference-to-const. The current type of "g" is "struct ImGuiContext &".(¿˜ËÇ
+ƒ	cpp:S5350ß"hMake the type of this variable a reference-to-const. The current type of "g" is "struct ImGuiContext &".(˜­òÿÿÿÿÿ
+~	cpp:S5350à"hMake the type of this variable a reference-to-const. The current type of "g" is "struct ImGuiContext &".(åïÃÓ
+H	cpp:S2681ó"2This statement will not be executed conditionally.(·ä¢
+H	cpp:S2681ˆ"2This statement will not be executed conditionally.(ÛËê
+0	cpp:S4962ˆ"Use the "nullptr" literal.(ÛËê
+0	cpp:S4962ë"Use the "nullptr" literal.(½º±á
+/	cpp:S4962í"Use the "nullptr" literal.(³­ÛZ
+5	cpp:S4962î"Use the "nullptr" literal.(æò«½ıÿÿÿÿ
+5	cpp:S4962ô"Use the "nullptr" literal.(¾‚Ô˜øÿÿÿÿ
+0	cpp:S4962‡"Use the "nullptr" literal.(èÇº
+5	cpp:S4962œ"Use the "nullptr" literal.(Õˆ‘Æûÿÿÿÿ
+/	cpp:S4962³"Use the "nullptr" literal.(ñß¿
+/	cpp:S4962³"Use the "nullptr" literal.(ñß¿
+0	cpp:S4962µ"Use the "nullptr" literal.(«áêÀ
+0	cpp:S4962µ"Use the "nullptr" literal.(«áêÀ
+~	cpp:S5350¶"hMake the type of this variable a reference-to-const. The current type of "g" is "struct ImGuiContext &".(¦Ş¤÷
+0	cpp:S4962·"Use the "nullptr" literal.(êæÃÇ
+5	cpp:S4962Ë"Use the "nullptr" literal.(¡ÔÏƒÿÿÿÿÿ
+0	cpp:S4962Ì"Use the "nullptr" literal.(Î–ÆÔ
+M	cpp:S5945ö"2Use "std::string" instead of a C-style char array.(×“€ˆûÿÿÿÿ
+H	cpp:S5945÷"2Use "std::string" instead of a C-style char array.(‹Á¹
+T	cpp:S5008±"9Replace this use of "void *" with a more meaningful type.(ÜÆØöüÿÿÿÿ
+O	cpp:S5008å"9Replace this use of "void *" with a more meaningful type.(¸ßÍ÷
+N	cpp:S5008æ"9Replace this use of "void *" with a more meaningful type.(ÔÅ¨)
+T	cpp:S5008ç"9Replace this use of "void *" with a more meaningful type.(³‰š“ûÿÿÿÿ
+O	cpp:S5008Ÿ	"9Replace this use of "void *" with a more meaningful type.(Î„¥ö
+B	cpp:S1103"&Remove the misleading "//" characters.(öÕ†ø8Îß†ù/
+B	cpp:S1103"&Remove the misleading "//" characters.(¹¿ÿ8Ïß†ù/
+G	cpp:S1103"&Remove the misleading "//" characters.(ŒÇ÷Êşÿÿÿÿ8Ïß†ù/
+B	cpp:S1103"&Remove the misleading "//" characters.(û”²í8Ïß†ù/
+G	cpp:S1103"&Remove the misleading "//" characters.(çÎĞıÿÿÿÿ8Ïß†ù/
+B	cpp:S1103"&Remove the misleading "//" characters.(Ì¥Äò8Ïß†ù/
+G	cpp:S1103"&Remove the misleading "//" characters.(€Ø‘†ùÿÿÿÿ8Ïß†ù/
+G	cpp:S1103"&Remove the misleading "//" characters.(ÕèÅõúÿÿÿÿ8Ïß†ù/
+B	cpp:S1103"&Remove the misleading "//" characters.(èˆ‡€8Ïß†ù/
+G	cpp:S1103"&Remove the misleading "//" characters.(®õÛ•úÿÿÿÿ8Ïß†ù/
+B	cpp:S1103"&Remove the misleading "//" characters.(İ£¼8Ïß†ù/
+B	cpp:S1103"&Remove the misleading "//" characters.(çàà˜8Ïß†ù/
+A	cpp:S1103"&Remove the misleading "//" characters.(âÔ°c8Ïß†ù/
+G	cpp:S1103"&Remove the misleading "//" characters.(‡ş°ïüÿÿÿÿ8Ïß†ù/
+G	cpp:S1103"&Remove the misleading "//" characters.(İ‹½ğûÿÿÿÿ8Ğß†ù/
+B	cpp:S1103"&Remove the misleading "//" characters.(ü±Ç×8Ğß†ù/
+G	cpp:S1103"&Remove the misleading "//" characters.(Õ¼úûÿÿÿÿ8Ğß†ù/
+B	cpp:S1103"&Remove the misleading "//" characters.(ÈØ8Ğß†ù/
+B	cpp:S1103"&Remove the misleading "//" characters.(Š²âŞ8Ğß†ù/
+G	cpp:S1103 "&Remove the misleading "//" characters.(šæ´ñúÿÿÿÿ8Ğß†ù/
+G	cpp:S1103!"&Remove the misleading "//" characters.( É÷ÿÿÿÿÿ8Ğß†ù/
+G	cpp:S1103""&Remove the misleading "//" characters.(­‘É†ıÿÿÿÿ8Ğß†ù/
+G	cpp:S1103#"&Remove the misleading "//" characters.(ŞÆ§„ÿÿÿÿÿ8Ğß†ù/
+ecpp:PPUndefUsage·"ARemove this #undef directive that undefines a non-existing macro.(ÑãÄ´8½â†ù/
+jcpp:PPUndefUsage¸"ARemove this #undef directive that undefines a non-existing macro.(¡ÓÑÛúÿÿÿÿ8½â†ù/
+T	cpp:S5028¼"8Replace this macro by "const", "constexpr" or an "enum".(Ï©Ğ8½â†ù/
+U	cpp:S5028½"8Replace this macro by "const", "constexpr" or an "enum".(äô¥º8½â†ù/
+U	cpp:S5028Ç"8Replace this macro by "const", "constexpr" or an "enum".(åÿŸ8Áâ†ù/
+T	cpp:S6164ï"2Replace constant with "std::numbers::pi_v<float>".(¬ºÍêøÿÿÿÿ8Áâ†ù/
+Z	cpp:S5028ï"8Replace this macro by "const", "constexpr" or an "enum".(¬ºÍêøÿÿÿÿ8Ââ†ù/
+Z	cpp:S5028ó"8Replace this macro by "const", "constexpr" or an "enum".(ªöœÙÿÿÿÿÿ8Ââ†ù/
+Hcpp:CommentedCode…"Remove the commented out code.(à´®ùÿÿÿÿ8Éâ†ù/
+U	cpp:S5028¸"8Replace this macro by "const", "constexpr" or an "enum".(§şÇâ8Ëâ†ù/
+Z	cpp:S5028¹"8Replace this macro by "const", "constexpr" or an "enum".(åÜ˜ÿÿÿÿÿ8Ëâ†ù/
+Z	cpp:S5028Â"8Replace this macro by "const", "constexpr" or an "enum".(ìèÍšúÿÿÿÿ8Ëâ†ù/
+n	cpp:S1134ï"LTake the required action to fix the issue indicated by this "FIXME" comment.(ŒŠıŠûÿÿÿÿ8Ìâ†ù/
+Hcpp:CommentedCodeğ"Remove the commented out code.(Î«íˆşÿÿÿÿ8Ìâ†ù/
+h	cpp:S1134ò"LTake the required action to fix the issue indicated by this "FIXME" comment.(›€¯M8Ìâ†ù/
+h	cpp:S1134ª"LTake the required action to fix the issue indicated by this "FIXME" comment.(¡¡N8Íâ†ù/
+i	cpp:S1134È"LTake the required action to fix the issue indicated by this "FIXME" comment.(½×ùË8Îâ†ù/
+n	cpp:S1134è"LTake the required action to fix the issue indicated by this "FIXME" comment.(‰ò’¢ıÿÿÿÿ8Îâ†ù/
+i	cpp:S1134’"LTake the required action to fix the issue indicated by this "FIXME" comment.(¾ÔØ¿8Îâ†ù/
+Hcpp:CommentedCodeÃ	"Remove the commented out code.(Ğá•‚şÿÿÿÿ8Òâ†ù/
+i	cpp:S1134Ø	"LTake the required action to fix the issue indicated by this "FIXME" comment.(­›º8Òâ†ù/
+h	cpp:S1134µ"LTake the required action to fix the issue indicated by this "FIXME" comment.(…Í¾%8Øâ†ù/
+Ccpp:CommentedCodeÔ"Remove the commented out code.(º—À©8Ûâ†ù/
+i	cpp:S1134æ"LTake the required action to fix the issue indicated by this "FIXME" comment.(œûèÃ8Ûâ†ù/
+n	cpp:S1134õ"LTake the required action to fix the issue indicated by this "FIXME" comment.(Éô´«üÿÿÿÿ8Üâ†ù/
+i	cpp:S1134·"LTake the required action to fix the issue indicated by this "FIXME" comment.(ÄâÍ¾8İâ†ù/
+n	cpp:S1134Â"LTake the required action to fix the issue indicated by this "FIXME" comment.(Øı¸Øøÿÿÿÿ8İâ†ù/
+n	cpp:S1134Ÿ"LTake the required action to fix the issue indicated by this "FIXME" comment.(î×Şïøÿÿÿÿ8áâ†ù/
+n	cpp:S1134«"LTake the required action to fix the issue indicated by this "FIXME" comment.(÷‘¡şÿÿÿÿ8áâ†ù/
+n	cpp:S1134¶"LTake the required action to fix the issue indicated by this "FIXME" comment.(ƒÀïÿÿÿÿÿ8áâ†ù/
+i	cpp:S1134ˆ"LTake the required action to fix the issue indicated by this "FIXME" comment.(²»Õ8ãâ†ù/
+i	cpp:S1134Š"LTake the required action to fix the issue indicated by this "FIXME" comment.(—ØËø8äâ†ù/
+i	cpp:S1134Ô"LTake the required action to fix the issue indicated by this "FIXME" comment.(ÙÎÉ8æâ†ù/
+Z	cpp:S5028§"8Replace this macro by "const", "constexpr" or an "enum".(á´Úòÿÿÿÿÿ8çâ†ù/
+h	cpp:S1134ó"LTake the required action to fix the issue indicated by this "FIXME" comment.(å¤šH8èâ†ù/
+i	cpp:S1134³"LTake the required action to fix the issue indicated by this "FIXME" comment.(¡Üß†8éâ†ù/
+n	cpp:S1134Ø"LTake the required action to fix the issue indicated by this "FIXME" comment.(ÇüÁÔıÿÿÿÿ8íâ†ù/
+]cpp:PPIncludeNotAtTop¾"4Move this #include directive to the top of the file.(ã˜æ8ªó†ù/
+B	cpp:S1103"&Remove the misleading "//" characters.(öÕ†ø8×Ü†ù/
+B	cpp:S1103"&Remove the misleading "//" characters.(¹¿ÿ8×Ü†ù/
+G	cpp:S1103"&Remove the misleading "//" characters.(ŒÇ÷Êşÿÿÿÿ8×Ü†ù/
+B	cpp:S1103"&Remove the misleading "//" characters.(û”²í8×Ü†ù/
+G	cpp:S1103"&Remove the misleading "//" characters.(çÎĞıÿÿÿÿ8×Ü†ù/
+B	cpp:S1103"&Remove the misleading "//" characters.(Ì¥Äò8×Ü†ù/
+G	cpp:S1103"&Remove the misleading "//" characters.(€Ø‘†ùÿÿÿÿ8×Ü†ù/
+G	cpp:S1103"&Remove the misleading "//" characters.(ÕèÅõúÿÿÿÿ8×Ü†ù/
+B	cpp:S1103"&Remove the misleading "//" characters.(èˆ‡€8×Ü†ù/
+G	cpp:S1103"&Remove the misleading "//" characters.(®õÛ•úÿÿÿÿ8×Ü†ù/
+B	cpp:S1103"&Remove the misleading "//" characters.(İ£¼8×Ü†ù/
+B	cpp:S1103"&Remove the misleading "//" characters.(çàà˜8×Ü†ù/
+A	cpp:S1103"&Remove the misleading "//" characters.(âÔ°c8×Ü†ù/
+G	cpp:S1103"&Remove the misleading "//" characters.(‡ş°ïüÿÿÿÿ8×Ü†ù/
+G	cpp:S1103"&Remove the misleading "//" characters.(İ‹½ğûÿÿÿÿ8×Ü†ù/
+B	cpp:S1103"&Remove the misleading "//" characters.(ü±Ç×8×Ü†ù/
+G	cpp:S1103"&Remove the misleading "//" characters.(Õ¼úûÿÿÿÿ8×Ü†ù/
+B	cpp:S1103"&Remove the misleading "//" characters.(ÈØ8×Ü†ù/
+B	cpp:S1103"&Remove the misleading "//" characters.(Š²âŞ8×Ü†ù/
+G	cpp:S1103 "&Remove the misleading "//" characters.(šæ´ñúÿÿÿÿ8ØÜ†ù/
+G	cpp:S1103!"&Remove the misleading "//" characters.( É÷ÿÿÿÿÿ8ØÜ†ù/
+G	cpp:S1103""&Remove the misleading "//" characters.(­‘É†ıÿÿÿÿ8ØÜ†ù/
+G	cpp:S1103#"&Remove the misleading "//" characters.(ŞÆ§„ÿÿÿÿÿ8ØÜ†ù/
+ecpp:PPUndefUsage·"ARemove this #undef directive that undefines a non-existing macro.(ÑãÄ´8Âà†ù/
+jcpp:PPUndefUsage¸"ARemove this #undef directive that undefines a non-existing macro.(¡ÓÑÛúÿÿÿÿ8Ãà†ù/
+T	cpp:S5028¼"8Replace this macro by "const", "constexpr" or an "enum".(Ï©Ğ8Ãà†ù/
+U	cpp:S5028½"8Replace this macro by "const", "constexpr" or an "enum".(äô¥º8Ãà†ù/
+U	cpp:S5028Ç"8Replace this macro by "const", "constexpr" or an "enum".(åÿŸ8Èà†ù/
+T	cpp:S6164ï"2Replace constant with "std::numbers::pi_v<float>".(¬ºÍêøÿÿÿÿ8Èà†ù/
+Z	cpp:S5028ï"8Replace this macro by "const", "constexpr" or an "enum".(¬ºÍêøÿÿÿÿ8Èà†ù/
+Z	cpp:S5028ó"8Replace this macro by "const", "constexpr" or an "enum".(ªöœÙÿÿÿÿÿ8Èà†ù/
+Hcpp:CommentedCode…"Remove the commented out code.(à´®ùÿÿÿÿ8Ôà†ù/
+U	cpp:S5028¸"8Replace this macro by "const", "constexpr" or an "enum".(§şÇâ8Õà†ù/
+Z	cpp:S5028¹"8Replace this macro by "const", "constexpr" or an "enum".(åÜ˜ÿÿÿÿÿ8Õà†ù/
+Z	cpp:S5028Â"8Replace this macro by "const", "constexpr" or an "enum".(ìèÍšúÿÿÿÿ8Õà†ù/
+n	cpp:S1134ï"LTake the required action to fix the issue indicated by this "FIXME" comment.(ŒŠıŠûÿÿÿÿ8Öà†ù/
+Hcpp:CommentedCodeğ"Remove the commented out code.(Î«íˆşÿÿÿÿ8×à†ù/
+h	cpp:S1134ò"LTake the required action to fix the issue indicated by this "FIXME" comment.(›€¯M8×à†ù/
+h	cpp:S1134ª"LTake the required action to fix the issue indicated by this "FIXME" comment.(¡¡N8Øà†ù/
+i	cpp:S1134È"LTake the required action to fix the issue indicated by this "FIXME" comment.(½×ùË8Ùà†ù/
+n	cpp:S1134è"LTake the required action to fix the issue indicated by this "FIXME" comment.(‰ò’¢ıÿÿÿÿ8Ùà†ù/
+i	cpp:S1134’"LTake the required action to fix the issue indicated by this "FIXME" comment.(¾ÔØ¿8Ùà†ù/
+Hcpp:CommentedCodeÃ	"Remove the commented out code.(Ğá•‚şÿÿÿÿ8İà†ù/
+i	cpp:S1134Ø	"LTake the required action to fix the issue indicated by this "FIXME" comment.(­›º8İà†ù/
+h	cpp:S1134µ"LTake the required action to fix the issue indicated by this "FIXME" comment.(…Í¾%8êà†ù/
+Ccpp:CommentedCodeÔ"Remove the commented out code.(º—À©8íà†ù/
+i	cpp:S1134æ"LTake the required action to fix the issue indicated by this "FIXME" comment.(œûèÃ8íà†ù/
+n	cpp:S1134õ"LTake the required action to fix the issue indicated by this "FIXME" comment.(Éô´«üÿÿÿÿ8íà†ù/
+i	cpp:S1134·"LTake the required action to fix the issue indicated by this "FIXME" comment.(ÄâÍ¾8ïà†ù/
+n	cpp:S1134Â"LTake the required action to fix the issue indicated by this "FIXME" comment.(Øı¸Øøÿÿÿÿ8ïà†ù/
+n	cpp:S1134Ÿ"LTake the required action to fix the issue indicated by this "FIXME" comment.(î×Şïøÿÿÿÿ8óà†ù/
+n	cpp:S1134«"LTake the required action to fix the issue indicated by this "FIXME" comment.(÷‘¡şÿÿÿÿ8óà†ù/
+n	cpp:S1134¶"LTake the required action to fix the issue indicated by this "FIXME" comment.(ƒÀïÿÿÿÿÿ8ôà†ù/
+i	cpp:S1134ˆ"LTake the required action to fix the issue indicated by this "FIXME" comment.(²»Õ8øà†ù/
+i	cpp:S1134Š"LTake the required action to fix the issue indicated by this "FIXME" comment.(—ØËø8øà†ù/
+i	cpp:S1134Ô"LTake the required action to fix the issue indicated by this "FIXME" comment.(ÙÎÉ8úà†ù/
+Z	cpp:S5028§"8Replace this macro by "const", "constexpr" or an "enum".(á´Úòÿÿÿÿÿ8ûà†ù/
+h	cpp:S1134ó"LTake the required action to fix the issue indicated by this "FIXME" comment.(å¤šH8ıà†ù/
+i	cpp:S1134³"LTake the required action to fix the issue indicated by this "FIXME" comment.(¡Üß†8şà†ù/
+n	cpp:S1134Ø"LTake the required action to fix the issue indicated by this "FIXME" comment.(ÇüÁÔıÿÿÿÿ8ƒá†ù/
+]cpp:PPIncludeNotAtTop¾"4Move this #include directive to the top of the file.(ã˜æ8òâ†ù/
+B	cpp:S1103"&Remove the misleading "//" characters.(öÕ†ø8†û†ù/
+B	cpp:S1103"&Remove the misleading "//" characters.(¹¿ÿ8†û†ù/
+G	cpp:S1103"&Remove the misleading "//" characters.(ŒÇ÷Êşÿÿÿÿ8†û†ù/
+B	cpp:S1103"&Remove the misleading "//" characters.(û”²í8†û†ù/
+G	cpp:S1103"&Remove the misleading "//" characters.(çÎĞıÿÿÿÿ8†û†ù/
+B	cpp:S1103"&Remove the misleading "//" characters.(Ì¥Äò8†û†ù/
+G	cpp:S1103"&Remove the misleading "//" characters.(€Ø‘†ùÿÿÿÿ8†û†ù/
+G	cpp:S1103"&Remove the misleading "//" characters.(ÕèÅõúÿÿÿÿ8†û†ù/
+B	cpp:S1103"&Remove the misleading "//" characters.(èˆ‡€8†û†ù/
+G	cpp:S1103"&Remove the misleading "//" characters.(®õÛ•úÿÿÿÿ8†û†ù/
+B	cpp:S1103"&Remove the misleading "//" characters.(İ£¼8‡û†ù/
+B	cpp:S1103"&Remove the misleading "//" characters.(çàà˜8‡û†ù/
+A	cpp:S1103"&Remove the misleading "//" characters.(âÔ°c8‡û†ù/
+G	cpp:S1103"&Remove the misleading "//" characters.(‡ş°ïüÿÿÿÿ8‡û†ù/
+G	cpp:S1103"&Remove the misleading "//" characters.(İ‹½ğûÿÿÿÿ8‡û†ù/
+B	cpp:S1103"&Remove the misleading "//" characters.(ü±Ç×8‡û†ù/
+G	cpp:S1103"&Remove the misleading "//" characters.(Õ¼úûÿÿÿÿ8‡û†ù/
+B	cpp:S1103"&Remove the misleading "//" characters.(ÈØ8‡û†ù/
+B	cpp:S1103"&Remove the misleading "//" characters.(Š²âŞ8‡û†ù/
+G	cpp:S1103 "&Remove the misleading "//" characters.(šæ´ñúÿÿÿÿ8‡û†ù/
+G	cpp:S1103!"&Remove the misleading "//" characters.( É÷ÿÿÿÿÿ8‡û†ù/
+G	cpp:S1103""&Remove the misleading "//" characters.(­‘É†ıÿÿÿÿ8‡û†ù/
+G	cpp:S1103#"&Remove the misleading "//" characters.(ŞÆ§„ÿÿÿÿÿ8‡û†ù/
+ecpp:PPUndefUsage·"ARemove this #undef directive that undefines a non-existing macro.(ÑãÄ´8ïı†ù/
+jcpp:PPUndefUsage¸"ARemove this #undef directive that undefines a non-existing macro.(¡ÓÑÛúÿÿÿÿ8ïı†ù/
+T	cpp:S5028¼"8Replace this macro by "const", "constexpr" or an "enum".(Ï©Ğ8ïı†ù/
+U	cpp:S5028½"8Replace this macro by "const", "constexpr" or an "enum".(äô¥º8ğı†ù/
+U	cpp:S5028Ç"8Replace this macro by "const", "constexpr" or an "enum".(åÿŸ8õı†ù/
+T	cpp:S6164ï"2Replace constant with "std::numbers::pi_v<float>".(¬ºÍêøÿÿÿÿ8õı†ù/
+Z	cpp:S5028ï"8Replace this macro by "const", "constexpr" or an "enum".(¬ºÍêøÿÿÿÿ8õı†ù/
+Z	cpp:S5028ó"8Replace this macro by "const", "constexpr" or an "enum".(ªöœÙÿÿÿÿÿ8õı†ù/
+Hcpp:CommentedCode…"Remove the commented out code.(à´®ùÿÿÿÿ8ıı†ù/
+U	cpp:S5028¸"8Replace this macro by "const", "constexpr" or an "enum".(§şÇâ8ÿı†ù/
+Z	cpp:S5028¹"8Replace this macro by "const", "constexpr" or an "enum".(åÜ˜ÿÿÿÿÿ8ÿı†ù/
+Z	cpp:S5028Â"8Replace this macro by "const", "constexpr" or an "enum".(ìèÍšúÿÿÿÿ8ÿı†ù/
+n	cpp:S1134ï"LTake the required action to fix the issue indicated by this "FIXME" comment.(ŒŠıŠûÿÿÿÿ8€ş†ù/
+Hcpp:CommentedCodeğ"Remove the commented out code.(Î«íˆşÿÿÿÿ8€ş†ù/
+h	cpp:S1134ò"LTake the required action to fix the issue indicated by this "FIXME" comment.(›€¯M8€ş†ù/
+h	cpp:S1134ª"LTake the required action to fix the issue indicated by this "FIXME" comment.(¡¡N8‚ş†ù/
+i	cpp:S1134È"LTake the required action to fix the issue indicated by this "FIXME" comment.(½×ùË8‚ş†ù/
+n	cpp:S1134è"LTake the required action to fix the issue indicated by this "FIXME" comment.(‰ò’¢ıÿÿÿÿ8ƒş†ù/
+i	cpp:S1134’"LTake the required action to fix the issue indicated by this "FIXME" comment.(¾ÔØ¿8ƒş†ù/
+Hcpp:CommentedCodeÃ	"Remove the commented out code.(Ğá•‚şÿÿÿÿ8†ş†ù/
+i	cpp:S1134Ø	"LTake the required action to fix the issue indicated by this "FIXME" comment.(­›º8‡ş†ù/
+h	cpp:S1134µ"LTake the required action to fix the issue indicated by this "FIXME" comment.(…Í¾%8ş†ù/
+Ccpp:CommentedCodeÔ"Remove the commented out code.(º—À©8‘ş†ù/
+i	cpp:S1134æ"LTake the required action to fix the issue indicated by this "FIXME" comment.(œûèÃ8‘ş†ù/
+n	cpp:S1134õ"LTake the required action to fix the issue indicated by this "FIXME" comment.(Éô´«üÿÿÿÿ8‘ş†ù/
+i	cpp:S1134·"LTake the required action to fix the issue indicated by this "FIXME" comment.(ÄâÍ¾8”ş†ù/
+n	cpp:S1134Â"LTake the required action to fix the issue indicated by this "FIXME" comment.(Øı¸Øøÿÿÿÿ8”ş†ù/
+n	cpp:S1134Ÿ"LTake the required action to fix the issue indicated by this "FIXME" comment.(î×Şïøÿÿÿÿ8˜ş†ù/
+n	cpp:S1134«"LTake the required action to fix the issue indicated by this "FIXME" comment.(÷‘¡şÿÿÿÿ8™ş†ù/
+n	cpp:S1134¶"LTake the required action to fix the issue indicated by this "FIXME" comment.(ƒÀïÿÿÿÿÿ8™ş†ù/
+i	cpp:S1134ˆ"LTake the required action to fix the issue indicated by this "FIXME" comment.(²»Õ8œş†ù/
+i	cpp:S1134Š"LTake the required action to fix the issue indicated by this "FIXME" comment.(—ØËø8Ÿş†ù/
+i	cpp:S1134Ô"LTake the required action to fix the issue indicated by this "FIXME" comment.(ÙÎÉ8Ÿş†ù/
+Z	cpp:S5028§"8Replace this macro by "const", "constexpr" or an "enum".(á´Úòÿÿÿÿÿ8¡ş†ù/
+h	cpp:S1134ó"LTake the required action to fix the issue indicated by this "FIXME" comment.(å¤šH8¢ş†ù/
+i	cpp:S1134³"LTake the required action to fix the issue indicated by this "FIXME" comment.(¡Üß†8¤ş†ù/
+n	cpp:S1134Ø"LTake the required action to fix the issue indicated by this "FIXME" comment.(ÇüÁÔıÿÿÿÿ8©ş†ù/
+]cpp:PPIncludeNotAtTop¾"4Move this #include directive to the top of the file.(ã˜æ8Ô‘†ù/
+B	cpp:S1103"&Remove the misleading "//" characters.(öÕ†ø8Ó•‘†ù/
+B	cpp:S1103"&Remove the misleading "//" characters.(¹¿ÿ8Ó•‘†ù/
+G	cpp:S1103"&Remove the misleading "//" characters.(ŒÇ÷Êşÿÿÿÿ8Ó•‘†ù/
+B	cpp:S1103"&Remove the misleading "//" characters.(û”²í8Ó•‘†ù/
+G	cpp:S1103"&Remove the misleading "//" characters.(çÎĞıÿÿÿÿ8Ó•‘†ù/
+B	cpp:S1103"&Remove the misleading "//" characters.(Ì¥Äò8Ô•‘†ù/
+G	cpp:S1103"&Remove the misleading "//" characters.(€Ø‘†ùÿÿÿÿ8Ô•‘†ù/
+G	cpp:S1103"&Remove the misleading "//" characters.(ÕèÅõúÿÿÿÿ8Ô•‘†ù/
+B	cpp:S1103"&Remove the misleading "//" characters.(èˆ‡€8Ô•‘†ù/
+G	cpp:S1103"&Remove the misleading "//" characters.(®õÛ•úÿÿÿÿ8Ô•‘†ù/
+B	cpp:S1103"&Remove the misleading "//" characters.(İ£¼8Ô•‘†ù/
+B	cpp:S1103"&Remove the misleading "//" characters.(çàà˜8Ô•‘†ù/
+A	cpp:S1103"&Remove the misleading "//" characters.(âÔ°c8Ô•‘†ù/
+G	cpp:S1103"&Remove the misleading "//" characters.(‡ş°ïüÿÿÿÿ8Ô•‘†ù/
+G	cpp:S1103"&Remove the misleading "//" characters.(İ‹½ğûÿÿÿÿ8Ô•‘†ù/
+B	cpp:S1103"&Remove the misleading "//" characters.(ü±Ç×8Ô•‘†ù/
+G	cpp:S1103"&Remove the misleading "//" characters.(Õ¼úûÿÿÿÿ8Ô•‘†ù/
+B	cpp:S1103"&Remove the misleading "//" characters.(ÈØ8Ô•‘†ù/
+B	cpp:S1103"&Remove the misleading "//" characters.(Š²âŞ8Ô•‘†ù/
+G	cpp:S1103 "&Remove the misleading "//" characters.(šæ´ñúÿÿÿÿ8Ô•‘†ù/
+G	cpp:S1103!"&Remove the misleading "//" characters.( É÷ÿÿÿÿÿ8Ô•‘†ù/
+G	cpp:S1103""&Remove the misleading "//" characters.(­‘É†ıÿÿÿÿ8Ô•‘†ù/
+G	cpp:S1103#"&Remove the misleading "//" characters.(ŞÆ§„ÿÿÿÿÿ8Ô•‘†ù/
+ecpp:PPUndefUsage·"ARemove this #undef directive that undefines a non-existing macro.(ÑãÄ´8­˜‘†ù/
+jcpp:PPUndefUsage¸"ARemove this #undef directive that undefines a non-existing macro.(¡ÓÑÛúÿÿÿÿ8­˜‘†ù/
+T	cpp:S5028¼"8Replace this macro by "const", "constexpr" or an "enum".(Ï©Ğ8­˜‘†ù/
+U	cpp:S5028½"8Replace this macro by "const", "constexpr" or an "enum".(äô¥º8­˜‘†ù/
+U	cpp:S5028Ç"8Replace this macro by "const", "constexpr" or an "enum".(åÿŸ8±˜‘†ù/
+T	cpp:S6164ï"2Replace constant with "std::numbers::pi_v<float>".(¬ºÍêøÿÿÿÿ8±˜‘†ù/
+Z	cpp:S5028ï"8Replace this macro by "const", "constexpr" or an "enum".(¬ºÍêøÿÿÿÿ8²˜‘†ù/
+Z	cpp:S5028ó"8Replace this macro by "const", "constexpr" or an "enum".(ªöœÙÿÿÿÿÿ8²˜‘†ù/
+Hcpp:CommentedCode…"Remove the commented out code.(à´®ùÿÿÿÿ8¸˜‘†ù/
+U	cpp:S5028¸"8Replace this macro by "const", "constexpr" or an "enum".(§şÇâ8¹˜‘†ù/
+Z	cpp:S5028¹"8Replace this macro by "const", "constexpr" or an "enum".(åÜ˜ÿÿÿÿÿ8¹˜‘†ù/
+Z	cpp:S5028Â"8Replace this macro by "const", "constexpr" or an "enum".(ìèÍšúÿÿÿÿ8¹˜‘†ù/
+n	cpp:S1134ï"LTake the required action to fix the issue indicated by this "FIXME" comment.(ŒŠıŠûÿÿÿÿ8º˜‘†ù/
+Hcpp:CommentedCodeğ"Remove the commented out code.(Î«íˆşÿÿÿÿ8º˜‘†ù/
+h	cpp:S1134ò"LTake the required action to fix the issue indicated by this "FIXME" comment.(›€¯M8º˜‘†ù/
+h	cpp:S1134ª"LTake the required action to fix the issue indicated by this "FIXME" comment.(¡¡N8»˜‘†ù/
+i	cpp:S1134È"LTake the required action to fix the issue indicated by this "FIXME" comment.(½×ùË8¼˜‘†ù/
+n	cpp:S1134è"LTake the required action to fix the issue indicated by this "FIXME" comment.(‰ò’¢ıÿÿÿÿ8¼˜‘†ù/
+i	cpp:S1134’"LTake the required action to fix the issue indicated by this "FIXME" comment.(¾ÔØ¿8½˜‘†ù/
+Hcpp:CommentedCodeÃ	"Remove the commented out code.(Ğá•‚şÿÿÿÿ8¿˜‘†ù/
+i	cpp:S1134Ø	"LTake the required action to fix the issue indicated by this "FIXME" comment.(­›º8À˜‘†ù/
+h	cpp:S1134µ"LTake the required action to fix the issue indicated by this "FIXME" comment.(…Í¾%8Å˜‘†ù/
+Ccpp:CommentedCodeÔ"Remove the commented out code.(º—À©8Ç˜‘†ù/
+i	cpp:S1134æ"LTake the required action to fix the issue indicated by this "FIXME" comment.(œûèÃ8È˜‘†ù/
+n	cpp:S1134õ"LTake the required action to fix the issue indicated by this "FIXME" comment.(Éô´«üÿÿÿÿ8Ê˜‘†ù/
+i	cpp:S1134·"LTake the required action to fix the issue indicated by this "FIXME" comment.(ÄâÍ¾8Ê˜‘†ù/
+n	cpp:S1134Â"LTake the required action to fix the issue indicated by this "FIXME" comment.(Øı¸Øøÿÿÿÿ8Ê˜‘†ù/
+n	cpp:S1134Ÿ"LTake the required action to fix the issue indicated by this "FIXME" comment.(î×Şïøÿÿÿÿ8Î˜‘†ù/
+n	cpp:S1134«"LTake the required action to fix the issue indicated by this "FIXME" comment.(÷‘¡şÿÿÿÿ8Î˜‘†ù/
+n	cpp:S1134¶"LTake the required action to fix the issue indicated by this "FIXME" comment.(ƒÀïÿÿÿÿÿ8Î˜‘†ù/
+i	cpp:S1134ˆ"LTake the required action to fix the issue indicated by this "FIXME" comment.(²»Õ8Ğ˜‘†ù/
+i	cpp:S1134Š"LTake the required action to fix the issue indicated by this "FIXME" comment.(—ØËø8Ñ˜‘†ù/
+i	cpp:S1134Ô"LTake the required action to fix the issue indicated by this "FIXME" comment.(ÙÎÉ8Ó˜‘†ù/
+Z	cpp:S5028§"8Replace this macro by "const", "constexpr" or an "enum".(á´Úòÿÿÿÿÿ8Ô˜‘†ù/
+h	cpp:S1134ó"LTake the required action to fix the issue indicated by this "FIXME" comment.(å¤šH8Õ˜‘†ù/
+i	cpp:S1134³"LTake the required action to fix the issue indicated by this "FIXME" comment.(¡Üß†8×˜‘†ù/
+n	cpp:S1134Ø"LTake the required action to fix the issue indicated by this "FIXME" comment.(ÇüÁÔıÿÿÿÿ8Ú˜‘†ù/
+]cpp:PPIncludeNotAtTop¾"4Move this #include directive to the top of the file.(ã˜æ8 ‘†ù/

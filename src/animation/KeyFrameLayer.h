@@ -20,7 +20,7 @@ public:
         if (initTime == newTime) return;
 
         if (HasKeyFrameAtTime(newTime)) {
-            printf("[Error]: overlapping keyframe during move -- ABORTING OPERATION\n");
+            LOG("[Error]: overlapping keyframe during move -- ABORTING OPERATION\n");
             return;
         }
 
@@ -124,32 +124,32 @@ public:
         return !frames.empty();
     }
 
-    T GetAnimatedVal(float time) {
-        auto upper = std::upper_bound(frames.begin(), frames.end(), time,
-          [](float value, const KeyFrame<T>& frame) {
-              return value < frame.time;
-          }
-        );
-        const KeyFrame<T>& frame1 = [&]{
-            if (upper == frames.begin()) return upper[0];
-            if (upper == frames.end()) return frames.back();
-            return upper[-1];
-        }();
-        const KeyFrame<T>& frame2 = [&]{
-            if (upper == frames.end()) return frames.back();
-            return upper[0];
-        }();
+	T GetAnimatedVal(float time) {
+		auto upper = std::upper_bound(frames.begin(), frames.end(), time,
+		                              [](float value, const KeyFrame<T>& frame) {
+			                              return value < frame.time;
+		                              }
+		);
+		const KeyFrame<T>& frame1 = [&]{
+			if (upper == frames.begin()) return upper[0];
+			if (upper == frames.end()) return frames.back();
+			return upper[-1];
+		}();
+		const KeyFrame<T>& frame2 = [&]{
+			if (upper == frames.end()) return frames.back();
+			return upper[0];
+		}();
 
-        float t = (time - frame1.time) / (frame2.time - frame1.time); // Linear
+		float t = (time - frame1.time) / (frame2.time - frame1.time); // Linear
 
-        if (frame1.time == frame2.time) {
-            t = -1.0f;
-        } else {
-            t = KeyFrame<T>::RemapTime(t, frame1, frame2);
-        }
+		if (frame1.time == frame2.time) {
+			t = -1.0f;
+		} else {
+			t = KeyFrame<T>::RemapTime(t, frame1, frame2);
+		}
 
-        return KeyFrame<T>::GetAnimatedValueAtT(frame1, frame2, t);
-    }
+		return KeyFrame<T>::GetAnimatedValueAtT(frame1, frame2, t);
+	}
 
     void Insert(KeyFrame<T> frame) {
         const float time = frame.time;
@@ -168,7 +168,7 @@ public:
         frames.push_back(frame);
     }
 
-    bool HasKeyFrameAtTime(float time) {
+    [[nodiscard]] bool HasKeyFrameAtTime(float time)  {
         for (KeyFrame<T>& keyFrame : frames) {
             if (keyFrame.time == time) return true;
             if (keyFrame.time > time) return false;
@@ -178,9 +178,9 @@ public:
 
     std::optional<KeyFrame<T>*> KeyFrameBelow(float time) {
         auto upper = std::upper_bound(frames.begin(), frames.end(), time,
-                                      [](float value, const KeyFrame<T>& frame) {
-                                          return frame.time >= value;
-                                      }
+			[](float value, const KeyFrame<T>& frame) {
+			  return frame.time >= value;
+			}
         );
         if (upper == frames.end()) {
             if (!frames.empty()) return std::make_optional(&frames.back());

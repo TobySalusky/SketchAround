@@ -6,9 +6,8 @@
 #include "../util/Util.h"
 #include "../generation/Sampler.h"
 
-std::vector<glm::vec2> LineLerper::Lerp(const std::vector<glm::vec2>& vec1, const std::vector<glm::vec2>& vec2, float t) {
-
-    std::vector<glm::vec2> vec;
+Vec2List LineLerper::Lerp(const Vec2List& vec1, const Vec2List& vec2, float t) {
+	Vec2List vec;
     vec.reserve(vec1.size());
 
     for (int i = 0; i < vec1.size(); i++) {

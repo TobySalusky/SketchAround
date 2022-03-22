@@ -7,17 +7,18 @@
 
 #include <vector>
 #include "Undo.h"
+#include "../util/Util.h"
 
 class Undos {
 public:
     static void Add(Undo* undo) {
-        printf("Adding undo...\n");
+	    LOG("Adding undo...\n");
         undos.emplace_back(undo);
     }
 
     static void UseLast() {
         if (undos.empty()) return;
-        printf("Using undo...\n");
+	    LOG("Using undo...\n");
         undos.back()->Apply();
         undos.pop_back();
     }
