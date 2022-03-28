@@ -53,8 +53,12 @@ Figure 10. Porpoise-like Figure Gawking in an Ostentatious Manner
 
 ---
 
-> Written in **`C++`**
-> 
-> Uses **`Dear ImGui`** for UI
-> 
-> Uses **`OpenGL`** for 3D-Rendering
+### Outside libraries used:
+  * **GUI:**              [Dear ImGui](https://github.com/ocornut/imgui) & [imgui_markdown](https://github.com/juliettef/imgui_markdown)
+  * **Serialization:**    [Boost](https://www.boost.org/)
+  * **OpenGL Rendering:** [GLEW](http://glew.sourceforge.net/) & [GLFW](https://www.glfw.org/)
+  * **Math:**             [GLM](https://github.com/g-truc/glm)
+  * **Image Loading:**    [stb_image](https://github.com/nothings/stb)
+
+### Font:
+[JetBrains Mono](https://www.jetbrains.com/lp/mono/)
