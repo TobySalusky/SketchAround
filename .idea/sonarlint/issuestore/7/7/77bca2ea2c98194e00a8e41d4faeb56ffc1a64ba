@@ -1,0 +1,10 @@
+
+a	cpp:S1134"LTake the required action to fix the issue indicated by this "FIXME" comment.(ÌÉÊØ
+I	cpp:S1135"4Complete the task associated to this "TODO" comment.(ÌÉÊØ
+a	cpp:S1134@"LTake the required action to fix the issue indicated by this "FIXME" comment.(°İí¾
+a	cpp:S1134X"LTake the required action to fix the issue indicated by this "FIXME" comment.(°İí¾
+B	cpp:S6197	"(Replace with "std::ranges::upper_bound".(§Èãúÿÿÿÿ
+B	cpp:S6197"(Replace with "std::ranges::upper_bound".(§Èãúÿÿÿÿ
+B	cpp:S6197+"(Replace with "std::ranges::upper_bound".(§Èãúÿÿÿÿ
+p	cpp:S1172`"[Remove the unused parameter "lengthPer", make it unnamed, or declare it "[[maybe_unused]]".(éƒà­
+l	cpp:S1172`"WRemove the unused parameter "count", make it unnamed, or declare it "[[maybe_unused]]".(éƒà­

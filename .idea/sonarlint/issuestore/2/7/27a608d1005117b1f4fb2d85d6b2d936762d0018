@@ -1,0 +1,13 @@
+
+F	cpp:S1117
+"2declaration shadows a field of 'TiledTextureAtlas'(ÁåD
+Z	cpp:S6004"EUse the init-statement to declare "maxCount" inside the if statement.(ø¼„Ë
+R	cpp:S6188
+">Replace this parameter with a more generic "std::span" object.(ÁåD
+]!cpp:SingleDeclarationPerStatement"0Define each identifier in a dedicated statement.(ù©„
+L	cpp:S5945"2Use "std::string" instead of a C-style char array.(ï‚Ûõÿÿÿÿÿ
+]!cpp:SingleDeclarationPerStatement"0Define each identifier in a dedicated statement.(ä›ºú
+€	cpp:S5350#"fMake the type of this variable a pointer-to-const. The current type of "fromPtr" is "unsigned char *".(šã»Õüÿÿÿÿ
+]!cpp:SingleDeclarationPerStatement/"0Define each identifier in a dedicated statement.(ù©„
+]!cpp:SingleDeclarationPerStatement0"0Define each identifier in a dedicated statement.(Îß£¾
+]!cpp:SingleDeclarationPerStatement2"0Define each identifier in a dedicated statement.(ÄÍó¾

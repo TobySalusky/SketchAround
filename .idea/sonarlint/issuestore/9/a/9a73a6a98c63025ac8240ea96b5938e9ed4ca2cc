@@ -1,0 +1,15 @@
+
+N	cpp:S1135>"4Complete the task associated to this "TODO" comment.(ïÇ±ñùÿÿÿÿ
+I	cpp:S1135?"4Complete the task associated to this "TODO" comment.(ı»ŒÓ
+;	cpp:S5421"!Global variables should be const.(Ìªîøÿÿÿÿ
+6	cpp:S5421"!Global variables should be const.(¸Ş—Û
+†	cpp:S5350B"qMake the type of this variable a pointer-to-const. The current type of "editingControl" is "struct KeyControl *".(µÿ¸
+Q	cpp:S5945D"=Use "std::array" or "std::vector" instead of a C-style array.(ÚïK
+@	cpp:S6197l"&Replace with "std::ranges::transform".(‘ Œ˜úÿÿÿÿ
+F	cpp:S3608"0Explicitly capture the required scope variables.(Ì«çí
+<	cpp:S6197Ä"&Replace with "std::ranges::transform".(‘ ô¸
+±	cpp:S5350Ô"•Make the type of this variable a reference-to-const. The current type of this unnamed variable is "struct std::pair<const int, struct KeyControl> &".(æˆ³’ıÿÿÿÿ
+a	cpp:S6004î"KUse the init-statement to declare "primarySharers" inside the if statement.(ŠÍ‹Æ
+gcpp:S134ñ"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(ÚœÊÕÿÿÿÿÿ
+gcpp:S134ó"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(«Ú¸Àıÿÿÿÿ
+gcpp:S134ô"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(Äâ¼íşÿÿÿÿ

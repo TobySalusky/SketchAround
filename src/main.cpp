@@ -43,6 +43,9 @@
 #include "util/Controls.h"
 #include "gl/TiledTextureAtlas.h"
 #include "exporting/ObjExporter.h"
+#include "gui/LearnScreen.h"
+#include "gui/Markdown.h"
+#include "gui/CreditScreen.h"
 
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
@@ -99,6 +102,7 @@ int main() {
     glfwSwapInterval(0); // NOTE: Removes limit from FPS!
 
     ImGuiHelper::Initialize(window);
+    Markdown::LoadFonts();
 
     Shader shader = Shader::Read("shaders/shader.vert", "shaders/shader.frag");
 
@@ -519,7 +523,8 @@ int main() {
                         // TODO: once filename vs. extension is serialized properly, this should be removed
                         std::string fileName = childPath.filename();
 
-                        if (const int index = (int) fileName.find_last_of('.') != -1) {
+	                    const auto index = (int) fileName.find_last_of('.');
+	                    if (index != -1) {
                             fileName = fileName.substr(0, index);
                         }
 
@@ -674,7 +679,6 @@ int main() {
 
             // Clear Background
 
-            //glClearColor(normMouse.x, 0.0f, normMouse.y, 1.0f);
             const float backgroundLevel3D = 0.1f;
             glClearColor(backgroundLevel3D, backgroundLevel3D, backgroundLevel3D, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -718,7 +722,7 @@ int main() {
                             netDrag = 0.0f;
                         } else if (input->mouseDown) {
                             netDrag += glm::length(displayMousePos -
-                                                   Util::NormalizeToRectNPFlipped(input->GetLastMouse(), displayRect));
+								Util::NormalizeToRectNPFlipped(input->GetLastMouse(), displayRect));
                         }
 
                         if (input->mouseUnpressed && netDrag < 0.0001f) { // only select if user did not drag mouse
@@ -859,6 +863,9 @@ int main() {
                 ImGuiHelper::InnerWindowBorders();
             }
             ImGui::End();
+
+//        	LearnScreen::Gui();
+//        	CreditScreen::Gui();
 
             // Model Instantiation Window
             ImGui::Begin("Models");

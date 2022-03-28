@@ -1,0 +1,10 @@
+
+B	cpp:S1117D"(declaration shadows a field of 'Texture'(İİÓúÿÿÿÿ
+B	cpp:S1117D"(declaration shadows a field of 'Texture'(İİÓúÿÿÿÿ
+B	cpp:S1117P"(declaration shadows a field of 'Texture'(Âú¹Èüÿÿÿÿ
+B	cpp:S1117P"(declaration shadows a field of 'Texture'(Âú¹Èüÿÿÿÿ
+C	cpp:S5817(")This function should be declared "const".(¹­«™ıÿÿÿÿ
+>	cpp:S5817-")This function should be declared "const".(ÌóíÇ
+v	cpp:S32305"aDo not assign data members in a constructor. Initialize member "width" in an initialization list.(½œÒƒ
+|	cpp:S32306"bDo not assign data members in a constructor. Initialize member "height" in an initialization list.(Ÿ²¤úÿÿÿÿ
+ƒcpp:S995P"jMake the type of this parameter a pointer-to-const. The current type of "rgbDataPtr" is "unsigned char *".(Âú¹Èüÿÿÿÿ

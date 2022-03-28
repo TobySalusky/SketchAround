@@ -41,12 +41,12 @@ struct KeyFrameRowSelection {
 };
 
 struct TimelineSelection {
-#define TIMELINE_SELECTION_HANDLE_BOTH(a) {HandleAll(a, a);}
-#define TIMELINE_SELECTION_HANDLE_BOTH_CAPTURE(a) {HandleAllCapture(a, a);}
+#define TIMELINE_SELECTION_HANDLE_BOTH(a) HandleAll(a, a)
+#define TIMELINE_SELECTION_HANDLE_BOTH_CAPTURE(a) HandleAllCapture(a, a)
 
     std::vector<std::variant<KeyFrameRowSelection<Vec2List>, KeyFrameRowSelection<float>>> rowSelections;
 
-    bool CrossCompare(TimelineSelection& other) {
+    [[nodiscard]] bool CrossCompare(const TimelineSelection& other) const {
         bool returnVal = false;
 
         const auto CompareFunc = [&](const auto& val) {
@@ -74,7 +74,7 @@ struct TimelineSelection {
     }
 
     void MoveAll(float amount) const {
-        const auto MoveFunc = [=](const auto& val) {
+        const auto MoveFunc = [amount](const auto& val) {
             for (int i = 0; i < val.frames.size(); i++) {
                 val.layer->MoveFromTimeToTime(val.frames[i]->time, (val.frames[i]->time) + amount);
             }
@@ -83,7 +83,7 @@ struct TimelineSelection {
         TIMELINE_SELECTION_HANDLE_BOTH_CAPTURE(MoveFunc);
     }
 
-    int CountAll() const {
+    [[nodiscard]] int CountAll() const {
         int count = 0;
         const auto CountFunc = [&](const auto& val) {
             count += val.frames.size();
@@ -92,26 +92,11 @@ struct TimelineSelection {
         return count;
     }
 
-    bool MoveAllRounded(float amount) {
+    [[nodiscard]] bool MoveAllRounded(float amount)  {
 
-        bool failed = false;
-        const auto CheckFunc = [&](const auto& val) {
-            if (failed) return;
-
-            for (auto* keyFramePtr : val.frames) {
-                const float time = keyFramePtr->time;
-                const float newTime = std::round((time + amount) * 10.0f) / 10.0f;
-
-                if (val.layer->HasKeyFrameAtTime(newTime) && !val.HasKeyFrameAtTime(newTime)) {
-                    failed = true;
-                    return;
-                }
-            }
-        };
-
-        if (failed) return false;
-
-        const auto MoveFunc = [=](const auto& val) {
+        const auto MoveFunc = [amount](const auto& val) {
+//			auto framesCopy = val.frames;
+//
             for (auto* keyFramePtr : val.frames) {
                 const float time = keyFramePtr->time;
                 const float newTime = std::round((time + amount) * 10.0f) / 10.0f;
@@ -130,7 +115,7 @@ struct TimelineSelection {
             return;
         }
 
-        const auto SetFunc = [=](const auto& val) {
+        const auto SetFunc = [num](const auto& val) {
             for (auto* keyFramePtr : val.frames) {
                 keyFramePtr->blendModeID = num;
             }
@@ -151,7 +136,7 @@ struct TimelineSelection {
         return count;
     }
 
-    bool ContainsKeyframe(std::variant<KeyFrame<Vec2List>*, KeyFrame<float>*> frame) const {
+    [[nodiscard]] bool ContainsKeyframe(std::variant<KeyFrame<Vec2List>*, KeyFrame<float>*> frame) const {
         bool contains = false;
 
         if (std::holds_alternative<KeyFrame<Vec2List>*>(frame)) {
