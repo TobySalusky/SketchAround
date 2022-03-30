@@ -152,5 +152,5 @@ ModelObject *CrossSectional::CopyInternals() { // FIXME: sus
     QUICK_COPY(countPerRing);
     QUICK_COPY(centralAutoGenPoints);
     QUICK_COPY(segments);
-    return copy;
+    return (ModelObject*) copy;
 }

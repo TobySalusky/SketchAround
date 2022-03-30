@@ -191,5 +191,5 @@ ModelObject *Lathe::CopyInternals() { // FIXME: sus
     QUICK_COPY(scaleY);
     QUICK_COPY(scaleZ);
     QUICK_COPY(leanScalar);
-    return copy;
+    return (ModelObject*) copy;
 }

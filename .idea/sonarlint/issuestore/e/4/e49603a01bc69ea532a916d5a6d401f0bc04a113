@@ -1,22 +1,0 @@
-
-`	cpp:S5276D"Eimplicit conversion loses integer precision: 'unsigned long' to 'int'(èßĞ;8ç‘äÅü/
-?	cpp:S1481‚"unused variable 'keyFramePtr'(ºè×•ıÿÿÿÿ8Ò¼äÅü/
-F	cpp:S1117ô")declaration shadows a field of 'Timeline'(¨²í²8à¼äÅü/
-Gcpp:CommentedCodeb"Remove the commented out code.(àˆèüÿÿÿÿ8¶«éÅü/
-J	cpp:S5817"")This function should be declared "const".(´ÕÂûÿÿÿÿÿ8ĞÄßÅü/
-L	cpp:S36084"0Explicitly capture the required scope variables.(ºÚÈ´8ÓÄßÅü/
-=	cpp:S1110E"!Remove these useless parentheses.(ııí¾8ÕÄßÅü/
-L	cpp:S3608X"0Explicitly capture the required scope variables.(‹í–8×ÄßÅü/
-J	cpp:S5817_")This function should be declared "const".(¼Åıòøÿÿÿÿ8ØÄßÅü/
-M	cpp:S3608"0Explicitly capture the required scope variables.(‹í–8ãÂäÅü/
-Ï	cpp:S5350"¬Make the type of this variable a pointer-to-const. The current type of "framePtr" is "struct KeyFrame<class std::vector<struct glm::vec<2, float, glm::packed_highp> > > *".(˜¢ù¡ùÿÿÿÿ8èÂäÅü/
-M	cpp:S3608"0Explicitly capture the required scope variables.(ö«ƒ™8èÂäÅü/
-	cpp:S5350—"pMake the type of this variable a pointer-to-const. The current type of "framePtr" is "struct KeyFrame<float> *".(ˆª¨ì8ëÂäÅü/
-M	cpp:S3608˜"0Explicitly capture the required scope variables.(úÚ­ç8ìÂäÅü/
-Q	cpp:S5213«"5Replace this "std::function" by a template parameter.(ÿ¨ô>8õÂäÅü/
-Q	cpp:S5213«"5Replace this "std::function" by a template parameter.(ÿ¨ô>8õÂäÅü/
-o	cpp:S5205µ"MReplace this function pointer with a template parameter or a "std::function".(é—Íúÿÿÿÿ8÷ÂäÅü/
-e!cpp:SingleDeclarationPerStatement‚"0Define each identifier in a dedicated statement.(¢º¾¦8úÂäÅü/
-j!cpp:SingleDeclarationPerStatement‰"0Define each identifier in a dedicated statement.(äÅ‹ıüÿÿÿÿ8úÂäÅü/
-K	cpp:S5817Ø")This function should be declared "const".(åÜÚ˜úÿÿÿÿ8ûÂäÅü/
-Œ	cpp:S3230ú"oDo not use the constructor's initializer list for data member "animator". Use the in-class initializer instead.(ù ı”8€ÃäÅü/

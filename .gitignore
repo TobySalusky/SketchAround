@@ -8,6 +8,8 @@
 .idea/**/dictionaries
 .idea/**/shelf
 
+.idea/sonarlint
+
 # AWS User-specific
 .idea/**/aws.xml
 
@@ -75,3 +77,5 @@ fabric.properties
 
 cmake-build-debug/
 .idea/vcs.xml
+.idea/sonarlint/issuestore/index.pb
+.idea/sonarlint/issuestore/index.pb

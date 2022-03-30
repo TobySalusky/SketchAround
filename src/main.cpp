@@ -172,9 +172,8 @@ int main() {
     };
 
 
-    std::function<void(ModelObject* obj)> addModelObjRecursive;
-    addModelObjRecursive = [&](ModelObject* obj) {
-        modelObjects.emplace_back(obj);
+    std::function<void(ModelObject* obj)> addModelObjRecursive = [&](ModelObject* obj) {
+	    modelObjects.emplace_back(obj);
         obj->UpdateMesh();
         for (ModelObject* child : obj->GetChildren()) {
             addModelObjRecursive(child);
@@ -884,7 +883,9 @@ int main() {
                 ImGui::SameLine();
                 ImGui::Checkbox("Focus", &focusMode);
 
-                for (ModelObject* currModelObject : modelObjects) {
+                for (size_t i = 0; i < modelObjects.size(); i++) { // no range-based b/c for-inside modifies vector
+                	// Only run on root nodes b/c recursively renders children
+                	ModelObject* currModelObject = modelObjects[i];
                     if (!currModelObject->HasParent()) currModelObject->DraggableGUI(draggableUIInfo);
                 }
                 DragDropModelObject();
@@ -927,7 +928,6 @@ int main() {
             if (!cameraMode) {
                 modelObject->EditMakeup({editContext, *input, drawMode, onScreen, camera, graphFocused, graphView, plotRect});
             }
-
 
             graphView.Update({*input, plotRect});
 

@@ -23,7 +23,7 @@ public:
         return keyFrameLayers[drawMode].HasKeyFrameAtTime(time);
     }
 
-	struct SettableFloatKeyFrameLayer {
+	struct SettableFloatKeyFrameLayer { // TODO: remove this struct!
 		KeyFrameLayer<float> layer;
 	private:
 		friend class boost::serialization::access;
@@ -36,9 +36,9 @@ public:
 
 private:
 
-    float currentTime = 0.0f;
+	float currentTime = 0.0f;
     std::unordered_map<Enums::DrawMode, KeyFrameLayer<std::vector<glm::vec2>>> keyFrameLayers;
-    std::unordered_map<std::string, SettableFloatKeyFrameLayer> floatKeyFrameLayers;
+	std::unordered_map<std::string, SettableFloatKeyFrameLayer> floatKeyFrameLayers;
 
 	friend class boost::serialization::access;
 	template<class Archive>

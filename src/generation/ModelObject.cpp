@@ -353,11 +353,13 @@ void ModelObject::DraggableGUI(const DraggableUIInfo& info) {
         ImGui::EndPopup();
     }
 
-    if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen()) {
+
+	if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen()) {
         if (!isSelected(this)) select(this);
     }
 
-    if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+
+	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
     {
         ModelObject* ptr = this;
         ModelObject** payload = &ptr;
@@ -367,7 +369,8 @@ void ModelObject::DraggableGUI(const DraggableUIInfo& info) {
         ImGui::EndDragDropSource();
     }
 
-    if (ImGui::BeginDragDropTarget())
+
+	if (ImGui::BeginDragDropTarget())
     {
         if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ModelObjectDrag"))
         {
@@ -396,6 +399,7 @@ bool ModelObject::InParentChain(ModelObject* obj) {
 }
 
 ModelObject *ModelObject::CopyRecursive() {
+
     ModelObject* copy = CopyInternals();
 
 #define QUICK_COPY(a) copy->a = a
