@@ -180,21 +180,32 @@ int main() {
         }
     };
 
+    std::function<void(ModelObject* obj)> deleteModelObjRecursive = [&](ModelObject* obj) {
+    	size_t rootNodes = std::count_if(BEG_END(modelObjects), [](auto* thisObj){
+    		return thisObj->IsRootNode();
+    	});
+	    if (rootNodes <= 1 && obj->IsRootNode()) return; // FIXME !!! rewrite delete func!!!!
+
+	    for (int childIndex = obj->GetChildren().size() - 1; childIndex >= 0; childIndex--) { // recurse
+	    	deleteModelObjRecursive(obj->GetChildren()[childIndex]);
+	    }
+
+	    obj->UnParent();
+
+	    for (size_t i = 0; i < modelObjects.size(); i++) {
+		    if (modelObjects[i] == obj) {
+			    modelObjects.erase(modelObjects.begin() + i); // TODO: call delete on object! // FIXME: memory leak
+			    break;
+		    }
+	    }
+	    if (obj == modelObject) SetModelObject(modelObjects[0]);
+    };
+
     DraggableUIInfo draggableUIInfo = {
         [&](ModelObject* obj) { return modelObject == obj; },
         [&](ModelObject* obj) { SetModelObject(obj); },
         addModelObjRecursive,
-        [&](ModelObject* obj) {
-            if (modelObjects.size() <= 1) return; // TODO: use count of base nodes only // FIXME !!! rewrite delete func!!!!
-            obj->UnParent();
-            for (int i = 0; i < modelObjects.size(); i++) {
-                if (modelObjects[i] == obj) {
-                    modelObjects.erase(modelObjects.begin() + i); // TODO: call delete on object! // FIXME: memory leak
-                    break;
-                }
-            }
-            if (obj == modelObject) SetModelObject(modelObjects[0]);
-        }
+        deleteModelObjRecursive
     };
 
     RenderTarget modelScene{window.GetBufferWidth(), window.GetBufferHeight(), true};
@@ -886,7 +897,7 @@ int main() {
                 for (size_t i = 0; i < modelObjects.size(); i++) { // no range-based b/c for-inside modifies vector
                 	// Only run on root nodes b/c recursively renders children
                 	ModelObject* currModelObject = modelObjects[i];
-                    if (!currModelObject->HasParent()) currModelObject->DraggableGUI(draggableUIInfo);
+                    if (currModelObject->IsRootNode()) currModelObject->DraggableGUI(draggableUIInfo);
                 }
                 DragDropModelObject();
 

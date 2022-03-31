@@ -177,9 +177,10 @@ public:
     void UnParent(bool maintainAbsoluteTransform = true);
     void UnParentRaw() { parent = nullptr; }
     [[nodiscard]] bool HasParent() const { return parent != nullptr; }
+    [[nodiscard]] bool IsRootNode() const { return !HasParent(); }
     bool InParentChain(ModelObject* obj);
 
-    void DraggableGUI(const DraggableUIInfo& draggableUIInfo);
+	void DraggableGUI(const DraggableUIInfo& draggableUIInfo);
 
     static int nextUniqueID;
     static int GetCurrentNextUniqueID() { return nextUniqueID; }
