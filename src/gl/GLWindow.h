@@ -38,6 +38,8 @@ public:
 
     void UnDiffResize() { resizeDiff = false; }
 
+    void SetTitle(const char* title) { glfwSetWindowTitle(window,  title); }
+
 private:
     GLFWwindow* window;
     GLint width, height;

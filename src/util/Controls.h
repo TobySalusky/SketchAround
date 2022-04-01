@@ -13,11 +13,11 @@
 
 // TODO: find overlapping keycode controls -- optimize by reversing their modifiers (if one has shift, then one with -1 won't fire for shift)
 
-static int
+static const int
     CONTROLS_SetLayerPrimary = 0,
     CONTROLS_SetLayerSecondary = 1,
     CONTROLS_SetLayerTertiary = 2,
-    CONTROLS_OpenFileSaveMenu = 3,
+    CONTROLS_Save = 3,
     CONTROLS_OpenFileOpenMenu = 4,
     CONTROLS_ClearCurrentLayer = 5,
     CONTROLS_ClearAllLayers = 6,
@@ -45,7 +45,8 @@ static int
     CONTROLS_UndoHold = 28,
     CONTROLS_Redo = 29,
     CONTROLS_RedoHold = 30,
-    CONTROLS_ = 0,
+    CONTROLS_SaveAs = 31,
+	CONTROLS_ = 0,
     CONTROLS_FIN = -2
 ;
 

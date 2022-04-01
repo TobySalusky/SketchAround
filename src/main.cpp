@@ -46,6 +46,9 @@
 #include "gui/LearnScreen.h"
 #include "gui/Markdown.h"
 #include "gui/CreditScreen.h"
+#include "editing/ProjectContext.h"
+#include "editing/ExistingProjectContext.h"
+#include "editing/UnnamedProjectContext.h"
 
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
@@ -73,6 +76,11 @@ Vec2 newPlotDimens;
 
 Enums::EditingTool selectedTool;
 
+std::unique_ptr<ProjectContext> projectContext;
+
+
+
+
 void DragDropModelObject() {
     ImGui::Dummy({ImGui::GetWindowContentRegionWidth(), fmax(40.0f, ImGui::GetContentRegionAvail().y)});
     if (ImGui::BeginDragDropTarget())
@@ -90,7 +98,7 @@ void DragDropModelObject() {
 // The MAIN function, from here we start the application and run the game loop
 int main() {
 
-    GraphView graphView;
+	GraphView graphView;
 
     GLWindow window(INIT_WIDTH, INIT_HEIGHT);
     Input* input = window.GetInput();
@@ -99,7 +107,25 @@ int main() {
     GLuint WIDTH  = INIT_WIDTH;
     GLuint HEIGHT = INIT_HEIGHT;
 
-    glfwSwapInterval(0); // NOTE: Removes limit from FPS!
+	const auto UpdateWindowTitle = [&window]() {
+		window.SetTitle(projectContext->GetName());
+	};
+
+	const auto CreateUntitledProjectContext = [&UpdateWindowTitle]() {
+		projectContext = std::make_unique<UnnamedProjectContext>();
+		UpdateWindowTitle();
+	};
+
+	const auto CreateExistingProjectContext = [&UpdateWindowTitle](std::string& name, std::string& path) {
+		projectContext = std::make_unique<ExistingProjectContext>(name, path);
+		UpdateWindowTitle();
+	};
+
+
+	CreateUntitledProjectContext();
+
+
+	glfwSwapInterval(0); // NOTE: Removes limit from FPS!
 
     ImGuiHelper::Initialize(window);
     Markdown::LoadFonts();
@@ -219,13 +245,15 @@ int main() {
     EditingContext editContext;
 
 
-    const auto SerializeScene = [&](const std::string& path) {
+    const auto SerializeScene = [&](std::string&& path, std::string&& name) {
 
         LOG("saving to \"%s\" -- ", path.c_str());
         std::ofstream ofs(path);
         boost::archive::text_oarchive oa(ofs);
         oa << Serialization(modelObjects, RenderTarget::SampleCentralSquare(modelScene, 64));
-        LOG("save successful!\n");
+	    CreateExistingProjectContext(name, path);
+
+	    LOG("save successful!\n");
     };
 
     const auto DeserializeMeta = [&](const std::string& path) {
@@ -241,7 +269,10 @@ int main() {
         return serialization;
     };
 
-    const auto DeSerializeScene = [&](const std::string& path) {
+    const auto DeSerializeScene = [&](std::string&& path) {
+
+    	std::string name = path.substr(path.find_last_of('/') + 1);
+    	name = name.substr(0, name.find_first_of('.'));
 
         LOG("loading from \"%s\" -- ", path.c_str());
         Serialization serialization;
@@ -256,6 +287,7 @@ int main() {
             modelObj->UpdateMesh();
         }
         SetModelObject(modelObjects[0]);
+        CreateExistingProjectContext(name, path);
 
         LOG("load successful!\n");
     };
@@ -344,7 +376,7 @@ int main() {
                     return;
                 }
 
-                SerializeScene(std::string(pathBuffer) + "/" + std::string(nameBuffer) + ".mdl");
+                SerializeScene(std::string(pathBuffer) + "/" + std::string(nameBuffer) + ".mdl", std::string(nameBuffer));
 
                 inSaveFileGUI = false;
                 hasSaved = true;
@@ -618,13 +650,25 @@ int main() {
         float deltaTime = time - lastTime;
 
         // GLOBAL HOTKEYS
+        const auto OpenSaveMenu = []() {
+	        inSaveFileGUI = true;
+	        inOpenFileGUI = false;
+	        inControlsGUI = false;
+	        inExportGUI = false;
+	        enteringGuiScreen = true;
+        };
 
-        if (Controls::Check(CONTROLS_OpenFileSaveMenu)) {
-            inSaveFileGUI = true;
-            inOpenFileGUI = false;
-            inControlsGUI = false;
-            inExportGUI = false;
-            enteringGuiScreen = true;
+        if (Controls::Check(CONTROLS_Save)) {
+        	if (projectContext->SaveIsNew()) {
+        		OpenSaveMenu();
+        	} else { // ignore this...
+        		SerializeScene(std::string() + ((ExistingProjectContext*)projectContext.get())->path,
+						 std::string() + ((ExistingProjectContext*)projectContext.get())->name);
+        	}
+        }
+
+        if (Controls::Check(CONTROLS_SaveAs)) {
+	        OpenSaveMenu();
         }
 
         if (Controls::Check(CONTROLS_OpenFileOpenMenu)) {
