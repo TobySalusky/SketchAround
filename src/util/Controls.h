@@ -46,6 +46,8 @@ static const int
     CONTROLS_Redo = 29,
     CONTROLS_RedoHold = 30,
     CONTROLS_SaveAs = 31,
+    CONTROLS_Copy = 32,
+    CONTROLS_Paste = 33,
 	CONTROLS_ = 0,
     CONTROLS_FIN = -2
 ;
@@ -53,7 +55,7 @@ static const int
 struct KeyControl {
     const char* name {};
     int keyCode {};
-    int modifier = -1; // -1 for none
+    std::vector<int> modifiers = {};
     bool press = true;
 };
 

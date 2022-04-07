@@ -11,9 +11,8 @@
 
 Input* Controls::input = nullptr;
 
-int SHIFT = GLFW_KEY_LEFT_SHIFT;
-int COMMAND = GLFW_KEY_LEFT_SUPER;
-
+const int SHIFT = GLFW_KEY_LEFT_SHIFT;
+const int COMMAND = GLFW_KEY_LEFT_SUPER;
 
 std::unordered_map<int, KeyControl> Controls::GenDefaultControls() {
     return {
@@ -21,15 +20,15 @@ std::unordered_map<int, KeyControl> Controls::GenDefaultControls() {
             {CONTROLS_SetLayerSecondary, {"Set Layer to Secondary", GLFW_KEY_2}},
             {CONTROLS_SetLayerTertiary, {"Set Layer to Tertiary", GLFW_KEY_3}},
             {CONTROLS_SetLayerQuaternary, {"Set Layer to Quaternary", GLFW_KEY_4}},
-            {CONTROLS_Save, {"Save", GLFW_KEY_S, COMMAND}},
-            {CONTROLS_SaveAs, {"Save As", GLFW_KEY_S, SHIFT}}, // TODO: add multi modifier combos
-            {CONTROLS_OpenFileOpenMenu, {"Enter File-Open Menu", GLFW_KEY_O, COMMAND}},
-            {CONTROLS_ClearCurrentLayer, {"Clear Current Layer", GLFW_KEY_X, SHIFT}},
-            {CONTROLS_ClearAllLayers, {"Clear All Layers", GLFW_KEY_X, COMMAND}},
+            {CONTROLS_Save, {"Save", GLFW_KEY_S, {COMMAND}}},
+            {CONTROLS_SaveAs, {"Save As", GLFW_KEY_S, {COMMAND, SHIFT}}},
+            {CONTROLS_OpenFileOpenMenu, {"Enter File-Open Menu", GLFW_KEY_O, {COMMAND}}},
+            {CONTROLS_ClearCurrentLayer, {"Clear Current Layer", GLFW_KEY_X, {SHIFT}}},
+            {CONTROLS_ClearAllLayers, {"Clear All Layers", GLFW_KEY_X, {COMMAND}}},
             {CONTROLS_AddLathe, {"Add Lathe", GLFW_KEY_N}},
-            {CONTROLS_AddCrossSectional, {"Add CrossSectional", GLFW_KEY_N, SHIFT}},
-            {CONTROLS_SwitchModelUp, {"Switch to Model Above", GLFW_KEY_UP, SHIFT}},
-            {CONTROLS_SwitchModelDown, {"Switch to Model Below", GLFW_KEY_DOWN, SHIFT}},
+            {CONTROLS_AddCrossSectional, {"Add CrossSectional", GLFW_KEY_N, {SHIFT}}},
+            {CONTROLS_SwitchModelUp, {"Switch to Model Above", GLFW_KEY_UP, {SHIFT}}},
+            {CONTROLS_SwitchModelDown, {"Switch to Model Below", GLFW_KEY_DOWN, {SHIFT}}},
             {CONTROLS_Drag, {"Drag", GLFW_KEY_G}},
             {CONTROLS_Scale, {"Scale", GLFW_KEY_S}},
             {CONTROLS_Rotate, {"Rotate", GLFW_KEY_R}},
@@ -38,17 +37,19 @@ std::unordered_map<int, KeyControl> Controls::GenDefaultControls() {
             {CONTROLS_FlipVert, {"Flip Vertical", GLFW_KEY_J}},
             {CONTROLS_ReversePoints, {"Reverse Points", GLFW_KEY_B}},
             {CONTROLS_ExitMenu, {"Exit Menu", GLFW_KEY_ESCAPE}},
-            {CONTROLS_OpenControlsMenu, {"Enter Controls Menu", GLFW_KEY_H, SHIFT}},
-            {CONTROLS_OpenExportMenu, {"Enter Export Menu", GLFW_KEY_E, COMMAND}},
-            {CONTROLS_ResetCamera, {"Reset Camera", GLFW_KEY_R, SHIFT}},
+            {CONTROLS_OpenControlsMenu, {"Enter Controls Menu", GLFW_KEY_H, {SHIFT}}},
+            {CONTROLS_OpenExportMenu, {"Enter Export Menu", GLFW_KEY_E, {COMMAND}}},
+            {CONTROLS_ResetCamera, {"Reset Camera", GLFW_KEY_R, {SHIFT}}},
             {CONTROLS_LockX, {"Lock Transforms to X", GLFW_KEY_X}},
             {CONTROLS_LockY, {"Lock Transforms to Y", GLFW_KEY_Y}},
-            {CONTROLS_Erase, {"Erase", GLFW_KEY_E, -1, false}},
-            {CONTROLS_ScaleLocal, {"Scale", GLFW_KEY_S, SHIFT}},
-            {CONTROLS_Undo, {"Undo", GLFW_KEY_Z, COMMAND}},
-            {CONTROLS_UndoHold, {"Undo Hold", GLFW_KEY_Z, COMMAND, false}},
-            {CONTROLS_Redo, {"Redo", GLFW_KEY_Z, SHIFT}},
-            {CONTROLS_RedoHold, {"Redo Hold", GLFW_KEY_Z, SHIFT, false}},
+            {CONTROLS_Erase, {"Erase", GLFW_KEY_E, {}, false}},
+            {CONTROLS_ScaleLocal, {"Scale", GLFW_KEY_S, {GLFW_KEY_L}}},
+            {CONTROLS_Undo, {"Undo", GLFW_KEY_Z, {COMMAND}}},
+            {CONTROLS_UndoHold, {"Undo Hold", GLFW_KEY_Z, {COMMAND}, false}},
+            {CONTROLS_Redo, {"Redo", GLFW_KEY_Z, {SHIFT, COMMAND}}},
+            {CONTROLS_RedoHold, {"Redo Hold", GLFW_KEY_Z, {SHIFT, COMMAND}, false}},
+            {CONTROLS_Copy, {"Copy", GLFW_KEY_C, {COMMAND}}},
+            {CONTROLS_Paste, {"Paste", GLFW_KEY_V, {COMMAND}}},
     };
 }
 
@@ -113,16 +114,18 @@ void Controls::GUI() { // TODO: fix crash with [Space] on "Add CrossSectional"
             ImGui::OpenPopup(popupKey.c_str());
         }
 
-        ImGui::SameLine();
-        int modIndex = KeyCodeToIndex(control.modifier);
-        int initModIndex = modIndex;
-        ImGui::PushItemWidth(100.0f);
-        ImGui::Combo(("##"s + control.name).c_str(), &modIndex, modifiers, IM_ARRAYSIZE(modifiers));
-        ImGui::PopItemWidth();
-        if (modIndex != initModIndex) {
-            control.modifier = IndexToKeyCode(modIndex);
-            diffFlag = true;
-        }
+        // TODO: editable mod keys
+
+//        ImGui::SameLine();
+//        int modIndex = KeyCodeToIndex(control.modifier);
+//        int initModIndex = modIndex;
+//        ImGui::PushItemWidth(100.0f);
+//        ImGui::Combo(("##"s + control.name).c_str(), &modIndex, modifiers, IM_ARRAYSIZE(modifiers));
+//        ImGui::PopItemWidth();
+//        if (modIndex != initModIndex) {
+//            control.modifier = IndexToKeyCode(modIndex);
+//            diffFlag = true;
+//        }
 
         ImGui::SameLine();
         ImGui::Checkbox(("Press##"s + control.name).c_str(), &control.press);
@@ -198,14 +201,21 @@ std::string Controls::Describe(int CONTROL_CODE) {
         keyName = "[" + keyName + "]";
     }
 
+    const auto modifierToStr = [](int modifier){
+	    if (modifier == GLFW_KEY_LEFT_SUPER) return "Command";
+	    if (modifier == GLFW_KEY_LEFT_CONTROL) return "Ctrl";
+	    return "Shift";
+    };
 
-    if (control.modifier == -1) return keyName;
+    std::vector<std::string> modifierStrs;
+    transform(BEG_END(control.modifiers), std::back_inserter(modifierStrs), modifierToStr);
+    int i = 0;
+    std::string modifierStr = std::accumulate(BEG_END(modifierStrs), std::string{}, [&](const std::string& s1, const std::string& s2){
+    	if (i == 0) return s1 + s2;
+		return s1 + " + " + s2;
+	});
 
-    return std::string([&]{
-        if (control.modifier == GLFW_KEY_LEFT_SUPER) return "Command";
-        if (control.modifier == GLFW_KEY_LEFT_CONTROL) return "Ctrl";
-        return "Shift";
-    }()) + " " + keyName;
+	return modifierStr + (modifierStr.empty() ? "" : " ") + keyName;
 }
 
 void Controls::PrepUse() {
@@ -221,8 +231,8 @@ void Controls::PrepUse() {
 }
 
 int Controls::Precedence(const KeyControl &control) {
-    if (control.modifier != -1) {
-        return (control.press) ? 3 : 2;
+    if (!control.modifiers.empty()) {
+        return ((control.press) ? 4 : 1) + (int) control.modifiers.size();
     }
     return (control.press) ? 1 : 0;
 }
@@ -254,7 +264,10 @@ bool Controls::Check(int CONTROL_CODE) {
 
 bool Controls::OverlappingCheck(int CONTROL_CODE) {
     const KeyControl& control = controls[CONTROL_CODE];
-    if (control.modifier != -1 && !input->Down(control.modifier)) return false;
+
+    for (int modifier : control.modifiers) {
+    	if (!input->Down(modifier)) return false;
+    }
 
     return control.press ? input->Pressed(control.keyCode) : input->Down(control.keyCode);
 }

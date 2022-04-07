@@ -25,7 +25,6 @@ typedef std::vector<glm::vec3> Vec3List;
 
 #define BEG_END(a) a.begin(), a.end()
 
-
 struct MatrixComponents {
     Vec3 pos, dir;
 };

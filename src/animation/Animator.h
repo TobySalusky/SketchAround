@@ -50,6 +50,7 @@ private:
 	}
 
     friend class Timeline;
+    friend struct TimelineSelection;
 };
 
 

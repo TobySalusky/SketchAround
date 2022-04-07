@@ -8,6 +8,7 @@
 #include "blending/SineBlendMode.h"
 #include "blending/PiecewiseBlendMode.h"
 #include "Animator.h"
+#include "../util/Controls.h"
 
 std::vector<int> numKeys = {
     GLFW_KEY_1, GLFW_KEY_2, GLFW_KEY_3,
@@ -67,9 +68,17 @@ void Timeline::Update(const TimelineUpdateInfo& info) {
     bool mouseOnGUI = Util::VecIsNormalizedNP(mousePos);
 
 
-    if (hasSelection && input.Pressed(GLFW_KEY_V)) {
+    if (hasSelection && input.Pressed(GLFW_KEY_K)) {
         selection.DeleteAll();
         hasSelection = false;
+    }
+
+    if (hasSelection && Controls::Check(CONTROLS_Copy)) {
+	    copiedSelection = selection; // TODO: properly copy objects, not just pointers!
+    }
+
+    if (hasSelection && Controls::Check(CONTROLS_Paste)) {
+    	copiedSelection.CopyAll(0.1f);
     }
 
     if (hasSelection) {

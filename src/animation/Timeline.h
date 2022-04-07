@@ -109,6 +109,23 @@ struct TimelineSelection {
         return true;
     }
 
+    void CopyAll(float delta) {
+    	// CAN VERY EASILY CRASH HERE FIXME
+
+	    const auto AddFunc = [delta](const auto& val) {
+		    for (auto* keyFramePtr : val.frames) {
+			    const float time = keyFramePtr->time;
+			    const float newTime = std::round((time + delta) * 10.0f) / 10.0f;
+			    auto frameCopy = *keyFramePtr;
+			    frameCopy.time = newTime;
+			    if (val.layer->HasKeyFrameAtTime(newTime)) val.layer->RemoveAtTime(newTime);
+			    val.layer->Insert(frameCopy);
+		    }
+	    };
+
+	    TIMELINE_SELECTION_HANDLE_BOTH_CAPTURE(AddFunc);
+    }
+
     void SetBlendID(int num) const {
         if (num >= BlendModes::GetNextID()) {
             LOG("Error: can not set to blend mode that doesn't exist!\n");
@@ -217,6 +234,8 @@ public:
         return animator->floatKeyFrameLayers.contains(valLabel);
     }
 
+    [[nodiscard]] Animator* GetAnimatorPtr() const { return animator; }
+
     void AddFloatLayer(const std::string& valLabel, float initVal) {
         animator->floatKeyFrameLayers[valLabel] = {KeyFrameLayer<float>()};
         UpdateFloat(valLabel, initVal);
@@ -265,6 +284,7 @@ private:
     Vec2 selectDragStart, selectDragEnd;
     Vec2 dragKeyFramesStart;
     TimelineSelection selection;
+    TimelineSelection copiedSelection;
     bool dragging;
     float lastDragDiff;
 
