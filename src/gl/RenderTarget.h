@@ -5,7 +5,7 @@
 #ifndef SENIORRESEARCH_RENDERTARGET_H
 #define SENIORRESEARCH_RENDERTARGET_H
 
-#include <glew.h>
+#include <glad.h>
 #include "../util/Util.h"
 
 class RenderTarget {

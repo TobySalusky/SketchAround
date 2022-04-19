@@ -4,7 +4,7 @@
 
 #include <cstdio>
 
-#include <glew.h>
+#include <glad.h>
 #include <glfw3.h>
 
 #include "GLWindow.h"
@@ -43,14 +43,21 @@ GLWindow::GLWindow(GLint windowWidth, GLint windowHeight) { // NOLINT(cppcoregui
     glfwMakeContextCurrent(window);
 
     // Init this to true so GLEW knows to use a modern approach to retrieving function pointers and extensions
-    glewExperimental = GL_TRUE;
+//    glewExperimental = GL_TRUE;
     // Initialize GLEW to setup the OpenGL Function pointers
-    if (glewInit() != GLEW_OK)
-    {
-	    LOG("Failed to initialize GLEW");
-        glfwDestroyWindow(window);
-        glfwTerminate();
-    }
+//	if (glewInit() != GLEW_OK)
+//	{
+//		LOG("Failed to initialize GLEW");
+//		glfwDestroyWindow(window);
+//		glfwTerminate();
+//	}
+	if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
+		std::cout << "Failed to initialize OpenGL context" << std::endl;
+		glfwDestroyWindow(window);
+		glfwTerminate();
+	}
+
+
 
     glEnable(GL_DEPTH_TEST);
 

@@ -5,7 +5,7 @@
 #ifndef SENIORRESEARCH_MATERIAL_H
 #define SENIORRESEARCH_MATERIAL_H
 
-#include <glew.h>
+#include <glad.h>
 #include "shaders/Shader3D.h"
 
 class Material {

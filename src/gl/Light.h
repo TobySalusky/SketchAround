@@ -5,7 +5,7 @@
 #ifndef SENIORRESEARCH_LIGHT_H
 #define SENIORRESEARCH_LIGHT_H
 
-#include <glew.h>
+#include <glad.h>
 
 #define GLM_SWIZZLE
 

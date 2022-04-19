@@ -50,7 +50,7 @@
 #include "imgui_impl_glfw.h"
 
 // GLFW
-#include <glew.h>
+#include <glad.h>
 #include <glfw3.h>
 #ifdef _WIN32
 #undef APIENTRY

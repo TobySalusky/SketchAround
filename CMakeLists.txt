@@ -2,16 +2,10 @@ cmake_minimum_required(VERSION 3.15)
 project(SeniorResearch)
 
 set(CMAKE_CXX_STANDARD 20)
-
-# Add header file
-set(GLEW_H /opt/homebrew/Cellar/glew/2.2.0_1/include/GL)
-set(GLFW_H /opt/homebrew/Cellar/glfw/3.3.4/include/GLFW)
-include_directories(${GLEW_H} ${GLFW_H})
-
-# Add target link
-set(GLEW_LINK /opt/homebrew/Cellar/glew/2.2.0_1/lib/libGLEW.2.2.dylib)
-set(GLFW_LINK /opt/homebrew/Cellar/glfw/3.3.4/lib/libglfw.3.dylib)
-link_libraries(${OPENGL} ${GLEW_LINK} ${GLFW_LINK})
+if (APPLE)
+    set(CMAKE_CXX_FLAGS "-framework Cocoa -framework IOKit")
+#    add_compile_definitions(GL_SILENCE_DEPRECATION)
+endif ()
 
 
 # Execute compilation command
@@ -30,7 +24,12 @@ set(FONTS_PATH "assets/fonts")
 file(COPY ${FONTS_PATH} DESTINATION "SeniorResearch.app/Contents/Resources")
 
 
-add_executable(SeniorResearch MACOSX_BUNDLE ${ICON_PATH} src/main.cpp
+
+# set header includes
+include_directories(${PROJECT_SOURCE_DIR}/include)
+
+# set cpp source
+add_executable(SeniorResearch MACOSX_BUNDLE ${ICON_PATH} src/main.cpp lib/glad.c
         src/vendor/imgui/imgui_impl_glfw.cpp
         src/vendor/imgui/imgui_impl_opengl3.cpp
         src/vendor/imgui/imgui.cpp
@@ -56,9 +55,4 @@ set_target_properties(SeniorResearch PROPERTIES
 find_package(Boost 1.76 REQUIRED COMPONENTS
         serialization)
 target_link_libraries(SeniorResearch Boost::serialization)
-
-
-if (APPLE)
-    target_link_libraries(SeniorResearch "-framework OpenGL")
-    target_link_libraries(SeniorResearch "-framework GLUT")
-endif()
+target_link_libraries(SeniorResearch ${PROJECT_SOURCE_DIR}/lib/libglfw3.a)

@@ -5,7 +5,7 @@
 #ifndef SENIORRESEARCH_PROGRAM_H
 #define SENIORRESEARCH_PROGRAM_H
 
-#include <glew.h>
+#include <glad.h>
 #include <glfw3.h>
 #include <cmath>
 #include <iostream>

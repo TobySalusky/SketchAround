@@ -5,7 +5,7 @@
 #ifndef SENIORRESEARCH_MESH_H
 #define SENIORRESEARCH_MESH_H
 
-#include <glew.h>
+#include <glad.h>
 #include <vector>
 #include "../vendor/glm/vec3.hpp"
 #include "../util/Util.h"

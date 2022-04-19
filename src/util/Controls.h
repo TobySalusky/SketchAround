@@ -5,7 +5,7 @@
 #ifndef SENIORRESEARCH_CONTROLS_H
 #define SENIORRESEARCH_CONTROLS_H
 
-#include <glew.h>
+#include <glad.h>
 #include <glfw3.h>
 #include <unordered_map>
 #include "../gl/Input.h"

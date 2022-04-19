@@ -2,7 +2,7 @@
 // Created by Tobiathan on 9/22/21.
 //
 
-#include <glew.h>
+#include <glad.h>
 #include "Texture.h"
 #include "../vendor/stb/stb_image.h"
 #include "../util/Util.h"

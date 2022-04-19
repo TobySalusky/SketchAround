@@ -5,7 +5,7 @@
 #ifndef SENIORRESEARCH_CAMERA_H
 #define SENIORRESEARCH_CAMERA_H
 
-#include <glew.h>
+#include <glad.h>
 #include "Input.h"
 #include "../vendor/glm/glm.hpp"
 #include "shaders/Shader3D.h"

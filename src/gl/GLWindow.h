@@ -5,7 +5,7 @@
 #ifndef SENIORRESEARCH_GLWINDOW_H
 #define SENIORRESEARCH_GLWINDOW_H
 
-#include <glew.h>
+#include <glad.h>
 #include <glfw3.h>
 #include "Input.h"
 #include "../vendor/imgui/imgui.h"

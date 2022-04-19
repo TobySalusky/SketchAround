@@ -1,4 +1,4 @@
-#include <glew.h>
+#include <glad.h>
 #include <glfw3.h>
 #include <cmath>
 #include <iostream>

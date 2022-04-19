@@ -5,7 +5,7 @@
 #ifndef SENIORRESEARCH_MESH2D_H
 #define SENIORRESEARCH_MESH2D_H
 
-#include <glew.h>
+#include <glad.h>
 #include <vector>
 #include "../vendor/glm/glm.hpp"
 #include "../vendor/glm/gtx/vector_angle.hpp"

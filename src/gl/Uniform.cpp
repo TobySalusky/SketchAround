@@ -2,7 +2,7 @@
 // Created by Tobiathan on 9/18/21.
 //
 
-#include <glew.h>
+#include <glad.h>
 
 #include "Uniform.h"
 #include "../vendor/glm/glm.hpp"

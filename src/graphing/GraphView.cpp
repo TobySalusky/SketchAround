@@ -2,7 +2,7 @@
 // Created by Tobiathan on 10/19/21.
 //
 
-#include <glew.h>
+#include <glad.h>
 #include <glfw3.h>
 #include "GraphView.h"
 #include "../vendor/glm/ext/matrix_transform.hpp"
