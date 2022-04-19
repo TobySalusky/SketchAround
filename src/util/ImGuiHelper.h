@@ -78,11 +78,12 @@ public:
     static void BeginFrame();
     static void EndFrame();
 
-    static void CreateDockSpace();
-
     static void Destroy();
 
     static void Initialize(GLWindow &window);
+
+    static void GuiScreenExitBar();
+    static void BeginOutsideGuiScreen(const char* windowTitle);
 
     static Rectangle ItemRect() {
         return {ImGui::GetItemRectMin().x, ImGui::GetItemRectMin().y, ImGui::GetItemRectSize().x, ImGui::GetItemRectSize().y};

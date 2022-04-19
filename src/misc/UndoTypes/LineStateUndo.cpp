@@ -4,17 +4,11 @@
 
 #include "LineStateUndo.h"
 #include "../../generation/ModelObject.h"
-
-Enums::DrawMode* LineStateUndo::drawModeSetter = nullptr;
-std::function<void(ModelObject*)> LineStateUndo::modelObjectSetter = {};
-
-void LineStateUndo::Initialize(const UndoersInfo &info) {
-    drawModeSetter = info.drawModeSetter;
-    modelObjectSetter = info.modelObjectSetter;
-}
+#include "../../screens/MainScreen.h"
+#include "../../generation/Lathe.h"
 
 void LineStateUndo::Apply() {
-    modelObjectSetter(modelObject);
+	MainScreen::GetComponents().sceneHierarchy.SetActiveModelObject(modelObject.get());
     modelObject->GetAnimatorPtr()->SetTime(time); // temporal continuity!
     Vec2List& points = modelObject->GetPointsRefByMode(drawMode);
     points.clear();
@@ -23,9 +17,8 @@ void LineStateUndo::Apply() {
     modelObject->UpdateMesh();
 }
 
-LineStateUndo::LineStateUndo(ModelObject* modelObject, Enums::DrawMode drawMode, const Vec2List& lineState, float time) {
-    this->modelObject = modelObject;
-    this->drawMode = drawMode;
-    this->lineState = lineState;
-    this->time = time;
-}
+LineStateUndo::LineStateUndo(std::shared_ptr<ModelObject> modelObject, Enums::DrawMode drawMode, const Vec2List& lineState, float time) :
+	modelObject(modelObject),
+	drawMode(drawMode),
+	lineState(lineState),
+	time(time) {}

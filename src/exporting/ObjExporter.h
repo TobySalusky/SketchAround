@@ -12,7 +12,7 @@
 
 class ObjExporter {
 public:
-    static std::string GenerateFileContents(const std::vector<ModelObject*>& modelObjects);
+    static std::string GenerateFileContents(const std::vector<std::shared_ptr<ModelObject>>& modelObjects);
 private:
 
 };

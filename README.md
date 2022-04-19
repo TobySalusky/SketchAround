@@ -54,7 +54,7 @@ Figure 10. Porpoise-like Figure Gawking in an Ostentatious Manner
 ---
 
 ### Outside libraries used:
-  * **GUI:**              [Dear ImGui](https://github.com/ocornut/imgui) & [imgui_markdown](https://github.com/juliettef/imgui_markdown)
+  * **Gui:**              [Dear ImGui](https://github.com/ocornut/imgui) & [imgui_markdown](https://github.com/juliettef/imgui_markdown)
   * **Serialization:**    [Boost](https://www.boost.org/)
   * **OpenGL Rendering:** [GLEW](http://glew.sourceforge.net/) & [GLFW](https://www.glfw.org/)
   * **Math:**             [GLM](https://github.com/g-truc/glm)

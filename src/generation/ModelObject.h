@@ -59,7 +59,6 @@ struct MouseInputInfo {
     Enums::DrawMode drawMode;
     glm::vec2 onScreen;
     GraphView& graphView;
-    Camera& camera;
 };
 
 struct EditingInfo {
@@ -67,10 +66,20 @@ struct EditingInfo {
     Input& input;
     Enums::DrawMode drawMode;
     glm::vec2 onScreen;
-    Camera& camera;
     bool graphFocused;
     GraphView& graphView;
     Rectangle guiRect;
+};
+
+struct DraggableInfo {
+	std::vector<std::function<void()>> queuedMutatingFuncs;
+
+	void EnactMutations() {
+		for (const auto& func : queuedMutatingFuncs) {
+			LOG("USING QUEUED!");
+			func();
+		}
+	}
 };
 
 class Timeline;
@@ -78,8 +87,6 @@ class Timeline;
 struct UIInfo {
     Timeline& timeline;
 };
-
-struct DraggableUIInfo;
 
 struct ReSerializeInfoModelObject {
     std::vector<int> childIDs;
@@ -95,8 +102,11 @@ private:
 
 class ModelObject {
 public:
-    ModelObject() : ID(GenUniqueID()) {}
-    virtual ~ModelObject() = default; // silences boost::serialization issue
+
+	ModelObject() : ID(GenUniqueID()) {}
+    virtual ~ModelObject() {
+		LOG("ModelObject {ID: %i} destructing\n", GetID());
+	} // silences boost::serialization issue
 
     virtual void HyperParameterUI(const UIInfo& info) {}
     void AuxParameterUI(const UIInfo& info) {
@@ -135,8 +145,8 @@ public:
 
     [[nodiscard]] glm::mat4 GenModelMat() {
         glm::mat4 own = GenOwnModelMat();
-        if (HasParent()) return parent->GenModelMat() * GenOwnModelMat();
-        return GenOwnModelMat();
+        if (HasParent()) return parent->GenModelMat() * own;
+        return own;
     }
 
     [[nodiscard]] Vec3 GetColor() const { return color; };
@@ -144,7 +154,7 @@ public:
     [[nodiscard]] bool IsVisible() const { return visible; };
     [[nodiscard]] bool* VisibilityPtr() { return &visible; };
 
-    void EditMakeup(EditingInfo info);
+    void EditMakeup(const EditingInfo& info);
 
     virtual std::vector<glm::vec2>& GetPointsRefByMode(Enums::DrawMode drawMode) = 0;
 
@@ -180,7 +190,7 @@ public:
     [[nodiscard]] bool IsRootNode() const { return !HasParent(); }
     bool InParentChain(ModelObject* obj);
 
-	void DraggableGUI(const DraggableUIInfo& draggableUIInfo);
+	void DraggableGUI(DraggableInfo& info);
 
     static int nextUniqueID;
     static int GetCurrentNextUniqueID() { return nextUniqueID; }
@@ -190,6 +200,11 @@ public:
     static void SetNextUniqueID(int next) { nextUniqueID = next; }
     void SetColor(Vec3 vec) { color = vec; }
 
+    void InitializeWithWeakPtr(const std::weak_ptr<ModelObject>& weakPtr) { internalWeakPtr = weakPtr; }
+    std::shared_ptr<ModelObject> ProduceSharedPtrToSelf() {
+    	if (internalWeakPtr.expired()) LOG("[CRITICAL ERROR]: weak ptr in ModelObject has already been invalidated!!!");
+    	return internalWeakPtr.lock();
+    }
 
     ModelObject* CopyRecursive();
 
@@ -234,13 +249,10 @@ public:
         return nullptr;
     }
 
-    void TimelineDiffPos(Timeline& timeline);
-    void TimelineDiffEulers(Timeline& timeline);
+    void TimelineDiffPos(Timeline& timeline) const;
+    void TimelineDiffEulers(Timeline& timeline) const;
 
-    Undo* GenLineStateUndo(Enums::DrawMode drawMode) {
-        float currentTime = GetAnimatorPtr()->GetTime();
-        return new LineStateUndo(this, drawMode, GetAnimatorPtr()->HasKeyFrameAtTimeOnLayer(currentTime, drawMode) ? GetPointsRefByMode(drawMode) : Vec2List(), currentTime);
-    }
+    Undo* GenLineStateUndo(Enums::DrawMode drawMode);
 
     Undo* GenAllLineStateUndo() {
         return new MultiUndo({
@@ -282,7 +294,7 @@ protected:
         ar & animator;
     }
 
-    void RenderTransformationGizmos(RenderInfo2D info);
+    static void RenderTransformationGizmos(RenderInfo2D info);
 
     void AnimatableSliderValUpdateBound(const std::string& label, float* ptr, Timeline& timeline, float min = NAN, float max = NAN, float vSpeed = 0.025f);
 
@@ -295,6 +307,7 @@ protected:
     glm::vec3 modelTranslation = {0.0f, 0.0f, 0.0f};
     glm::vec3 eulerAngles = {0.0f, 0.0f, 0.0f};
     float sampleLength = 0.1f;
+    std::weak_ptr<ModelObject> internalWeakPtr;
 
     bool diffed[3] {};
 
@@ -320,16 +333,9 @@ protected:
     };
 
     static void FunctionalAngleGizmo(RenderInfo2D renderInfo, const std::vector<glm::vec2>& points);
-    void EditCurrentLines(EditingInfo info);
+    void EditCurrentLines(const EditingInfo& info);
 
     void PersistModelMat(MatrixComponents initFull, MatrixComponents parentMat);
-};
-
-struct DraggableUIInfo {
-    std::function<bool(ModelObject*)> isSelected;
-    std::function<void(ModelObject*)> select;
-    std::function<void(ModelObject*)> addObj;
-    std::function<void(ModelObject*)> deleteObj;
 };
 
 namespace boost::serialization {

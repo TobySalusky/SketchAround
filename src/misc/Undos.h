@@ -13,7 +13,7 @@ class Undos {
 public:
     static void Add(Undo* undo) {
 	    LOG("Adding undo...\n");
-        undos.emplace_back(undo);
+        undos.push_back(std::unique_ptr<Undo>(undo));
     }
 
     static void UseLast() {
@@ -27,7 +27,7 @@ public:
         undos.pop_back();
     }
 private:
-    static std::vector<UndoPtr> undos;
+    static std::vector<std::unique_ptr<Undo>> undos;
 };
 
 #endif //SENIORRESEARCH_UNDOS_H

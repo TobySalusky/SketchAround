@@ -28,7 +28,7 @@ public:
     [[nodiscard]] bool Down(int key) const { return keys[key]; }
     [[nodiscard]] bool Up(int key) const { return !keys[key]; }
 
-    void EndUpdate();
+    void Update();
 
     [[nodiscard]] glm::vec2 GetMouse() const { return glm::vec2(mouseX, mouseY); };
     [[nodiscard]] glm::vec2 GetLastMouse() const { return glm::vec2(lastMouseX, lastMouseY); };

@@ -3,4 +3,4 @@
 //
 
 #include "Undos.h"
-std::vector<UndoPtr> Undos::undos = {};
+std::vector<std::unique_ptr<Undo>> Undos::undos = {};

@@ -13,6 +13,8 @@
 #include "../util/Controls.h"
 #include "../misc/Undos.h"
 #include "../misc/GuiStyle.h"
+#include "../screens/MainScreen.h"
+#include "../program/Program.h"
 
 int ModelObject::nextUniqueID = 0;
 
@@ -77,8 +79,8 @@ void ModelObject::FlipPoints(Enums::DrawMode drawMode, Enums::Direction directio
     }));
 }
 
-void ModelObject::EditCurrentLines(EditingInfo info) {
-    const auto& [editContext, input, drawMode, onScreen, camera, graphFocused, graphView, guiRect] = info;
+void ModelObject::EditCurrentLines(const EditingInfo& info) {
+    const auto& [editContext, input, drawMode, onScreen, graphFocused, graphView, guiRect] = info;
 
     Vec2 normOnRect = Util::NormalizeToRectNPFlipped(input.GetMouse(), guiRect);
     bool mouseIsOnRect = Util::VecIsNormalizedNP(normOnRect);
@@ -239,7 +241,7 @@ void ModelObject::EditCurrentLines(EditingInfo info) {
         if (input.mouseDown && editContext.IsDrawingEnabledForClick() && info.graphFocused) {
             bool mouseOnGUI = Util::VecIsNormalizedNP(info.onScreen);
             if (mouseOnGUI) {
-                InputPoints({info.drawMode, info.onScreen, graphView, info.camera});
+                InputPoints({info.drawMode, info.onScreen, graphView});
             }
         }
     }
@@ -253,7 +255,7 @@ void ModelObject::EditCurrentLines(EditingInfo info) {
     editContext.SetLastMousePos(onCanvas);
 }
 
-void ModelObject::EditMakeup(EditingInfo info) {
+void ModelObject::EditMakeup(const EditingInfo& info) {
     EditCurrentLines(info);
 }
 
@@ -319,15 +321,16 @@ void ModelObject::AppendChild(ModelObject *child, bool maintainAbsoluteTransform
     children.push_back(child);
 }
 
-void ModelObject::DraggableGUI(const DraggableUIInfo& info) {
-    const auto&[isSelected, select, addObj, deleteObj] = info;
+void ModelObject::DraggableGUI(DraggableInfo& info) {
+
+	bool isSelected = this == Program::GetProject().GetCurrentModelObject().get();
 
     std::string nameID = "Elem - " + std::to_string(ID);
 
     ImGui::PushID(this);
     bool isOpen = ImGui::TreeNodeEx(nameID.c_str(), ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanAvailWidth |
             (children.empty() ? ImGuiTreeNodeFlags_Bullet : 0) |
-            (isSelected(this) ? ImGuiTreeNodeFlags_Selected : 0));
+            (isSelected ? ImGuiTreeNodeFlags_Selected : 0));
 
     std::string popupID = std::string("ModelObject-") + std::to_string(ID);
 
@@ -342,12 +345,18 @@ void ModelObject::DraggableGUI(const DraggableUIInfo& info) {
         ImGui::Separator();
 
         if (ImGui::Button("Copy")) {
-            addObj(this->CopyRecursive());
-            ImGui::CloseCurrentPopup();
+	        info.queuedMutatingFuncs.emplace_back([=](){
+		        SceneHierarchy::AddPreCreatedModelObjectsRecursively(this->CopyRecursive()); // TODO: THIS IS NOT RECURSIVE!!!!!
+	        });
+	        ImGui::CloseCurrentPopup();
         }
 
         if (ImGui::Button("Delete")) {
-            deleteObj(this);
+        	info.queuedMutatingFuncs.emplace_back([=](){
+		        SceneHierarchy::RemoveObjectsRecursivelyByPtr(this);
+		        SceneHierarchy::ReSelectIfSelectedNotExisting();
+	        });
+	        ImGui::CloseCurrentPopup();
         }
 
         ImGui::EndPopup();
@@ -355,7 +364,9 @@ void ModelObject::DraggableGUI(const DraggableUIInfo& info) {
 
 
 	if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen()) {
-        if (!isSelected(this)) select(this);
+        if (!isSelected) {
+	        SceneHierarchy::SetActiveModelObject(this);
+        }
     }
 
 
@@ -494,14 +505,21 @@ void ModelObject::RenderTransformationGizmos(RenderInfo2D info) {
     info.editContext.RenderTransformGizmos(info.plot);
 }
 
-void ModelObject::TimelineDiffPos(Timeline& timeline) {
+void ModelObject::TimelineDiffPos(Timeline& timeline) const {
     timeline.TryUpdateFloat("x", modelTranslation.x);
     timeline.TryUpdateFloat("y", modelTranslation.y);
     timeline.TryUpdateFloat("z", modelTranslation.z);
 }
 
-void ModelObject::TimelineDiffEulers(Timeline& timeline) {
+void ModelObject::TimelineDiffEulers(Timeline& timeline) const {
     timeline.TryUpdateFloat("rot-x", eulerAngles.x);
     timeline.TryUpdateFloat("rot-y", eulerAngles.y);
     timeline.TryUpdateFloat("rot-z", eulerAngles.z);
+}
+
+Undo* ModelObject::GenLineStateUndo(Enums::DrawMode drawMode) {
+	float currentTime = GetAnimatorPtr()->GetTime();
+
+	return new LineStateUndo(ProduceSharedPtrToSelf(), drawMode,
+	                         GetAnimatorPtr()->HasKeyFrameAtTimeOnLayer(currentTime, drawMode) ? GetPointsRefByMode(drawMode) : Vec2List(), currentTime);
 }

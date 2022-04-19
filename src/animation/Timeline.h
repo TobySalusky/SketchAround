@@ -20,7 +20,6 @@
 #include <functional>
 
 struct TimelineRenderInfo {
-    Shader2D& shader2D;
     Enums::DrawMode drawMode;
     const Input& input;
 };
@@ -109,21 +108,29 @@ struct TimelineSelection {
         return true;
     }
 
-    void CopyAll(float delta) {
+    void CopyAll(float minTime) {
     	// CAN VERY EASILY CRASH HERE FIXME
 
-	    const auto AddFunc = [delta](const auto& val) {
+    	float min = FLT_MAX;
+    	const auto MinTimeFinderFunc = [&min](const auto& val) {
+		    for (auto* keyFramePtr : val.frames) {
+			    min = std::min(min, keyFramePtr->time);
+		    }
+    	};
+	    TIMELINE_SELECTION_HANDLE_BOTH_CAPTURE(MinTimeFinderFunc);
+
+
+	    const auto CopyFunc = [minTime, min](const auto& val) {
 		    for (auto* keyFramePtr : val.frames) {
 			    const float time = keyFramePtr->time;
-			    const float newTime = std::round((time + delta) * 10.0f) / 10.0f;
+			    const float newTime = std::round((time - min + minTime) * 10.0f) / 10.0f;
 			    auto frameCopy = *keyFramePtr;
 			    frameCopy.time = newTime;
 			    if (val.layer->HasKeyFrameAtTime(newTime)) val.layer->RemoveAtTime(newTime);
 			    val.layer->Insert(frameCopy);
 		    }
 	    };
-
-	    TIMELINE_SELECTION_HANDLE_BOTH_CAPTURE(AddFunc);
+	    TIMELINE_SELECTION_HANDLE_BOTH_CAPTURE(CopyFunc);
     }
 
     void SetBlendID(int num) const {
@@ -216,14 +223,14 @@ public:
         float deltaTime;
         Enums::DrawMode drawMode;
         ModelObject& modelObject;
-        const std::vector<ModelObject*>& modelObjects;
+        const std::vector<std::shared_ptr<ModelObject>>& modelObjects;
         bool focusMode;
     };
 
     void Update(const TimelineUpdateInfo& info);
     void Render(const TimelineRenderInfo& info);
 
-    void GUI(const TimelineGUIInfo& info);
+    void Gui();
 
     [[nodiscard]] bool IsFocused() const { return focused; }
     [[nodiscard]] bool IsPlaying() const { return playing; }
@@ -272,7 +279,9 @@ public:
     static float RoundToTenth(float val);
 
 private:
-    float playbackSpeed = 1.0f;
+	Shader2D shader2D = Shader2D::Read("shaders/shader2D.vert", "shaders/shader2D.frag");
+
+	float playbackSpeed = 1.0f;
     bool playing = false;
     bool focused = false, lastFocused = false, selecting = false, hasSelection = false;
     bool pingPong = false;

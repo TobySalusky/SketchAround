@@ -5,6 +5,11 @@
 #include "Intersector.h"
 #include "../vendor/glm/geometric.hpp"
 #include "../util/Util.h"
+#include "../vendor/glm/ext/matrix_float4x4.hpp"
+#include "../vendor/glm/ext/matrix_transform.hpp"
+#include "../project/Project.h"
+#include "../screens/MainScreen.h"
+
 
 // credit: https://www.geeksforgeeks.org/check-if-two-given-line-segments-intersect/
 bool Intersector::Segment(glm::vec2 p1, glm::vec2 q1, glm::vec2 p2, glm::vec2 q2) {
@@ -76,3 +81,31 @@ bool Intersector::RayTriangleIntersection(Ray ray,
     else // This means that there is a line intersection but not a ray intersection.
         return false;
 }
+
+std::optional<MeshIntersection>
+Intersector::MouseModelsIntersectionAtMousePos(Vec2 mousePos, const Project &project, const Camera &camera)  {
+	Vec3 rayOrigin = camera.GetPos();
+	Vec3 rayDir = camera.GetDir();
+	constexpr float constX = 0.73f;
+	constexpr float constY = 0.5f;
+	glm::mat4 rotX = glm::rotate(glm::mat4(1.0f), -mousePos.x * constX, camera.GetUp());
+	glm::mat4 rotY = glm::rotate(glm::mat4(1.0f), -mousePos.y * constY, camera.GetRight());
+
+	rayDir = rotX * Vec4(rayDir, 0.0f);
+	rayDir = rotY * Vec4(rayDir, 0.0f);
+	rayDir = glm::normalize(rayDir);
+
+	std::optional<MeshIntersection> meshIntersection = std::nullopt;
+
+	const bool focusMode = MainScreen::GetComponents().sceneHierarchy.FocusModeActive();
+	for (const auto& modelObj : project.GetModelObjects()) {
+		if (!modelObj->IsVisible() || (focusMode && modelObj != project.GetCurrentModelObject())) continue;
+		const auto thisIntersect = Mesh::Intersect(modelObj->GenMeshTuple(), modelObj->GenModelMat(), modelObj.get(), {rayOrigin, rayDir});
+
+		if (thisIntersect && (!meshIntersection || glm::length(thisIntersect->pos - rayOrigin) < glm::length(meshIntersection->pos - rayOrigin))) {
+			meshIntersection = thisIntersect;
+		}
+	}
+
+	return meshIntersection;
+};

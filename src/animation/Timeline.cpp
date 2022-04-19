@@ -9,6 +9,7 @@
 #include "blending/PiecewiseBlendMode.h"
 #include "Animator.h"
 #include "../util/Controls.h"
+#include "../program/Program.h"
 
 std::vector<int> numKeys = {
     GLFW_KEY_1, GLFW_KEY_2, GLFW_KEY_3,
@@ -58,7 +59,7 @@ void Timeline::Update(const TimelineUpdateInfo& info) {
             return;
         }
 
-        for (ModelObject* obj : info.modelObjects) {
+        for (const auto& obj : info.modelObjects) {
             SampleAtTime(*obj, time);
         }
     };
@@ -72,14 +73,16 @@ void Timeline::Update(const TimelineUpdateInfo& info) {
         selection.DeleteAll();
         hasSelection = false;
     }
-
-    if (hasSelection && Controls::Check(CONTROLS_Copy)) {
-	    copiedSelection = selection; // TODO: properly copy objects, not just pointers!
-    }
-
-    if (hasSelection && Controls::Check(CONTROLS_Paste)) {
-    	copiedSelection.CopyAll(0.1f);
-    }
+//
+//    if (hasSelection && Controls::Check(CONTROLS_Copy)) {
+//	    LOG("copying\n");
+//	    copiedSelection = selection; // TODO: properly copy objects, not just pointers!
+//    }
+//
+//    if (hasSelection && Controls::Check(CONTROLS_Paste)) {
+//    	LOG("pasting\n");
+//    	copiedSelection.CopyAll(currentTime);
+//    }
 
     if (hasSelection) {
         for (int i = 0; i < numKeys.size(); i++) {
@@ -243,7 +246,7 @@ void Timeline::TopToBottomLineAt(float x, glm::vec4 color, float width, bool tru
 
 void Timeline::Render(const TimelineRenderInfo& info) {
 
-    const auto& [shader2D, drawMode, input] = info;
+    const auto& [drawMode, input] = info;
 
     const float currentTime = animator->currentTime;
     auto& keyFrameLayers = animator->keyFrameLayers;
@@ -298,61 +301,57 @@ void Timeline::Render(const TimelineRenderInfo& info) {
     RenderTarget::Unbind();
 }
 
-void Timeline::GUI(const TimelineGUIInfo& info) {
-    const auto& [_0, _1, input] = info;
-    //ImGui::ShowDemoWindow();
-
+void Timeline::Gui() {
+	const Input& input = Program::GetInput();
     bool mouseOnGUI = Util::VecIsNormalizedNP(Util::NormalizeToRectNPFlipped(input.GetMouse(), guiRect));
 
     ImGui::Begin("Timeline");
-    {
-        if (ImGui::Button(playing ? "||" : "|>")) {
-            playing ^= true;
-        }
-        ImGui::SameLine();
-        ImGui::Checkbox("ping-pong", &pingPong);
-        ImGui::SameLine();
-        ImGui::SliderFloat("playback-speed", &playbackSpeed, -5.0f, 5.0f);
-
-
-        const auto dimens = Util::ToImVec(Util::ToVec(ImGui::GetContentRegionAvail()) - Vec2(8.0f, 6.0f));
-        ImGui::ImageButton((void *) (intptr_t) scene.GetTexture(), dimens, {0.0f, 1.0f}, {1.0f, 0.0f}, 0);
-        guiRect = ImGuiHelper::ItemRectRemovePadding(0.0f, 0.0f);
-        focused = ImGui::IsItemFocused();
-
-        if (hasSelection && (input.Pressed(GLFW_KEY_J) || (input.mouseRightPressed && mouseOnGUI))) {
-            ImGui::OpenPopup("blendmode_dropdown");
-        }
-
-        if (ImGui::BeginPopup("blendmode_dropdown"))
-        {
-            ImGui::Text("Blend-mode");
-            ImGui::Separator();
-
-            const auto blendIDs = BlendModes::GenAllIDs();
-            int i = 0;
-            for (int blendID: blendIDs) {
-                if (ImGui::Button((std::to_string(blendID + 1) + " - " + BlendModes::Get(blendID)->GetName() + "##blend_mode").c_str())) {
-                    selection.SetBlendID(blendID);
-                    ImGui::CloseCurrentPopup();
-                }
-            }
-
-            if (ImGui::Button("New Custom")) {
-                // TODO:
-                ImGui::CloseCurrentPopup();
-            }
-
-            ImGui::Separator();
-            if (ImGui::Button("Delete")) {
-                hasSelection = false;
-                selection.DeleteAll();
-                ImGui::CloseCurrentPopup();
-            }
-            ImGui::EndPopup();
-        }
-        ImGuiHelper::InnerWindowBorders();
+    if (ImGui::Button(playing ? "||" : "|>")) {
+        playing = !playing;
     }
+    ImGui::SameLine();
+    ImGui::Checkbox("ping-pong", &pingPong);
+    ImGui::SameLine();
+    ImGui::SliderFloat("playback-speed", &playbackSpeed, -5.0f, 5.0f);
+
+
+    const auto dimens = Util::ToImVec(Util::ToVec(ImGui::GetContentRegionAvail()) - Vec2(8.0f, 6.0f));
+    ImGui::ImageButton((void *) (intptr_t) scene.GetTexture(), dimens, {0.0f, 1.0f}, {1.0f, 0.0f}, 0);
+    guiRect = ImGuiHelper::ItemRectRemovePadding(0.0f, 0.0f);
+    focused = ImGui::IsItemFocused();
+
+    if (hasSelection && (input.Pressed(GLFW_KEY_J) || (input.mouseRightPressed && mouseOnGUI))) {
+        ImGui::OpenPopup("blendmode_dropdown");
+    }
+
+    if (ImGui::BeginPopup("blendmode_dropdown"))
+    {
+        ImGui::Text("Blend-mode");
+        ImGui::Separator();
+
+        const auto blendIDs = BlendModes::GenAllIDs();
+        int i = 0;
+        for (int blendID: blendIDs) {
+            if (ImGui::Button((std::to_string(blendID + 1) + " - " + BlendModes::Get(blendID)->GetName() + "##blend_mode").c_str())) {
+                selection.SetBlendID(blendID);
+                ImGui::CloseCurrentPopup();
+            }
+        }
+
+        if (ImGui::Button("New Custom")) {
+            // TODO:
+            ImGui::CloseCurrentPopup();
+        }
+
+        ImGui::Separator();
+        if (ImGui::Button("Delete")) {
+            hasSelection = false;
+            selection.DeleteAll();
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::EndPopup();
+    }
+    ImGuiHelper::InnerWindowBorders();
     ImGui::End();
 }
 

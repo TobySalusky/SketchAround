@@ -11,6 +11,15 @@
 #include "../generation/Lathe.h"
 #include "../generation/CrossSectional.h"
 
+#include <boost/serialization/base_object.hpp>
+#include <boost/serialization/vector.hpp>
+#include <boost/serialization/version.hpp>
+#include <boost/serialization/split_member.hpp>
+
+#include <boost/serialization/access.hpp>
+#include <boost/serialization/unordered_map.hpp>
+#include <boost/serialization/string.hpp>
+
 class Serialization {
 public:
     std::vector<ModelObject*> Deserialize();

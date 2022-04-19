@@ -10,6 +10,7 @@
 #include "ImGuiHelper.h"
 #include "Controls.h"
 #include "Util.h"
+#include "../program/Program.h"
 
 void ImGuiHelper::Initialize(GLWindow& window) {
     IMGUI_CHECKVERSION();
@@ -149,24 +150,18 @@ void ImGuiHelper::InnerWindowBorders() {
     g.PopClipRect();
 }
 
-void ImGuiHelper::CreateDockSpace() {
-//	ImGuiViewport const* viewport = ImGui::GetMainViewport();
-//	ImGui::SetNextWindowPos(viewport->Pos);
-//	ImGui::SetNextWindowSize(viewport->Size);
-//	ImGui::SetNextWindowViewport(viewport->ID);
-//	ImGui::SetNextWindowBgAlpha(0.0f);
-//
-//	ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
-//	window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
-//	window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
-//
-////	ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
-////	ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
-////	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-////	ImGui::Begin("DockSpace Demo", p_open, window_flags);
-////	ImGui::PopStyleVar(3);
-//
-//	ImGuiID dockspace_id = ImGui::GetID("MyDockspace");
-////	ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_PassthruDockspace;
-//	ImGui::DockSpace(dockspace_id, ImVec2(400.0f, 400.0f));
+void ImGuiHelper::GuiScreenExitBar() {
+	if (ImGui::Button("<-----") || Controls::Check(CONTROLS_ExitMenu)) {
+		Program::GetInstance().ExitGuiScreen();
+	}
+	ImGuiHelper::DelayControlTooltip(CONTROLS_ExitMenu);
+}
+
+void ImGuiHelper::BeginOutsideGuiScreen(const char* windowTitle) {
+	ImGui::SetNextWindowPos(ImVec2(0.0f, 0.0f));
+	ImGui::SetNextWindowSize(ImVec2((float) Program::GetWindowWidth(), (float) Program::GetWindowHeight()));
+	ImGui::Begin(windowTitle, nullptr, ImGuiWindowFlags_NoResize |
+	                                   ImGuiWindowFlags_NoMove |
+	                                   ImGuiWindowFlags_NoCollapse |
+	                                   ImGuiWindowFlags_NoTitleBar);
 }

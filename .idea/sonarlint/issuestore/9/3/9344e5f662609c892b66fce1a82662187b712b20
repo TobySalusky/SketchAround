@@ -1,37 +1,0 @@
-
-@	cpp:S1117"$declaration shadows a local variable(†Õš8§™Ô‘€0
-@	cpp:S1117"$declaration shadows a local variable(ÚÏ¡ã8«™Ô‘€0
-U	cpp:S1135M"4Complete the task associated to this "TODO" comment.(ûØ¶ùÿÿÿÿ8’Âİ‘€0
-g	cpp:S5277Œ"Eignoring return value of function declared with 'nodiscard' attribute(ªÚâßÿÿÿÿÿ8È™Ô‘€0
-b	cpp:S5277"Eignoring return value of function declared with 'nodiscard' attribute(“¹À»8È™Ô‘€0
-V	cpp:S1135¤"4Complete the task associated to this "TODO" comment.(¡÷îşÿÿÿÿ8…šÔ‘€0
-Ccpp:CommentedCode¯"Remove the commented out code.(–¢Ä8ŒšÔ‘€0
-Q	cpp:S1135Ö"4Complete the task associated to this "TODO" comment.(ÓñàÍ8ŒšÔ‘€0
-5	cpp:S1481Í"unused variable 'i'(ùó›Ìøÿÿÿÿ8Ë‡Ş‘€0
-P	cpp:S1135€"4Complete the task associated to this "TODO" comment.(„æ›88”šÔ‘€0
-Q	cpp:S1135ˆ"4Complete the task associated to this "TODO" comment.(Øã“…8”šÔ‘€0
-=	cpp:S5421"!Global variables should be const.(â£àŸ8Ê®Ø‘€0
-r	cpp:S6004o"VUse the init-statement to declare "maintainPreviousSelection" inside the if statement.(Ô‰Æ8Ì®Ø‘€0
-v	cpp:S3776"URefactor this function to reduce its Cognitive Complexity from 122 to the 25 allowed.(¼ÕÖõûÿÿÿÿ8Ì®Ø‘€0
-hcpp:S134l"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(ÃÃ’8Ï®Ø‘€0
-icpp:S134•"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(òÚƒÎ8Ï®Ø‘€0
-ncpp:S134¯"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(¤‡Çéùÿÿÿÿ8Ï®Ø‘€0
-icpp:S134Ã"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(ıŞ¾“8Ğ®Ø‘€0
-icpp:S134Ë"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(¤¿ş“8Ğ®Ø‘€0
-N	cpp:S1066§"1Merge this "if" statement with the enclosing one.(Ûı¾®8Ğ®Ø‘€0
-w	cpp:S1188"VReduce this lambda number of lines from 23 to at most 20, or make it a named function.(ôóŞıÿÿÿÿ8Ó®Ø‘€0
-7	cpp:S1905V"Remove this redundant cast.(öÑó¯8ß®Ø‘€0
-W	cpp:S1199b"6Extract this nested code block into a separate method.(ÒÌâ–øÿÿÿÿ8à®Ø‘€0
-Hcpp:S872§",Reconsider this operator for 'bool' operand.(Ûı¾®8å®Ø‘€0
-X	cpp:S1199¬"6Extract this nested code block into a separate method.(ÒÌâ–øÿÿÿÿ8å®Ø‘€0
-	cpp:S5350Ì"ìMake the type of this variable a reference-to-const. The current type of this unnamed variable is "struct std::pair<const enum Enums::DrawMode, class KeyFrameLayer<class std::vector<struct glm::vec<2, float, glm::packed_highp> > > > &".(˜“Ëêüÿÿÿÿ8ë®Ø‘€0
-ì	cpp:S5350Ğ"ÉMake the type of this variable a reference-to-const. The current type of this unnamed variable is "struct std::pair<const class std::basic_string<char>, struct Animator::SettableFloatKeyFrameLayer> &".(éÜ¨Öıÿÿÿÿ8ì®Ø‘€0
-i	cpp:S6004¤"GUse the init-statement to declare "mouseOnGUI" inside the if statement.(¡÷îşÿÿÿÿ8ıŞ‘€0
-E	cpp:S2193†"#Do not use a counter of type float.(Ä¿³‘ûÿÿÿÿ8€Ş‘€0
-M	cpp:S3608‹"0Explicitly capture the required scope variables.(éå®á8…Ş‘€0
-\	cpp:S5019‹"?Explicitly capture all local variables required in this lambda.(éå®á8…Ş‘€0
-r	cpp:S1172"URemove the unused parameter "ptr", make it unnamed, or declare it "[[maybe_unused]]".(¿¤™º8†Ş‘€0
-X	cpp:S1199´"6Extract this nested code block into a separate method.(ÒÌâ–øÿÿÿÿ8Ş‘€0
-Mcpp:S872¶",Reconsider this operator for 'bool' operand.(–Ş™ÿÿÿÿÿ8Ş‘€0
-D	cpp:S5827ı"'Replace the redundant type with "auto".(¿ªÊÈ8¦ª’€0
-I	cpp:S5827ş"'Replace the redundant type with "auto".(Ì«¯¶ıÿÿÿÿ8¦ª’€0

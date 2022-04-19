@@ -170,7 +170,7 @@ private:
     bool localTransform;
     Enums::TransformAxisLock axisLock;
     bool drawingDisabledForClick = false;
-    bool transformationActive;
+    bool transformationActive = false;
     Enums::TransformationType transformationType;
     TransformStartInfo transformStartInfo;
     Vec2 lastMousePos;

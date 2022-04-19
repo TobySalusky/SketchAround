@@ -23,36 +23,12 @@ Camera::Camera(glm::vec3 pos, glm::vec3 worldUp, GLfloat yaw, GLfloat pitch) {
     CalculateDir();
 }
 
-void Camera::Update(float deltaTime, Input *input, bool cameraMode) {
+void Camera::Update(float deltaTime, const Input& input) {
 
     if (Controls::Check(CONTROLS_ResetCamera)) {
         pitch = 0.0f;
         yaw = -M_PI_2;
         pos = {0.0f, 0.0f, 2.5f};
-    }
-
-    if (cameraMode) {
-        // mouse input
-        yaw += turnSpeed * input->mouseDiffX;
-        pitch -= turnSpeed * input->mouseDiffY;
-        pitch = ClampedPitch(pitch);
-
-        // key input
-        glm::vec3 dir{0.0f, 0.0f, 0.0f};
-        glm::vec3 vertical{0.0f, 0.0f, 0.0f};
-
-        if (input->Down(GLFW_KEY_W)) dir += front;
-        if (input->Down(GLFW_KEY_S)) dir -= front;
-        if (input->Down(GLFW_KEY_A)) dir -= right;
-        if (input->Down(GLFW_KEY_D)) dir += right;
-
-        if (glm::length(dir) > 0) dir = glm::normalize(dir);
-
-        if (input->Down(GLFW_KEY_SPACE)) vertical += worldUp;
-        if (input->Down(GLFW_KEY_LEFT_SHIFT)) vertical -= worldUp;
-
-        pos += (dir + vertical) * movementSpeed * deltaTime;
-
     }
 
     CalculateDir();

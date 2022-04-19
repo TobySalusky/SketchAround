@@ -8,8 +8,11 @@
 
 #include "../vendor/glm/vec2.hpp"
 #include "../util/Util.h"
+#include "../gl/Camera.h"
 
 #include <optional>
+
+class Project;
 
 struct MeshIntersection {
     Vec3 pos;
@@ -35,6 +38,8 @@ public:
 
     static bool RayTriangleIntersection(Ray ray, Vec3 v0, Vec3 v1, Vec3 v2,
                                                MeshIntersection& outIntersection);
+
+    static std::optional<MeshIntersection> MouseModelsIntersectionAtMousePos(Vec2 mousePos, const Project& project, const Camera& camera);
 
 private:
     static int SegmentOrientation(glm::vec2 p, glm::vec2 q, glm::vec2 r);

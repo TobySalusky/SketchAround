@@ -5,12 +5,12 @@
 #include "ObjExporter.h"
 
 // TODO: use buffer (since large files may cause issues)
-std::string ObjExporter::GenerateFileContents(const std::vector<ModelObject *>& modelObjects) {
+std::string ObjExporter::GenerateFileContents(const std::vector<std::shared_ptr<ModelObject>>& modelObjects) {
     std::string vertexContents, faceContents;
 
     int startVertexIndex = 1;
 
-    for (ModelObject* modelObject : modelObjects) {
+    for (const auto& modelObject : modelObjects) {
         TopologyCorrector topologyData;
         const auto& [vertices, indices] = modelObject->GenMeshTuple(&topologyData);
         std::vector<std::vector<unsigned int>> faces;

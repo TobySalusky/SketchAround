@@ -13,18 +13,14 @@ class ModelObject;
 
 class LineStateUndo : public Undo {
 public:
-    LineStateUndo(ModelObject* modelObject, Enums::DrawMode drawMode, const Vec2List& lineState, float time);
+    LineStateUndo(std::shared_ptr<ModelObject> modelObject, Enums::DrawMode drawMode, const Vec2List& lineState, float time);
 
-    ModelObject* modelObject;
+    std::shared_ptr<ModelObject> modelObject;
     Enums::DrawMode drawMode;
     Vec2List lineState;
     float time;
 
     void Apply() override;
-    static void Initialize(const UndoersInfo& info);
-private:
-    static Enums::DrawMode* drawModeSetter;
-    static std::function<void(ModelObject*)> modelObjectSetter;
 };
 
 #endif //SENIORRESEARCH_LINESTATEUNDO_H

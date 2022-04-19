@@ -1,14 +1,6 @@
 
 E	cpp:S11171"+declaration shadows a field of 'TimedPopup'(ξ³ψϋύÿÿÿÿ
 :cpp:CommentedCodet"Remove the commented out code.(²Χρd
-L	cpp:S11171"+declaration shadows a field of 'TimedPopup'(ξ³ψϋύÿÿÿÿ8ςβ†ω/
-Acpp:CommentedCodet"Remove the commented out code.(²Χρd8σβ†ω/
-L	cpp:S11171"+declaration shadows a field of 'TimedPopup'(ξ³ψϋύÿÿÿÿ8β†ω/
-Acpp:CommentedCodet"Remove the commented out code.(²Χρd8β†ω/
 ?	cpp:S5414-"*Don't mix public and private data members.(νÒησ
 `	cpp:S60091"FReplace this const reference to "std::string" by a "std::string_view".(ξ³ψϋύÿÿÿÿ
 C	cpp:S5817:")This function should be declared "const".(ΐηω²ώÿÿÿÿ
-L	cpp:S11171"+declaration shadows a field of 'TimedPopup'(ξ³ψϋύÿÿÿÿ8°ώ†ω/
-Acpp:CommentedCodet"Remove the commented out code.(²Χρd8±ώ†ω/
-L	cpp:S11171"+declaration shadows a field of 'TimedPopup'(ξ³ψϋύÿÿÿÿ8ΰ‘†ω/
-Acpp:CommentedCodet"Remove the commented out code.(²Χρd8α‘†ω/

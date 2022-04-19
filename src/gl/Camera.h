@@ -15,12 +15,12 @@ class Camera {
 public:
     Camera(glm::vec3 pos, glm::vec3 worldUp, GLfloat yaw, GLfloat pitch);
 
-    void Update(float deltaTime, Input* input, bool cameraMode);
+    void Update(float deltaTime, const Input& input);
 
     glm::mat4 CalculateViewMat();
 
     void SetPos(glm::vec3 newPos) { pos = newPos; }
-    glm::vec3 GetPos() { return pos; }
+    glm::vec3 GetPos() const { return pos; }
 
     [[nodiscard]] GLfloat GetYaw() const;
 

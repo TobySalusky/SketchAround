@@ -4,7 +4,7 @@
 
 #include "Input.h"
 
-void Input::EndUpdate() {
+void Input::Update() {
     for (int i = 0; i < 1024; ++i) {
         keysPressed[i] = false;
         keysUnpressed[i] = false;

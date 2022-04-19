@@ -7,7 +7,6 @@
 
 #include <utility>
 #include <vector>
-#include "UndoersInfo.h"
 
 
 
@@ -16,10 +15,6 @@ public:
     virtual void Apply() = 0;
 
     virtual ~Undo() = default;
-
-    static void InitializeUndoers(const UndoersInfo& info);
 };
-
-typedef std::unique_ptr<Undo> UndoPtr;
 
 #endif //SENIORRESEARCH_UNDO_H

@@ -218,6 +218,8 @@ private:
                 return frames[i];
             }
         }
+        LOG("[CRITICAL ERROR]: NO KEYFRAME FOUND AT TIME!");
+        return frames[0];
     }
 };
 

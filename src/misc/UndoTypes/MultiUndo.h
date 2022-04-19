@@ -12,16 +12,18 @@ public:
     explicit MultiUndo(const std::vector<Undo*>& undos) {
         this->undos.reserve(undos.size());
         for (Undo* undoPtr : undos) {
-            this->undos.emplace_back(UndoPtr(undoPtr));
+            this->undos.push_back(std::unique_ptr<Undo>(undoPtr));
         }
     }
 
     void Apply() override {
-        for (const UndoPtr& undo : undos) {
+        for (const auto& undo : undos) {
             undo->Apply();
         }
     }
-    std::vector<UndoPtr> undos;
+
+private:
+    std::vector<std::unique_ptr<Undo>> undos {};
 };
 
 
