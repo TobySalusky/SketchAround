@@ -7,8 +7,6 @@
 
 #include <glad.h>
 
-#define GLM_SWIZZLE
-
 #include "../vendor/glm/glm.hpp"
 
 #include "Uniform.h"

@@ -127,7 +127,7 @@ public:
 
     virtual Enums::LineType LineTypeByMode(Enums::DrawMode drawMode) = 0;
 
-    virtual void InputPoints(MouseInputInfo info);
+    virtual void InputPoints(const EditingInfo& info);
     virtual void UpdateMesh() {}
     virtual std::tuple<std::vector<glm::vec3>, std::vector<GLuint>> GenMeshTuple(TopologyCorrector* outTopologyData = nullptr) = 0;
 

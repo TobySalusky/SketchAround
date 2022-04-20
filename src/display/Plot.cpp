@@ -11,8 +11,10 @@
 Plot::Plot(const GLWindow &window) :
 	graphScene(window.GetBufferWidth(), window.GetBufferHeight()) {}
 
-void Plot::Update(const Project &project, float deltaTime) {
+void Plot::Update(Project &project, float deltaTime) {
 	onScreen = Util::NormalizeToRectNPFlipped(Program::GetInput().GetMouse(), plotRect);
+
+	LayerClearing(project);
 
 	project.GetCurrentModelObject()->EditMakeup({editContext, Program::GetInput(), drawMode, onScreen, graphFocused, graphView, plotRect});
 	graphView.Update({Program::GetInput(), plotRect});
@@ -95,7 +97,30 @@ void Plot::ToolbarGui(Project& project) {
 		project.GetCurrentModelObject()->ModeSet("L3", Enums::DrawMode::MODE_GRAPH_Z, drawMode);
 		project.GetCurrentModelObject()->ModeSet("L4", Enums::DrawMode::MODE_CROSS_SECTION, drawMode);
 
+		const auto SnapGridSelect = [&](const char* label, SnapGrid snapGrid) {
+			if (ImGui::Button(label)) {
+				editContext.SetSnapGrid(snapGrid);
+			}
+		};
+
+		SnapGridSelect("N", SnapGrid::None);
+		SnapGridSelect("C", SnapGrid::Circle);
+
 		ImGuiHelper::InnerWindowBorders();
 	}
 	ImGui::End();
+}
+
+void Plot::LayerClearing(Project& project) {
+	const auto& modelObject = project.GetCurrentModelObject();
+	if (Controls::Check(CONTROLS_ClearAllLayers)) {
+		Undos::Add(modelObject->GenAllLineStateUndo());
+		modelObject->ClearAll();
+		project.UpdateCurrentMesh();
+	}
+	else if (Controls::Check(CONTROLS_ClearCurrentLayer)) {
+		Undos::Add(modelObject->GenLineStateUndo(drawMode));
+		modelObject->ClearSingle(drawMode);
+		project.UpdateCurrentMesh();
+	}
 }

@@ -3,7 +3,8 @@ project(SeniorResearch)
 
 set(CMAKE_CXX_STANDARD 20)
 if (APPLE)
-    set(CMAKE_CXX_FLAGS "-framework Cocoa -framework IOKit")
+    set(CMAKE_CXX_FLAGS "-framework Cocoa -framework IOKit -framework OpenGL -framework CoreVideo")
+
 #    add_compile_definitions(GL_SILENCE_DEPRECATION)
 endif ()
 
@@ -12,7 +13,7 @@ endif ()
 set(SOURCE_FILES src/main.cpp)
 
 set(ICON_NAME "icon.icns")
-set(ICON_PATH ${PROJECT_SOURCE_DIR}/assets/${ICON_NAME} src/screens/auxiliary/ControlScreen.cpp src/screens/auxiliary/ControlScreen.h)
+set(ICON_PATH ${PROJECT_SOURCE_DIR}/assets/${ICON_NAME})
 set_source_files_properties(${ICON_NAME} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
 file(COPY ${ICON_PATH} DESTINATION "SeniorResearch.app/Contents/Resources")
 
@@ -28,6 +29,11 @@ file(COPY ${FONTS_PATH} DESTINATION "SeniorResearch.app/Contents/Resources")
 # set header includes
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
+# boost
+set(Boost_USE_STATIC_LIBS   ON)
+find_package(Boost 1.76 REQUIRED COMPONENTS
+        serialization)
+
 # set cpp source
 add_executable(SeniorResearch MACOSX_BUNDLE ${ICON_PATH} src/main.cpp lib/glad.c
         src/vendor/imgui/imgui_impl_glfw.cpp
@@ -37,6 +43,7 @@ add_executable(SeniorResearch MACOSX_BUNDLE ${ICON_PATH} src/main.cpp lib/glad.c
         src/vendor/imgui/imgui_draw.cpp
         src/vendor/imgui/imgui_tables.cpp
         src/vendor/imgui/imgui_widgets.cpp
+        src/screens/auxiliary/ControlScreen.cpp src/screens/auxiliary/ControlScreen.h
         src/display/ParamEditor.cpp src/display/ParamEditor.h src/screens/auxiliary/OpenFileScreen.cpp src/screens/auxiliary/OpenFileScreen.h src/screens/auxiliary/SaveFileScreen.cpp src/screens/auxiliary/SaveFileScreen.h
         src/program/Program.cpp src/program/Program.h src/project/Project.cpp src/project/Project.h
         src/gui/LearnScreen.cpp src/gui/LearnScreen.h src/gui/Markdown.cpp src/gui/Markdown.h src/gui/CreditScreen.cpp src/gui/CreditScreen.h src/editing/ProjectContext.cpp src/editing/ProjectContext.h src/editing/UnnamedProjectContext.cpp src/editing/UnnamedProjectContext.h src/editing/ExistingProjectContext.cpp src/editing/ExistingProjectContext.h
@@ -52,7 +59,5 @@ set_target_properties(SeniorResearch PROPERTIES
         MACOSX_BUNDLE_ICON_FILE "icon"
         )
 
-find_package(Boost 1.76 REQUIRED COMPONENTS
-        serialization)
 target_link_libraries(SeniorResearch Boost::serialization)
 target_link_libraries(SeniorResearch ${PROJECT_SOURCE_DIR}/lib/libglfw3.a)

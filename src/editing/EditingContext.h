@@ -9,6 +9,7 @@
 #include "../util/Includes.h"
 #include "../gl/Mesh2D.h"
 #include "../misc/Undos.h"
+#include "../graphing/GraphView.h"
 
 class EditingContext {
 public:
@@ -89,10 +90,34 @@ public:
         }
     }
 
-    void RenderTransformGizmos(Mesh2D& plot) {
+    void RenderGizmos(Mesh2D& plot, GraphView& graphView) {
         const RGBA orange = {1.0f, 0.7f, 0.0f, 0.6f};
         const RGBA blue = {0.2f, 0.1f, 1.0f, 0.6f};
         const RGBA red = {1.0f, 0.1f, 0.3f, 0.6f};
+
+        switch (snapGrid) { // render snapping grids
+            case SnapGrid::Circle: {
+                constexpr RGBA circleGridColour {0.0f, 0.0f, 0.0f, 0.1f};
+	            constexpr RGBA circleGridColourActive {1.0f, 0.0f, 0.0f, 0.1f};
+
+            	const auto CircRad = [&](float radius, const RGBA& colour) {
+		            plot.AddPolygonOutline(snapGridCentralPoint, radius, 60, colour, 0.005f);
+	            };
+
+            	plot.AddPolygonOutline(snapGridCentralPoint,
+									0.01f, 20, Util::WithAlpha(circleGridColourActive, 0.3f), 0.01f);
+
+            	for (size_t i = 0; i < 10; i++) { // TODO: calc num of circles to properly fill screen (min thru max)
+		            CircRad(0.125f * (float) (i + 1), circleGridColour);
+            	}
+
+            	if (isDrawing) {
+		            CircRad(graphView.scale * glm::length(drawingBeginCoords - snapGridCentralPoint), circleGridColourActive);
+            	}
+            }
+	        default:
+	            break;
+        }
 
         if (transformationActive) {
             switch (transformationType) {
@@ -147,7 +172,13 @@ public:
     void MakeLocal() { localTransform = true; }
 
     [[nodiscard]] bool IsDrawing() const { return isDrawing; }
-    void SetIsDrawing(bool isDrawing) { EditingContext::isDrawing = isDrawing; }
+
+    void BeginDrawing(Vec2 _drawingBeginCoords) {
+    	isDrawing = true;
+	    drawingBeginCoords = _drawingBeginCoords;
+    }
+
+    void EndDrawing() { isDrawing = false; }
 
     [[nodiscard]] bool CanUndo() const {
         return !IsDrawing() && !IsTransformationActive();
@@ -163,10 +194,16 @@ public:
         undoTimer -= deltaTime;
     }
 
+    void SetSnapGrid(SnapGrid _snapGrid) { snapGrid = _snapGrid; }
+
+    Vec2 ApplySnapGridIfAny(Vec2 actualCanvasPos);
+
 private:
     static constexpr float undoTimerInitMax = 0.3f, undoTimerRegMax = 0.09f;
     float undoTimer = 0.0f;
     bool isDrawing;
+    Vec2 drawingBeginCoords;
+
     bool localTransform;
     Enums::TransformAxisLock axisLock;
     bool drawingDisabledForClick = false;
@@ -174,6 +211,9 @@ private:
     Enums::TransformationType transformationType;
     TransformStartInfo transformStartInfo;
     Vec2 lastMousePos;
+
+    SnapGrid snapGrid = SnapGrid::None;
+    Vec2 snapGridCentralPoint = {0.0f, 0.0f};
 
     Vec2 primaryGizmoPoint, secondaryGizmoPoint/*, tertiaryGizmoPoint*/;
 

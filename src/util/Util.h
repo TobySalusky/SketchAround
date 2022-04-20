@@ -37,6 +37,8 @@ public:
         return (T(0) < val) - (val < T(0));
     }
 
+    static RGBA WithAlpha(RGBA rgba, float alpha) { return {rgba.x, rgba.y, rgba.z, alpha}; }
+
     static Vec3 DirToEuler(Vec3 dir) {
         return {0.0f, -atan2(dir.z, glm::length(Vec2(dir.x, dir.y))), atan2(dir.y, dir.x)};
     }

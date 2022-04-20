@@ -7,6 +7,10 @@
 
 #include <vector>
 
+enum class SnapGrid {
+	None, Circle
+};
+
 class Enums {
 public:
 // Enums

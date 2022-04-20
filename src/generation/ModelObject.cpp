@@ -227,13 +227,14 @@ void ModelObject::EditCurrentLines(const EditingInfo& info) {
         if (mouseIsOnRect) {
             if (editContext.IsDrawingEnabledForClick()) {
                 Undos::Add(GenLineStateUndo(drawMode));
-                editContext.SetIsDrawing(true);
+                editContext.BeginDrawing(graphView.MousePosNPToCoords(info.onScreen));
+
             }
         } else {
             editContext.DisableDrawingForClick();
         }
     } else if (input.mouseUnpressed) {
-        editContext.SetIsDrawing(false);
+        editContext.EndDrawing();
     }
 
     if (!editContext.IsTransformationActive()) {
@@ -241,7 +242,8 @@ void ModelObject::EditCurrentLines(const EditingInfo& info) {
         if (input.mouseDown && editContext.IsDrawingEnabledForClick() && info.graphFocused) {
             bool mouseOnGUI = Util::VecIsNormalizedNP(info.onScreen);
             if (mouseOnGUI) {
-                InputPoints({info.drawMode, info.onScreen, graphView});
+            	// Add points
+                InputPoints(info);
             }
         }
     }
@@ -259,11 +261,12 @@ void ModelObject::EditMakeup(const EditingInfo& info) {
     EditCurrentLines(info);
 }
 
-void ModelObject::InputPoints(MouseInputInfo info) {
+void ModelObject::InputPoints(const EditingInfo& info) {
     const auto& onScreen = info.onScreen;
     auto& vec = GetPointsRefByMode(info.drawMode);
 
-    Vec2 canvasPoint = info.graphView.MousePosNPToCoords(onScreen);
+    const Vec2 actualCanvasPoint = info.graphView.MousePosNPToCoords(onScreen);
+    const Vec2 canvasPoint = info.editContext.ApplySnapGridIfAny(actualCanvasPoint);
 
     switch (LineTypeByMode(info.drawMode)) {
         case Enums::POLYLINE:
@@ -502,7 +505,7 @@ void ModelObject::PersistModelMat(MatrixComponents initFull, MatrixComponents pa
 }
 
 void ModelObject::RenderTransformationGizmos(RenderInfo2D info) {
-    info.editContext.RenderTransformGizmos(info.plot);
+	info.editContext.RenderGizmos(info.plot, info.graphView);
 }
 
 void ModelObject::TimelineDiffPos(Timeline& timeline) const {

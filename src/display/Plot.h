@@ -13,7 +13,7 @@ class Plot {
 public:
 	explicit Plot(const GLWindow& window);
 
-	void Update(const Project &project, float deltaTime);
+	void Update(Project &project, float deltaTime);
 	void PostUpdate(const Project &project, float deltaTime);
 	void Render(const Project& project);
 	void Gui();
@@ -24,9 +24,10 @@ public:
 	[[nodiscard]] Enums::DrawMode GetDrawMode() const { return drawMode; }
 private:
 	void HandleUndoing();
+	void LayerClearing(Project& project);
 
 	Enums::DrawMode drawMode = Enums::MODE_PLOT;
-//	TODO: impl --> Enums::EditingTool selectedTool = Enums::TOOL_BRUSH;
+	Enums::EditingTool selectedTool = Enums::TOOL_BRUSH;
 
 	Shader2D shader2D = Shader2D::Read("shaders/shader2D.vert", "shaders/shader2D.frag");
 	RenderTarget graphScene; // initialized in constructor TODO: re-impl on resize
