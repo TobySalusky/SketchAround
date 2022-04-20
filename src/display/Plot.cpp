@@ -97,14 +97,19 @@ void Plot::ToolbarGui(Project& project) {
 		project.GetCurrentModelObject()->ModeSet("L3", Enums::DrawMode::MODE_GRAPH_Z, drawMode);
 		project.GetCurrentModelObject()->ModeSet("L4", Enums::DrawMode::MODE_CROSS_SECTION, drawMode);
 
+		ImGuiHelper::SpacedSep();
+
 		const auto SnapGridSelect = [&](const char* label, SnapGrid snapGrid) {
-			if (ImGui::Button(label)) {
+			if (ImGuiHelper::ChoiceButton(label, editContext.GetSnapGrid() == snapGrid)) {
 				editContext.SetSnapGrid(snapGrid);
 			}
 		};
 
-		SnapGridSelect("N", SnapGrid::None);
-		SnapGridSelect("C", SnapGrid::Circle);
+		SnapGridSelect("None", SnapGrid::None);
+		SnapGridSelect("Circ", SnapGrid::Circle);
+		if (ImGuiHelper::ChoiceButton("o", editContext.IsMovingSnapGridPoint())) {
+			editContext.BeginMovingSnapGridPoint();
+		}
 
 		ImGuiHelper::InnerWindowBorders();
 	}

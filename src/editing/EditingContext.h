@@ -71,15 +71,14 @@ public:
 
     void LockAxis(Enums::TransformAxisLock lockType) { axisLock = lockType; }
 
-    void SetPrimaryGizmoPoint(const Vec2 &primaryGizmoPoint) { EditingContext::primaryGizmoPoint = primaryGizmoPoint; }
-    void SetSecondaryGizmoPoint(const Vec2 &secondaryGizmoPoint) { EditingContext::secondaryGizmoPoint = secondaryGizmoPoint; }
-//    void SetTertiaryGizmoPoint(const Vec2 &tertiaryGizmoPoint) { EditingContext::tertiaryGizmoPoint = tertiaryGizmoPoint; }
+    void SetPrimaryGizmoPoint(const Vec2& _primaryGizmoPoint) { primaryGizmoPoint = _primaryGizmoPoint; }
+    void SetSecondaryGizmoPoint(const Vec2& _secondaryGizmoPoint) { secondaryGizmoPoint = _secondaryGizmoPoint; }
 
     [[nodiscard]] Enums::TransformAxisLock GetAxisLock() const {
         return axisLock;
     }
 
-    Vec2 GenLockMult() const {
+    [[nodiscard]] Vec2 GenLockMult() const {
         switch (GetAxisLock()) {
             case Enums::LOCK_NONE:
                 return {1.0f, 1.0f};
@@ -90,80 +89,7 @@ public:
         }
     }
 
-    void RenderGizmos(Mesh2D& plot, GraphView& graphView) {
-        const RGBA orange = {1.0f, 0.7f, 0.0f, 0.6f};
-        const RGBA blue = {0.2f, 0.1f, 1.0f, 0.6f};
-        const RGBA red = {1.0f, 0.1f, 0.3f, 0.6f};
-
-        switch (snapGrid) { // render snapping grids
-            case SnapGrid::Circle: {
-                constexpr RGBA circleGridColour {0.0f, 0.0f, 0.0f, 0.1f};
-	            constexpr RGBA circleGridColourActive {1.0f, 0.0f, 0.0f, 0.1f};
-
-            	const auto CircRad = [&](float radius, const RGBA& colour) {
-		            plot.AddPolygonOutline(snapGridCentralPoint, radius, 60, colour, 0.005f);
-	            };
-
-            	plot.AddPolygonOutline(snapGridCentralPoint,
-									0.01f, 20, Util::WithAlpha(circleGridColourActive, 0.3f), 0.01f);
-
-            	for (size_t i = 0; i < 10; i++) { // TODO: calc num of circles to properly fill screen (min thru max)
-		            CircRad(0.125f * (float) (i + 1), circleGridColour);
-            	}
-
-            	if (isDrawing) {
-		            CircRad(graphView.scale * glm::length(drawingBeginCoords - snapGridCentralPoint), circleGridColourActive);
-            	}
-            }
-	        default:
-	            break;
-        }
-
-        if (transformationActive) {
-            switch (transformationType) {
-                case Enums::TRANSFORM_DRAG: {
-                    plot.AddLines({primaryGizmoPoint, secondaryGizmoPoint}, orange, 0.005f);
-                    break;
-                }
-                case Enums::TRANSFORM_ROTATE: {
-                    plot.AddLines({primaryGizmoPoint, secondaryGizmoPoint}, orange, 0.005f);
-
-                    Vec2List rotateGizmo;
-                    float initAngle = Util::Angle(GetTransformStartPos() - primaryGizmoPoint);
-                    float newAngle = Util::Angle(secondaryGizmoPoint - primaryGizmoPoint);
-                    float angleDiff = newAngle - initAngle;
-
-                    const float angleStep = 0.1f, gizmoRad = 0.2f * plot.GenScaleLineMult();
-
-                    int pCount = (int) (std::fabs(angleDiff) / angleStep);
-                    rotateGizmo.reserve(pCount + 2);
-                    rotateGizmo.emplace_back(primaryGizmoPoint);
-                    rotateGizmo.emplace_back(primaryGizmoPoint + glm::normalize(GetTransformStartPos() - primaryGizmoPoint) * gizmoRad);
-                    for (int i = 0; i < pCount; i++) {
-                        rotateGizmo.emplace_back(primaryGizmoPoint + Util::Polar(gizmoRad, (-initAngle + (float) M_PI_2) + (float) i * angleStep * (float) -Util::Signum(angleDiff)));
-                    }
-
-                    plot.AddLines(rotateGizmo, blue, 0.005f);
-                    break;
-                }
-                case Enums::TRANSFORM_SCALE: {
-                    plot.AddLines({primaryGizmoPoint, secondaryGizmoPoint}, orange, 0.005f);
-                    const Vec2 dir = glm::normalize(secondaryGizmoPoint - primaryGizmoPoint);
-                    const auto PointAlongAt = [&](Vec2 magTowards) {
-                        return primaryGizmoPoint + (glm::length(magTowards - primaryGizmoPoint) * dir);
-                    };
-                    const RGBA diffColor = glm::length(GetTransformStartPos() - primaryGizmoPoint) <
-                                           glm::length(secondaryGizmoPoint - primaryGizmoPoint) ? blue : red;
-                    plot.AddLines({PointAlongAt(GetTransformStartPos()), PointAlongAt(secondaryGizmoPoint)}, diffColor,
-                                  0.005f);
-                    break;
-                }
-                case Enums::TRANSFORM_SMEAR: {
-                    break;
-                }
-            }
-        }
-    }
+    void RenderGizmos(Mesh2D& plot, GraphView& graphView);
 
     [[nodiscard]] bool IsLocalTransform() const {
         return localTransform;
@@ -198,6 +124,17 @@ public:
 
     Vec2 ApplySnapGridIfAny(Vec2 actualCanvasPos);
 
+    [[nodiscard]] SnapGrid GetSnapGrid() const { return snapGrid; }
+
+    void BeginMovingSnapGridPoint() { movingSnapGridPoint = true; }
+    void SetCurrentSnapGridPoint(Vec2 coords) { snapGridCentralPoint = coords; }
+    void FinishMovingSnapGridPoint(Vec2 coords) {
+    	movingSnapGridPoint = false;
+    	snapGridCentralPoint = coords;
+    }
+
+	[[nodiscard]] bool IsMovingSnapGridPoint() const { return movingSnapGridPoint; }
+
 private:
     static constexpr float undoTimerInitMax = 0.3f, undoTimerRegMax = 0.09f;
     float undoTimer = 0.0f;
@@ -214,8 +151,9 @@ private:
 
     SnapGrid snapGrid = SnapGrid::None;
     Vec2 snapGridCentralPoint = {0.0f, 0.0f};
+    bool movingSnapGridPoint = false;
 
-    Vec2 primaryGizmoPoint, secondaryGizmoPoint/*, tertiaryGizmoPoint*/;
+    Vec2 primaryGizmoPoint, secondaryGizmoPoint;
 
     void EndTransform() {
         transformationActive = false;

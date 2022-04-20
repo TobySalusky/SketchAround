@@ -223,11 +223,25 @@ void ModelObject::EditCurrentLines(const EditingInfo& info) {
 
     }
 
+	const Vec2 canvasCoords = graphView.MousePosNPToCoords(info.onScreen);
+
+	if (editContext.IsMovingSnapGridPoint()) {
+	    editContext.SetCurrentSnapGridPoint(canvasCoords);
+    }
+
     if (input.mousePressed) { // draw start undos
         if (mouseIsOnRect) {
             if (editContext.IsDrawingEnabledForClick()) {
-                Undos::Add(GenLineStateUndo(drawMode));
-                editContext.BeginDrawing(graphView.MousePosNPToCoords(info.onScreen));
+
+            	if (editContext.IsMovingSnapGridPoint()) {
+            		// moving snap grid point // TODO: make this use --> Enums::SelectedTool
+		            editContext.DisableDrawingForClick();
+		            editContext.FinishMovingSnapGridPoint(canvasCoords);
+            	} else {
+            		// successfully began drawing line!
+                    Undos::Add(GenLineStateUndo(drawMode));
+                    editContext.BeginDrawing(canvasCoords);
+            	}
 
             }
         } else {

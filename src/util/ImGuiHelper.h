@@ -85,6 +85,28 @@ public:
     static void GuiScreenExitBar();
     static void BeginOutsideGuiScreen(const char* windowTitle);
 
+    static bool ChoiceButton(const char* label, bool isSelected) {
+    	if (isSelected) {
+    		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(TRIP(0.5f), 1.0f));
+    		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(TRIP(0.55f), 1.0f));
+    		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(TRIP(0.65f), 1.0f));
+    	}
+    	bool clicked = ImGui::Button(label);
+    	if (isSelected) ImGui::PopStyleColor(3);
+
+    	return clicked;
+    }
+
+    static bool TransparButton(const char* label) {
+	    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(TRIP(0.35f), 0.5f));
+	    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(TRIP(0.4f), 0.5f));
+	    ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(TRIP(0.5f), 0.5f));
+
+	    bool clicked = ImGui::Button(label);
+	    ImGui::PopStyleColor(3);
+	    return clicked;
+    }
+
     static Rectangle ItemRect() {
         return {ImGui::GetItemRectMin().x, ImGui::GetItemRectMin().y, ImGui::GetItemRectSize().x, ImGui::GetItemRectSize().y};
     }

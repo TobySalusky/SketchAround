@@ -264,12 +264,12 @@ public:
     }
 
     void ModeSet (const char* title, Enums::DrawMode newDrawMode, Enums::DrawMode& drawMode) {
-        if (drawMode == newDrawMode) ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.4f, 0.5f, 0.6f, 1.0f});
-        else ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.2f, 0.3f, 0.4f, 1.0f});
-        if (ImGui::Button(title)) drawMode = newDrawMode;
-        ImGui::PopStyleColor(1);
+
+        if (ImGuiHelper::ChoiceButton(title, drawMode == newDrawMode)) drawMode = newDrawMode;
+
         ImGui::SameLine();
-        if (ImGui::Button((std::string("X##") + title).c_str())) {
+
+        if (ImGuiHelper::TransparButton((std::string("X##") + title).c_str())) {
             Undos::Add(GenLineStateUndo(newDrawMode));
             GetPointsRefByMode(newDrawMode).clear();
             DiffPoints(newDrawMode);
