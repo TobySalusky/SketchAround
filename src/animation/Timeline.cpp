@@ -423,3 +423,8 @@ TimelineSelection Timeline::GenTimelineSelection() {
 float Timeline::RoundToTenth(float val) {
     return std::round(val * 10.0f) / 10.0f;
 }
+
+void Timeline::OnActiveModelObjectChange() {
+	playing = false;
+	SetActiveAnimator(Program::GetProject().GetCurrentModelObject()->GetAnimatorPtr());
+}

@@ -269,9 +269,7 @@ public:
 
     void SetActiveAnimator(Animator* animator) { this->animator = animator; }
 
-    void OnActiveModelObjectChange() {
-        playing = false;
-    }
+    void OnActiveModelObjectChange();
 
     explicit Timeline(const GLWindow& window) : scene({window.GetBufferWidth(), window.GetBufferHeight()}), animator(nullptr) {}
 

@@ -81,21 +81,14 @@ void Plot::HandleUndoing() {
 	}
 }
 
-void Plot::HotKeys() {
-	if (Controls::Check(CONTROLS_SetLayerPrimary)) drawMode = Enums::MODE_PLOT;
-	if (Controls::Check(CONTROLS_SetLayerSecondary)) drawMode = Enums::MODE_GRAPH_Y;
-	if (Controls::Check(CONTROLS_SetLayerTertiary)) drawMode = Enums::MODE_GRAPH_Z;
-	if (Controls::Check(CONTROLS_SetLayerQuaternary)) drawMode = Enums::MODE_CROSS_SECTION;
-}
-
 void Plot::ToolbarGui(Project& project) {
 	// Toolbar
 	ImGui::Begin("Toolbar");
 	{
-		project.GetCurrentModelObject()->ModeSet("L1", Enums::DrawMode::MODE_PLOT, drawMode);
-		project.GetCurrentModelObject()->ModeSet("L2", Enums::DrawMode::MODE_GRAPH_Y, drawMode);
-		project.GetCurrentModelObject()->ModeSet("L3", Enums::DrawMode::MODE_GRAPH_Z, drawMode);
-		project.GetCurrentModelObject()->ModeSet("L4", Enums::DrawMode::MODE_CROSS_SECTION, drawMode);
+		project.GetCurrentModelObject()->ModeSet("L1", Enums::DrawMode::MODE_PLOT, drawMode, CONTROLS_SetLayerPrimary);
+		project.GetCurrentModelObject()->ModeSet("L2", Enums::DrawMode::MODE_GRAPH_Y, drawMode, CONTROLS_SetLayerSecondary);
+		project.GetCurrentModelObject()->ModeSet("L3", Enums::DrawMode::MODE_GRAPH_Z, drawMode, CONTROLS_SetLayerTertiary);
+		project.GetCurrentModelObject()->ModeSet("L4", Enums::DrawMode::MODE_CROSS_SECTION, drawMode, CONTROLS_SetLayerQuaternary);
 
 		ImGuiHelper::SpacedSep();
 

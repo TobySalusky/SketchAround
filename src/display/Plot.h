@@ -19,8 +19,6 @@ public:
 	void Gui();
 	void ToolbarGui(Project& project);
 
-	void HotKeys();
-
 	[[nodiscard]] Enums::DrawMode GetDrawMode() const { return drawMode; }
 private:
 	void HandleUndoing();

@@ -69,6 +69,4 @@ void MainScreen::Gui() {
 void MainScreen::HotKeys() {
 	// ROOT ESCAPE HOTKEY
 	if (DEVELOPER_MODE && Program::GetInput().Pressed(GLFW_KEY_ESCAPE)) window.Close(); // TODO: use CONTROLS
-
-	plot.HotKeys();
 }

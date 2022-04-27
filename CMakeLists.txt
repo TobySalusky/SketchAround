@@ -13,7 +13,7 @@ endif ()
 set(SOURCE_FILES src/main.cpp)
 
 set(ICON_NAME "icon.icns")
-set(ICON_PATH ${PROJECT_SOURCE_DIR}/assets/${ICON_NAME})
+set(ICON_PATH ${PROJECT_SOURCE_DIR}/assets/${ICON_NAME} src/generation/Bezier.cpp src/generation/Bezier.h)
 set_source_files_properties(${ICON_NAME} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
 file(COPY ${ICON_PATH} DESTINATION "SeniorResearch.app/Contents/Resources")
 

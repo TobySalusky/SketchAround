@@ -11,6 +11,7 @@
 #include "LineAnalyzer.h"
 #include "../graphing/Function.h"
 #include "Collider.h"
+#include "Bezier.h"
 
 void Lathe::HyperParameterUI(const UIInfo& info) {
     ImGui::Text("1: %lu; 2: %lu; 3: %lu; 4: %lu", plottedPoints.size(), graphedPointsY.size(), graphedPointsZ.size(), crossSectionPoints.size());
@@ -82,6 +83,8 @@ void Lathe::RenderSelf2D(RenderInfo2D renderInfo) {
     RenderCanvasLines(graphedPointsZ, graphColorZ, renderInfo.plot);
     RenderCanvasLines(plottedPoints, plotColor, renderInfo.plot);
     RenderCanvasLines(crossSectionPoints, {1.0f, 0.0f, 1.0f, 1.0f}, renderInfo.plot);
+
+//    RenderCanvasLines(Bezier::BezierSplineCurve(plottedPoints), {1.0f, 0.5f, 1.0f, 1.0f}, renderInfo.plot);
 }
 
 void Lathe::RenderGizmos2D(RenderInfo2D renderInfo) {

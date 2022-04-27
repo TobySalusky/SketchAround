@@ -31,6 +31,7 @@
 #include "../misc/UndoTypes/LineStateUndo.h"
 #include "../misc/UndoTypes/MultiUndo.h"
 #include "../util/ImGuiHelper.h"
+#include "../util/Controls.h"
 #include <boost/serialization/access.hpp>
 
 class Timeline;
@@ -263,9 +264,10 @@ public:
         });
     }
 
-    void ModeSet (const char* title, Enums::DrawMode newDrawMode, Enums::DrawMode& drawMode) {
+    void ModeSet(const char* title, Enums::DrawMode newDrawMode, Enums::DrawMode& drawMode, int controlCode) {
 
-        if (ImGuiHelper::ChoiceButton(title, drawMode == newDrawMode)) drawMode = newDrawMode;
+        if (ImGuiHelper::ChoiceButton(title, drawMode == newDrawMode) || Controls::Check(controlCode)) drawMode = newDrawMode;
+	    ImGuiHelper::DelayControlTooltip(controlCode);
 
         ImGui::SameLine();
 
