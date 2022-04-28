@@ -19,13 +19,13 @@
 void SceneHierarchy::Gui(Project& project) {
 	// Model Instantiation Window
 	ImGui::Begin("Models");
-	if (ImGui::Button("+##Lathe")) {
+	if (ImGui::Button("+##Lathe") || Controls::Check(CONTROLS_AddLathe)) {
 		AddDefaultActiveModelObject<Lathe>();
 	}
 	ImGuiHelper::DelayControlTooltip(CONTROLS_AddLathe);
 
 	ImGui::SameLine();
-	if (ImGui::Button("+##CrossSectional")) {
+	if (ImGui::Button("+##CrossSectional") || Controls::Check(CONTROLS_AddCrossSectional)) {
 		AddDefaultActiveModelObject<CrossSectional>();
 	}
 	ImGuiHelper::DelayControlTooltip(CONTROLS_AddCrossSectional);

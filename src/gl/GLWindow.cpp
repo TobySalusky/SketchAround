@@ -89,6 +89,7 @@ void GLWindow::CreateInput() {
         auto self = static_cast<GLWindow*>(glfwGetWindowUserPointer(rawSelf));
 
         self->input.mouseScroll = (float) yDiff;
+        self->input.mouseScrollHorizontal = (float) xDiff;
     });
 
     glfwSetCursorPosCallback(window, [](GLFWwindow* rawSelf, double xPos, double yPos){

@@ -14,6 +14,7 @@
 #include "../generation/ModelObject.h"
 #include "KeyFrameLayer.h"
 #include "Animator.h"
+#include "TimelineScrollBar.h"
 #include <vector>
 #include <unordered_map>
 #include <variant>
@@ -271,7 +272,7 @@ public:
 
     void OnActiveModelObjectChange();
 
-    explicit Timeline(const GLWindow& window) : scene({window.GetBufferWidth(), window.GetBufferHeight()}), animator(nullptr) {}
+    explicit Timeline(const GLWindow& window) : scene({window.GetBufferWidth(), window.GetBufferHeight()}), scrollBar({{window.GetBufferWidth(), window.GetBufferHeight()}, 0.0f, 0.5f}), animator(nullptr) {}
 
 
     static float RoundToTenth(float val);
@@ -294,6 +295,7 @@ private:
     TimelineSelection copiedSelection;
     bool dragging;
     float lastDragDiff;
+	TimelineScrollBar scrollBar;
 
     void TopToBottomLineAt(float x, glm::vec4 color, float width = 0.001f, bool trueTop = false);
 

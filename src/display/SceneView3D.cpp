@@ -88,7 +88,7 @@ void SceneView3D::Gui(const Project &project) {
 		                                    Util::ToVec(ImGui::GetWindowContentRegionMax()) - Util::ToVec(ImGui::GetWindowContentRegionMin()) - Vec2(8.0f, 6.0f));
 		ImGui::SameLine((ImGui::GetWindowWidth()) / 2.0f - (displayDimens.x / 2.0f));
 
-		ImGui::ImageButton((void*) (intptr_t) modelScene.GetTexture(),
+		ImGui::ImageButton(modelScene.GetTexture(),
 		                   Util::ToImVec(displayDimens),
 		                   {0.0f, 1.0f},
 		                   {1.0f, 0.0f}, 0);

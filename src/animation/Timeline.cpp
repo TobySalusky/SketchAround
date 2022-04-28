@@ -18,7 +18,10 @@ std::vector<int> numKeys = {
 };
 
 void Timeline::Update(const TimelineUpdateInfo& info) {
-    const auto&[input, deltaTime, drawMode, modelObject, modelObjects, focusMode] = info;
+
+	scrollBar.Update();
+
+	const auto&[input, deltaTime, drawMode, modelObject, modelObjects, focusMode] = info;
 
     const float currentTime = animator->currentTime;
     auto& keyFrameLayers = animator->keyFrameLayers;
@@ -89,8 +92,6 @@ void Timeline::Update(const TimelineUpdateInfo& info) {
             if (input.Pressed(numKeys[i])) selection.SetBlendID((int) i);
         }
     }
-
-
 
     // MOUSE INPUT ==============
     if (mouseOnGUI && input.mousePressed) {
@@ -299,6 +300,9 @@ void Timeline::Render(const TimelineRenderInfo& info) {
     canvas.ImmediateClearingRender();
     shader2D.Disable();
     RenderTarget::Unbind();
+
+
+	scrollBar.Render(canvas, shader2D);
 }
 
 void Timeline::Gui() {
@@ -306,17 +310,23 @@ void Timeline::Gui() {
     bool mouseOnGUI = Util::VecIsNormalizedNP(Util::NormalizeToRectNPFlipped(input.GetMouse(), guiRect));
 
     ImGui::Begin("Timeline");
+	ImGui::SetScrollX(0.0f);
+
     if (ImGui::Button(playing ? "||" : "|>")) {
         playing = !playing;
     }
     ImGui::SameLine();
-    ImGui::Checkbox("ping-pong", &pingPong);
+    ImGui::Checkbox("rep", &pingPong);
     ImGui::SameLine();
-    ImGui::SliderFloat("playback-speed", &playbackSpeed, -5.0f, 5.0f);
+
+    ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x - 8.0f);
+    ImGui::SliderFloat("##playback-speed", &playbackSpeed, -5.0f, 5.0f);
+    if (ImGuiHelper::HoverDelayTooltip()) ImGui::SetTooltip("%s", "playback-speed");
 
 
-    const auto dimens = Util::ToImVec(Util::ToVec(ImGui::GetContentRegionAvail()) - Vec2(8.0f, 6.0f));
-    ImGui::ImageButton((void *) (intptr_t) scene.GetTexture(), dimens, {0.0f, 1.0f}, {1.0f, 0.0f}, 0);
+    const float scrollBarHeight = 20.0f;
+    const auto dimens = Util::ToImVec(Util::ToVec(ImGui::GetContentRegionAvail()) - Vec2(8.0f, 6.0f + scrollBarHeight));
+    ImGui::ImageButton(scene.GetTexture(), dimens, {0.0f, 1.0f}, {1.0f, 0.0f}, 0);
     guiRect = ImGuiHelper::ItemRectRemovePadding(0.0f, 0.0f);
     focused = ImGui::IsItemFocused();
 
@@ -351,6 +361,9 @@ void Timeline::Gui() {
         }
         ImGui::EndPopup();
     }
+
+    scrollBar.Gui();
+
     ImGuiHelper::InnerWindowBorders();
     ImGui::End();
 }

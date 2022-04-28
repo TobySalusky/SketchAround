@@ -18,7 +18,7 @@ public:
 
     static std::vector<unsigned char> SampleCentralSquare(const RenderTarget& renderTarget, int sampleCount);
 
-    [[nodiscard]] GLuint GetTexture() const { return textureID; }
+    [[nodiscard]] void* GetTexture() const { return (void *) (intptr_t) GetRawTextureID(); }
 
     void ChangeDimensions(GLint width, GLint height);
     void ChangeDimensions(Vec2 vec) { ChangeDimensions((GLint) vec.x, (GLint) vec.y); }
@@ -26,6 +26,8 @@ private:
     GLuint fboID, rboID, textureID;
     GLint width, height;
     bool hasDepth;
+
+    [[nodiscard]] GLuint GetRawTextureID() const { return textureID; }
 };
 
 

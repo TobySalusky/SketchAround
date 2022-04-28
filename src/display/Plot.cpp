@@ -58,7 +58,7 @@ void Plot::Gui() {
 			Util::ToVec(ImGui::GetWindowContentRegionMax()) - Util::ToVec(ImGui::GetWindowContentRegionMin());
 	static Vec2 lastDisplayDimens;
 	lastDisplayDimens = displayDimens;
-	ImGui::ImageButton((void *) (intptr_t) graphScene.GetTexture(), Util::ToImVec(displayDimens), {0.0f, 1.0f},
+	ImGui::ImageButton(graphScene.GetTexture(), Util::ToImVec(displayDimens), {0.0f, 1.0f},
 	                   {1.0f, 0.0f}, 0);
 
 	plotRect = ImGuiHelper::ItemRectRemovePadding(0.0f, 0.0f);

@@ -37,6 +37,12 @@ public:
         return (T(0) < val) - (val < T(0));
     }
 
+    static float Remap01ToPN(float f) { return f * 2.0f - 1.0f; }
+    static float RemapPNTo01(float f) { return (f + 1.0f) / 2.0f; }
+
+    static Vec2 Remap01ToPN(Vec2 v) { return {Remap01ToPN(v.x), Remap01ToPN(v.y)}; }
+    static Vec2 RemapPNTo01(Vec2 v) { return {RemapPNTo01(v.x), RemapPNTo01(v.y)}; }
+
     static RGBA WithAlpha(RGBA rgba, float alpha) { return {rgba.x, rgba.y, rgba.z, alpha}; }
 
     static Vec3 DirToEuler(Vec3 dir) {
