@@ -22,6 +22,8 @@ struct ScrollBarDragInfo {
 	bool trackPad = false;
 };
 
+// TODO: use enum dragType to move edges in similar method
+
 struct TimelineScrollBar {
 public:
 	RenderTarget scene;
@@ -30,7 +32,7 @@ public:
 	float end {}; ///< norm. [0-1]
 
 	// internal
-	float maxScrollArea = 2.0f;
+	float maxScrollArea = 4.0f;
 	std::optional<ScrollBarDragInfo> drag;
 	Rectangle guiRect = {};
 

@@ -7,8 +7,9 @@
 
 void TimelineScrollBar::Render(Mesh2D &canvas, Shader2D& shader2D) const {
 	// consts
-	constexpr static RGBA scrollBackgroundColour = {1.0f, 1.0f, 1.0f, 1.0f};
-	constexpr static RGBA colour {1.0f, 0.0f, 0.0f, 1.0f};
+	constexpr static RGBA scrollBackgroundColour = {0.10f, 0.10f, 0.10f, 1.0f};
+	constexpr static RGBA colour {0.24f, 0.24f, 0.24f, 1.0f};
+	constexpr static RGBA edgeColour {0.35f, 0.35f, 0.35f, 1.0f};
 
 	// setup
 	RenderTarget::Bind(scene);
@@ -17,7 +18,12 @@ void TimelineScrollBar::Render(Mesh2D &canvas, Shader2D& shader2D) const {
 	// render
 	canvas.AddQuad({-1.0f, -1.0f}, {1.0f, 1.0f}, scrollBackgroundColour);
 
-	canvas.AddQuad(Util::Remap01ToPN({start, 0.0f}), Util::Remap01ToPN({end, 1.0f}), colour);
+	canvas.AddQuad(Util::Remap01ToNP({start, 0.0f}), Util::Remap01ToNP({end, 1.0f}), colour);
+
+	constexpr static float edgePixels = 10.0f;
+	const float edgeWidth = edgePixels / guiRect.width;
+	canvas.AddQuad(Util::Remap01ToNP({start, 0.0f}), Util::Remap01ToNP({start + edgeWidth, 1.0f}), edgeColour);
+	canvas.AddQuad(Util::Remap01ToNP({end - edgeWidth, 0.0f}), Util::Remap01ToNP({end, 1.0f}), edgeColour);
 
 	// finalize
 	canvas.ImmediateClearingRender();

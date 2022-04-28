@@ -299,6 +299,9 @@ private:
 
     void TopToBottomLineAt(float x, glm::vec4 color, float width = 0.001f, bool trueTop = false);
 
+
+	[[nodiscard]] float XToTime(float xNP) const;
+	[[nodiscard]] float TimeToX(float time) const;
 };
 
 

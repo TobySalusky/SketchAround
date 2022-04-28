@@ -71,12 +71,13 @@ void Timeline::Update(const TimelineUpdateInfo& info) {
     glm::vec2 mousePos = Util::NormalizeToRectNPFlipped(input.GetMouse(), guiRect);
     bool mouseOnGUI = Util::VecIsNormalizedNP(mousePos);
 
+    const float mouseTime = XToTime(mousePos.x);
 
     if (hasSelection && input.Pressed(GLFW_KEY_K)) {
         selection.DeleteAll();
         hasSelection = false;
     }
-//
+
 //    if (hasSelection && Controls::Check(CONTROLS_Copy)) {
 //	    LOG("copying\n");
 //	    copiedSelection = selection; // TODO: properly copy objects, not just pointers!
@@ -149,7 +150,7 @@ void Timeline::Update(const TimelineUpdateInfo& info) {
             // Time-picker ===
             if (mouseOnGUI) {
                 const float prevTime = animator->currentTime;
-                animator->currentTime = std::round(mousePos.x * 10.0f) / 10.0f;
+                animator->currentTime = RoundToTenth(mouseTime);
                 if (animator->currentTime != prevTime) SampleAllAtTime(animator->currentTime);
             }
         }
@@ -221,15 +222,15 @@ void Timeline::Update(const TimelineUpdateInfo& info) {
     } else {
         animator->currentTime += deltaTime * playbackSpeed;
 
-        if (currentTime > 1.0f) {
+        if (currentTime > scrollBar.maxScrollArea) {
             if (pingPong) {
                 animator->currentTime = 1.0f;
                 playbackSpeed *= -1.0f;
             }
-            else animator->currentTime = -1.0f;
-        } else if (currentTime < -1.0f) {
+            else animator->currentTime = 0.0f;
+        } else if (currentTime < 0.0f) {
             if (pingPong) {
-                animator->currentTime = -1.0f;
+                animator->currentTime = 0.0f;
                 playbackSpeed *= -1.0f;
             }
             else animator->currentTime = 1.0f;
@@ -241,6 +242,12 @@ void Timeline::Update(const TimelineUpdateInfo& info) {
     lastFocused = focused;
 }
 
+float Timeline::TimeToX(float time) const {
+	const auto& span = scrollBar.GenView();
+
+	return Util::Remap01ToNP((time - span.startTime) / span.GetSpannedTime());
+}
+
 void Timeline::TopToBottomLineAt(float x, glm::vec4 color, float width, bool trueTop) {
     canvas.AddLines({{x, -1.0f}, {x, trueTop ? 1.0f : 1.0f - selectAreaSize}}, color, width);
 }
@@ -249,7 +256,10 @@ void Timeline::Render(const TimelineRenderInfo& info) {
 
     const auto& [drawMode, input] = info;
 
-    const float currentTime = animator->currentTime;
+	const float minVisibleTime = XToTime(-1.0f);
+	const float maxVisibleTime = XToTime(1.0f);
+
+	const float currentTime = animator->currentTime;
     auto& keyFrameLayers = animator->keyFrameLayers;
     auto& floatKeyFrameLayers = animator->floatKeyFrameLayers;
 
@@ -263,26 +273,22 @@ void Timeline::Render(const TimelineRenderInfo& info) {
     canvas.AddQuad({-1.0f, height - 0.1f}, {1.0f, height + 0.1f}, {0.21f, 0.21f, 0.21f, 1.0f});
     canvas.AddQuad({-1.0f, 1.0f}, {1.0f, 1.0f - selectAreaSize}, {0.15f, 0.15f, 0.15f, 1.0f});
 
-    for (float i = -0.9f; i < 1.0f; i += 0.1f) { // NOLINT(cert-flp30-c)
-        TopToBottomLineAt(i, {0.35f, 0.35f, 0.35f, 1.0f});
+    for (float t = ceil(minVisibleTime * 10.0f) / 10.0f; t < maxVisibleTime; t += 0.1f) { // NOLINT(cert-flp30-c)
+        TopToBottomLineAt(TimeToX(t), {0.35f, 0.35f, 0.35f, 1.0f});
     }
-    TopToBottomLineAt(currentTime, focused ? glm::vec4(0.8f, 0.8f, 1.0f, 1.0f) : glm::vec4(0.55f, 0.55f, 0.7f, 1.0f), 0.004f, true);
+    TopToBottomLineAt(TimeToX(currentTime), focused ? glm::vec4(0.8f, 0.8f, 1.0f, 1.0f) : glm::vec4(0.55f, 0.55f, 0.7f, 1.0f), 0.004f, true);
 
     const auto ContainsFunc = [&](auto* ptr){
         return selection.ContainsKeyframe(ptr);
     };
 
-    const auto NoSelectContainsFunc = [](auto* ptr) { return false; };
-
     for (auto& [mode, keyFrameLayer] : keyFrameLayers) {
-        if (hasSelection || selecting) keyFrameLayer.Render(canvas, (int) mode, currentTime, ContainsFunc);
-        else keyFrameLayer.Render(canvas, (int) mode, currentTime, NoSelectContainsFunc);
+        keyFrameLayer.Render(canvas, (int) mode, currentTime, minVisibleTime, maxVisibleTime, [&](float time){ return TimeToX(time); }, ContainsFunc);
     }
 
     int floatLayerInc = 0;
     for (auto& [label, keyFrameLayer] : floatKeyFrameLayers) {
-        if (hasSelection || selecting) keyFrameLayer.layer.Render(canvas, 4 + floatLayerInc, currentTime, ContainsFunc);
-        else keyFrameLayer.layer.Render(canvas, 4 + floatLayerInc, currentTime, NoSelectContainsFunc);
+        keyFrameLayer.layer.Render(canvas, 4 + floatLayerInc, currentTime, minVisibleTime, maxVisibleTime, [&](float time){ return TimeToX(time); }, ContainsFunc);
         floatLayerInc++;
     }
 
@@ -386,8 +392,8 @@ TimelineSelection Timeline::GenTimelineSelection() {
 
     TimelineSelection newSelection;
 
-    const float minTime = std::min(selectDragStart.x, selectDragEnd.x);
-    const float maxTime = std::max(selectDragStart.x, selectDragEnd.x);
+    const float minTime = XToTime(std::min(selectDragStart.x, selectDragEnd.x));
+    const float maxTime = XToTime(std::max(selectDragStart.x, selectDragEnd.x));
     const float minPosY = 1.0f - std::max(selectDragStart.y, selectDragEnd.y) - selectAreaSize;
     const float maxPosY = 1.0f - std::min(selectDragStart.y, selectDragEnd.y) - selectAreaSize;
     const int minIndex = (int) ((minPosY + 0.05f) / 0.2f);
@@ -440,4 +446,9 @@ float Timeline::RoundToTenth(float val) {
 void Timeline::OnActiveModelObjectChange() {
 	playing = false;
 	SetActiveAnimator(Program::GetProject().GetCurrentModelObject()->GetAnimatorPtr());
+}
+
+float Timeline::XToTime(float xNP) const {
+	const auto& span = scrollBar.GenView();
+	return span.startTime + Util::RemapNPTo01(xNP) * span.GetSpannedTime();
 }

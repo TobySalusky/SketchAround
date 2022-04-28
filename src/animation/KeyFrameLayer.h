@@ -43,7 +43,7 @@ public:
         return 0.9f - (float) row * 0.2f - 0.4f;
     }
 
-    void Render(Mesh2D& canvas, int line, float time, std::function<bool(KeyFrame<T>*)> containsFunc) {
+    void Render(Mesh2D& canvas, int line, float time, float minVisibleTime, float maxVisibleTime, const std::function<float(float)>& timeToX, std::function<bool(KeyFrame<T>*)> containsFunc) {
         const auto SideToSideLine = [&](float height) {
             canvas.AddLines({{-1.0f, height}, {1.0f, height}}, {0.5f, 0.5f, 0.5f, 1.0f}, 0.003f);
             canvas.AddLines({{-1.0f, height}, {1.0f, height}}, {0.5f, 0.5f, 0.5f, 1.0f}, 0.003f);
@@ -72,7 +72,9 @@ public:
                 auto& frame = frames[i];
                 bool selected = (frame.time == frame1.time || frame.time == frame2.time);
 
-                canvas.AddLines({{frame.time, RowToHeight(line) - 0.1f}, {frame.time, RowToHeight(line) + 0.1f}}, {0.43f, 0.43f, 0.43f, 1.0f}, 0.003f);
+                const float frameX = timeToX(frame.time);
+
+                canvas.AddLines({{frameX, RowToHeight(line) - 0.1f}, {frameX, RowToHeight(line) + 0.1f}}, {0.43f, 0.43f, 0.43f, 1.0f}, 0.003f);
 
                 glm::vec4 color = [&] {
                     if (containsFunc(&frame)) return glm::vec4(0.0f, 1.0f, 1.0f, 1.0f);
@@ -81,10 +83,10 @@ public:
                     if (frame.time == frame2.time) return (glm::vec4(1.0f, 0.5f, 0.0f, 1.0f) * t + glm::vec4(1.0f, 1.0f, 1.0f, 1.0f) * (1.0f - t));
                     return glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
                 }();
-                canvas.AddPolygonOutline({frame.time, RowToHeight(line)}, 0.03f, frame.blendModeID == 0 ? 3 : 10, color);
+                canvas.AddPolygonOutline({frameX, RowToHeight(line)}, 0.03f, frame.blendModeID == 0 ? 3 : 10, color);
                 if (i != frames.size() - 1) {
-                    glm::vec2 p1 = glm::vec2(frame.time, RowToHeight(line) - 0.1f);
-                    glm::vec2 p2 = glm::vec2(frames[i + 1].time, RowToHeight(line) + 0.1f);
+                    glm::vec2 p1 = glm::vec2(frameX, RowToHeight(line) - 0.1f);
+                    glm::vec2 p2 = glm::vec2(timeToX(frames[i + 1].time), RowToHeight(line) + 0.1f);
 
                     bool onLine = (frame.time == frame1.time && frame.time != frame2.time);
                     glm::vec4 lineColor = onLine ? glm::vec4(0.85f, 1.0f, 0.85f, 1.0f) : glm::vec4(0.7f, 0.7f, 0.7f, 1.0f);
