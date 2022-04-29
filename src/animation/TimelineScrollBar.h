@@ -19,10 +19,11 @@ struct ScrollBarDragInfo {
 		float start;
 		float end;
 	} initBounds;
+	enum DragType {
+		Start, Bar, End
+	} dragType;
 	bool trackPad = false;
 };
-
-// TODO: use enum dragType to move edges in similar method
 
 struct TimelineScrollBar {
 public:
