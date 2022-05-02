@@ -64,7 +64,7 @@ Sampler::SampleTo(const Vec2List& inputPoints, const int newPointCount, bool ski
     if (skipIfAlreadyCorrect && newPointCount == inputPoints.size()) return inputPoints;
 
     Vec2List vec = (inputPoints.size() == 1) ? RepeatPoint(inputPoints[0], newPointCount) : DumbSampleLimited(inputPoints, LineAnalyzer::FullLength(inputPoints) / (float) (newPointCount - 1), newPointCount);
-    if (vec.size() != newPointCount) LOG("Error: SampleTo %i %lu\n", newPointCount, vec.size());
+    if (vec.size() != newPointCount) LOG("Error: SampleTo %i %lu", newPointCount, vec.size());
     return vec;
 }
 

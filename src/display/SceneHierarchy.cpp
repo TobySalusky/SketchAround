@@ -18,7 +18,7 @@
 
 void SceneHierarchy::Gui(Project& project) {
 	// Model Instantiation Window
-	ImGui::Begin("Models");
+	ImGuiHelper::BeginComponentWindow("Models");
 	if (ImGui::Button("+##Lathe") || Controls::Check(CONTROLS_AddLathe)) {
 		AddDefaultActiveModelObject<Lathe>();
 	}

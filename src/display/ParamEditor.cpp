@@ -8,7 +8,7 @@
 
 void ParamEditor::Gui() { // FIXME: causing crash SIGSEGV
 	// Settings Window
-	ImGui::Begin("General");
+	ImGuiHelper::BeginComponentWindow("General");
 
 	ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate,
 	            ImGui::GetIO().Framerate);

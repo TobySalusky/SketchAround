@@ -119,7 +119,7 @@ Vec2 Function::GetTangentAtLength(const std::vector<glm::vec2> &funcPoints, floa
         }
     }
 
-	LOG("[Warning]: trying to find tangent outside of allowed length\n");
+	LOG("[Warning]: trying to find tangent outside of allowed length");
     return {-999.0f, -999.0f};
 }
 
@@ -137,7 +137,7 @@ Ray2D Function::GetRayAtLength(const std::vector<glm::vec2> &funcPoints, float a
         }
     }
 
-	LOG("[Warning]: trying to find tangent outside of allowed length\n");
+	LOG("[Warning]: trying to find tangent outside of allowed length");
     return {{-100.0f, -100.0f}, {-999.0f, -999.0f}};
 }
 

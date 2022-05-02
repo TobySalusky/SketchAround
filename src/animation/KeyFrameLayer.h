@@ -20,7 +20,7 @@ public:
         if (initTime == newTime) return;
 
         if (HasKeyFrameAtTime(newTime)) {
-            LOG("[Error]: overlapping keyframe during move -- ABORTING OPERATION\n");
+            LOG("[Error]: overlapping keyframe during move -- ABORTING OPERATION");
             return;
         }
 
@@ -45,7 +45,6 @@ public:
 
     void Render(Mesh2D& canvas, int line, float time, float minVisibleTime, float maxVisibleTime, const std::function<float(float)>& timeToX, std::function<bool(KeyFrame<T>*)> containsFunc) {
         const auto SideToSideLine = [&](float height) {
-            canvas.AddLines({{-1.0f, height}, {1.0f, height}}, {0.5f, 0.5f, 0.5f, 1.0f}, 0.003f);
             canvas.AddLines({{-1.0f, height}, {1.0f, height}}, {0.5f, 0.5f, 0.5f, 1.0f}, 0.003f);
         };
 

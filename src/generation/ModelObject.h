@@ -106,7 +106,7 @@ public:
 
 	ModelObject() : ID(GenUniqueID()) {}
     virtual ~ModelObject() {
-		LOG("ModelObject {ID: %i} destructing\n", GetID());
+		LOG("ModelObject {ID: %i} destructing", GetID());
 	} // silences boost::serialization issue
 
     virtual void HyperParameterUI(const UIInfo& info) {}

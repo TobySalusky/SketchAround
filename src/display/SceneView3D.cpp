@@ -81,7 +81,7 @@ void SceneView3D::Render(Project &project) {
 }
 
 void SceneView3D::Gui(const Project &project) {
-	ImGui::Begin("Model Scene");
+	ImGuiHelper::BeginComponentWindow("Model Scene");
 	{
 
 		Vec2 displayDimens = Util::FitRatio({Program::GetWindowWidth() / 2.0f, Program::GetWindowHeight() / 2.0f},

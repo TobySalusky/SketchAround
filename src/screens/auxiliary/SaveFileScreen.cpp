@@ -67,7 +67,7 @@ void SaveFileScreen::SerializeScene(const std::string& path, const std::string& 
 
 	Project& project = Program::GetProject();
 
-	LOG("saving to \"%s\" -- ", path.c_str());
+	LOG("saving to \"%s\"...", path.c_str());
 	std::ofstream ofs(path);
 	boost::archive::text_oarchive oa(ofs);
 	oa << Serialization(
@@ -76,7 +76,7 @@ void SaveFileScreen::SerializeScene(const std::string& path, const std::string& 
 
 	project.MakeExisting(name, path);
 
-	LOG("save successful!\n");
+	LOG("save successful!");
 }
 
 void SaveFileScreen::ReSerializeProject(Project& project) {

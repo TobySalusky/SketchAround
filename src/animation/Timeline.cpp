@@ -19,7 +19,6 @@ std::vector<int> numKeys = {
 
 void Timeline::Update(const TimelineUpdateInfo& info) {
 
-	scrollBar.Update();
 
 	const auto&[input, deltaTime, drawMode, modelObject, modelObjects, focusMode] = info;
 
@@ -27,7 +26,9 @@ void Timeline::Update(const TimelineUpdateInfo& info) {
     auto& keyFrameLayers = animator->keyFrameLayers;
     auto& floatKeyFrameLayers = animator->floatKeyFrameLayers;
 
-    const auto SampleAtTime = [](ModelObject& obj, float time) {
+	scrollBar.Update(currentTime);
+
+	const auto SampleAtTime = [](ModelObject& obj, float time) {
         bool diffFlag = false;
 
         auto& keyFrameLayers = obj.GetAnimatorPtr()->keyFrameLayers;
@@ -141,7 +142,7 @@ void Timeline::Update(const TimelineUpdateInfo& info) {
         } else {
             // dragging
             if (dragging) {
-                const float dragDiff = mousePos.x - selectDragStart.x;
+                const float dragDiff = (mousePos.x - selectDragStart.x) * 0.5f * scrollBar.GenView().GetSpannedTime();
                 selection.MoveAllRounded(-lastDragDiff);
                 selection.MoveAllRounded(dragDiff);
                 lastDragDiff = dragDiff;
@@ -224,7 +225,7 @@ void Timeline::Update(const TimelineUpdateInfo& info) {
 
         if (currentTime > scrollBar.maxScrollArea) {
             if (pingPong) {
-                animator->currentTime = 1.0f;
+                animator->currentTime = scrollBar.maxScrollArea;
                 playbackSpeed *= -1.0f;
             }
             else animator->currentTime = 0.0f;
@@ -233,7 +234,7 @@ void Timeline::Update(const TimelineUpdateInfo& info) {
                 animator->currentTime = 0.0f;
                 playbackSpeed *= -1.0f;
             }
-            else animator->currentTime = 1.0f;
+            else animator->currentTime = scrollBar.maxScrollArea;
         }
 
         SampleAllAtTime(currentTime);
@@ -274,7 +275,10 @@ void Timeline::Render(const TimelineRenderInfo& info) {
     canvas.AddQuad({-1.0f, 1.0f}, {1.0f, 1.0f - selectAreaSize}, {0.15f, 0.15f, 0.15f, 1.0f});
 
     for (float t = ceil(minVisibleTime * 10.0f) / 10.0f; t < maxVisibleTime; t += 0.1f) { // NOLINT(cert-flp30-c)
-        TopToBottomLineAt(TimeToX(t), {0.35f, 0.35f, 0.35f, 1.0f});
+    	constexpr RGBA nonSecondLineColour {0.35f, 0.35f, 0.35f, 0.5f};
+    	constexpr RGBA secondLineColour {0.5f, 0.5f, 0.5f, 1.0f};
+    	const bool onSecond = (int)(t * 10.0f) % 10 == 0;
+        TopToBottomLineAt(TimeToX(t), onSecond ? secondLineColour : nonSecondLineColour, onSecond ? 0.002f : 0.001f);
     }
     TopToBottomLineAt(TimeToX(currentTime), focused ? glm::vec4(0.8f, 0.8f, 1.0f, 1.0f) : glm::vec4(0.55f, 0.55f, 0.7f, 1.0f), 0.004f, true);
 
@@ -315,7 +319,7 @@ void Timeline::Gui() {
 	const Input& input = Program::GetInput();
     bool mouseOnGUI = Util::VecIsNormalizedNP(Util::NormalizeToRectNPFlipped(input.GetMouse(), guiRect));
 
-    ImGui::Begin("Timeline");
+    ImGuiHelper::BeginComponentWindow("Timeline");
 	ImGui::SetScrollX(0.0f);
 
     if (ImGui::Button(playing ? "||" : "|>")) {

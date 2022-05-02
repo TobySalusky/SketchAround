@@ -93,15 +93,26 @@ struct TimelineSelection {
     }
 
     [[nodiscard]] bool MoveAllRounded(float amount)  {
+    	
+    	float roundAmount = std::round((amount) * 10.0f) / 10.0f;
 
-        const auto MoveFunc = [amount](const auto& val) {
+        const auto MoveFunc = [roundAmount](const auto& val) {
 //			auto framesCopy = val.frames;
 //
-            for (auto* keyFramePtr : val.frames) {
-                const float time = keyFramePtr->time;
-                const float newTime = std::round((time + amount) * 10.0f) / 10.0f;
-                val.layer->MoveFromTimeToTime(time, newTime);
-            }
+			if (roundAmount > 0.0f) {
+				for (int i = val.frames.size() - 1; i >= 0; i--) {
+					auto* keyFramePtr = val.frames[i];
+					const float time = keyFramePtr->time;
+					const float newTime = time + roundAmount;
+					val.layer->MoveFromTimeToTime(time, newTime);
+				}
+			} else if (roundAmount < 0.0f) {
+				for (auto* keyFramePtr : val.frames) {
+					const float time = keyFramePtr->time;
+					const float newTime = time + roundAmount;
+					val.layer->MoveFromTimeToTime(time, newTime);
+				}
+			}
         };
 
         TIMELINE_SELECTION_HANDLE_BOTH_CAPTURE(MoveFunc);
@@ -136,7 +147,7 @@ struct TimelineSelection {
 
     void SetBlendID(int num) const {
         if (num >= BlendModes::GetNextID()) {
-            LOG("Error: can not set to blend mode that doesn't exist!\n");
+            LOG("Error: can not set to blend mode that doesn't exist!");
             return;
         }
 
@@ -272,7 +283,7 @@ public:
 
     void OnActiveModelObjectChange();
 
-    explicit Timeline(const GLWindow& window) : scene({window.GetBufferWidth(), window.GetBufferHeight()}), scrollBar({{window.GetBufferWidth(), window.GetBufferHeight()}, 0.0f, 0.5f}), animator(nullptr) {}
+    explicit Timeline(const GLWindow& window) : scene({window.GetBufferWidth(), window.GetBufferHeight()}), scrollBar({{window.GetBufferWidth(), window.GetBufferHeight()}, 0.0f, 0.2f}), animator(nullptr) {}
 
 
     static float RoundToTenth(float val);

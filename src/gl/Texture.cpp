@@ -14,7 +14,7 @@ Texture::Texture(const char* path) {
     localBuffer = stbi_load(path, &width, &height, &bitsPerPixel, 4);
 
     if (!localBuffer) {
-	    LOG("Failed to find: %s\n", path);
+	    LOG("Failed to find: %s", path);
         return;
     }
 

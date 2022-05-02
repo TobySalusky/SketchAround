@@ -46,7 +46,7 @@ Project::Project(std::string path) {
 
 	MakeExisting(name, path);
 
-	LOG("load successful!\n");
+	LOG("load successful!");
 }
 
 void Project::MakeExisting(const std::string& projectName, const std::string& path) {

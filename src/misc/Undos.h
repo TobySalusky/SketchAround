@@ -12,13 +12,13 @@
 class Undos {
 public:
     static void Add(Undo* undo) {
-	    LOG("Adding undo...\n");
+	    LOG("Adding undo...");
         undos.push_back(std::unique_ptr<Undo>(undo));
     }
 
     static void UseLast() {
         if (undos.empty()) return;
-	    LOG("Using undo...\n");
+	    LOG("Using undo...");
         undos.back()->Apply();
         undos.pop_back();
     }

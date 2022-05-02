@@ -59,7 +59,7 @@ void TimelineScrollBar::Render(Mesh2D &canvas, Shader2D& shader2D) const {
 	RenderTarget::Unbind();
 }
 
-void TimelineScrollBar::Update() {
+void TimelineScrollBar::Update(float currentTime) {
 	const Input& input = Program::GetInput();
 
 	const Vec2 mouseNorm = Util::NormalizeToRect01(input.GetMouse(), guiRect);
@@ -68,8 +68,7 @@ void TimelineScrollBar::Update() {
 
 	constexpr static float edgePixels = 10.0f;
 	const float edgeWidth = edgePixels / guiRect.width;
-
-
+	
 	// handle dragging
 	bool hasTrackpadScroll = input.mouseScrollHorizontal != 0.0f;
 	if (!drag && ((mouseOverBar && input.mousePressed) || hasTrackpadScroll)) {
@@ -90,21 +89,60 @@ void TimelineScrollBar::Update() {
 			if (trackPad) return input.mouseScrollHorizontal * -0.01f; // trackpad scrolling
 			return mouseDiff;
 		}(input, trackPad, mouseX - initX);
-		const float boundedDiff = [edgeWidth, diff, dragType=dragType, initBounds=initBounds](){
-			if (dragType == ScrollBarDragInfo::Start) {
-				return std::clamp(diff, -initBounds.start, (initBounds.end - initBounds.start) - (2.0f * edgeWidth));
+
+		// TODO: change this
+		const auto& [diffStart, diffEnd] = [&, dragType=dragType, initBounds=initBounds]() -> std::tuple<float, float> {
+
+			if (dragType != ScrollBarDragInfo::Bar) {
+				// case wherein time is in between
+				const float initTimeStart = TimeAtLocation(initBounds.start);
+				const float initTimeEnd   = TimeAtLocation(initBounds.end);
+				bool caretInRange = initTimeStart <= currentTime && currentTime <= initTimeEnd;
+				
+				float growth = std::abs(diff) * maxScrollArea;
+				const float growDir = (float) Util::Signum(diff) * ((dragType == ScrollBarDragInfo::End) ? 1.0f : -1.0f);
+				
+				const float minTimeRange = 0.5f;
+				if (growDir < 0.0f) growth = std::min(growth, initTimeEnd - initTimeStart - minTimeRange); // shrinking constraint
+				
+				const float initGapBefore = currentTime - initTimeStart;
+				const float initGapAfter  = initTimeEnd - currentTime;
+				
+				const float inequality = std::abs(initGapAfter - initGapBefore);
+				
+				float growLeft = std::max(0.0f, growth - inequality) / 2.0f;
+				float growRight = growLeft;
+				
+				const bool leftFirst = initGapBefore < initGapAfter;
+				*(leftFirst ? &growLeft : &growRight) += std::min(growth, inequality);
+				
+				float diffStart = (growDir < 0.0f) ? growRight / maxScrollArea : -growLeft / maxScrollArea;
+				float diffEnd = (growDir < 0.0f) ? -growLeft / maxScrollArea : growRight / maxScrollArea;
+				
+				bool fedBack = false;
+				if (diffStart < -initBounds.start) {
+					diffEnd += -initBounds.start - diffStart;
+					diffStart = -initBounds.start;
+					fedBack = true;
+				}
+				
+				if (diffEnd > 1.0f - initBounds.end) {
+					if (!fedBack) diffStart = std::max(-initBounds.start, diffStart - (diffEnd - (1.0f - initBounds.end)));
+					diffEnd = 1.0f - initBounds.end;
+				}
+				
+				return {diffStart, diffEnd};
 			}
-			if (dragType == ScrollBarDragInfo::End) {
-				return std::clamp(diff, (initBounds.start - initBounds.end) + (2.0f * edgeWidth), 1.0f - initBounds.end);
-			}
-			return std::clamp(diff, -initBounds.start, 1.0f - initBounds.end);
+
+			const float diffBoth = std::clamp(diff, -initBounds.start, 1.0f - initBounds.end);
+			return {diffBoth, diffBoth};
 		}();
 
-		if (dragType == ScrollBarDragInfo::Bar || dragType == ScrollBarDragInfo::Start) {
-			start = initBounds.start + boundedDiff;
-		}
-		if (dragType == ScrollBarDragInfo::Bar || dragType == ScrollBarDragInfo::End) {
-			end = initBounds.end + boundedDiff;
+		start = initBounds.start + diffStart;
+		end = initBounds.end + diffEnd;
+		
+		if (drag->dragType != ScrollBarDragInfo::Bar) {
+			drag = {mouseX, {start, end}, drag->dragType, false};
 		}
 
 		if ((!trackPad && input.mouseUnpressed) || trackPad) {
@@ -121,4 +159,12 @@ void TimelineScrollBar::Gui() {
 	const auto scrollBarDimens = Util::ToImVec(Util::ToVec(ImGui::GetContentRegionAvail()) - Vec2(8.0f, 0.0f));
 	ImGui::ImageButton(scene.GetTexture(), scrollBarDimens, {0.0f, 1.0f}, {1.0f, 0.0f}, 0);
 	guiRect = ImGuiHelper::ItemRect();
+
+	if (drag && drag->dragType != ScrollBarDragInfo::Bar) {
+		ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeEW);
+	}
+}
+
+float TimelineScrollBar::TimeAtLocation(float f01) const {
+	return f01 * maxScrollArea;
 }

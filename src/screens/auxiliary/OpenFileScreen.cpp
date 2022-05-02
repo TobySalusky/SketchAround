@@ -43,7 +43,7 @@ void OpenFileScreen::Gui() {
 			auto& ref = metaReads.emplace_back(DeserializeMetaInfo(pathStr));
 			const int desiredSize = 64 * 64 * 3;
 			if (ref.img.size() != desiredSize) {
-				LOG("[Warning]: Preview image is incorrect size!\n");
+				LOG("[Warning]: Preview image is incorrect size!");
 				ref.img.clear();
 				ref.img.reserve(desiredSize);
 				for (int i = 0; i < desiredSize; i++) {ref.img.emplace_back(0);}

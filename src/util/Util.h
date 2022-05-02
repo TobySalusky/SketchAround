@@ -6,6 +6,7 @@
 #define SENIORRESEARCH_UTIL_H
 
 
+#include <cstdio>
 #include <iostream>
 #include <vector>
 #include <numeric>
@@ -21,7 +22,7 @@ typedef glm::vec4 RGBA;
 typedef std::vector<glm::vec2> Vec2List;
 typedef std::vector<glm::vec3> Vec3List;
 
-#define LOG printf
+#define LOG(a, ...) printf((std::string(a)+"\n").c_str() __VA_OPT__(,) __VA_ARGS__)
 
 #define BEG_END(a) a.begin(), a.end()
 
@@ -36,8 +37,8 @@ public:
     static int Signum(T val) {
         return (T(0) < val) - (val < T(0));
     }
-
-    static float Remap01ToNP(float f) { return f * 2.0f - 1.0f; }
+	
+	static float Remap01ToNP(float f) { return f * 2.0f - 1.0f; }
     static float RemapNPTo01(float f) { return (f + 1.0f) / 2.0f; }
 
     static Vec2 Remap01ToNP(Vec2 v) { return {Remap01ToNP(v.x), Remap01ToNP(v.y)}; }

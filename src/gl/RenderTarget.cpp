@@ -71,7 +71,7 @@ std::vector<unsigned char> RenderTarget::SampleCentralSquare(const RenderTarget&
 }
 
 RenderTarget::~RenderTarget() {
-    LOG("Disposing render target\n");
+    LOG("Disposing render target");
     glDeleteTextures(1, &textureID);
     glDeleteFramebuffers(1, &fboID);
     glDeleteRenderbuffers(1, &rboID);

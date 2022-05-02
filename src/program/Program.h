@@ -25,8 +25,8 @@
 
 
 // >> START CONSTANTS
-const GLuint INIT_WIDTH = 1200;
-const GLuint INIT_HEIGHT = 700;
+const GLuint INIT_WIDTH = 2000;
+const GLuint INIT_HEIGHT = 1000;
 
 #define DEVELOPER_MODE true
 // >> END CONSTANTS

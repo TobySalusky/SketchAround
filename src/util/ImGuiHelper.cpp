@@ -21,7 +21,7 @@ void ImGuiHelper::Initialize(GLWindow& window) {
 
 
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-    io.ConfigWindowsMoveFromTitleBarOnly = true;
+//    io.ConfigWindowsMoveFromTitleBarOnly = true;
     //io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 
     window.SetImGuiIO(&io);
@@ -141,12 +141,13 @@ void ImGuiHelper::InnerWindowBorders() {
     auto dimens = ImGui::GetWindowSize();
 
     ImDrawList& g = *ImGui::GetWindowDrawList();
-    g.PushClipRect(pos, Add(pos, dimens), false);
+    g.PushClipRect(Add(pos, {-10.0f, -10.0f}), Add(Add(pos, dimens), {10.0f, 10.0f}), false);
     if (highlight) {
-        g.AddRect(Add(pos, {1.0f, 1.0f}), Add(Add(pos, dimens), {-1.0f, -1.0f}), COLOR_WINDOW_FOCUS_HIGHLIGHT, 3.0f, 0, 1.0f);
+        g.AddRect(Add(pos, {0.0f, 0.0f}), Add(Add(pos, dimens), {0.0f, 0.0f}), COLOR_WINDOW_FOCUS_HIGHLIGHT, 0.0f, 0, 1.0f);
     }
-    g.AddRect(pos, Add(pos, dimens), COLOR_SEPARATOR, 0.0f, 0, 1.0f);
-    g.AddRect(pos, Add(pos, dimens), COLOR_SEPARATOR, 3.0f, 0, 1.0f);
+    g.AddRect(Add(pos, {-1.0f, -1.0f}), Add(Add(pos, dimens), {1.0f, 1.0f}), COLOR_SEPARATOR, 0.0f, 0, 1.0f);
+//    g.AddRect(pos, Add(pos, dimens), COLOR_SEPARATOR, 0.0f, 0, 1.0f);
+//    g.AddRect(pos, Add(pos, dimens), COLOR_SEPARATOR, 3.0f, 0, 1.0f);
     g.PopClipRect();
 }
 
@@ -164,4 +165,8 @@ void ImGuiHelper::BeginOutsideGuiScreen(const char* windowTitle) {
 	                                   ImGuiWindowFlags_NoMove |
 	                                   ImGuiWindowFlags_NoCollapse |
 	                                   ImGuiWindowFlags_NoTitleBar);
+}
+
+void ImGuiHelper::BeginComponentWindow(const char *label) {
+	ImGui::Begin(label, nullptr, ImGuiWindowFlags_NoTitleBar);
 }

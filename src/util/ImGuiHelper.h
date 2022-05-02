@@ -20,7 +20,7 @@
 #define COLOR_INVIS ImColor(0.0f, 0.0f, 0.0f, 0.0f)
 #define COLOR_INVIS_HOVER_HIGHLIGHT ImColor(1.0f, 1.0f, 1.0f, 0.15f)
 #define COLOR_INVIS_ACTIVE_HIGHLIGHT ImColor(1.0f, 1.0f, 1.0f, 0.3f)
-#define COLOR_SEPARATOR ImColor(TRIP(0.05f))
+#define COLOR_SEPARATOR ImColor(TRIP(0.08f))
 #define COLOR_WINDOW_FOCUS_HIGHLIGHT ImColor(255, 122, 0)
 #define COLOR_WINDOW_BG ImColor(TRIP(0.20f))
 #define COLOR_RED ImColor(1.0f, 0.0f, 0.0f)
@@ -126,9 +126,7 @@ public:
 
     static void InnerWindowBorders();
 
-    static void BeginComponentWindow(const char* label) {
-        ImGui::Begin(label, nullptr, ImGuiWindowFlags_NoTitleBar);
-    }
+    static void BeginComponentWindow(const char* label);
 
     static void ValDrag(const char* label, float* fPtr, float vSpeed = 0.025f) {
         ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(COLOR_INVIS));

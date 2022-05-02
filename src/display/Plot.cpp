@@ -52,7 +52,7 @@ void Plot::Render(const Project& project) {
 }
 
 void Plot::Gui() {
-	ImGui::Begin("Graph Scene");
+	ImGuiHelper::BeginComponentWindow("Graph Scene");
 
 	Vec2 displayDimens =
 			Util::ToVec(ImGui::GetWindowContentRegionMax()) - Util::ToVec(ImGui::GetWindowContentRegionMin());
@@ -83,7 +83,7 @@ void Plot::HandleUndoing() {
 
 void Plot::ToolbarGui(Project& project) {
 	// Toolbar
-	ImGui::Begin("Toolbar");
+	ImGuiHelper::BeginComponentWindow("Toolbar");
 	{
 		project.GetCurrentModelObject()->ModeSet("L1", Enums::DrawMode::MODE_PLOT, drawMode, CONTROLS_SetLayerPrimary);
 		project.GetCurrentModelObject()->ModeSet("L2", Enums::DrawMode::MODE_GRAPH_Y, drawMode, CONTROLS_SetLayerSecondary);

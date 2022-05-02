@@ -51,12 +51,12 @@ void ExportScreen::TryObjExport() {
 
 	const auto ExportTo = [](const std::string& path, const std::string& content) {
 		std::ofstream f(path);
-		LOG("Exporting to \"%s\" -- ", path.c_str());
+		LOG("Exporting to \"%s\"...", path.c_str());
 		if (!f.fail()) {
 			f << content.c_str();
-			LOG("export successful!\n");
+			LOG("export successful!");
 		} else {
-			LOG("export failed!\n");
+			LOG("export failed!");
 		}
 	};
 

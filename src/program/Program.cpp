@@ -120,7 +120,7 @@ Program::~Program() {
 }
 
 void Program::AddProjectAsActive(const std::shared_ptr<Project>& newProject) {
-	projects.push_back(newProject);
+	projects = {newProject};
 	selectedProject = newProject;
 }
 
