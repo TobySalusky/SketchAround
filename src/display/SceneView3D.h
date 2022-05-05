@@ -27,7 +27,7 @@ private:
 
 	Shader3D shader3D = Shader3D::Read("shaders/shader.vert", "shaders/shader.frag");
 
-	Camera camera {{0.0f, 0.0f, 2.5f}, {0.0f, 1.0f, 0.0f}, (float) -M_PI_2, 0};
+	Camera camera {};
 	Light mainLight {{0.5f, 0.5f, 0.5f, 0.5f}, {-1.0f, -1.0f, -1.0f}, 0.8f};
 	Light line3DGizmoLight {{1.0f, 0.3f, 1.0f, 0.5f}, {-1.0f, -1.0f, -1.0f}, 1.0f};
 	Material material {0.8f, 16};

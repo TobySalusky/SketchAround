@@ -36,6 +36,8 @@ public:
 	float maxScrollArea = 10.0f;
 	std::optional<ScrollBarDragInfo> drag;
 	Rectangle guiRect = {};
+	
+	bool guiPanelHovered = false;
 
 	void Update(float currentTime);
 	void Render(Mesh2D& canvas, Shader2D& shader2D) const;

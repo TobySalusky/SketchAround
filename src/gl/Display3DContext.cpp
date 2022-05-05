@@ -17,24 +17,21 @@ void Display3DContext::Update(Display3DContextUpdateInfo info) {
         if (input.mouseDown && focused) {
             Vec2 diff = mousePos - Util::NormalizeToRectNPFlipped(input.GetLastMouse(), guiRect);
 
-            float angleDiffX = -diff.x * sensitivity;
-            float angleDiffY = diff.y * sensitivity * (guiRect.height / guiRect.width);
-            float newAngleY = Camera::ClampedPitch(camera.GetPitch() + angleDiffY);
-            angleDiffY = newAngleY - camera.GetPitch();
+            const float angleDiffX = diff.x * sensitivity;
+            const float angleDiffY = diff.y * sensitivity * (guiRect.height / guiRect.width);
+            
+            const float newAngleY = Camera::ClampedPhi(camera.phi + angleDiffY);
 
-
-            camera.SetPos(glm::rotate(glm::mat4(1.0f), angleDiffX, {0.0f, 1.0f, 0.0f}) * Vec4(camera.GetPos(), 1.0f));
-            camera.SetYaw(camera.GetYaw() - angleDiffX);
-
-
-            camera.SetPos(glm::rotate(glm::mat4(1.0f), angleDiffY, camera.GetRight()) * Vec4(camera.GetPos(), 1.0f));
-            camera.SetPitch(camera.GetPitch() + angleDiffY);
+            camera.theta += angleDiffX;
+            camera.phi = newAngleY;
+			camera.CalcPosDir();
         }
 
         if (input.mouseScroll != 0.0f) {
             const float minMag = 0.3f;
-            float newMag = fmax(glm::length(camera.GetPos()) - input.mouseScroll * scrollSensitivity, minMag);
-            camera.SetPos(newMag * glm::normalize(camera.GetPos()));
+            float newMag = fmax(camera.rho - input.mouseScroll * scrollSensitivity, minMag);
+            camera.rho = newMag;
+            camera.CalcPosDir();
         }
     }
 }

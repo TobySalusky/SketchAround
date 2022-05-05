@@ -70,7 +70,7 @@ void TimelineScrollBar::Update(float currentTime) {
 	const float edgeWidth = edgePixels / guiRect.width;
 	
 	// handle dragging
-	bool hasTrackpadScroll = input.mouseScrollHorizontal != 0.0f;
+	bool hasTrackpadScroll = input.mouseScrollHorizontal != 0.0f && guiPanelHovered;
 	if (!drag && ((mouseOverBar && input.mousePressed) || hasTrackpadScroll)) {
 		const ScrollBarDragInfo::DragType dragType = [&](){
 
@@ -163,6 +163,8 @@ void TimelineScrollBar::Gui() {
 	if (drag && drag->dragType != ScrollBarDragInfo::Bar) {
 		ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeEW);
 	}
+	
+	guiPanelHovered = ImGui::IsWindowHovered();
 }
 
 float TimelineScrollBar::TimeAtLocation(float f01) const {

@@ -13,39 +13,35 @@
 
 class Camera {
 public:
-    Camera(glm::vec3 pos, glm::vec3 worldUp, GLfloat yaw, GLfloat pitch);
+    Camera();
 
     void Update(float deltaTime, const Input& input);
 
     glm::mat4 CalculateViewMat();
 
-    void SetPos(glm::vec3 newPos) { pos = newPos; }
-    glm::vec3 GetPos() const { return pos; }
-
-    [[nodiscard]] GLfloat GetYaw() const;
-
-    void SetYaw(GLfloat yaw);
-
-    [[nodiscard]] GLfloat GetPitch() const;
-
     [[nodiscard]] Vec3 GetRight() const { return right; }
     [[nodiscard]] Vec3 GetUp() const { return up; }
 
     [[nodiscard]] Vec3 GetDir() const { return front; }
-
-    void SetPitch(GLfloat pitch);
-
-    static float ClampedPitch(float pitch) {
-        return std::clamp(pitch, -(float)M_PI_2 * 0.999f, (float)M_PI_2 * 0.999f);
+	
+	[[nodiscard]] Vec3 GetPos() const { return pos; };
+	
+	static float ClampedPhi(float pitch) {
+        return std::clamp(pitch, 0.0001f, PI_F * 0.9999f);
     }
 
     void ReCenter();
 
+	void CalcPosDir();
+	
+	float rho, theta, phi;
 
 private:
     void CalculateDir();
     glm::vec3 pos, front, up, right, worldUp;
-    GLfloat yaw, pitch, movementSpeed, turnSpeed;
+
+    void CalcPos();
+    
 };
 
 

@@ -26,6 +26,11 @@ typedef std::vector<glm::vec3> Vec3List;
 
 #define BEG_END(a) a.begin(), a.end()
 
+#define PI_F ((float) M_PI)
+#define TWO_PI_F (PI_F * 2.0f)
+#define HALF_PI_F (PI_F / 2.0f)
+
+
 struct MatrixComponents {
     Vec3 pos, dir;
 };
@@ -140,6 +145,10 @@ public:
     static Vec2 Perpendicular(Vec2 vec) {
         return {-vec.y, vec.x};
     }
+	
+	static Vec3 Spherical(float theta, float phi, float rho) {
+		return {rho * sin(phi) * cos(theta), rho * cos(phi), rho * sin(phi) * sin(theta)};
+	}
 };
 
 #endif //SENIORRESEARCH_UTIL_H
