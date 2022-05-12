@@ -26,7 +26,8 @@
 
 // >> START CONSTANTS
 const GLuint INIT_WIDTH = 1200;
-const GLuint INIT_HEIGHT = 800;
+const GLuint INIT_HEIGHT = 700; // EXCEEDING THE BOUNDS OF THE MONITOR CAUSES CRASHING ERRORS IN
+// -- the sampling of thumbnail images!!! (glReadPixels())
 
 #define DEVELOPER_MODE true
 // >> END CONSTANTS
