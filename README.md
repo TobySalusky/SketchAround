@@ -14,7 +14,7 @@
 ## Demos
 
 Figure 1. Parameterized Lathe Model Components (revolved surfaces)
-![mushroom lathe demo](https://raw.githubusercontent.com/TobySalusky/SeniorResearch/main/docs/images/MushroomDemo.gif?raw=true)
+![octopus lathe demo](https://raw.githubusercontent.com/TobySalusky/SeniorResearch/main/docs/images/Octopus.gif?raw=true)
 
 Figure 2. Cross-sectional Model Components (inflated side-views)
 ![leg cross-sectional demo](https://raw.githubusercontent.com/TobySalusky/SeniorResearch/main/docs/images/LegDemo.png?raw=true)

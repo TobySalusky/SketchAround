@@ -50,11 +50,6 @@ std::vector<unsigned char> RenderTarget::SampleCentralSquare(const RenderTarget&
     const int dimens = std::min(renderTarget.width, renderTarget.height);
     unsigned char pixelBuff[dimens * dimens * 3];
     
-//    const int t1 = std::max(renderTarget.width - renderTarget.height, 0) / 2;
-//    const int t2 = std::max(renderTarget.height - renderTarget.width, 0) / 2;
-//
-//    LOG("%i %i, %i, %i %i", renderTarget.width, renderTarget.height, dimens, t1, t2);
-    
     glReadPixels(std::max(renderTarget.width - renderTarget.height, 0) / 2, std::max(renderTarget.height - renderTarget.width, 0) / 2,
                  dimens, dimens, GL_RGB, GL_UNSIGNED_BYTE, pixelBuff);
 
