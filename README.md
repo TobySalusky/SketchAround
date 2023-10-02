@@ -3,7 +3,7 @@
 <!-- <p align="center"><img alt="Modrawl" src="docs/icon/NameLogo.png" width="50%"><img alt="Modrawl Logo" src="docs/icon/icon.png" width="25%"></p>
  -->
 
-# Senior Research Project
+# Sketch Around - (Research Project)
 ## "Design and Implementation of Lathe-based and Cross-sectional Organic 3D Modeling and Animation via Sketching and Graphing"
 
 > This project aims to make *organic* 3D modeling and animation more accessible to beginners and 2D-centric artists.
